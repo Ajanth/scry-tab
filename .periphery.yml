@@ -1,0 +1,6 @@
+project: scry-tab.xcodeproj
+schemes:
+- Release
+index_exclude:
+  - vendor/**
+  - src/api-wrappers/private-apis/**
