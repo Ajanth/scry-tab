@@ -74,7 +74,7 @@ class ControlsTab {
         "windowOrder", "shortcutStyle",
         "showAppsOrWindows", "showTabsAsWindows",
         "appearanceStyleOverride", "appearanceSizeOverride", "appearanceThemeOverride",
-        "shortcutStyleOverride", "previewFocusedWindowOverride",
+        "shortcutStyleOverride",
     ]
     private static let arrowKeys = ["←", "→", "↑", "↓"]
     private static let arrowKeyCodes: Set<KeyCode> = [.leftArrow, .rightArrow, .upArrow, .downArrow]

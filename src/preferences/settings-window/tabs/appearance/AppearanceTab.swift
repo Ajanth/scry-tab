@@ -156,7 +156,6 @@ class ShowHideIllustratedView {
     static let hideStatusIconsLabel = NSLocalizedString("Hide status icons", comment: "")
     static let hideStatusIconsSubtitle = NSLocalizedString("ScryTab will show if the window is currently minimized or fullscreen with a status icon.", comment: "")
     static let hideSpaceNumberLabelsLabel = NSLocalizedString("Hide Space number labels", comment: "")
-    static let hideColoredCirclesLabel = NSLocalizedString("Hide colored circles on mouse hover", comment: "")
 
     private let style: AppearanceStylePreference
     private var showHideRows = [ShowHideRowInfo]()
@@ -191,7 +190,7 @@ class ShowHideIllustratedView {
         hideStatusIcons.rowId = "hideStatusIcons"
         hideStatusIcons.uncheckedImage = "show_status_icons"
         hideStatusIcons.checkedImage = "hide_status_icons"
-        hideStatusIcons.supportedStyles = [.thumbnails, .titles]
+        hideStatusIcons.supportedStyles = [.appIcons, .titles]
         hideStatusIcons.leftViews = [TableGroupView.makeText(ShowHideIllustratedView.hideStatusIconsLabel)]
         hideStatusIcons.subTitle = ShowHideIllustratedView.hideStatusIconsSubtitle
         hideStatusIcons.rightViews.append(LabelAndControl.makeInfoButton(searchableTooltipTexts: [hideStatusIcons.subTitle!], onMouseEntered: { event, view in
@@ -207,22 +206,12 @@ class ShowHideIllustratedView {
         hideSpaceNumberLabels.rowId = "hideSpaceNumberLabels"
         hideSpaceNumberLabels.uncheckedImage = "show_space_number_labels"
         hideSpaceNumberLabels.checkedImage = "hide_space_number_labels"
-        hideSpaceNumberLabels.supportedStyles = [.thumbnails, .titles]
+        hideSpaceNumberLabels.supportedStyles = [.appIcons, .titles]
         hideSpaceNumberLabels.leftViews = [TableGroupView.makeText(ShowHideIllustratedView.hideSpaceNumberLabelsLabel)]
         hideSpaceNumberLabels.rightViews.append(LabelAndControl.makeSwitch(hideSpaceNumberLabels.rowId, extraAction: { sender in
             self.onCheckboxClicked(sender: sender, rowId: hideSpaceNumberLabels.rowId)
         }))
         showHideRows.append(hideSpaceNumberLabels)
-        var hideColoredCircles = ShowHideRowInfo()
-        hideColoredCircles.rowId = "hideColoredCircles"
-        hideColoredCircles.uncheckedImage = "show_colored_circles"
-        hideColoredCircles.checkedImage = "hide_colored_circles"
-        hideColoredCircles.supportedStyles = [.thumbnails]
-        hideColoredCircles.leftViews = [TableGroupView.makeText(ShowHideIllustratedView.hideColoredCirclesLabel)]
-        hideColoredCircles.rightViews.append(LabelAndControl.makeSwitch(hideColoredCircles.rowId, extraAction: { sender in
-            self.onCheckboxClicked(sender: sender, rowId: hideColoredCircles.rowId)
-        }))
-        showHideRows.append(hideColoredCircles)
     }
 
     /// Handles the event when a checkbox is clicked.
@@ -384,7 +373,6 @@ class AppearanceTab: NSObject {
     static let labelSize = NSLocalizedString("Size", comment: "")
     static let labelTheme = NSLocalizedString("Theme", comment: "")
     static let labelShortcutStyle = NSLocalizedString("After keys are released", comment: "")
-    static let labelPreviewSelectedWindow = NSLocalizedString("Preview selected window", comment: "")
 
     static var customizeStyleButton: NSButton!
     static var animationsButton: NSButton!
@@ -453,7 +441,7 @@ class AppearanceTab: NSObject {
     }
 
     private static func makeAppearanceView() -> NSView {
-        let table = TableGroupView(subTitle: NSLocalizedString("Switch between 3 different styles. You can customize them.", comment: ""),
+        let table = TableGroupView(subTitle: NSLocalizedString("Switch between 2 different styles. You can customize them.", comment: ""),
             width: SettingsWindow.contentWidth)
         let styleButtons = LabelAndControl.makeImageRadioButtons("appearanceStyle", AppearanceStylePreference.allCases, extraAction: { _ in
             toggleCustomizeStyleButton()
@@ -496,7 +484,6 @@ class AppearanceTab: NSObject {
                 refreshAllOverrideInfoLabels()
             }), makeOverrideIcon("appearanceThemeOverride")])
         addAfterKeysReleasedRow(table)
-        addPreviewSelectedWindowRow(table)
         table.addRow(rightViews: customizeStyleButton)
         refreshAllOverrideInfoLabels()
         return table
@@ -614,15 +601,6 @@ class AppearanceTab: NSObject {
         ProBadgeView.refreshSelection(in: segmentedControl, proIndex: proIndex, overlay: overlay)
     }
 
-    private static func addPreviewSelectedWindowRow(_ table: TableGroupView) {
-        let switchControl = LabelAndControl.makeSwitch("previewFocusedWindow", extraAction: { _ in
-            ControlsTab.syncOverrideControlsToGlobal()
-            refreshAllOverrideInfoLabels()
-        })
-        _ = table.addRow(leftText: AppearanceTab.labelPreviewSelectedWindow,
-            rightViews: [switchControl, makeOverrideIcon("previewFocusedWindowOverride")])
-    }
-
     private static func makeMultipleScreensView() -> NSView {
         let table = TableGroupView(title: NSLocalizedString("Multiple screens", comment: ""), width: SettingsWindow.contentWidth)
         _ = table.addRow(leftText: NSLocalizedString("Show on", comment: ""),
@@ -697,9 +675,9 @@ class AppearanceTab: NSObject {
         }
     }
 
-    /// Indices of `AppearanceStylePreference.allCases` that are Pro-only (everything but `.thumbnails`).
+    /// Indices of `AppearanceStylePreference.allCases` that are Pro-only (everything but `.appIcons`).
     static func proGatedAppearanceStyleIndices() -> Set<Int> {
-        Set(AppearanceStylePreference.allCases.enumerated().compactMap { $0.element == .thumbnails ? nil : $0.offset })
+        Set(AppearanceStylePreference.allCases.enumerated().compactMap { $0.element == .appIcons ? nil : $0.offset })
     }
 
     /// Re-sync the 3 Pro-aware controls to the currently-stored preferences and the ghost state.

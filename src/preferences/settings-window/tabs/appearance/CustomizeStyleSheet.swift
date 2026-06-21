@@ -14,7 +14,6 @@ class CustomizeStyleSheet: SheetWindow {
         ShowHideIllustratedView.hideStatusIconsLabel,
         ShowHideIllustratedView.hideStatusIconsSubtitle,
         ShowHideIllustratedView.hideSpaceNumberLabelsLabel,
-        ShowHideIllustratedView.hideColoredCirclesLabel,
         IllustratedImageThemeView.placeholderLabelText,
     ] + ShowTitlesPreference.allCases.map { $0.localizedString }
       + TitleTruncationPreference.allCases.map { $0.localizedString }
@@ -29,7 +28,7 @@ class CustomizeStyleSheet: SheetWindow {
         // The per-shortcut Customize sheet was trimmed to just style-tied global toggles. The
         // settings that used to live here either (a) moved to per-shortcut storage and now live
         // in `ControlsTab` (`showAppsOrWindows`, `showTabsAsWindows`) or (b) were dropped
-        // entirely (`alignThumbnails`). The "Show & Hide" / "Advanced" tab control is gone too —
+        // entirely. The "Show & Hide" / "Advanced" tab control is gone too —
         // the remaining rows fit comfortably in one flat list.
         illustratedImageView = IllustratedImageThemeView(style, CustomizeStyleSheet.illustratedImageWidth)
         showHideIllustratedView = ShowHideIllustratedView(style, illustratedImageView)

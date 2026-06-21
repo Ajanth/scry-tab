@@ -396,14 +396,13 @@ final class OrderingPane {
 // MARK: - Appearance pane (override controls)
 
 final class AppearancePane {
-    /// See `FilteringPane.searchableStrings`. The labels (Size / Theme / After keys released /
-    /// Preview selected window) are shared with the global appearance UI; reference the same
+    /// See `FilteringPane.searchableStrings`. The labels (Size / Theme / After keys released)
+    /// are shared with the global appearance UI; reference the same
     /// constants from `AppearanceTab` rather than re-declaring them.
     static let searchableStrings: [String] = [
         AppearanceTab.labelSize,
         AppearanceTab.labelTheme,
         AppearanceTab.labelShortcutStyle,
-        AppearanceTab.labelPreviewSelectedWindow,
         ProBadgeView.proLabel,
     ] + AppearanceStylePreference.allCases.map { $0.localizedString }
       + AppearanceSizePreference.allCases.map { $0.localizedString }
@@ -415,7 +414,6 @@ final class AppearancePane {
     private let size: ShortcutOverrideSegmented
     private let theme: ShortcutOverrideSegmented
     private let shortcutStyle: ShortcutOverrideSegmented
-    private let preview: ShortcutOverrideSwitch
 
     init(width: CGFloat) {
         let onChange: () -> Void = {
@@ -464,11 +462,6 @@ final class AppearancePane {
             },
             onChange: onChange)
 
-        preview = ShortcutOverrideSwitch(
-            baseName: "previewFocusedWindowOverride",
-            globalValue: { Preferences.previewSelectedWindow },
-            onChange: onChange)
-
         let table = TableGroupView(width: width)
         let styleRow = NSStackView(views: [style.stack, style.unlink])
         styleRow.orientation = .horizontal
@@ -478,7 +471,6 @@ final class AppearancePane {
         table.addRow(leftText: AppearanceTab.labelSize, rightViews: [size.segmented, size.unlink])
         table.addRow(leftText: AppearanceTab.labelTheme, rightViews: [theme.segmented, theme.unlink])
         table.addRow(leftText: AppearanceTab.labelShortcutStyle, rightViews: [shortcutStyle.segmented, shortcutStyle.unlink])
-        table.addRow(leftText: AppearanceTab.labelPreviewSelectedWindow, rightViews: [preview.toggle, preview.unlink])
         view = table
     }
 
@@ -487,7 +479,6 @@ final class AppearancePane {
         size.bind(toShortcut: index)
         theme.bind(toShortcut: index)
         shortcutStyle.bind(toShortcut: index)
-        preview.bind(toShortcut: index)
     }
 }
 
@@ -737,62 +728,6 @@ final class ShortcutOverrideRadios {
         let buttonViews = stack.arrangedSubviews.compactMap { $0 as? ImageTextButtonView }
         let gi = globalIndex()
         for (j, b) in buttonViews.enumerated() { b.state = (j == gi) ? .on : .off }
-        unlink.isHidden = true
-        onChange?()
-    }
-}
-
-/// Switch bound to a per-shortcut override preference. Used for "Preview selected window".
-final class ShortcutOverrideSwitch {
-    let toggle: Switch
-    let unlink: NSButton
-
-    private let baseName: String
-    private let globalValue: () -> Bool
-    private let onChange: (() -> Void)?
-    private var currentShortcutIndex: Int = 0
-
-    init(baseName: String, globalValue: @escaping () -> Bool, onChange: (() -> Void)?) {
-        self.baseName = baseName
-        self.globalValue = globalValue
-        self.onChange = onChange
-        toggle = LabelAndControl.makeSwitch(Preferences.indexToName(baseName, 0), extraAction: nil)
-        unlink = ShortcutEditor.makeUnlinkButton()
-
-        let weakSelf = WeakRef(self)
-        toggle.onAction = { c in
-            weakSelf.value?.handleToggle(c as! Switch)
-        }
-        unlink.onAction = { _ in
-            weakSelf.value?.unlinkOverride()
-        }
-    }
-
-    func bind(toShortcut index: Int) {
-        currentShortcutIndex = index
-        let key = Preferences.indexToName(baseName, index)
-        toggle.identifier = NSUserInterfaceItemIdentifier(key)
-        let on: Bool
-        if Preferences.hasOverride(baseName, index) {
-            on = CachedUserDefaults.bool(key)
-        } else {
-            on = globalValue()
-        }
-        toggle.setSilently(on ? .on : .off)
-        unlink.isHidden = !Preferences.hasOverride(baseName, index)
-    }
-
-    private func handleToggle(_ control: Switch) {
-        // Toggling always changes state — always write the override.
-        let key = Preferences.indexToName(baseName, currentShortcutIndex)
-        Preferences.set(key, control.state == .on ? "true" : "false")
-        unlink.isHidden = false
-        onChange?()
-    }
-
-    private func unlinkOverride() {
-        Preferences.removeOverride(baseName, currentShortcutIndex)
-        toggle.setSilently(globalValue() ? .on : .off)
         unlink.isHidden = true
         onChange?()
     }
