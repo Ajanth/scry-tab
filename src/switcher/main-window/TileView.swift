@@ -6,7 +6,6 @@ class TileView: FlippedView {
     static let extraTextForPadding = "lmnopqrstuvw"
 
     var window_: Window?
-    var thumbnail = LightImageLayer()
     var appIcon = LightImageLayer()
     var appIconHighlight = noAnimation { CALayer() }
     var label = TileTitleView(font: Appearance.font)
@@ -86,7 +85,7 @@ class TileView: FlippedView {
             let shouldBeVisible = isFocused || isHovered
             // Update the frame BEFORE unhiding. `applyCurrentStyle()` already set
             // `label.isHidden = true` in `updateRecycledCellWithNewContent`; the label's frame is
-            // still at its previous-style position (e.g. right-of-icon from thumbnails). Setting
+            // still at its previous-style position (e.g. right-of-icon from titles). Setting
             // `isHidden = false` first would briefly reveal the label at the stale position before
             // `updateAppIconsLabelFrame()` moves it under the icon — that's the "title slides from
             // right of icon to under the icon" frame the user reported during cross-style summons.
@@ -117,19 +116,11 @@ class TileView: FlippedView {
     private func setupSharedSubviews() {
         let shadow = TileView.makeShadow(Appearance.imagesShadowColor)
         let appIconShadow = TileView.makeAppIconShadow(Appearance.imagesShadowColor)
-        let thumbnailShadow = TileView.makeThumbnailShadow(Appearance.imagesShadowColor)
-        thumbnail.masksToBounds = false // let thumbnail shadows show
-        thumbnail.applyShadow(thumbnailShadow)
         appIcon.applyShadow(appIconShadow)
         dockLabelIcon.shadow = shadow
         appIconHighlight.isHidden = true
         layer!.addSublayer(appIconHighlight)
         layer!.addSublayer(appIcon)
-        // All style-dependent subviews/layers are attached up front. Per-shortcut overrides can
-        // change the effective appearance style between summons; the recycled `TileView` instances
-        // outlive any single style, so we toggle visibility in `applyCurrentStyle()` instead of
-        // conditionally attaching at init time.
-        layer!.addSublayer(thumbnail)
         addSubviews([label, statusIcons])
         setSubviewAbove(windowlessAppIndicator)
         addSubview(dockLabelIcon)
@@ -171,7 +162,6 @@ class TileView: FlippedView {
     /// without forcing a full `TilesView.reset()` (which would recreate all 20 recycled tiles).
     func applyCurrentStyle() {
         let style = Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex)
-        thumbnail.isHidden = Appearance.hideThumbnails
         statusIcons.isHidden = style == .appIcons
         label.alignment = style == .appIcons ? .center : .natural
         label.isHidden = style == .appIcons
@@ -201,7 +191,7 @@ class TileView: FlippedView {
 
     private func getMaxAllowedLabelWidth() -> CGFloat {
         let viewWidth = frame.width
-        let maxAllowedWidth = min(viewWidth * 2, TilesView.thumbnailsWidth)
+        let maxAllowedWidth = min(viewWidth * 2, TilesView.rowWidth)
         let availableLeftWidth = isFirstInRow ? 0 : CGFloat(indexInRow) * viewWidth
         let availableRightWidth = isLastInRow ? 0 : CGFloat(numberOfViewsInRow - 1 - indexInRow) * viewWidth
         let totalWidth = availableLeftWidth + availableRightWidth + viewWidth
@@ -267,16 +257,6 @@ class TileView: FlippedView {
                 )
             }())
         )
-        if !thumbnail.isHidden {
-            if let screenshot = element.thumbnail {
-                let thumbnailSize = TileView.thumbnailSize(element.size, false)
-                thumbnail.updateContents(screenshot, thumbnailSize)
-            } else {
-                // if no thumbnail, show appIcon instead
-                let thumbnailSize = TileView.thumbnailSize(element.icon?.size(), true)
-                thumbnail.updateContents(.cgImage(element.icon), thumbnailSize)
-            }
-        }
         let title = getAppOrAndWindowTitle()
         let labelChanged = label.stringValue != title
         if labelChanged {
@@ -315,7 +295,7 @@ class TileView: FlippedView {
                 let blueRatio = Appearance.cellCornerRadius / max(highlightFrame.height, 1)
                 appIconHighlight.cornerRadius = rect.height * blueRatio
             } else {
-                // icons can be small (thumbnails/titles styles) — scale to icon size and use the
+                // icons can be small (titles style) — scale to icon size and use the
                 // squircle curve so the halo matches the macOS app-icon shape at every size.
                 let inset = max(2, appIcon.frame.height * 0.06)
                 let rect = appIcon.frame.insetBy(dx: -inset, dy: -inset)
@@ -527,11 +507,6 @@ class TileView: FlippedView {
             assignIfDifferent(&label.frame.origin.x, labelX)
             assignIfDifferent(&label.frame.origin.y, edgeInsets + ((hHeight - TilesView.layoutCache.labelHeight) / 2).rounded())
         }
-        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .thumbnails {
-            let hHeight = max(appIcon.frame.height, TilesView.layoutCache.labelHeight)
-            assignIfDifferent(&thumbnail.frame.origin, NSPoint(x: edgeInsets, y: edgeInsets + hHeight + Appearance.intraCellPadding))
-            thumbnail.centerInSuperlayer(x: true)
-        }
         updateWindowlessAppIndicatorPosition()
         updateDockLabelIconPosition()
     }
@@ -553,17 +528,11 @@ class TileView: FlippedView {
     }
 
     private func windowlessIndicatorXPosition() -> CGFloat {
-        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .thumbnails {
-            return thumbnail.frame.origin.x + ((thumbnail.frame.width - windowlessAppIndicator.frame.width) / 2).rounded()
-        }
         return (appIcon.frame.midX - windowlessAppIndicator.frame.width / 2).rounded()
     }
 
     private func windowlessIndicatorYPosition() -> CGFloat {
         let verticalOffset = Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .titles ? CGFloat(5) : CGFloat(10)
-        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .thumbnails {
-            return (thumbnail.frame.maxY - windowlessAppIndicator.frame.height + verticalOffset).rounded()
-        }
         return (appIcon.frame.maxY - windowlessAppIndicator.frame.height + verticalOffset).rounded()
     }
 
@@ -583,16 +552,13 @@ class TileView: FlippedView {
 
     private func setFrameWidthHeight(_ newHeight: CGFloat) {
         var contentWidth = CGFloat(0)
-        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .thumbnails {
-            // Preferred to the width of the image, and the minimum width may be set to be large.
-            contentWidth = thumbnail.frame.size.width
-        } else if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .titles {
-            contentWidth = TileView.maxThumbnailWidth() - Appearance.edgeInsetsSize * 2
+        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .titles {
+            contentWidth = TileView.maxTileWidth() - Appearance.edgeInsetsSize * 2
         } else {
             contentWidth = Appearance.iconSize
         }
         let frameWidth = (contentWidth + Appearance.edgeInsetsSize * 2).rounded()
-        let widthMin = TileView.minThumbnailWidth()
+        let widthMin = TileView.minTileWidth()
         let width = max(frameWidth, widthMin).rounded()
         assignIfDifferent(&frame.size.width, width)
         assignIfDifferent(&frame.size.height, newHeight)
@@ -628,17 +594,8 @@ class TileView: FlippedView {
         return shadow
     }
 
-    static func makeThumbnailShadow(_ color: NSColor?) -> NSShadow? {
-        guard let color else { return nil }
-        let shadow = NSShadow()
-        shadow.shadowColor = color.withAlphaComponent(0.4)
-        shadow.shadowOffset = NSSize(width: 0.8, height: 2.2)
-        shadow.shadowBlurRadius = 3
-        return shadow
-    }
-
-    static func maxThumbnailWidth(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
-        return TilesPanel.maxThumbnailsWidth(screen) * Appearance.windowMaxWidthInRow - Appearance.interCellPadding * 2
+    static func maxTileWidth(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
+        return TilesPanel.maxRowWidth(screen) * Appearance.windowMaxWidthInRow - Appearance.interCellPadding * 2
     }
 
     static func widthOfComfortableReadability() -> CGFloat? {
@@ -662,56 +619,13 @@ class TileView: FlippedView {
         return maxWidth
     }
 
-    static func minThumbnailWidth(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
-        return TilesPanel.maxThumbnailsWidth(screen) * Appearance.windowMinWidthInRow - Appearance.interCellPadding * 2
-    }
-
-    /// The maximum height that a thumbnail can be drawn
-    /// maxThumbnailsHeight = maxThumbnailHeight * rowCount + interCellPadding * (rowCount - 1)
-    /// maxThumbnailHeight = (maxThumbnailsHeight - interCellPadding * (rowCount - 1)) / rowCount
-    static func maxThumbnailHeight(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
-        return ((TilesPanel.maxThumbnailsHeight(screen) - Appearance.interCellPadding) / Appearance.rowsCount - Appearance.interCellPadding).rounded()
-    }
-
-    static func thumbnailSize(_ imageSize: NSSize?, _ isWindowlessApp: Bool) -> NSSize {
-        guard let imageSize else { return NSSize(width: 0, height: 0) }
-        let imageWidth = imageSize.width
-        let imageHeight = imageSize.height
-        let thumbnailHeightMax = TileView.maxThumbnailHeight()
-            - Appearance.edgeInsetsSize * 2
-            - Appearance.intraCellPadding
-            - Appearance.iconSize
-        let thumbnailWidthMax = TileView.maxThumbnailWidth()
-            - Appearance.edgeInsetsSize * 2
-        // don't stretch very small windows; keep them 1:1 in the switcher
-        if !isWindowlessApp && imageWidth < thumbnailWidthMax && imageHeight < thumbnailHeightMax {
-            return imageSize
-        }
-        let thumbnailHeight = min(imageHeight, thumbnailHeightMax)
-        let thumbnailWidth = min(imageWidth, thumbnailWidthMax)
-        let imageRatio = imageWidth / imageHeight
-        let thumbnailRatio = thumbnailWidth / thumbnailHeight
-        var width: CGFloat
-        var height: CGFloat
-        if thumbnailRatio > imageRatio {
-            // Keep the height and reduce the width
-            width = imageWidth * thumbnailHeight / imageHeight
-            height = thumbnailHeight
-        } else if thumbnailRatio < imageRatio {
-            // Keep the width and reduce the height
-            width = thumbnailWidth
-            height = imageHeight * thumbnailWidth / imageWidth
-        } else {
-            // Enlarge the height to the maximum height and enlarge the width
-            width = thumbnailHeightMax / imageHeight * imageWidth
-            height = thumbnailHeightMax
-        }
-        return NSSize(width: width.rounded(), height: height.rounded())
+    static func minTileWidth(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
+        return TilesPanel.maxRowWidth(screen) * Appearance.windowMinWidthInRow - Appearance.interCellPadding * 2
     }
 
     static func iconSize(_ screen: NSScreen = NSScreen.preferred) -> NSSize {
         if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons {
-            let widthMin = TileView.minThumbnailWidth(screen)
+            let widthMin = TileView.minTileWidth(screen)
             let contentWidth = Appearance.iconSize
             let frameWidth = contentWidth + Appearance.edgeInsetsSize * 2
             let width = max(frameWidth, widthMin).rounded()
@@ -724,11 +638,9 @@ class TileView: FlippedView {
     }
 
     static func height(_ labelHeight: CGFloat) -> CGFloat {
-        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .titles {
-            return max(TileView.iconSize().height, labelHeight) + Appearance.edgeInsetsSize * 2
-        } else if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons {
+        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons {
             return TileView.iconSize().height + Appearance.edgeInsetsSize * 2 + Appearance.intraCellPadding * 2 + labelHeight
         }
-        return TileView.maxThumbnailHeight()
+        return max(TileView.iconSize().height, labelHeight) + Appearance.edgeInsetsSize * 2
     }
 }
