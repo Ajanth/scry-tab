@@ -34,18 +34,5 @@ fileprivate func emergencyExit(_ logs: Any?...) {
     setNativeCommandTabEnabled(true)
     print(logs)
     printStackTrace()
-    makeSureAllCapturesAreFinished()
     exit(0)
-}
-
-func makeSureAllCapturesAreFinished() {
-    App.isTerminating = true
-    let timeout = 5.0
-    let startTime = DispatchTime.now()
-    var elapsedTime = 0.0
-    while ActiveWindowCaptures.value() > 0 && elapsedTime <= timeout {
-        Logger.warning { "There are \(ActiveWindowCaptures.value()) screenshots in progress. We need to wait for them to avoid a bug where macOS shows permission dialogs to the user for no reason." }
-        Thread.sleep(forTimeInterval: 0.1)
-        elapsedTime = Double(DispatchTime.now().uptimeNanoseconds - startTime.uptimeNanoseconds) / 1_000_000_000
-    }
 }

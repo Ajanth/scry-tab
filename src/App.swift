@@ -25,7 +25,6 @@ class App: AppCenterApplication {
     static var supportProjectAction: Selector { #selector(App.supportProject) }
     static var upgradeToProAction: Selector { #selector(App.upgradeToPro) }
     static var openAccountAction: Selector { #selector(App.openAccount) }
-    static var isTerminating = false
     private static var isVeryFirstSummon = true
     private static var pendingShowSettingsWindow = false
     private static var firstLaunchSettingsObserver: NSObjectProtocol?
@@ -60,7 +59,7 @@ class App: AppCenterApplication {
         App.shared.terminate(nil)
     }
 
-    static func hideUi(_ keepPreview: Bool = false) {
+    static func hideUi() {
         Logger.info { "active:\(SwitcherSession.isActive)" }
         guard SwitcherSession.current != nil else { return } // already hidden
         SwitcherSession.current = nil
@@ -71,9 +70,6 @@ class App: AppCenterApplication {
         TrackpadEvents.reset()
         Tooltips.hideAll()
         hideTilesPanelWithoutChangingKeyWindow()
-        if !keepPreview {
-            PreviewPanel.shared.orderOut(nil)
-        }
         MainMenu.toggle(true)
         ProTransitionManager.shared.onSwitcherDismissed()
     }
@@ -265,15 +261,13 @@ class App: AppCenterApplication {
 
     static func focusSelectedWindow(_ selectedWindow: Window?) {
         guard SwitcherSession.isActive else { return } // already hidden
-        hideUi(true)
+        hideUi()
         if let window = selectedWindow, MissionControl.state() == .inactive || MissionControl.state() == .showDesktop {
             window.focus()
             if Preferences.cursorFollowFocus == .always || (
                 Preferences.cursorFollowFocus == .differentScreen && (Spaces.screenSpacesMap.first { $0.value.contains { space in window.spaceIds.contains(space) } })?.key != NSScreen.active()?.cachedUuid()) {
                 moveCursorToSelectedWindow(window)
             }
-        } else {
-            PreviewPanel.shared.orderOut(nil)
         }
     }
 
@@ -284,8 +278,7 @@ class App: AppCenterApplication {
         CGWarpMouseCursorPosition(point)
     }
 
-    static func refreshOpenUiAfterExternalEvent(_ windowsToScreenshot: [Window], windowRemoved: Bool = false) {
-        WindowThumbnails.refreshAsync(windowsToScreenshot, .refreshUiAfterExternalEvent, windowRemoved: windowRemoved)
+    static func refreshOpenUiAfterExternalEvent() {
         switcherUiRefreshThrottler.throttleOrProceed {
             guard SwitcherSession.isActive else { return }
             if !Windows.updatesBeforeShowing() { hideUi(); return }
@@ -301,8 +294,6 @@ class App: AppCenterApplication {
         TilesPanel.shared.updateContents(preservedScrollOrigin)
         guard SwitcherSession.isActive else { return }
         Windows.voiceOverWindow() // at this point TileViews are assigned to the window, and ready
-        guard SwitcherSession.isActive else { return }
-        WindowThumbnails.previewSelectedIfNeeded()
         guard SwitcherSession.isActive else { return }
         Applications.refreshBadgesAsync()
     }
@@ -362,13 +353,10 @@ class App: AppCenterApplication {
         refreshUi()
         guard SwitcherSession.isActive else { return }
         TilesPanel.shared.show()
-        WindowThumbnails.previewSelectedIfNeeded()
         if TilesView.isSearchEditing {
             TilesView.enableSearchEditing()
         }
         KeyRepeatTimer.startRepeatingKeyNextWindow()
-        let prioritizedIds = TilesView.windowIdsInViewport()
-        WindowThumbnails.refreshAsync(Windows.list, .refreshOnlyThumbnailsAfterShowUi, prioritizedIds: prioritizedIds)
     }
 
     static func checkIfShortcutsShouldBeDisabled(_ activeWindow: Window?, _ activeApp: Application?) {
@@ -393,7 +381,6 @@ class App: AppCenterApplication {
         Menubar.initialize()
         MainMenu.create()
         _ = TilesPanel()
-        _ = PreviewPanel()
         Spaces.refresh()
         Screens.refresh()
         SpacesEvents.observe()
@@ -506,12 +493,6 @@ extension App: NSApplicationDelegate {
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         Logger.info { "" }
-        makeSureAllCapturesAreFinished()
         return .terminateNow
     }
-}
-
-enum RefreshCausedBy {
-    case refreshOnlyThumbnailsAfterShowUi
-    case refreshUiAfterExternalEvent
 }

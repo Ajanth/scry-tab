@@ -64,16 +64,6 @@ func SLSRegisterNotifyProc(_ callback: RegisterCallback?, _ event: Int, _ contex
 @_silgen_name("_SLPSGetFrontProcess") @discardableResult
 func _SLPSGetFrontProcess(_ psn: UnsafeMutablePointer<ProcessSerialNumber>) -> OSStatus
 
-// returns the CGImage of the window which ID is given in `wid`
-// * performance: a bit faster than `CGWindowListCreateImage`, but still less than `CGSHWCaptureWindowList`
-// * quality: low
-// * minimized windows: yes
-// * windows in other spaces: yes
-// * offscreen content: no
-// * macOS 10.10+
-@_silgen_name("CGSCaptureWindowsContentsToRectWithOptions") @discardableResult
-func CGSCaptureWindowsContentsToRectWithOptions(_ cid: CGSConnectionID, _ wid: UnsafeMutablePointer<CGWindowID>, _ windowOnly: Bool, _ rect: CGRect, _ options: CGSWindowCaptureOptions, _ image: UnsafeMutablePointer<CGImage>) -> CGError
-
 // returns true is the PSNs are the same
 // * deprecated in macOS 10.9, so we have to declare it to use it in Swift
 @_silgen_name("SameProcess")

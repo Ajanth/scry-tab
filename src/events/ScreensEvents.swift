@@ -16,7 +16,7 @@ class ScreensEvents {
             // a screen added or removed, or screen resolution change can mess up layout; we reset components
             App.resetPreferencesDependentComponents()
             // a screen added or removed can shuffle windows around Spaces; we refresh them
-            App.refreshOpenUiAfterExternalEvent(Windows.list)
+            App.refreshOpenUiAfterExternalEvent()
             Logger.info { "screens:\(NSScreen.screens.map { ($0.cachedUuid() ?? "nil" as CFString, $0.frame) })" }
             Logger.info { "currentSpace:\(Spaces.currentSpaceIndex) (id:\(Spaces.currentSpaceId)) spaces:\(Spaces.screenSpacesMap)" }
         }

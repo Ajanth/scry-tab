@@ -12,8 +12,6 @@ class Applications {
     static let fullRescanThrottler = Throttler(delayInMs: 1000)
     // B — ≤1 Dock-badge fetch per second
     static let dockBadgeThrottler = Throttler(delayInMs: 1000)
-    // C — cap a resource: ≤1 thumbnail capture per window per 200ms
-    static let screenshotThrottler = ThrottlerWithKey(delayInMs: 200)
 
     static func initialDiscovery() {
         addInitialRunningApplications()
@@ -50,7 +48,7 @@ class Applications {
                     if window.applySpacesAndScreen(snapshot.windowToSpacesMap) { changed = true }
                 }
                 if changed && SwitcherSession.isActive {
-                    App.refreshOpenUiAfterExternalEvent([])
+                    App.refreshOpenUiAfterExternalEvent()
                 }
             }
         }
@@ -140,7 +138,7 @@ class Applications {
                     }
                     if findOrCreate.1 || (tabStateChanged && SwitcherSession.isActive) {
                         if findOrCreate.1 { Logger.info { "manuallyUpdateWindows found a new window:\(window.debugId)" } }
-                        App.refreshOpenUiAfterExternalEvent([window])
+                        App.refreshOpenUiAfterExternalEvent()
                     }
                 }
             }
@@ -206,7 +204,7 @@ class Applications {
                     }
                 }
                 if !changed.isEmpty {
-                    App.refreshOpenUiAfterExternalEvent(changed)
+                    App.refreshOpenUiAfterExternalEvent()
                 }
             }
         }
@@ -262,7 +260,7 @@ class Applications {
             AXCallScheduler.shared.removeEntries(withPrefix: "sub-app-\(pid)-")
             AXCallScheduler.shared.removeUnresponsivePid(pid)
         }
-        App.refreshOpenUiAfterExternalEvent([])
+        App.refreshOpenUiAfterExternalEvent()
     }
 
     static func refreshBadgesAsync() {
@@ -324,7 +322,7 @@ class Applications {
 
     static func updateAppIcons() {
         for app in list {
-            BackgroundWork.screenshotsQueue.addOperation { [weak app] in
+            BackgroundWork.imageProcessingQueue.addOperation { [weak app] in
                 guard let app else { return }
                 let r = Application.appIconWithoutPadding(app.runningApplication.icon)
                 DispatchQueue.main.async { [weak app] in
