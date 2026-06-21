@@ -13,7 +13,7 @@ class TileTitleView: NSTextField {
     /// subclass we intercept the lookup AppKit performs when a layer property changes, and
     /// return `NSNull()` for the animation keys — the documented "no animation for this key"
     /// sentinel. Without this, the label slides smoothly from its previous-style position
-    /// during a cross-style summon (e.g. right-of-icon → under-icon when going thumbnails →
+    /// during a cross-style summon (e.g. right-of-icon → under-icon when going titles →
     /// appIcons), because `caTransaction { setDisableActions(true) }` in `TilesPanel.updateContents`
     /// doesn't cover the follow-up layout pass that `NSWindow.setContentSize` triggers outside
     /// the transaction.

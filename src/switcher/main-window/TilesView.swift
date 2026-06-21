@@ -19,11 +19,11 @@ class TilesView {
     static var rows = [[TileView]]()
     private static var lastRowSignature = [Int]()
     static var recycledViews = [TileView]()
-    static var thumbnailsWidth = CGFloat(0.0)
-    static var thumbnailsHeight = CGFloat(0.0)
+    static var rowWidth = CGFloat(0.0)
+    static var rowHeight = CGFloat(0.0)
     static var layoutCache = LayoutCache()
-    static var thumbnailUnderLayer = TileUnderLayer()
-    static var thumbnailOverView = TileOverView()
+    static var underLayer = TileUnderLayer()
+    static var overView = TileOverView()
     private static var initialized = false
 
     static func initialize() {
@@ -299,8 +299,6 @@ class TilesView {
         Tooltips.hideAll()
         NSScreen.updatePreferred()
         Appearance.update()
-        // thumbnails are captured continuously. They will pick up the new size on the next cycle
-        TilesPanel.updateMaxPossibleThumbnailSize()
         // app icons are captured once at launch; we need to manually update them if needed
         let old = TilesPanel.maxPossibleAppIconSize.width
         TilesPanel.updateMaxPossibleAppIconSize()
@@ -312,9 +310,9 @@ class TilesView {
         for i in 0..<TilesView.recycledViews.count {
             TilesView.recycledViews[i] = TileView()
         }
-        thumbnailUnderLayer = TileUnderLayer()
-        thumbnailOverView = TileOverView()
-        thumbnailOverView.scrollView = scrollView
+        underLayer = TileUnderLayer()
+        overView = TileOverView()
+        overView.scrollView = scrollView
         lastRowSignature.removeAll()
         TileView.invalidateTitleAttributesCache()
         cachedSearchBarHeight = nil
@@ -327,7 +325,7 @@ class TilesView {
         view.indexInRecycledViews = indexInRecycledViews
         guard view.frame != .zero else { return }
         view.drawHighlight()
-        let underLayer = TilesView.thumbnailUnderLayer
+        let underLayer = TilesView.underLayer
         let selectedIndex = SwitcherSession.current?.selectedIndex ?? 0
         guard selectedIndex >= 0, selectedIndex < recycledViews.count else { return }
         let focusedView = recycledViews[selectedIndex]
@@ -384,15 +382,15 @@ class TilesView {
     }
 
     static func updateItemsAndLayout(_ preservedScrollOrigin: CGPoint?) {
-        var widthMax = TilesPanel.maxThumbnailsWidth().rounded()
+        var widthMax = TilesPanel.maxRowWidth().rounded()
         if Preferences.effectiveAppearanceSize(SwitcherSession.activeShortcutIndex) == .auto {
             resolveAutoSize(widthMax)
             Self.updateCachedSizes()
-            widthMax = TilesPanel.maxThumbnailsWidth().rounded()
+            widthMax = TilesPanel.maxRowWidth().rounded()
         }
         if let (maxX, maxY, labelHeight, rowSignature) = layoutTileViews(widthMax) {
             layoutParentViews(maxX, widthMax, maxY, labelHeight)
-            centerRows(TilesView.thumbnailsWidth)
+            centerRows(TilesView.rowWidth)
             if rowSignature != lastRowSignature {
                 for row in rows {
                     for (j, view) in row.enumerated() {
@@ -428,7 +426,7 @@ class TilesView {
 
     private static func resolveAutoSize(_ widthMax: CGFloat) {
         let searchReservedHeight: CGFloat = searchMode == .off ? 0 : searchBarHeight() + 10
-        let heightMax = max(0, TilesPanel.maxThumbnailsHeight() - searchReservedHeight)
+        let heightMax = max(0, TilesPanel.maxRowHeight() - searchReservedHeight)
         for size in [AppearanceSizePreference.large, .medium, .small] {
             Appearance.applySize(size)
             Self.updateCachedSizes()
@@ -513,17 +511,16 @@ class TilesView {
                 window.rowIndex = rows.count - 1
             } else {
                 // release images and stale window references from unused recycledViews; they take lots of RAM
-                view.thumbnail.releaseImage()
                 view.appIcon.releaseImage()
                 view.window_ = nil
             }
         }
         scrollView.documentView!.subviews = newViews
-        scrollView.documentView!.addSubview(thumbnailOverView)
-        thumbnailOverView.scrollView = scrollView
+        scrollView.documentView!.addSubview(overView)
+        overView.scrollView = scrollView
         let docLayer = scrollView.documentView!.layer!
-        if thumbnailUnderLayer.superlayer !== docLayer {
-            docLayer.insertSublayer(thumbnailUnderLayer, at: 0)
+        if underLayer.superlayer !== docLayer {
+            docLayer.insertSublayer(underLayer, at: 0)
         }
         return (maxX, maxY, labelHeight, rowSignature)
     }
@@ -550,14 +547,14 @@ class TilesView {
         let searchBarHeight = searchBarHeight()
         let searchBottomPadding = CGFloat(10)
         let searchReservedHeight = searchMode == .off ? 0 : searchBarHeight + searchBottomPadding
-        let heightMax = max(0, TilesPanel.maxThumbnailsHeight() - searchReservedHeight)
+        let heightMax = max(0, TilesPanel.maxRowHeight() - searchReservedHeight)
         let minSearchWidth = min(widthMax, 320)
         let minWidth = min(widthMax, 320)
-        TilesView.thumbnailsWidth = max(min(maxX, widthMax), searchMode == .off ? (maxX == 0 ? minWidth : 0) : minWidth)
-        TilesView.thumbnailsHeight = min(maxY, heightMax)
+        TilesView.rowWidth = max(min(maxX, widthMax), searchMode == .off ? (maxX == 0 ? minWidth : 0) : minWidth)
+        TilesView.rowHeight = min(maxY, heightMax)
         let appIconsBottomViewportPadding = appIconsBottomViewportPadding(maxY, heightMax, labelHeight)
-        let frameWidth = TilesView.thumbnailsWidth + Appearance.windowPadding * 2
-        var frameHeight = TilesView.thumbnailsHeight + Appearance.windowPadding * 2 + searchReservedHeight
+        let frameWidth = TilesView.rowWidth + Appearance.windowPadding * 2
+        var frameHeight = TilesView.rowHeight + Appearance.windowPadding * 2 + searchReservedHeight
         let originX = Appearance.windowPadding
         var originY = Appearance.windowPadding
         if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons {
@@ -567,7 +564,7 @@ class TilesView {
         }
         contentView.frame.size = NSSize(width: frameWidth, height: frameHeight)
         let scrollHeight = max(0, min(maxY, heightMax) - appIconsBottomViewportPadding * 2)
-        scrollView.frame.size = NSSize(width: TilesView.thumbnailsWidth, height: scrollHeight)
+        scrollView.frame.size = NSSize(width: TilesView.rowWidth, height: scrollHeight)
         scrollView.frame.origin = CGPoint(x: originX, y: originY + appIconsBottomViewportPadding * 2)
         scrollView.contentView.frame.size = scrollView.frame.size
         if searchMode != .off {
@@ -576,25 +573,25 @@ class TilesView {
             }
             let searchWidth = minSearchWidth
             searchField.frame.size = NSSize(width: searchWidth, height: searchBarHeight)
-            let searchX = originX + (TilesView.thumbnailsWidth - searchWidth) * 0.5
+            let searchX = originX + (TilesView.rowWidth - searchWidth) * 0.5
             searchField.frame.origin = CGPoint(x: searchX, y: frameHeight - Appearance.windowPadding - searchBarHeight)
             searchField.layoutSubtreeIfNeeded()
         } else if searchField.superview != nil {
             searchField.removeFromSuperview()
         }
         if App.shared.userInterfaceLayoutDirection == .rightToLeft {
-            let croppedWidth = max(0, TilesView.thumbnailsWidth - maxX)
+            let croppedWidth = max(0, TilesView.rowWidth - maxX)
             scrollView.documentView!.subviews.forEach { $0.frame.origin.x -= croppedWidth }
         }
         scrollView.documentView!.frame.size = NSSize(width: maxX, height: maxY)
         let docSize = scrollView.documentView!.frame.size
-        thumbnailOverView.frame = CGRect(origin: .zero, size: docSize)
-        thumbnailUnderLayer.frame = CGRect(origin: .zero, size: docSize)
+        overView.frame = CGRect(origin: .zero, size: docSize)
+        underLayer.frame = CGRect(origin: .zero, size: docSize)
         let isEmpty = maxX == 0
         noWindowLabel.isHidden = !isEmpty
         if isEmpty {
             noWindowLabel.sizeToFit()
-            let labelX = originX + (TilesView.thumbnailsWidth - noWindowLabel.frame.width) * 0.5
+            let labelX = originX + (TilesView.rowWidth - noWindowLabel.frame.width) * 0.5
             let labelY = scrollView.frame.origin.y + (scrollView.frame.height - noWindowLabel.frame.height) * 0.5
             noWindowLabel.frame.origin = CGPoint(x: labelX, y: labelY)
         }
@@ -633,19 +630,13 @@ class TilesView {
         if Windows.selectedWindow() != nil {
             TilesView.highlight(session?.selectedIndex ?? 0)
         } else {
-            thumbnailUnderLayer.updateHighlight(focusedView: nil, hoveredView: nil)
-            thumbnailOverView.hideWindowControls()
+            underLayer.updateHighlight(focusedView: nil, hoveredView: nil)
         }
         if let hoveredWindowIndex = session?.hoveredIndex,
            hoveredWindowIndex >= 0,
            hoveredWindowIndex < Windows.list.count,
            Windows.shouldDisplay(Windows.list[hoveredWindowIndex]) {
             TilesView.highlight(hoveredWindowIndex)
-            if thumbnailOverView.isShowingWindowControls {
-                thumbnailOverView.showWindowControls(for: TilesView.recycledViews[hoveredWindowIndex])
-            }
-        } else {
-            thumbnailOverView.hideWindowControls()
         }
     }
 
@@ -834,11 +825,11 @@ class TilesDocumentView: FlippedView {
         timerResetLocation = nil
         dragAndDropTimer?.invalidate()
         dragAndDropTimer = nil
-        if resetHoveredWindow { TilesView.thumbnailOverView.resetHoveredWindow() }
+        if resetHoveredWindow { TilesView.overView.resetHoveredWindow() }
     }
 
     private func targetView(_ location: NSPoint) -> TileView? {
-        let overlay = TilesView.thumbnailOverView
+        let overlay = TilesView.overView
         return overlay.findTarget(overlay.convert(location, from: nil))
     }
 }

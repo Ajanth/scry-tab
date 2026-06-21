@@ -246,7 +246,7 @@ class Windows {
             lastWindowActivityType = .hover
         }
         if !fromMouse {
-            TilesView.thumbnailOverView.resetHoveredWindow()
+            TilesView.overView.resetHoveredWindow()
         }
         if (!fromMouse || Preferences.mouseHoverEnabled)
                && (newIndex != session.selectedIndex || lastWindowActivityType == .hover) {

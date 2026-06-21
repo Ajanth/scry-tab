@@ -376,7 +376,6 @@ class App: AppCenterApplication {
         BackgroundWork.start()
         NSScreen.updatePreferred()
         Appearance.update()
-        TilesPanel.updateMaxPossibleThumbnailSize()
         TilesPanel.updateMaxPossibleAppIconSize()
         Menubar.initialize()
         MainMenu.create()

@@ -15,21 +15,4 @@ class AppearanceTestable {
         }
         return 0.9
     }
-
-    // calculate windowMinWidthInRow and windowMaxWidthInRow such that:
-    // * fullscreen windows fill their tile vertically
-    // * narrow windows have enough width that a few words can be read from their title
-    static func goodValuesForThumbnailsWidthMinMax(_ aspectRatio: CGFloat, _ rowsCount: CGFloat) -> (CGFloat, CGFloat) {
-        let minRatio: CGFloat
-        let maxRatio: CGFloat
-        if aspectRatio >= 1 {
-            minRatio = 0.7 / (aspectRatio * rowsCount)
-            maxRatio = 1.5 / (aspectRatio * rowsCount)
-        } else {
-            minRatio = 1.3 / rowsCount
-            maxRatio = 2.1 / rowsCount
-        }
-        // Make sure the values are clamped between some reasonable bounds
-        return (max(0.09, minRatio), min(0.30, maxRatio))
-    }
 }
