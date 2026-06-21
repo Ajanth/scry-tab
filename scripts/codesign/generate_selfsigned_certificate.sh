@@ -4,6 +4,7 @@ set -exu
 
 certificateFile="$1"
 certificatePassword="$2"
+identityName="Scry Tab Local Self-Signed"
 
 # certificate request (see https://apple.stackexchange.com/q/359997)
 cat >$certificateFile.conf <<EOL
@@ -11,7 +12,7 @@ cat >$certificateFile.conf <<EOL
   distinguished_name = req_name
   prompt = no
   [ req_name ]
-  CN = Local Self-Signed
+  CN = $identityName
   [ extensions ]
   basicConstraints=critical,CA:false
   keyUsage=critical,digitalSignature

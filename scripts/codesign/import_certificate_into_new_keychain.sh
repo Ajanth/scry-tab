@@ -7,13 +7,22 @@ certificatePassword="$2"
 
 keychain="scry-tab.keychain"
 keychainPassword="password"
+keychainPath="$HOME/Library/Keychains/${keychain}-db"
+loginKeychain="$HOME/Library/Keychains/login.keychain-db"
+identityName="Scry Tab Local Self-Signed"
 
-# create a keychain
-security create-keychain -p $keychainPassword $keychain
-# make keychain default so xcodebuild uses it
-security default-keychain -s $keychain
-# unlock keychain
-security unlock-keychain -p $keychainPassword $keychain
-# import p12 into Keychain
-security import $certificateFile.p12 -P "$certificatePassword" -T /usr/bin/codesign
-security set-key-partition-list -S apple-tool:,apple: -s -k $keychainPassword $keychain > /dev/null
+security delete-identity -c "$identityName" "$loginKeychain" 2>/dev/null || true
+
+security delete-keychain "$keychain" 2>/dev/null || true
+security create-keychain -p "$keychainPassword" "$keychain"
+security unlock-keychain -p "$keychainPassword" "$keychain"
+security import "$certificateFile.p12" -k "$keychain" -P "$certificatePassword" -T /usr/bin/codesign -T /usr/bin/security
+security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$keychainPassword" "$keychain"
+security add-trusted-cert -d -r trustRoot -p codeSign -k "$keychain" "$certificateFile.crt"
+searchList=("$keychainPath")
+while IFS= read -r currentKeychain; do
+  [[ "$currentKeychain" == "$keychainPath" ]] && continue
+  searchList+=("$currentKeychain")
+done < <(security list-keychains -d user | tr -d '"' | sed 's/^ *//')
+security list-keychains -d user -s "${searchList[@]}"
+security default-keychain -d user -s "$loginKeychain"
