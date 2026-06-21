@@ -2,7 +2,6 @@ import Cocoa
 
 class PermissionsWindow: NSWindow {
     static var accessibilityView: PermissionView!
-    static var screenRecordingView: PermissionView!
     static var canBecomeKey_ = true
     override var canBecomeKey: Bool { Self.canBecomeKey_ }
     static var shared: PermissionsWindow!
@@ -18,9 +17,6 @@ class PermissionsWindow: NSWindow {
 
     static func updatePermissionViews() {
         accessibilityView.updatePermissionStatus(AccessibilityPermission.status)
-        if #available(macOS 10.15, *) {
-            screenRecordingView.updatePermissionStatus(ScreenRecordingPermission.status)
-        }
     }
 
     static func show() {
@@ -33,7 +29,7 @@ class PermissionsWindow: NSWindow {
     }
 
     private func setupWindow() {
-        title = NSLocalizedString("ScryTab needs some permissions", comment: "")
+        title = NSLocalizedString("ScryTab needs accessibility permission", comment: "")
         titleVisibility = .hidden
         titlebarAppearsTransparent = true
         hidesOnDeactivate = false
@@ -47,7 +43,7 @@ class PermissionsWindow: NSWindow {
         let appIconSize = NSSize(width: 80, height: 80)
         appIcon.updateContents(.cgImage(App.appIcon(for: appIconSize)), appIconSize)
         appIcon.fit(80, 80)
-        let appText = TitleLabel(NSLocalizedString("ScryTab needs some permissions", comment: ""))
+        let appText = TitleLabel(NSLocalizedString("ScryTab needs accessibility permission", comment: ""))
         appText.preferredMaxLayoutWidth = 380
         appText.font = .systemFont(ofSize: 25, weight: .regular)
         let header = NSStackView(views: [appIcon, appText])
@@ -60,21 +56,10 @@ class PermissionsWindow: NSWindow {
             NSLocalizedString("Open Accessibility Settings…", comment: ""),
             "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility",
         )
-        var rows = [
+        let rows = [
             [header],
             [Self.accessibilityView],
         ]
-        if #available(macOS 10.15, *) {
-            Self.screenRecordingView = PermissionView(
-                .display,
-                NSLocalizedString("Screen Recording", comment: ""),
-                NSLocalizedString("This permission is needed to show thumbnails and preview of open windows", comment: ""),
-                NSLocalizedString("Open Screen Recording Settings…", comment: ""),
-                "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture",
-                StackView(LabelAndControl.makeLabelWithCheckbox(NSLocalizedString("Use the app without this permission. Thumbnails won’t show.", comment: ""), "screenRecordingPermissionSkipped", labelPosition: .right))
-            )
-            rows.append([Self.screenRecordingView])
-        }
         let widestRowWidth = rows.reduce(0) { max($0, $1[0]!.fittingSize.width) }
         rows.forEach { $0[0]!.fit(widestRowWidth, $0[0]!.fittingSize.height) }
         let view = GridView(rows as! [[NSView]])
@@ -91,9 +76,9 @@ class PermissionsWindow: NSWindow {
 
 extension PermissionsWindow: NSWindowDelegate {
     func windowShouldClose(_ sender: NSWindow) -> Bool {
-        Logger.debug { "preStartupPermissionsPassed:\(SystemPermissions.preStartupPermissionsPassed), accessibility:\(AccessibilityPermission.status), screenRecording:\(ScreenRecordingPermission.status)" }
+        Logger.debug { "preStartupPermissionsPassed:\(SystemPermissions.preStartupPermissionsPassed), accessibility:\(AccessibilityPermission.status)" }
         if !SystemPermissions.preStartupPermissionsPassed {
-            if AccessibilityPermission.status == .notGranted || ScreenRecordingPermission.status == .notGranted {
+            if AccessibilityPermission.status == .notGranted {
                 Logger.error {
                     """
                     Before using this app, you need to give permission in System Settings > Privacy & Security > Accessibility.
