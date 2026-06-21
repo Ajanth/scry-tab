@@ -28,7 +28,6 @@
 "Alphabetical Order" = "Alfabetisk ordning";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab kraschade förra gången du använde den. Att skicka en kraschrapport hjälper till att åtgärda problemet";
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab är en gratis fönsterväxlare med öppen källkod för macOS. Pro-funktioner är tillgängliga med en 14-dagars gratis provperiod.";
-"ScryTab is running without Screen Recording permissions. %@ won’t show." = "ScryTab körs utan behörighet för Skärminspelning. %@ visas inte.";
 "ScryTab needs some permissions" = "ScryTab behöver vissa behörigheter";
 "ScryTab Pro" = "ScryTab Pro";
 "ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro lägger till 4 funktioner utöver den kostnadsfria växlaren.";
@@ -55,7 +54,6 @@
 "Arrow keys already assigned to other actions:\n%@" = "Piltangenter är redan tilldelade andra åtgärder:\n%@";
 "Ask whether to send crash reports" = "Fråga om kraschrapporter ska skickas";
 "Auto" = "Auto";
-"Auto Size — larger previews with few windows, more at once with many" = "Automatisk storlek — större förhandsvisningar med få fönster, fler åt gången med många";
 "Auto-install updates periodically" = "Installera uppdateringar automatiskt regelbundet";
 "Auto-sizing switcher" = "Växlare med automatisk storlek";
 "Automatic activation failed" = "Automatisk aktivering misslyckades";
@@ -63,7 +61,6 @@
 "Brief description of the change" = "Kort beskrivning av ändringen";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Avbryt";
-"Capture windows in the background" = "Fånga fönster i bakgrunden";
 "Check for updates now…" = "Sök efter uppdateringar nu…";
 "Check for updates periodically" = "Sök efter uppdateringar regelbundet";
 "Check for updates…" = "Sök efter uppdateringar…";
@@ -81,7 +78,6 @@
 "Cursor follows focus" = "Markören följer fokus";
 "Customize more…" = "Anpassa mer…";
 "Dark" = "Mörk";
-"Dark Mode, live preview, window controls, trackpad gestures, and more" = "Mörkt läge, direktförhandsvisning, fönsterkontroller, gester på styrplatta och mer";
 "Deactivate and activate here" = "Inaktivera och aktivera här";
 "Deactivate license" = "Inaktivera licens";
 "Deactivate license on this machine" = "Inaktivera licens på den här datorn";
@@ -101,7 +97,6 @@
 "Export settings…" = "Exportera inställningar…";
 "Extra shortcuts" = "Extra kortkommandon";
 "Extra shortcuts are a Pro feature." = "Extra kortkommandon är en Pro-funktion.";
-"Fade in animation of Preview" = "Intoningsanimering för förhandsvisning";
 "Fade out animation of Switcher" = "Uttoningsanimering för växlaren";
 "Failed to import settings" = "Kunde inte importera inställningar";
 "Feature" = "Funktion";
@@ -120,7 +115,6 @@
 "Group tabs" = "Gruppera flikar";
 "Help improve ScryTab" = "Hjälp till att förbättra ScryTab";
 "Hide" = "Dölj";
-"Hide colored circles on mouse hover" = "Dölj färgade cirklar när muspekaren är över";
 "Hide Space number labels" = "Dölj nummeretiketter för skrivbord";
 "Hide status icons" = "Dölj statusikoner";
 "Hide windows" = "Dölj fönster";
@@ -167,7 +161,6 @@
 "On Day 15, Pro features revert to the free version." = "På dag 15 återgår Pro-funktionerna till gratisversionen.";
 "Only on different screen" = "Endast på annan skärm";
 "Open Accessibility Settings…" = "Öppna inställningar för Hjälpmedel…";
-"Open Screen Recording Settings…" = "Öppna inställningar för Skärminspelning…";
 "Open Trackpad Settings…" = "Öppna inställningar för Styrplatta…";
 "Order windows by" = "Sortera fönster efter";
 "Ordering & Grouping" = "Sortering och gruppering";
@@ -176,7 +169,6 @@
 "Pick a machine to deactivate so you can activate here." = "Välj en dator att inaktivera så att du kan aktivera här.";
 "Please drag ScryTab into the Applications folder manually." = "Dra ScryTab till mappen Program manuellt.";
 "Please fill in the form" = "Fyll i formuläret";
-"Preview selected window" = "Förhandsvisa valt fönster";
 "Pro" = "Pro";
 "Pro activated" = "Pro aktiverad";
 "Pro feature uses" = "Användning av Pro-funktioner";
@@ -189,7 +181,6 @@
 "Quit app" = "Avsluta app";
 "Recently Created First" = "Senast skapade först";
 "Recently Focused First" = "Senast fokuserade först";
-"Reliable, fast window switching with high-quality thumbnails" = "Pålitlig, snabb fönsterväxling med högkvalitativa miniatyrer";
 "Remember my choice" = "Kom ihåg mitt val";
 "Report a bug" = "Rapportera ett fel";
 "Report on current version" = "Rapportera om aktuell version";
@@ -198,7 +189,6 @@
 "Restart Now" = "Starta om nu";
 "Screen including menu bar" = "Skärm som innehåller menyraden";
 "Screen including mouse" = "Skärm som innehåller musen";
-"Screen Recording" = "Skärminspelning";
 "Screen showing ScryTab" = "Skärm som visar ScryTab";
 "Search" = "Sök";
 "Search is a Pro feature." = "Sök är en Pro-funktion.";
@@ -248,7 +238,6 @@
 "Still interested in Pro?" = "Fortfarande intresserad av Pro?";
 "Suggest a change" = "Föreslå en ändring";
 "Support this project" = "Stöd projektet";
-"Switch between 3 different styles. You can customize them." = "Växla mellan 3 olika stilar. Du kan anpassa dem.";
 "Sync with global value" = "Synkronisera med globalt värde";
 "System" = "System";
 "System Default" = "Systemstandard";
@@ -261,10 +250,7 @@
 "This license is already activated elsewhere" = "Den här licensen är redan aktiverad någon annanstans";
 "This license is already activated on the maximum number of machines. Deactivate one to continue." = "Den här licensen är redan aktiverad på det maximala antalet datorer. Inaktivera en för att fortsätta.";
 "This permission is needed to focus windows after you release the shortcut" = "Den här behörigheten behövs för att fokusera fönster efter att du släppt kortkommandot";
-"This permission is needed to show thumbnails and preview of open windows" = "Den här behörigheten behövs för att visa miniatyrer och förhandsvisning av öppna fönster";
 "This will keep your Downloads folder uncluttered." = "Det gör att din Hämtningar-mapp hålls i ordning.";
-"Thumbnails" = "Miniatyrer";
-"Thumbnails and window previews" = "Miniatyrer och fönsterförhandsvisningar";
 "Title truncation" = "Trunkering av titel";
 "Titles" = "Titlar";
 "Titles appearance" = "Utseende för Titlar";
@@ -283,7 +269,6 @@
 "Update now" = "Uppdatera nu";
 "Updates policy" = "Policy för uppdateringar";
 "Usage" = "Användning";
-"Use the app without this permission. Thumbnails won’t show." = "Använd appen utan den här behörigheten. Miniatyrer visas inte.";
 "Version" = "Version";
 "View existing discussions" = "Visa befintliga diskussioner";
 "Vim keys" = "Vim-tangenter";
@@ -292,14 +277,12 @@
 "Website" = "Webbplats";
 "Welcome to %@" = "Välkommen till %@";
 "What did you expect? What happened? Steps to reproduce…" = "Vad förväntade du dig? Vad hände? Steg för att återskapa…";
-"When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date." = "När inaktiverad undviks macOS lila skärminspelningsindikator och flimmer vid uppspelning av DRM-video. Miniatyrer blir mindre uppdaterade.";
 "When fullscreen" = "När i helskärm";
 "When no open window" = "När inget öppet fönster";
 "Window is fullscreen" = "Fönster i helskärm";
 "Window is minimized" = "Fönster minimerat";
 "Window is on every Space" = "Fönster på varje skrivbord";
 "Window is on Space %d" = "Fönster på skrivbord %d";
-"Window previews" = "Fönsterförhandsvisningar";
 "window switches" = "fönsterväxlingar";
 "Window Title" = "Fönstertitel";
 "Window title contains" = "Fönstertitel innehåller";

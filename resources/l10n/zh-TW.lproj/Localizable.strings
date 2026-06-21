@@ -28,7 +28,6 @@
 "Alphabetical Order" = "字母順序";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab 在您上次使用時當機。傳送當機報告有助於修正問題";
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab 是一款免費、開放原始碼的 macOS 視窗切換器。Pro 功能提供 14 天免費試用。";
-"ScryTab is running without Screen Recording permissions. %@ won’t show." = "ScryTab 正在沒有「螢幕錄影」權限的情況下執行，將無法顯示%@。";
 "ScryTab needs some permissions" = "ScryTab 需要部分權限";
 "ScryTab Pro" = "ScryTab Pro";
 "ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro 在免費版切換器之上新增了 4 項功能。";
@@ -55,7 +54,6 @@
 "Arrow keys already assigned to other actions:\n%@" = "方向鍵已指派給其他動作：\n%@";
 "Ask whether to send crash reports" = "詢問是否傳送當機報告";
 "Auto" = "自動";
-"Auto Size — larger previews with few windows, more at once with many" = "自動調整大小 — 視窗少時預覽較大，視窗多時一次顯示更多";
 "Auto-install updates periodically" = "定期自動安裝更新";
 "Auto-sizing switcher" = "自動調整大小的切換器";
 "Automatic activation failed" = "自動啟用失敗";
@@ -63,7 +61,6 @@
 "Brief description of the change" = "變更的簡短描述";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "取消";
-"Capture windows in the background" = "在背景擷取視窗";
 "Check for updates now…" = "立即檢查更新…";
 "Check for updates periodically" = "定期檢查更新";
 "Check for updates…" = "檢查更新…";
@@ -81,7 +78,6 @@
 "Cursor follows focus" = "游標跟隨焦點";
 "Customize more…" = "更多自訂…";
 "Dark" = "深色";
-"Dark Mode, live preview, window controls, trackpad gestures, and more" = "深色模式、即時預覽、視窗控制、觸控板手勢等";
 "Deactivate and activate here" = "停用其他裝置並在此啟用";
 "Deactivate license" = "停用授權";
 "Deactivate license on this machine" = "停用此裝置上的授權";
@@ -101,7 +97,6 @@
 "Export settings…" = "輸出設定…";
 "Extra shortcuts" = "額外快速鍵";
 "Extra shortcuts are a Pro feature." = "額外快速鍵是 Pro 功能。";
-"Fade in animation of Preview" = "預覽的淡入動畫";
 "Fade out animation of Switcher" = "切換器的淡出動畫";
 "Failed to import settings" = "輸入設定失敗";
 "Feature" = "功能";
@@ -120,7 +115,6 @@
 "Group tabs" = "將分頁分組";
 "Help improve ScryTab" = "協助改善 ScryTab";
 "Hide" = "隱藏";
-"Hide colored circles on mouse hover" = "隱藏滑鼠停留時的彩色圓點";
 "Hide Space number labels" = "隱藏 Space 編號標籤";
 "Hide status icons" = "隱藏狀態圖示";
 "Hide windows" = "隱藏視窗";
@@ -167,7 +161,6 @@
 "On Day 15, Pro features revert to the free version." = "在第 15 天，Pro 功能會還原為免費版。";
 "Only on different screen" = "僅在不同螢幕上";
 "Open Accessibility Settings…" = "打開「輔助使用」設定…";
-"Open Screen Recording Settings…" = "打開「螢幕錄影」設定…";
 "Open Trackpad Settings…" = "打開「觸控板」設定…";
 "Order windows by" = "視窗排序方式";
 "Ordering & Grouping" = "排序與分組";
@@ -176,7 +169,6 @@
 "Pick a machine to deactivate so you can activate here." = "選擇要停用的裝置，以便在此啟用。";
 "Please drag ScryTab into the Applications folder manually." = "請手動將 ScryTab 拖移到「應用程式」資料夾。";
 "Please fill in the form" = "請填寫表單";
-"Preview selected window" = "預覽所選視窗";
 "Pro" = "Pro";
 "Pro activated" = "Pro 已啟用";
 "Pro feature uses" = "Pro 功能使用次數";
@@ -189,7 +181,6 @@
 "Quit app" = "結束 App";
 "Recently Created First" = "最近建立優先";
 "Recently Focused First" = "最近聚焦優先";
-"Reliable, fast window switching with high-quality thumbnails" = "可靠、快速的視窗切換，搭配高品質縮圖";
 "Remember my choice" = "記住我的選擇";
 "Report a bug" = "回報問題";
 "Report on current version" = "回報目前版本";
@@ -198,7 +189,6 @@
 "Restart Now" = "立即重新啟動";
 "Screen including menu bar" = "包含選單列的螢幕";
 "Screen including mouse" = "包含滑鼠的螢幕";
-"Screen Recording" = "螢幕錄影";
 "Screen showing ScryTab" = "顯示 ScryTab 的螢幕";
 "Search" = "搜尋";
 "Search is a Pro feature." = "搜尋是 Pro 功能。";
@@ -248,7 +238,6 @@
 "Still interested in Pro?" = "仍對 Pro 感興趣？";
 "Suggest a change" = "建議變更";
 "Support this project" = "支援這個專案";
-"Switch between 3 different styles. You can customize them." = "在 3 種不同的樣式之間切換。您可以自訂這些樣式。";
 "Sync with global value" = "與全域值同步";
 "System" = "系統";
 "System Default" = "系統預設";
@@ -261,10 +250,7 @@
 "This license is already activated elsewhere" = "此授權已在其他地方啟用";
 "This license is already activated on the maximum number of machines. Deactivate one to continue." = "此授權已在達到上限的裝置數量上啟用。請停用一個裝置以繼續。";
 "This permission is needed to focus windows after you release the shortcut" = "需要此權限才能在您放開快速鍵之後聚焦視窗";
-"This permission is needed to show thumbnails and preview of open windows" = "需要此權限才能顯示已開啟視窗的縮圖與預覽";
 "This will keep your Downloads folder uncluttered." = "這樣可以讓您的「下載項目」資料夾保持整潔。";
-"Thumbnails" = "縮圖";
-"Thumbnails and window previews" = "縮圖和視窗預覽";
 "Title truncation" = "標題截斷";
 "Titles" = "標題";
 "Titles appearance" = "標題外觀";
@@ -283,7 +269,6 @@
 "Update now" = "立即更新";
 "Updates policy" = "更新政策";
 "Usage" = "使用情況";
-"Use the app without this permission. Thumbnails won’t show." = "不授予此權限即使用 App。將無法顯示縮圖。";
 "Version" = "版本";
 "View existing discussions" = "查看現有討論";
 "Vim keys" = "Vim 鍵";
@@ -292,14 +277,12 @@
 "Website" = "網站";
 "Welcome to %@" = "歡迎使用 %@";
 "What did you expect? What happened? Steps to reproduce…" = "您預期什麼？發生了什麼？重現步驟…";
-"When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date." = "停用時，可避免 macOS 紫色的螢幕錄影指示器，並可避免播放 DRM 影片時閃爍。縮圖更新會較不即時。";
 "When fullscreen" = "全螢幕時";
 "When no open window" = "沒有開啟視窗時";
 "Window is fullscreen" = "視窗為全螢幕";
 "Window is minimized" = "視窗已最小化";
 "Window is on every Space" = "視窗位於每個 Space";
 "Window is on Space %d" = "視窗位於 Space %d";
-"Window previews" = "視窗預覽";
 "window switches" = "次視窗切換";
 "Window Title" = "視窗標題";
 "Window title contains" = "視窗標題包含";

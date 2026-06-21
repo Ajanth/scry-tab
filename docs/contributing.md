@@ -80,10 +80,8 @@ In an attempt to not have too many regressions, this documents will list OS inte
   * Window maximizing (i.e. double-click the titlebar)
   * An app is launching/quitting
 
-### Thumbnail layout corner-cases
+### Tile layout corner-cases
 
-* Very small windows (i.e. smaller than the thumbnail min size)
-* Very wide/tall windows
 * Should show the app name for windows without a title
 * Long titles should be truncated
 * Many windows are opened
@@ -96,15 +94,14 @@ In an attempt to not have too many regressions, this documents will list OS inte
 * A new window opens
 * An existing window is closed
 
-### Drag-and-drop on top of the thumbnails
+### Drag-and-drop on top of the tiles
 
-* Drag-and-dropping a URL onto a window thumbnail should open it with that window’s app
-* Drag-and-dropping a file onto a window thumbnail should open it with that window’s app
+* Drag-and-dropping a URL onto a window tile should open it with that window’s app
+* Drag-and-dropping a file onto a window tile should open it with that window’s app
 
 ### System Preferences
 
 * General > Appearance > "Dark": switches to Dark Mode
-* General > Accent color > "Graphite": traffic lights on thumbnails should be gray
 * Accessibility > Display > Reduce transparency: ScryTab background should be a solid color
 * General > Show scroll bars > "Always": regenerates all scrollbars
 * Display > Resolution > Scaled: changes DPI and rescale ScryTab

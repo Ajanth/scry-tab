@@ -28,7 +28,6 @@
 "Alphabetical Order" = "Alphabetical Order";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed";
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial.";
-"ScryTab is running without Screen Recording permissions. %@ won’t show." = "ScryTab is running without Screen Recording permissions. %@ won’t show.";
 "ScryTab needs some permissions" = "ScryTab needs some permissions";
 "ScryTab Pro" = "ScryTab Pro";
 "ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro adds 4 features beyond the free switcher.";
@@ -55,7 +54,7 @@
 "Arrow keys already assigned to other actions:\n%@" = "Arrow keys already assigned to other actions:\n%@";
 "Ask whether to send crash reports" = "Ask whether to send crash reports";
 "Auto" = "Auto";
-"Auto Size — larger previews with few windows, more at once with many" = "Auto Size — larger previews with few windows, more at once with many";
+"Auto Size — larger tiles with few windows, more at once with many" = "Auto Size — larger tiles with few windows, more at once with many";
 "Auto-install updates periodically" = "Auto-install updates periodically";
 "Auto-sizing switcher" = "Auto-sizing switcher";
 "Automatic activation failed" = "Automatic activation failed";
@@ -63,7 +62,6 @@
 "Brief description of the change" = "Brief description of the change";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Cancel";
-"Capture windows in the background" = "Capture windows in the background";
 "Check for updates now…" = "Check for updates now…";
 "Check for updates periodically" = "Check for updates periodically";
 "Check for updates…" = "Check for updates…";
@@ -81,7 +79,7 @@
 "Cursor follows focus" = "Cursor follows focus";
 "Customize more…" = "Customize more…";
 "Dark" = "Dark";
-"Dark Mode, live preview, window controls, trackpad gestures, and more" = "Dark Mode, live preview, window controls, trackpad gestures, and more";
+"Dark Mode, trackpad gestures, and more" = "Dark Mode, trackpad gestures, and more";
 "Deactivate and activate here" = "Deactivate and activate here";
 "Deactivate license" = "Deactivate license";
 "Deactivate license on this machine" = "Deactivate license on this machine";
@@ -101,7 +99,6 @@
 "Export settings…" = "Export settings…";
 "Extra shortcuts" = "Extra shortcuts";
 "Extra shortcuts are a Pro feature." = "Extra shortcuts are a Pro feature.";
-"Fade in animation of Preview" = "Fade in animation of Preview";
 "Fade out animation of Switcher" = "Fade out animation of Switcher";
 "Failed to import settings" = "Failed to import settings";
 "Feature" = "Feature";
@@ -120,7 +117,6 @@
 "Group tabs" = "Group tabs";
 "Help improve ScryTab" = "Help improve ScryTab";
 "Hide" = "Hide";
-"Hide colored circles on mouse hover" = "Hide colored circles on mouse hover";
 "Hide Space number labels" = "Hide Space number labels";
 "Hide status icons" = "Hide status icons";
 "Hide windows" = "Hide windows";
@@ -167,7 +163,6 @@
 "On Day 15, Pro features revert to the free version." = "On Day 15, Pro features revert to the free version.";
 "Only on different screen" = "Only on different screen";
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
-"Open Screen Recording Settings…" = "Open Screen Recording Settings…";
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
 "Order windows by" = "Order windows by";
 "Ordering & Grouping" = "Ordering & Grouping";
@@ -176,7 +171,6 @@
 "Pick a machine to deactivate so you can activate here." = "Pick a machine to deactivate so you can activate here.";
 "Please drag ScryTab into the Applications folder manually." = "Please drag ScryTab into the Applications folder manually.";
 "Please fill in the form" = "Please fill in the form";
-"Preview selected window" = "Preview selected window";
 "Pro" = "Pro";
 "Pro activated" = "Pro activated";
 "Pro feature uses" = "Pro feature uses";
@@ -189,7 +183,7 @@
 "Quit app" = "Quit app";
 "Recently Created First" = "Recently Created First";
 "Recently Focused First" = "Recently Focused First";
-"Reliable, fast window switching with high-quality thumbnails" = "Reliable, fast window switching with high-quality thumbnails";
+"Reliable, fast window switching" = "Reliable, fast window switching";
 "Remember my choice" = "Remember my choice";
 "Report a bug" = "Report a bug";
 "Report on current version" = "Report on current version";
@@ -198,7 +192,6 @@
 "Restart Now" = "Restart Now";
 "Screen including menu bar" = "Screen including menu bar";
 "Screen including mouse" = "Screen including mouse";
-"Screen Recording" = "Screen Recording";
 "Screen showing ScryTab" = "Screen showing ScryTab";
 "Search" = "Search";
 "Search is a Pro feature." = "Search is a Pro feature.";
@@ -248,7 +241,7 @@
 "Still interested in Pro?" = "Still interested in Pro?";
 "Suggest a change" = "Suggest a change";
 "Support this project" = "Support this project";
-"Switch between 3 different styles. You can customize them." = "Switch between 3 different styles. You can customize them.";
+"Switch between 2 different styles. You can customize them." = "Switch between 2 different styles. You can customize them.";
 "Sync with global value" = "Sync with global value";
 "System" = "System";
 "System Default" = "System Default";
@@ -261,10 +254,7 @@
 "This license is already activated elsewhere" = "This license is already activated elsewhere";
 "This license is already activated on the maximum number of machines. Deactivate one to continue." = "This license is already activated on the maximum number of machines. Deactivate one to continue.";
 "This permission is needed to focus windows after you release the shortcut" = "This permission is needed to focus windows after you release the shortcut";
-"This permission is needed to show thumbnails and preview of open windows" = "This permission is needed to show thumbnails and preview of open windows";
 "This will keep your Downloads folder uncluttered." = "This will keep your Downloads folder uncluttered.";
-"Thumbnails" = "Thumbnails";
-"Thumbnails and window previews" = "Thumbnails and window previews";
 "Title truncation" = "Title truncation";
 "Titles" = "Titles";
 "Titles appearance" = "Titles appearance";
@@ -283,7 +273,6 @@
 "Update now" = "Update now";
 "Updates policy" = "Updates policy";
 "Usage" = "Usage";
-"Use the app without this permission. Thumbnails won’t show." = "Use the app without this permission. Thumbnails won’t show.";
 "Version" = "Version";
 "View existing discussions" = "View existing discussions";
 "Vim keys" = "Vim keys";
@@ -292,14 +281,12 @@
 "Website" = "Website";
 "Welcome to %@" = "Welcome to %@";
 "What did you expect? What happened? Steps to reproduce…" = "What did you expect? What happened? Steps to reproduce…";
-"When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date." = "When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date.";
 "When fullscreen" = "When fullscreen";
 "When no open window" = "When no open window";
 "Window is fullscreen" = "Window is fullscreen";
 "Window is minimized" = "Window is minimized";
 "Window is on every Space" = "Window is on every Space";
 "Window is on Space %d" = "Window is on Space %d";
-"Window previews" = "Window previews";
 "window switches" = "window switches";
 "Window Title" = "Window Title";
 "Window title contains" = "Window title contains";

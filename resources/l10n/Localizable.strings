@@ -88,9 +88,6 @@
 /* No comment provided by engineer. */
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial.";
 
-/* Menubar callout. %@ is one or more feature names, e.g. Thumbnails */
-"ScryTab is running without Screen Recording permissions. %@ won’t show." = "ScryTab is running without Screen Recording permissions. %@ won’t show.";
-
 /* No comment provided by engineer. */
 "ScryTab needs some permissions" = "ScryTab needs some permissions";
 
@@ -170,7 +167,6 @@
 "Auto" = "Auto";
 
 /* No comment provided by engineer. */
-"Auto Size — larger previews with few windows, more at once with many" = "Auto Size — larger previews with few windows, more at once with many";
 
 /* No comment provided by engineer. */
 "Auto-install updates periodically" = "Auto-install updates periodically";
@@ -194,7 +190,6 @@
 "Cancel" = "Cancel";
 
 /* No comment provided by engineer. */
-"Capture windows in the background" = "Capture windows in the background";
 
 /* No comment provided by engineer. */
 "Check for updates now…" = "Check for updates now…";
@@ -248,7 +243,6 @@
 "Dark" = "Dark";
 
 /* No comment provided by engineer. */
-"Dark Mode, live preview, window controls, trackpad gestures, and more" = "Dark Mode, live preview, window controls, trackpad gestures, and more";
 
 /* No comment provided by engineer. */
 "Deactivate and activate here" = "Deactivate and activate here";
@@ -308,7 +302,6 @@
 "Extra shortcuts are a Pro feature." = "Extra shortcuts are a Pro feature.";
 
 /* No comment provided by engineer. */
-"Fade in animation of Preview" = "Fade in animation of Preview";
 
 /* No comment provided by engineer. */
 "Fade out animation of Switcher" = "Fade out animation of Switcher";
@@ -365,7 +358,6 @@
 "Hide" = "Hide";
 
 /* No comment provided by engineer. */
-"Hide colored circles on mouse hover" = "Hide colored circles on mouse hover";
 
 /* No comment provided by engineer. */
 "Hide Space number labels" = "Hide Space number labels";
@@ -506,7 +498,6 @@
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
 
 /* No comment provided by engineer. */
-"Open Screen Recording Settings…" = "Open Screen Recording Settings…";
 
 /* No comment provided by engineer. */
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
@@ -533,7 +524,6 @@
 "Please fill in the form" = "Please fill in the form";
 
 /* No comment provided by engineer. */
-"Preview selected window" = "Preview selected window";
 
 /* No comment provided by engineer. */
 "Pro" = "Pro";
@@ -572,7 +562,6 @@
 "Recently Focused First" = "Recently Focused First";
 
 /* No comment provided by engineer. */
-"Reliable, fast window switching with high-quality thumbnails" = "Reliable, fast window switching with high-quality thumbnails";
 
 /* No comment provided by engineer. */
 "Remember my choice" = "Remember my choice";
@@ -599,7 +588,6 @@
 "Screen including mouse" = "Screen including mouse";
 
 /* No comment provided by engineer. */
-"Screen Recording" = "Screen Recording";
 
 /* No comment provided by engineer. */
 "Screen showing ScryTab" = "Screen showing ScryTab";
@@ -749,7 +737,6 @@
 "Support this project" = "Support this project";
 
 /* No comment provided by engineer. */
-"Switch between 3 different styles. You can customize them." = "Switch between 3 different styles. You can customize them.";
 
 /* No comment provided by engineer. */
 "Sync with global value" = "Sync with global value";
@@ -788,16 +775,13 @@
 "This permission is needed to focus windows after you release the shortcut" = "This permission is needed to focus windows after you release the shortcut";
 
 /* No comment provided by engineer. */
-"This permission is needed to show thumbnails and preview of open windows" = "This permission is needed to show thumbnails and preview of open windows";
 
 /* LetsMove replacement alert */
 "This will keep your Downloads folder uncluttered." = "This will keep your Downloads folder uncluttered.";
 
 /* No comment provided by engineer. */
-"Thumbnails" = "Thumbnails";
 
 /* Menubar callout subject */
-"Thumbnails and window previews" = "Thumbnails and window previews";
 
 /* No comment provided by engineer. */
 "Title truncation" = "Title truncation";
@@ -854,7 +838,6 @@
 "Usage" = "Usage";
 
 /* No comment provided by engineer. */
-"Use the app without this permission. Thumbnails won’t show." = "Use the app without this permission. Thumbnails won’t show.";
 
 /* No comment provided by engineer. */
 "Version" = "Version";
@@ -881,7 +864,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "What did you expect? What happened? Steps to reproduce…";
 
 /* No comment provided by engineer. */
-"When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date." = "When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date.";
 
 /* No comment provided by engineer. */
 "When fullscreen" = "When fullscreen";
@@ -902,7 +884,6 @@
 "Window is on Space %d" = "Window is on Space %d";
 
 /* Menubar callout subject: the preview-selected-window feature */
-"Window previews" = "Window previews";
 
 /* No comment provided by engineer. */
 "window switches" = "window switches";

@@ -28,7 +28,6 @@
 "Alphabetical Order" = "알파벳 순서";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab이 마지막 사용 시 충돌했습니다. 충돌 보고서를 보내면 문제 해결에 도움이 됩니다";
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab은 macOS용 무료 오픈 소스 윈도우 전환기입니다. Pro 기능은 14일 무료 체험으로 이용할 수 있습니다.";
-"ScryTab is running without Screen Recording permissions. %@ won’t show." = "ScryTab이 화면 녹화 권한 없이 실행 중입니다. %@이(가) 표시되지 않습니다.";
 "ScryTab needs some permissions" = "ScryTab에 몇 가지 권한이 필요합니다";
 "ScryTab Pro" = "ScryTab Pro";
 "ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro는 무료 전환기에 4가지 기능을 추가합니다.";
@@ -55,7 +54,6 @@
 "Arrow keys already assigned to other actions:\n%@" = "화살표 키가 이미 다른 동작에 할당되어 있습니다:\n%@";
 "Ask whether to send crash reports" = "충돌 보고서 전송 여부 물어보기";
 "Auto" = "자동";
-"Auto Size — larger previews with few windows, more at once with many" = "자동 크기 — 윈도우가 적으면 미리보기가 크고, 많으면 한 번에 더 많이 표시";
 "Auto-install updates periodically" = "주기적으로 업데이트 자동 설치";
 "Auto-sizing switcher" = "자동 크기 전환기";
 "Automatic activation failed" = "자동 활성화 실패";
@@ -63,7 +61,6 @@
 "Brief description of the change" = "변경 사항에 대한 간단한 설명";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "취소";
-"Capture windows in the background" = "백그라운드에서 윈도우 캡처";
 "Check for updates now…" = "지금 업데이트 확인…";
 "Check for updates periodically" = "주기적으로 업데이트 확인";
 "Check for updates…" = "업데이트 확인…";
@@ -81,7 +78,6 @@
 "Cursor follows focus" = "커서가 포커스를 따라감";
 "Customize more…" = "더 사용자화…";
 "Dark" = "다크";
-"Dark Mode, live preview, window controls, trackpad gestures, and more" = "다크 모드, 라이브 미리보기, 윈도우 컨트롤, 트랙패드 제스처 등";
 "Deactivate and activate here" = "비활성화 후 여기서 활성화";
 "Deactivate license" = "라이선스 비활성화";
 "Deactivate license on this machine" = "이 기기에서 라이선스 비활성화";
@@ -101,7 +97,6 @@
 "Export settings…" = "설정 내보내기…";
 "Extra shortcuts" = "추가 단축키";
 "Extra shortcuts are a Pro feature." = "추가 단축키는 Pro 기능입니다.";
-"Fade in animation of Preview" = "미리보기 페이드 인 애니메이션";
 "Fade out animation of Switcher" = "전환기 페이드 아웃 애니메이션";
 "Failed to import settings" = "설정 가져오기 실패";
 "Feature" = "기능";
@@ -120,7 +115,6 @@
 "Group tabs" = "탭 그룹화";
 "Help improve ScryTab" = "ScryTab 개선에 도움 주기";
 "Hide" = "숨기기";
-"Hide colored circles on mouse hover" = "마우스 오버 시 색상 원 숨기기";
 "Hide Space number labels" = "Space 번호 레이블 숨기기";
 "Hide status icons" = "상태 아이콘 숨기기";
 "Hide windows" = "윈도우 숨기기";
@@ -167,7 +161,6 @@
 "On Day 15, Pro features revert to the free version." = "15일째에 Pro 기능은 무료 버전으로 되돌아갑니다.";
 "Only on different screen" = "다른 화면에서만";
 "Open Accessibility Settings…" = "손쉬운 사용 설정 열기…";
-"Open Screen Recording Settings…" = "화면 녹화 설정 열기…";
 "Open Trackpad Settings…" = "트랙패드 설정 열기…";
 "Order windows by" = "윈도우 정렬 기준";
 "Ordering & Grouping" = "정렬 및 그룹화";
@@ -176,7 +169,6 @@
 "Pick a machine to deactivate so you can activate here." = "여기서 활성화하려면 비활성화할 기기를 선택하세요.";
 "Please drag ScryTab into the Applications folder manually." = "ScryTab을 응용 프로그램 폴더로 직접 드래그해 주세요.";
 "Please fill in the form" = "양식을 작성해 주세요";
-"Preview selected window" = "선택한 윈도우 미리보기";
 "Pro" = "Pro";
 "Pro activated" = "Pro 활성화됨";
 "Pro feature uses" = "Pro 기능 사용 횟수";
@@ -189,7 +181,6 @@
 "Quit app" = "앱 종료";
 "Recently Created First" = "최근 생성된 순";
 "Recently Focused First" = "최근 사용 순";
-"Reliable, fast window switching with high-quality thumbnails" = "고품질 썸네일로 안정적이고 빠른 윈도우 전환";
 "Remember my choice" = "내 선택 기억하기";
 "Report a bug" = "버그 신고";
 "Report on current version" = "현재 버전에서 신고";
@@ -198,7 +189,6 @@
 "Restart Now" = "지금 재시작";
 "Screen including menu bar" = "메뉴 막대가 있는 화면";
 "Screen including mouse" = "마우스가 있는 화면";
-"Screen Recording" = "화면 녹화";
 "Screen showing ScryTab" = "ScryTab이 표시되는 화면";
 "Search" = "검색";
 "Search is a Pro feature." = "검색은 Pro 기능입니다.";
@@ -248,7 +238,6 @@
 "Still interested in Pro?" = "여전히 Pro에 관심이 있으신가요?";
 "Suggest a change" = "변경 제안";
 "Support this project" = "이 프로젝트 후원하기";
-"Switch between 3 different styles. You can customize them." = "3가지 다른 스타일 간에 전환합니다. 사용자화할 수 있습니다.";
 "Sync with global value" = "전역 값과 동기화";
 "System" = "시스템";
 "System Default" = "시스템 기본값";
@@ -261,10 +250,7 @@
 "This license is already activated elsewhere" = "이 라이선스는 이미 다른 곳에서 활성화되어 있습니다";
 "This license is already activated on the maximum number of machines. Deactivate one to continue." = "이 라이선스는 이미 최대 기기 수에서 활성화되어 있습니다. 계속하려면 하나를 비활성화하세요.";
 "This permission is needed to focus windows after you release the shortcut" = "단축키를 놓은 후 윈도우에 포커스하려면 이 권한이 필요합니다";
-"This permission is needed to show thumbnails and preview of open windows" = "열린 윈도우의 썸네일 및 미리보기를 표시하려면 이 권한이 필요합니다";
 "This will keep your Downloads folder uncluttered." = "다운로드 폴더를 깔끔하게 유지할 수 있습니다.";
-"Thumbnails" = "썸네일";
-"Thumbnails and window previews" = "썸네일 및 윈도우 미리보기";
 "Title truncation" = "제목 자르기";
 "Titles" = "제목";
 "Titles appearance" = "제목 모양";
@@ -283,7 +269,6 @@
 "Update now" = "지금 업데이트";
 "Updates policy" = "업데이트 정책";
 "Usage" = "사용량";
-"Use the app without this permission. Thumbnails won’t show." = "이 권한 없이 앱을 사용합니다. 썸네일이 표시되지 않습니다.";
 "Version" = "버전";
 "View existing discussions" = "기존 토론 보기";
 "Vim keys" = "Vim 키";
@@ -292,14 +277,12 @@
 "Website" = "웹사이트";
 "Welcome to %@" = "%@에 오신 것을 환영합니다";
 "What did you expect? What happened? Steps to reproduce…" = "예상했던 동작은? 실제로 일어난 일은? 재현 단계…";
-"When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date." = "비활성화하면 macOS의 보라색 화면 녹화 표시기가 나타나지 않으며 DRM 비디오 재생 시 깜박임을 방지합니다. 썸네일은 최신 상태로 유지되지 않을 수 있습니다.";
 "When fullscreen" = "전체 화면일 때";
 "When no open window" = "열린 윈도우가 없을 때";
 "Window is fullscreen" = "윈도우 전체 화면";
 "Window is minimized" = "윈도우 최소화됨";
 "Window is on every Space" = "윈도우가 모든 Space에 있음";
 "Window is on Space %d" = "윈도우가 Space %d에 있음";
-"Window previews" = "윈도우 미리보기";
 "window switches" = "회 윈도우 전환";
 "Window Title" = "윈도우 제목";
 "Window title contains" = "윈도우 제목 포함";
