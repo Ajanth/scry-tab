@@ -102,11 +102,11 @@ extension PreferenceDefinition {
 enum ProGatedPreferences {
     static let appearanceStyle = PreferenceDefinition<AppearanceStylePreference>(
         key: "appearanceStyle",
-        default: .thumbnails,
+        default: .appIcons,
         gate: PreferenceGate(
-            freeEquivalent: .thumbnails,
+            freeEquivalent: .appIcons,
             rememberedKey: "rememberedAppearanceStyle",
-            isProValue: { $0 != .thumbnails }))
+            isProValue: { $0 == .titles }))
 
     static let appearanceSize = PreferenceDefinition<AppearanceSizePreference>(
         key: "appearanceSize",
@@ -130,11 +130,11 @@ enum ProGatedPreferences {
     // no-op for unset overrides — only explicitly-set Pro overrides get snapshotted on lock.
     static let appearanceStyleOverride0 = PreferenceDefinition<AppearanceStylePreference>(
         key: "appearanceStyleOverride",
-        default: .thumbnails,
+        default: .appIcons,
         gate: PreferenceGate(
-            freeEquivalent: .thumbnails,
+            freeEquivalent: .appIcons,
             rememberedKey: "rememberedAppearanceStyleOverride",
-            isProValue: { $0 != .thumbnails }))
+            isProValue: { $0 == .titles }))
 
     static let appearanceSizeOverride0 = PreferenceDefinition<AppearanceSizePreference>(
         key: "appearanceSizeOverride",
