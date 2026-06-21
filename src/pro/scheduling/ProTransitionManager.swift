@@ -57,14 +57,13 @@ extension HardGateReason {
             switch Preferences.appearanceStyle {
             case .appIcons: return .appIconsStyle
             case .titles: return .titlesStyle
-            case .thumbnails: return .nonEngaged
             }
         case .proPreferences(let appearanceStyle, let shortcut):
             if shortcut { return .search }
             switch appearanceStyle {
             case .appIcons: return .appIconsStyle
             case .titles: return .titlesStyle
-            case .thumbnails, nil: return .nonEngaged
+            case nil: return .nonEngaged
             }
         case .feature(.autoSize):
             return .nonEngaged
