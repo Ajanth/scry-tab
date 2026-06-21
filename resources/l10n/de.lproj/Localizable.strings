@@ -28,7 +28,6 @@
 "Alphabetical Order" = "Alphabetische Reihenfolge";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab ist bei der letzten Verwendung abgestürzt. Das Senden eines Absturzberichts hilft bei der Behebung des Problems";
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab ist ein kostenloser, quelloffener Fensterumschalter für macOS. Pro-Funktionen sind mit einer 14-tägigen kostenlosen Testversion verfügbar.";
-"ScryTab is running without Screen Recording permissions. %@ won’t show." = "ScryTab läuft ohne die Berechtigung für Bildschirmaufnahme. %@ werden nicht angezeigt.";
 "ScryTab needs some permissions" = "ScryTab benötigt einige Berechtigungen";
 "ScryTab Pro" = "ScryTab Pro";
 "ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro fügt 4 Funktionen über den kostenlosen Umschalter hinaus hinzu.";
@@ -55,7 +54,6 @@
 "Arrow keys already assigned to other actions:\n%@" = "Pfeiltasten sind bereits anderen Aktionen zugewiesen:\n%@";
 "Ask whether to send crash reports" = "Fragen, ob Absturzberichte gesendet werden sollen";
 "Auto" = "Automatisch";
-"Auto Size — larger previews with few windows, more at once with many" = "Automatische Größe — größere Vorschauen bei wenigen Fenstern, mehr auf einmal bei vielen";
 "Auto-install updates periodically" = "Updates regelmäßig automatisch installieren";
 "Auto-sizing switcher" = "Umschalter mit automatischer Größe";
 "Automatic activation failed" = "Automatische Aktivierung fehlgeschlagen";
@@ -63,7 +61,6 @@
 "Brief description of the change" = "Kurze Beschreibung der Änderung";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Abbrechen";
-"Capture windows in the background" = "Fenster im Hintergrund erfassen";
 "Check for updates now…" = "Jetzt nach Updates suchen…";
 "Check for updates periodically" = "Regelmäßig nach Updates suchen";
 "Check for updates…" = "Nach Updates suchen…";
@@ -81,7 +78,6 @@
 "Cursor follows focus" = "Zeiger folgt dem Fokus";
 "Customize more…" = "Mehr anpassen…";
 "Dark" = "Dunkel";
-"Dark Mode, live preview, window controls, trackpad gestures, and more" = "Dark Mode, Live-Vorschau, Fenstersteuerungen, Trackpad-Gesten und mehr";
 "Deactivate and activate here" = "Deaktivieren und hier aktivieren";
 "Deactivate license" = "Lizenz deaktivieren";
 "Deactivate license on this machine" = "Lizenz auf diesem Computer deaktivieren";
@@ -101,7 +97,6 @@
 "Export settings…" = "Einstellungen exportieren…";
 "Extra shortcuts" = "Zusätzliche Tastenkürzel";
 "Extra shortcuts are a Pro feature." = "Zusätzliche Tastenkürzel sind eine Pro-Funktion.";
-"Fade in animation of Preview" = "Einblendanimation der Vorschau";
 "Fade out animation of Switcher" = "Ausblendanimation des Umschalters";
 "Failed to import settings" = "Import der Einstellungen fehlgeschlagen";
 "Feature" = "Funktion";
@@ -120,7 +115,6 @@
 "Group tabs" = "Tabs gruppieren";
 "Help improve ScryTab" = "Helfen Sie, ScryTab zu verbessern";
 "Hide" = "Ausblenden";
-"Hide colored circles on mouse hover" = "Farbige Kreise beim Überfahren mit der Maus ausblenden";
 "Hide Space number labels" = "Space-Nummern ausblenden";
 "Hide status icons" = "Statussymbole ausblenden";
 "Hide windows" = "Fenster ausblenden";
@@ -167,7 +161,6 @@
 "On Day 15, Pro features revert to the free version." = "Am Tag 15 werden Pro-Funktionen auf die kostenlose Version zurückgesetzt.";
 "Only on different screen" = "Nur auf anderem Bildschirm";
 "Open Accessibility Settings…" = "Einstellungen für Bedienungshilfen öffnen…";
-"Open Screen Recording Settings…" = "Einstellungen für Bildschirmaufnahme öffnen…";
 "Open Trackpad Settings…" = "Einstellungen für Trackpad öffnen…";
 "Order windows by" = "Fenster sortieren nach";
 "Ordering & Grouping" = "Sortierung & Gruppierung";
@@ -176,7 +169,6 @@
 "Pick a machine to deactivate so you can activate here." = "Wählen Sie einen Computer zur Deaktivierung, um hier zu aktivieren.";
 "Please drag ScryTab into the Applications folder manually." = "Bitte ziehen Sie ScryTab manuell in den Programme-Ordner.";
 "Please fill in the form" = "Bitte füllen Sie das Formular aus";
-"Preview selected window" = "Ausgewähltes Fenster in der Vorschau anzeigen";
 "Pro" = "Pro";
 "Pro activated" = "Pro aktiviert";
 "Pro feature uses" = "Verwendungen von Pro-Funktionen";
@@ -189,7 +181,6 @@
 "Quit app" = "App beenden";
 "Recently Created First" = "Zuletzt erstellte zuerst";
 "Recently Focused First" = "Zuletzt fokussierte zuerst";
-"Reliable, fast window switching with high-quality thumbnails" = "Zuverlässiges, schnelles Fensterumschalten mit hochwertigen Miniaturen";
 "Remember my choice" = "Auswahl merken";
 "Report a bug" = "Fehler melden";
 "Report on current version" = "Auf aktueller Version melden";
@@ -198,7 +189,6 @@
 "Restart Now" = "Jetzt neu starten";
 "Screen including menu bar" = "Bildschirm mit Menüleiste";
 "Screen including mouse" = "Bildschirm mit Mauszeiger";
-"Screen Recording" = "Bildschirmaufnahme";
 "Screen showing ScryTab" = "Bildschirm, der ScryTab anzeigt";
 "Search" = "Suche";
 "Search is a Pro feature." = "Suche ist eine Pro-Funktion.";
@@ -248,7 +238,6 @@
 "Still interested in Pro?" = "Weiterhin an Pro interessiert?";
 "Suggest a change" = "Änderung vorschlagen";
 "Support this project" = "Dieses Projekt unterstützen";
-"Switch between 3 different styles. You can customize them." = "Wechseln Sie zwischen 3 verschiedenen Stilen. Sie können sie anpassen.";
 "Sync with global value" = "Mit globalem Wert synchronisieren";
 "System" = "System";
 "System Default" = "Systemstandard";
@@ -261,10 +250,7 @@
 "This license is already activated elsewhere" = "Diese Lizenz ist bereits an anderer Stelle aktiviert";
 "This license is already activated on the maximum number of machines. Deactivate one to continue." = "Diese Lizenz ist bereits auf der maximalen Anzahl von Computern aktiviert. Deaktivieren Sie einen, um fortzufahren.";
 "This permission is needed to focus windows after you release the shortcut" = "Diese Berechtigung wird benötigt, um Fenster nach dem Loslassen des Tastenkürzels zu fokussieren";
-"This permission is needed to show thumbnails and preview of open windows" = "Diese Berechtigung wird benötigt, um Miniaturen und Vorschauen geöffneter Fenster anzuzeigen";
 "This will keep your Downloads folder uncluttered." = "So bleibt Ihr Downloads-Ordner aufgeräumt.";
-"Thumbnails" = "Miniaturen";
-"Thumbnails and window previews" = "Miniaturen und Fenstervorschauen";
 "Title truncation" = "Titelkürzung";
 "Titles" = "Titel";
 "Titles appearance" = "Darstellung Titel";
@@ -283,7 +269,6 @@
 "Update now" = "Jetzt aktualisieren";
 "Updates policy" = "Update-Richtlinie";
 "Usage" = "Nutzung";
-"Use the app without this permission. Thumbnails won’t show." = "Die App ohne diese Berechtigung verwenden. Miniaturen werden nicht angezeigt.";
 "Version" = "Version";
 "View existing discussions" = "Vorhandene Diskussionen anzeigen";
 "Vim keys" = "Vim-Tasten";
@@ -292,14 +277,12 @@
 "Website" = "Website";
 "Welcome to %@" = "Willkommen bei %@";
 "What did you expect? What happened? Steps to reproduce…" = "Was haben Sie erwartet? Was ist passiert? Schritte zum Reproduzieren…";
-"When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date." = "Wenn deaktiviert, wird der lila Bildschirmaufnahme-Indikator von macOS vermieden und Flackern bei der DRM-Videowiedergabe verhindert. Miniaturen sind weniger aktuell.";
 "When fullscreen" = "Bei Vollbild";
 "When no open window" = "Wenn kein Fenster geöffnet ist";
 "Window is fullscreen" = "Fenster im Vollbild";
 "Window is minimized" = "Fenster minimiert";
 "Window is on every Space" = "Fenster auf jedem Space";
 "Window is on Space %d" = "Fenster auf Space %d";
-"Window previews" = "Fenstervorschauen";
 "window switches" = "Fensterwechsel";
 "Window Title" = "Fenstertitel";
 "Window title contains" = "Fenstertitel enthält";

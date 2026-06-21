@@ -28,7 +28,6 @@
 "Alphabetical Order" = "Alfabetik sıra";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab en son kullandığınızda çöktü. Bir çökme raporu göndermek sorunun düzeltilmesine yardımcı olacaktır";
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab, macOS için ücretsiz ve açık kaynaklı bir pencere değiştiricidir. Pro özellikleri 14 günlük ücretsiz deneme ile kullanılabilir.";
-"ScryTab is running without Screen Recording permissions. %@ won’t show." = "ScryTab, Ekran Kaydı izinleri olmadan çalışıyor. %@ gösterilmeyecek.";
 "ScryTab needs some permissions" = "ScryTab’ın bazı izinlere ihtiyacı var";
 "ScryTab Pro" = "ScryTab Pro";
 "ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro, ücretsiz değiştiriciye ek olarak 4 özellik ekler.";
@@ -55,7 +54,6 @@
 "Arrow keys already assigned to other actions:\n%@" = "Ok tuşları zaten başka eylemlere atanmış:\n%@";
 "Ask whether to send crash reports" = "Çökme raporlarının gönderilip gönderilmeyeceğini sor";
 "Auto" = "Otomatik";
-"Auto Size — larger previews with few windows, more at once with many" = "Otomatik Boyut — az pencerede büyük önizlemeler, çok pencerede aynı anda daha fazlası";
 "Auto-install updates periodically" = "Güncellemeleri düzenli olarak otomatik yükle";
 "Auto-sizing switcher" = "Otomatik boyutlandırılan değiştirici";
 "Automatic activation failed" = "Otomatik etkinleştirme başarısız";
@@ -63,7 +61,6 @@
 "Brief description of the change" = "Değişikliğin kısa açıklaması";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "İptal";
-"Capture windows in the background" = "Pencereleri arka planda yakala";
 "Check for updates now…" = "Şimdi güncellemeleri denetle…";
 "Check for updates periodically" = "Güncellemeleri düzenli olarak denetle";
 "Check for updates…" = "Güncellemeleri denetle…";
@@ -81,7 +78,6 @@
 "Cursor follows focus" = "İmleç odağı izler";
 "Customize more…" = "Daha fazla özelleştir…";
 "Dark" = "Karanlık";
-"Dark Mode, live preview, window controls, trackpad gestures, and more" = "Karanlık Mod, canlı önizleme, pencere denetimleri, Trackpad hareketleri ve daha fazlası";
 "Deactivate and activate here" = "Devre dışı bırakın ve burada etkinleştirin";
 "Deactivate license" = "Lisansı devre dışı bırak";
 "Deactivate license on this machine" = "Bu makinedeki lisansı devre dışı bırak";
@@ -101,7 +97,6 @@
 "Export settings…" = "Ayarları dışa aktar…";
 "Extra shortcuts" = "Ek kısayollar";
 "Extra shortcuts are a Pro feature." = "Ek kısayollar bir Pro özelliğidir.";
-"Fade in animation of Preview" = "Önizlemenin yumuşak geçişle açılma animasyonu";
 "Fade out animation of Switcher" = "Değiştiricinin yumuşak geçişle kapanma animasyonu";
 "Failed to import settings" = "Ayarlar içe aktarılamadı";
 "Feature" = "Özellik";
@@ -120,7 +115,6 @@
 "Group tabs" = "Sekmeleri grupla";
 "Help improve ScryTab" = "ScryTab’ın geliştirilmesine yardımcı olun";
 "Hide" = "Gizle";
-"Hide colored circles on mouse hover" = "Fare üzerine geldiğinde renkli daireleri gizle";
 "Hide Space number labels" = "Alan numarası etiketlerini gizle";
 "Hide status icons" = "Durum simgelerini gizle";
 "Hide windows" = "Pencereleri gizle";
@@ -167,7 +161,6 @@
 "On Day 15, Pro features revert to the free version." = "15. günde Pro özellikleri ücretsiz sürüme döner.";
 "Only on different screen" = "Yalnızca farklı ekranda";
 "Open Accessibility Settings…" = "Erişilebilirlik ayarlarını aç…";
-"Open Screen Recording Settings…" = "Ekran Kaydı ayarlarını aç…";
 "Open Trackpad Settings…" = "Trackpad ayarlarını aç…";
 "Order windows by" = "Pencereleri sıralama ölçütü";
 "Ordering & Grouping" = "Sıralama ve Gruplama";
@@ -176,7 +169,6 @@
 "Pick a machine to deactivate so you can activate here." = "Burada etkinleştirebilmek için devre dışı bırakılacak bir makine seçin.";
 "Please drag ScryTab into the Applications folder manually." = "Lütfen ScryTab’ı el ile Uygulamalar klasörüne sürükleyin.";
 "Please fill in the form" = "Lütfen formu doldurun";
-"Preview selected window" = "Seçili pencereyi önizle";
 "Pro" = "Pro";
 "Pro activated" = "Pro etkinleştirildi";
 "Pro feature uses" = "Pro özellik kullanımı";
@@ -189,7 +181,6 @@
 "Quit app" = "Uygulamadan çık";
 "Recently Created First" = "Önce Yeni Oluşturulanlar";
 "Recently Focused First" = "Önce Son Odaklananlar";
-"Reliable, fast window switching with high-quality thumbnails" = "Yüksek kaliteli küçük resimlerle güvenilir, hızlı pencere değiştirme";
 "Remember my choice" = "Seçimimi hatırla";
 "Report a bug" = "Hata bildir";
 "Report on current version" = "Mevcut sürümde bildir";
@@ -198,7 +189,6 @@
 "Restart Now" = "Şimdi Yeniden Başlat";
 "Screen including menu bar" = "Menü çubuğunu içeren ekran";
 "Screen including mouse" = "Fareyi içeren ekran";
-"Screen Recording" = "Ekran Kaydı";
 "Screen showing ScryTab" = "ScryTab’ı gösteren ekran";
 "Search" = "Ara";
 "Search is a Pro feature." = "Arama bir Pro özelliğidir.";
@@ -248,7 +238,6 @@
 "Still interested in Pro?" = "Hâlâ Pro ile ilgileniyor musunuz?";
 "Suggest a change" = "Değişiklik öner";
 "Support this project" = "Bu projeyi destekleyin";
-"Switch between 3 different styles. You can customize them." = "3 farklı stil arasında geçiş yapın. Onları özelleştirebilirsiniz.";
 "Sync with global value" = "Genel değerle eşitle";
 "System" = "Sistem";
 "System Default" = "Sistem Varsayılanı";
@@ -261,10 +250,7 @@
 "This license is already activated elsewhere" = "Bu lisans başka bir yerde zaten etkinleştirilmiş";
 "This license is already activated on the maximum number of machines. Deactivate one to continue." = "Bu lisans azami sayıda makinede zaten etkinleştirilmiş. Devam etmek için birini devre dışı bırakın.";
 "This permission is needed to focus windows after you release the shortcut" = "Bu izin, kısayolu bıraktıktan sonra pencerelere odaklanmak için gerekli";
-"This permission is needed to show thumbnails and preview of open windows" = "Bu izin, açık pencerelerin küçük resimlerini ve önizlemelerini göstermek için gerekli";
 "This will keep your Downloads folder uncluttered." = "Bu, İndirilenler klasörünüzün düzenli kalmasını sağlar.";
-"Thumbnails" = "Küçük resimler";
-"Thumbnails and window previews" = "Küçük resimler ve pencere önizlemeleri";
 "Title truncation" = "Başlık kısaltma";
 "Titles" = "Başlıklar";
 "Titles appearance" = "Başlıklar görünümü";
@@ -283,7 +269,6 @@
 "Update now" = "Şimdi güncelle";
 "Updates policy" = "Güncelleme ilkesi";
 "Usage" = "Kullanım";
-"Use the app without this permission. Thumbnails won’t show." = "Uygulamayı bu izin olmadan kullanın. Küçük resimler gösterilmeyecek.";
 "Version" = "Sürüm";
 "View existing discussions" = "Mevcut tartışmaları görüntüle";
 "Vim keys" = "Vim tuşları";
@@ -292,14 +277,12 @@
 "Website" = "Web sitesi";
 "Welcome to %@" = "%@ uygulamasına hoş geldiniz";
 "What did you expect? What happened? Steps to reproduce…" = "Ne bekliyordunuz? Ne oldu? Yeniden oluşturma adımları…";
-"When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date." = "Devre dışı bırakıldığında, macOS’un mor ekran kaydı göstergesinden kaçınır ve DRM video oynatılırken titremeleri önler. Küçük resimler daha az güncel olacaktır.";
 "When fullscreen" = "Tam ekrandayken";
 "When no open window" = "Açık pencere olmadığında";
 "Window is fullscreen" = "Pencere tam ekran";
 "Window is minimized" = "Pencere küçültülmüş";
 "Window is on every Space" = "Pencere her Alanda";
 "Window is on Space %d" = "Pencere %d numaralı Alanda";
-"Window previews" = "Pencere önizlemeleri";
 "window switches" = "pencere değişimi";
 "Window Title" = "Pencere Başlığı";
 "Window title contains" = "Pencere başlığı şunu içeriyor";

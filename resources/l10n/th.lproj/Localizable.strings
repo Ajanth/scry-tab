@@ -28,7 +28,6 @@
 "Alphabetical Order" = "เรียงตามตัวอักษร";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab ขัดข้องในการใช้งานครั้งล่าสุด การส่งรายงานการขัดข้องจะช่วยแก้ไขปัญหา";
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab เป็นโปรแกรมสลับหน้าต่างฟรีและโอเพนซอร์สสำหรับ macOS คุณสมบัติ Pro มีให้ทดลองใช้งานฟรี 14 วัน";
-"ScryTab is running without Screen Recording permissions. %@ won’t show." = "ScryTab กำลังทำงานโดยไม่มีสิทธิ์การบันทึกหน้าจอ %@จะไม่แสดง";
 "ScryTab needs some permissions" = "ScryTab ต้องการสิทธิ์บางอย่าง";
 "ScryTab Pro" = "ScryTab Pro";
 "ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro เพิ่มคุณสมบัติ 4 อย่างนอกเหนือจากตัวสลับฟรี";
@@ -55,7 +54,6 @@
 "Arrow keys already assigned to other actions:\n%@" = "ปุ่มลูกศรถูกกำหนดให้กับการกระทำอื่นแล้ว:\n%@";
 "Ask whether to send crash reports" = "ถามว่าจะส่งรายงานการขัดข้องหรือไม่";
 "Auto" = "อัตโนมัติ";
-"Auto Size — larger previews with few windows, more at once with many" = "ขนาดอัตโนมัติ — ภาพตัวอย่างใหญ่ขึ้นเมื่อมีหน้าต่างน้อย แสดงพร้อมกันมากขึ้นเมื่อมีหน้าต่างเยอะ";
 "Auto-install updates periodically" = "ติดตั้งอัปเดตอัตโนมัติเป็นระยะ";
 "Auto-sizing switcher" = "ตัวสลับขนาดอัตโนมัติ";
 "Automatic activation failed" = "การเปิดใช้งานอัตโนมัติล้มเหลว";
@@ -63,7 +61,6 @@
 "Brief description of the change" = "คำอธิบายโดยย่อของการเปลี่ยนแปลง";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "ยกเลิก";
-"Capture windows in the background" = "จับภาพหน้าต่างในเบื้องหลัง";
 "Check for updates now…" = "ตรวจหาอัปเดตทันที…";
 "Check for updates periodically" = "ตรวจหาอัปเดตเป็นระยะ";
 "Check for updates…" = "ตรวจหาอัปเดต…";
@@ -81,7 +78,6 @@
 "Cursor follows focus" = "เคอร์เซอร์ตามโฟกัส";
 "Customize more…" = "ปรับแต่งเพิ่มเติม…";
 "Dark" = "มืด";
-"Dark Mode, live preview, window controls, trackpad gestures, and more" = "โหมดมืด การแสดงตัวอย่างสด การควบคุมหน้าต่าง ท่าทางแทร็คแพด และอื่นๆ";
 "Deactivate and activate here" = "ปิดใช้งานและเปิดใช้งานที่นี่";
 "Deactivate license" = "ปิดใช้งานสิทธิ์";
 "Deactivate license on this machine" = "ปิดใช้งานสิทธิ์บนเครื่องนี้";
@@ -101,7 +97,6 @@
 "Export settings…" = "ส่งออกการตั้งค่า…";
 "Extra shortcuts" = "ทางลัดพิเศษ";
 "Extra shortcuts are a Pro feature." = "ทางลัดพิเศษเป็นคุณสมบัติ Pro";
-"Fade in animation of Preview" = "แอนิเมชันค่อยๆ ปรากฏของการแสดงตัวอย่าง";
 "Fade out animation of Switcher" = "แอนิเมชันค่อยๆ จางหายของตัวสลับ";
 "Failed to import settings" = "นำเข้าการตั้งค่าไม่สำเร็จ";
 "Feature" = "คุณสมบัติ";
@@ -120,7 +115,6 @@
 "Group tabs" = "จัดกลุ่มแท็บ";
 "Help improve ScryTab" = "ช่วยปรับปรุง ScryTab";
 "Hide" = "ซ่อน";
-"Hide colored circles on mouse hover" = "ซ่อนวงกลมสีเมื่อชี้เมาส์";
 "Hide Space number labels" = "ซ่อนป้ายหมายเลขพื้นที่ทำงาน";
 "Hide status icons" = "ซ่อนไอคอนสถานะ";
 "Hide windows" = "ซ่อนหน้าต่าง";
@@ -167,7 +161,6 @@
 "On Day 15, Pro features revert to the free version." = "ในวันที่ 15 คุณสมบัติ Pro จะกลับไปเป็นเวอร์ชันฟรี";
 "Only on different screen" = "เฉพาะบนหน้าจอที่ต่างกัน";
 "Open Accessibility Settings…" = "เปิดการตั้งค่าการช่วยการเข้าถึง…";
-"Open Screen Recording Settings…" = "เปิดการตั้งค่าการบันทึกหน้าจอ…";
 "Open Trackpad Settings…" = "เปิดการตั้งค่าแทร็คแพด…";
 "Order windows by" = "เรียงหน้าต่างตาม";
 "Ordering & Grouping" = "การเรียงและการจัดกลุ่ม";
@@ -176,7 +169,6 @@
 "Pick a machine to deactivate so you can activate here." = "เลือกเครื่องที่จะปิดใช้งานเพื่อให้คุณสามารถเปิดใช้งานที่นี่ได้";
 "Please drag ScryTab into the Applications folder manually." = "โปรดลาก ScryTab ไปยังโฟลเดอร์ Applications ด้วยตนเอง";
 "Please fill in the form" = "โปรดกรอกแบบฟอร์ม";
-"Preview selected window" = "แสดงตัวอย่างหน้าต่างที่เลือก";
 "Pro" = "Pro";
 "Pro activated" = "เปิดใช้งาน Pro แล้ว";
 "Pro feature uses" = "การใช้คุณสมบัติ Pro";
@@ -189,7 +181,6 @@
 "Quit app" = "ออกจากแอป";
 "Recently Created First" = "สร้างล่าสุดก่อน";
 "Recently Focused First" = "โฟกัสล่าสุดก่อน";
-"Reliable, fast window switching with high-quality thumbnails" = "การสลับหน้าต่างที่เชื่อถือได้และรวดเร็วด้วยภาพย่อคุณภาพสูง";
 "Remember my choice" = "จดจำตัวเลือกของฉัน";
 "Report a bug" = "รายงานข้อบกพร่อง";
 "Report on current version" = "รายงานเกี่ยวกับเวอร์ชันปัจจุบัน";
@@ -198,7 +189,6 @@
 "Restart Now" = "รีสตาร์ททันที";
 "Screen including menu bar" = "หน้าจอที่มีแถบเมนู";
 "Screen including mouse" = "หน้าจอที่มีเมาส์";
-"Screen Recording" = "การบันทึกหน้าจอ";
 "Screen showing ScryTab" = "หน้าจอที่แสดง ScryTab";
 "Search" = "ค้นหา";
 "Search is a Pro feature." = "การค้นหาเป็นคุณสมบัติ Pro";
@@ -248,7 +238,6 @@
 "Still interested in Pro?" = "ยังสนใจ Pro อยู่ไหม?";
 "Suggest a change" = "แนะนำการเปลี่ยนแปลง";
 "Support this project" = "สนับสนุนโครงการนี้";
-"Switch between 3 different styles. You can customize them." = "สลับระหว่าง 3 สไตล์ที่ต่างกัน คุณสามารถปรับแต่งได้";
 "Sync with global value" = "ซิงค์กับค่าส่วนกลาง";
 "System" = "ระบบ";
 "System Default" = "ค่าเริ่มต้นของระบบ";
@@ -261,10 +250,7 @@
 "This license is already activated elsewhere" = "สิทธิ์ใช้งานนี้ถูกเปิดใช้งานในที่อื่นแล้ว";
 "This license is already activated on the maximum number of machines. Deactivate one to continue." = "สิทธิ์ใช้งานนี้ถูกเปิดใช้งานบนเครื่องในจำนวนสูงสุดแล้ว ปิดใช้งานหนึ่งเครื่องเพื่อดำเนินการต่อ";
 "This permission is needed to focus windows after you release the shortcut" = "ต้องการสิทธิ์นี้เพื่อโฟกัสหน้าต่างหลังจากคุณปล่อยทางลัด";
-"This permission is needed to show thumbnails and preview of open windows" = "ต้องการสิทธิ์นี้เพื่อแสดงภาพย่อและตัวอย่างของหน้าต่างที่เปิดอยู่";
 "This will keep your Downloads folder uncluttered." = "การทำเช่นนี้จะช่วยให้โฟลเดอร์ดาวน์โหลดของคุณไม่รก";
-"Thumbnails" = "ภาพย่อ";
-"Thumbnails and window previews" = "ภาพย่อและตัวอย่างหน้าต่าง";
 "Title truncation" = "การตัดทอนชื่อ";
 "Titles" = "ชื่อ";
 "Titles appearance" = "ลักษณะชื่อ";
@@ -283,7 +269,6 @@
 "Update now" = "อัปเดตทันที";
 "Updates policy" = "นโยบายการอัปเดต";
 "Usage" = "การใช้งาน";
-"Use the app without this permission. Thumbnails won’t show." = "ใช้แอปโดยไม่มีสิทธิ์นี้ ภาพย่อจะไม่แสดง";
 "Version" = "เวอร์ชัน";
 "View existing discussions" = "ดูการสนทนาที่มีอยู่";
 "Vim keys" = "ปุ่ม Vim";
@@ -292,14 +277,12 @@
 "Website" = "เว็บไซต์";
 "Welcome to %@" = "ยินดีต้อนรับสู่ %@";
 "What did you expect? What happened? Steps to reproduce…" = "คุณคาดหวังอะไร? เกิดอะไรขึ้น? ขั้นตอนการทำซ้ำ…";
-"When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date." = "เมื่อปิดใช้งาน จะหลีกเลี่ยงตัวบ่งชี้การบันทึกหน้าจอสีม่วงของ macOS และหลีกเลี่ยงการกะพริบเมื่อเล่นวิดีโอ DRM ภาพย่อจะอัปเดตน้อยลง";
 "When fullscreen" = "เมื่อเต็มหน้าจอ";
 "When no open window" = "เมื่อไม่มีหน้าต่างที่เปิดอยู่";
 "Window is fullscreen" = "หน้าต่างเต็มหน้าจอ";
 "Window is minimized" = "หน้าต่างถูกย่อ";
 "Window is on every Space" = "หน้าต่างอยู่บนทุกพื้นที่ทำงาน";
 "Window is on Space %d" = "หน้าต่างอยู่บนพื้นที่ทำงาน %d";
-"Window previews" = "ตัวอย่างหน้าต่าง";
 "window switches" = "การสลับหน้าต่าง";
 "Window Title" = "ชื่อหน้าต่าง";
 "Window title contains" = "ชื่อหน้าต่างมี";

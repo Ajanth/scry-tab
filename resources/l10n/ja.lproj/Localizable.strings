@@ -28,7 +28,6 @@
 "Alphabetical Order" = "アルファベット順";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "前回の使用時に ScryTab がクラッシュしました。クラッシュレポートを送信すると問題の修正に役立ちます";
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab は macOS 用の無料・オープンソースのウインドウスイッチャーです。Pro 機能は 14 日間の無料トライアルで利用できます。";
-"ScryTab is running without Screen Recording permissions. %@ won’t show." = "ScryTab は画面収録の権限なしで動作しています。%@は表示されません。";
 "ScryTab needs some permissions" = "ScryTab にはいくつかの権限が必要です";
 "ScryTab Pro" = "ScryTab Pro";
 "ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro は無料版に加えて 4 つの機能を追加します。";
@@ -55,7 +54,6 @@
 "Arrow keys already assigned to other actions:\n%@" = "矢印キーはすでに他のアクションに割り当てられています:\n%@";
 "Ask whether to send crash reports" = "クラッシュレポートの送信を毎回確認";
 "Auto" = "自動";
-"Auto Size — larger previews with few windows, more at once with many" = "自動サイズ — ウインドウが少ないと大きく、多いとまとめて表示";
 "Auto-install updates periodically" = "アップデートを定期的に自動インストール";
 "Auto-sizing switcher" = "自動サイズのスイッチャー";
 "Automatic activation failed" = "自動アクティベーションに失敗しました";
@@ -63,7 +61,6 @@
 "Brief description of the change" = "変更の簡単な説明";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "キャンセル";
-"Capture windows in the background" = "バックグラウンドでウインドウをキャプチャ";
 "Check for updates now…" = "今すぐアップデートを確認…";
 "Check for updates periodically" = "アップデートを定期的に確認";
 "Check for updates…" = "アップデートを確認…";
@@ -81,7 +78,6 @@
 "Cursor follows focus" = "カーソルがフォーカスに従う";
 "Customize more…" = "さらにカスタマイズ…";
 "Dark" = "ダーク";
-"Dark Mode, live preview, window controls, trackpad gestures, and more" = "ダークモード、ライブプレビュー、ウインドウコントロール、トラックパッドジェスチャ、その他";
 "Deactivate and activate here" = "非アクティブ化してここでアクティベート";
 "Deactivate license" = "ライセンスを非アクティブ化";
 "Deactivate license on this machine" = "このマシンのライセンスを非アクティブ化";
@@ -101,7 +97,6 @@
 "Export settings…" = "設定を書き出す…";
 "Extra shortcuts" = "追加のショートカット";
 "Extra shortcuts are a Pro feature." = "追加のショートカットは Pro 機能です。";
-"Fade in animation of Preview" = "プレビューのフェードインアニメーション";
 "Fade out animation of Switcher" = "スイッチャーのフェードアウトアニメーション";
 "Failed to import settings" = "設定の読み込みに失敗しました";
 "Feature" = "機能";
@@ -120,7 +115,6 @@
 "Group tabs" = "タブをグループ化";
 "Help improve ScryTab" = "ScryTab の改善に協力";
 "Hide" = "非表示";
-"Hide colored circles on mouse hover" = "マウスホバー時のカラーサークルを非表示";
 "Hide Space number labels" = "Space 番号ラベルを非表示";
 "Hide status icons" = "ステータスアイコンを非表示";
 "Hide windows" = "ウインドウを非表示";
@@ -167,7 +161,6 @@
 "On Day 15, Pro features revert to the free version." = "15 日目に Pro 機能は無料版に戻ります。";
 "Only on different screen" = "別の画面のときのみ";
 "Open Accessibility Settings…" = "アクセシビリティ設定を開く…";
-"Open Screen Recording Settings…" = "画面収録設定を開く…";
 "Open Trackpad Settings…" = "トラックパッド設定を開く…";
 "Order windows by" = "ウインドウの並び順";
 "Ordering & Grouping" = "並び順とグループ化";
@@ -176,7 +169,6 @@
 "Pick a machine to deactivate so you can activate here." = "ここでアクティベートできるよう、非アクティブ化するマシンを選択してください。";
 "Please drag ScryTab into the Applications folder manually." = "ScryTab を手動でアプリケーションフォルダにドラッグしてください。";
 "Please fill in the form" = "フォームを入力してください";
-"Preview selected window" = "選択したウインドウをプレビュー";
 "Pro" = "Pro";
 "Pro activated" = "Pro がアクティベートされました";
 "Pro feature uses" = "Pro 機能の使用回数";
@@ -189,7 +181,6 @@
 "Quit app" = "App を終了";
 "Recently Created First" = "作成日順(新しい順)";
 "Recently Focused First" = "最近フォーカスした順";
-"Reliable, fast window switching with high-quality thumbnails" = "高品質なサムネイルによる、安定した高速なウインドウ切り替え";
 "Remember my choice" = "選択を記憶する";
 "Report a bug" = "バグを報告";
 "Report on current version" = "現在のバージョンについて報告";
@@ -198,7 +189,6 @@
 "Restart Now" = "今すぐ再起動";
 "Screen including menu bar" = "メニューバーを含む画面";
 "Screen including mouse" = "マウスのある画面";
-"Screen Recording" = "画面収録";
 "Screen showing ScryTab" = "ScryTab を表示する画面";
 "Search" = "検索";
 "Search is a Pro feature." = "検索は Pro 機能です。";
@@ -248,7 +238,6 @@
 "Still interested in Pro?" = "Pro に興味がありますか?";
 "Suggest a change" = "変更を提案";
 "Support this project" = "このプロジェクトを支援";
-"Switch between 3 different styles. You can customize them." = "3 種類のスタイルを切り替えられます。カスタマイズも可能です。";
 "Sync with global value" = "全体の値と同期";
 "System" = "システム";
 "System Default" = "システムのデフォルト";
@@ -261,10 +250,7 @@
 "This license is already activated elsewhere" = "このライセンスは別のマシンですでにアクティベートされています";
 "This license is already activated on the maximum number of machines. Deactivate one to continue." = "このライセンスは最大数のマシンですでにアクティベートされています。続行するには 1 台を非アクティブ化してください。";
 "This permission is needed to focus windows after you release the shortcut" = "ショートカットを離した後にウインドウへフォーカスするために必要な権限です";
-"This permission is needed to show thumbnails and preview of open windows" = "開いているウインドウのサムネイルとプレビューを表示するために必要な権限です";
 "This will keep your Downloads folder uncluttered." = "ダウンロードフォルダを散らからないようにできます。";
-"Thumbnails" = "サムネイル";
-"Thumbnails and window previews" = "サムネイルとウィンドウプレビュー";
 "Title truncation" = "タイトルの省略";
 "Titles" = "タイトル";
 "Titles appearance" = "タイトルの外観";
@@ -283,7 +269,6 @@
 "Update now" = "今すぐアップデート";
 "Updates policy" = "アップデートのポリシー";
 "Usage" = "使用状況";
-"Use the app without this permission. Thumbnails won’t show." = "この権限なしで App を使用します。サムネイルは表示されません。";
 "Version" = "バージョン";
 "View existing discussions" = "既存のディスカッションを表示";
 "Vim keys" = "Vim キー";
@@ -292,14 +277,12 @@
 "Website" = "Web サイト";
 "Welcome to %@" = "%@ へようこそ";
 "What did you expect? What happened? Steps to reproduce…" = "期待した動作、実際に起きたこと、再現手順…";
-"When disabled, avoids the macOS purple screen-recording indicator, and avoids flickers when playing DRM video. Thumbnails will be less up-to-date." = "無効にすると、macOS の紫色の画面収録インジケータを回避し、DRM ビデオ再生時のちらつきを防げます。サムネイルの更新頻度は低くなります。";
 "When fullscreen" = "フルスクリーン時";
 "When no open window" = "開いているウインドウがないとき";
 "Window is fullscreen" = "フルスクリーンのウインドウ";
 "Window is minimized" = "最小化されたウインドウ";
 "Window is on every Space" = "すべての Space にあるウインドウ";
 "Window is on Space %d" = "Space %d にあるウインドウ";
-"Window previews" = "ウィンドウプレビュー";
 "window switches" = "ウインドウ切り替え";
 "Window Title" = "ウインドウタイトル";
 "Window title contains" = "ウインドウタイトルに含まれる";
