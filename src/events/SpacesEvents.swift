@@ -25,7 +25,7 @@ class SpacesEvents {
                 App.checkIfShortcutsShouldBeDisabled(focusedWindow, nil)
             }
             // if UI was kept open during Space transition, the Spaces may be obsolete; we refresh them
-            App.refreshOpenUiAfterExternalEvent(Windows.list)
+            App.refreshOpenUiAfterExternalEvent()
             Logger.info { "screens:\(NSScreen.screens.map { ($0.cachedUuid() ?? "nil" as CFString, $0.frame) })" }
             Logger.info { "currentSpace:\(Spaces.currentSpaceIndex) (id:\(Spaces.currentSpaceId)) spaces:\(Spaces.screenSpacesMap)" }
         }

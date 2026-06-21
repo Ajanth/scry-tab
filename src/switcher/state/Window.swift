@@ -18,7 +18,6 @@ class Window {
     /// fields — so call sites stay unchanged without per-property boilerplate on this class.
     var state: WindowState
     var cgWindowId: CGWindowID?
-    var thumbnail: CALayerContents?
     var icon: CGImage? { get { application.icon } }
     var shouldShowTheUser = true
     var tabbedSiblingWids: [CGWindowID]?
@@ -155,24 +154,6 @@ class Window {
         CFRunLoopAddSource(BackgroundWork.accessibilityEventsThread.runLoop, AXObserverGetRunLoopSource(axObserver), .commonModes)
     }
 
-    func refreshThumbnail(_ screenshot: CALayerContents) {
-        thumbnail = screenshot
-        if !SwitcherSession.isActive || !shouldShowTheUser { return }
-        if let position, let size,
-           let view = (TilesView.recycledViews.first { $0.window_?.cgWindowId == cgWindowId }) {
-            if !view.thumbnail.isHidden {
-                let thumbnailSize = TileView.thumbnailSize(size, false)
-                let newSize = thumbnailSize.width != view.thumbnail.frame.width || thumbnailSize.height != view.thumbnail.frame.height
-                view.thumbnail.updateContents(screenshot, thumbnailSize)
-                // if the thumbnail size has changed, we need to refresh the open UI
-                if newSize {
-                    App.refreshOpenUiAfterExternalEvent([])
-                }
-            }
-            PreviewPanel.updateIfShowing(cgWindowId, screenshot, position, size)
-        }
-    }
-
     func canBeClosed() -> Bool {
         return !self.isWindowlessApp
     }
@@ -252,7 +233,6 @@ class Window {
         if let altTabWindow = altTabWindow() {
             App.shared.activate(ignoringOtherApps: true)
             altTabWindow.makeKeyAndOrderFront(nil)
-            WindowThumbnails.previewSelectedIfNeeded()
         } else if self.isWindowlessApp || cgWindowId == nil {
             if let bundleUrl = application.bundleURL, self.isWindowlessApp {
                 if (try? NSWorkspace.shared.launchApplication(at: bundleUrl, configuration: [:])) == nil {
@@ -261,7 +241,6 @@ class Window {
             } else {
                 application.runningApplication.activate(options: .activateAllWindows)
             }
-            WindowThumbnails.previewSelectedIfNeeded()
         } else {
             // macOS bug: when switching to a System Preferences window in another space, it switches to that space,
             // but quickly switches back to another window in that space
@@ -299,9 +278,6 @@ class Window {
                     var originPsn = ProcessSerialNumber()
                     GetProcessForPID(originFrontPid, &originPsn)
                     SLSSpaceSetFrontPSN(CGS_CONNECTION, originSpaceId, originPsn)
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
-                    WindowThumbnails.previewSelectedIfNeeded()
                 }
             }
         }
@@ -399,8 +375,8 @@ class Window {
             DispatchQueue.main.async {
                 guard let window = (Windows.list.first { $0.isEqualRobust(focusedWindow, focusedWid) }) else { return }
                 app.focusedWindow = window
-                if let windows = Windows.updateLastFocusOrder(window) {
-                    App.refreshOpenUiAfterExternalEvent(windows)
+                if Windows.updateLastFocusOrder(window) != nil {
+                    App.refreshOpenUiAfterExternalEvent()
                 }
             }
         }

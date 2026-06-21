@@ -148,7 +148,7 @@ class Application: NSObject {
 
     func fetchAppIcon() {
         guard icon == nil else { return }
-        BackgroundWork.screenshotsQueue.addOperation { [weak self] in
+        BackgroundWork.imageProcessingQueue.addOperation { [weak self] in
             guard let self, self.icon == nil else { return }
             let r = Application.appIconWithoutPadding(runningApplication.icon)
             DispatchQueue.main.async { [weak self] in
@@ -180,7 +180,7 @@ class Application: NSObject {
                         // apps don't always send kAXWindowCreatedNotification upon launch; we manually check to prevent missing windows
                         guard let self else { return }
                         if addWindowlessWindowIfNeeded() != nil {
-                            App.refreshOpenUiAfterExternalEvent([])
+                            App.refreshOpenUiAfterExternalEvent()
                         }
                         Applications.manuallyUpdateWindows(self)
                     }
@@ -197,14 +197,14 @@ class Application: NSObject {
         let window = Window(self)
         Windows.appendWindow(window)
         focusedWindow = nil
-        App.refreshOpenUiAfterExternalEvent([])
+        App.refreshOpenUiAfterExternalEvent()
         return window
     }
 
     func removeWindowlessAppWindow() {
         guard let windowlessAppWindow = (Windows.list.first { $0.isWindowlessApp == true && $0.application.pid == self.pid }) else { return }
         Windows.removeWindows([windowlessAppWindow], false)
-        App.refreshOpenUiAfterExternalEvent([])
+        App.refreshOpenUiAfterExternalEvent()
     }
 
     func hideOrShow() {

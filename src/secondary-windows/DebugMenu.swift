@@ -34,7 +34,7 @@ final class DebugMenu: NSPanel {
     private static func makeSamplers() -> [Sampler] {
         let scheduler = AXCallScheduler.shared
         let queues: [LabeledOperationQueue] = [
-            BackgroundWork.screenshotsQueue,
+            BackgroundWork.imageProcessingQueue,
             BackgroundWork.accessibilityCommandsQueue,
             BackgroundWork.focusOrderQueue,
             scheduler.axQueryFirstTryQueue,

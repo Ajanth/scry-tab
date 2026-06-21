@@ -9,30 +9,10 @@ let CGS_CONNECTION = CGSMainConnectionID()
 typealias CGSConnectionID = UInt32
 typealias CGSSpaceID = UInt64
 
-struct CGSWindowCaptureOptions: OptionSet {
-    let rawValue: UInt32
-    static let ignoreGlobalClipShape = CGSWindowCaptureOptions(rawValue: 1 << 11)
-    // on a retina display, 1px is spread on 4px, so nominalResolution is 1/4 of bestResolution
-    static let nominalResolution = CGSWindowCaptureOptions(rawValue: 1 << 9)
-    static let bestResolution = CGSWindowCaptureOptions(rawValue: 1 << 8)
-    // when Stage Manager is enabled, screenshots can become skewed. This param gets us full-size screenshots regardless
-    static let fullSize = CGSWindowCaptureOptions(rawValue: 1 << 19)
-}
-
 /// returns the connection to the WindowServer. This connection ID is required when calling other APIs
 /// * macOS 10.10+
 @_silgen_name("CGSMainConnectionID")
 func CGSMainConnectionID() -> CGSConnectionID
-
-/// returns an array of CGImage of the windows which ID is given as `windowList`. `windowList` is supposed to be an array of IDs but in my test on High Sierra, the function ignores other IDs than the first, and always returns the screenshot of the first window in the array
-/// * performance: the `HW` in the name seems to imply better performance, and it was observed by some contributors that it seems to be faster (see https://github.com/Ajanth/scry-tab/issues/45) than other methods
-/// * quality: medium
-/// * minimized windows: yes
-/// * windows in other spaces: yes
-/// * offscreen content: no
-/// * macOS 10.10+
-@_silgen_name("CGSHWCaptureWindowList")
-func CGSHWCaptureWindowList(_ cid: CGSConnectionID, _ windowList: UnsafeMutablePointer<CGWindowID>, _ windowCount: UInt32, _ options: CGSWindowCaptureOptions) -> Unmanaged<CFArray>
 
 /// returns an array of displays (as NSDictionary) -> each having an array of spaces (as NSDictionary) at the "Spaces" key; each having a space ID (as UInt64) at the "id64" key
 /// * macOS 10.10+
@@ -154,12 +134,6 @@ func CGSCopySpacesForWindows(_ cid: CGSConnectionID, _ mask: CGSSpaceMask.RawVal
 /// * macOS 10.10+
 @_silgen_name("CGSGetWindowLevel") @discardableResult
 func CGSGetWindowLevel(_ cid: CGSConnectionID, _ wid: CGWindowID, _ level: UnsafeMutablePointer<CGWindowLevel>) -> CGError
-
-/// returns status of the checkbox in System Preferences > Security & Privacy > Privacy > Screen Recording
-/// returns 1 if checked or 0 if unchecked; also prompts the user the first time if unchecked
-/// the return value will be the same during the app lifetime; it will not reflect the actual status of the checkbox
-@_silgen_name("SLSRequestScreenCaptureAccess") @discardableResult
-func SLSRequestScreenCaptureAccess() -> UInt8
 
 /// enables/disables a symbolic hotkeys. These are system shortcuts such as command+tab or Spotlight
 /// it is possible to find all the existing hotkey IDs by using CGSGetSymbolicHotKeyValue on the first few hundred numbers
