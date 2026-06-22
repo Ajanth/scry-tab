@@ -2,14 +2,14 @@ struct UsageStats {
     private static let defaults = UserDefaults(suiteName: "\(App.bundleIdentifier).usage")!
     private static let writeQueue = DispatchQueue(label: "UsageStats.writeQueue", qos: .utility)
     private static let maxAge: TimeInterval = 365 * 24 * 3600
-    private static let allKeys = ["triggers", "searches", "triggersAppIcons", "triggersTitles", "triggersAutoSize", "triggersExtraShortcuts"]
+    private static let allKeys = ["triggers", "searches", "triggersTitles", "triggersAutoSize", "triggersExtraShortcuts"]
     private(set) static var searchRecordedThisSession = false
 
     static func recordTrigger(_ shortcutIndex: Int) {
         record("triggers")
         if shortcutIndex > 0 && shortcutIndex < Preferences.maxShortcutCount { record("triggersExtraShortcuts") }
         let style = Preferences.effectiveAppearanceStyle(shortcutIndex)
-        if style == .appIcons { record("triggersAppIcons") }
+        // App Icons is the free default style, so it isn't a Pro-feature signal; only Titles is.
         if style == .titles { record("triggersTitles") }
         if Preferences.effectiveAppearanceSize(shortcutIndex) == .auto { record("triggersAutoSize") }
     }
@@ -34,7 +34,6 @@ struct UsageStats {
     static var usedProFeaturesSessionCount: Int {
         UsageStatsTestable.proFeatureSessionCount(
             triggers: getTimestamps("triggers"),
-            appIcons: getTimestamps("triggersAppIcons"),
             titles: getTimestamps("triggersTitles"),
             extraShortcuts: getTimestamps("triggersExtraShortcuts"),
             searches: getTimestamps("searches"))
@@ -46,10 +45,6 @@ struct UsageStats {
         UsageStatsTestable.proFeatureNames().compactMap {
             count($0.key, since: Date.distantPast) > 0 ? $0.name : nil
         }
-    }
-
-    static func usedAppIconsOrTitles() -> Bool {
-        count("triggersAppIcons", since: Date.distantPast) > 0 || count("triggersTitles", since: Date.distantPast) > 0
     }
 
     static func usedSearch() -> Bool { count("searches", since: Date.distantPast) > 0 }

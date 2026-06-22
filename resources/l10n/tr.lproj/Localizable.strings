@@ -26,13 +26,6 @@
 "All Spaces" = "Tüm Alanlar";
 "Allowed" = "İzin verildi";
 "Alphabetical Order" = "Alfabetik sıra";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab en son kullandığınızda çöktü. Bir çökme raporu göndermek sorunun düzeltilmesine yardımcı olacaktır";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab, macOS için ücretsiz ve açık kaynaklı bir pencere değiştiricidir. Pro özellikleri 14 günlük ücretsiz deneme ile kullanılabilir.";
-"ScryTab needs some permissions" = "ScryTab’ın bazı izinlere ihtiyacı var";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro, ücretsiz değiştiriciye ek olarak 4 özellik ekler.";
-"ScryTab Pro is still available" = "ScryTab Pro hâlâ mevcut";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab, pencerenin şu anda küçültülmüş veya tam ekran olduğunu bir durum simgesiyle gösterir.";
 "Always" = "Her zaman";
 "Always send crash reports" = "Çökme raporlarını her zaman gönder";
 "and press" = "ve basın";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "Uygulama simgeleri ve Başlıklar stilleri";
 "App Icons & Window Titles styles" = "Uygulama simgeleri ve Pencere Başlıkları stilleri";
 "App Icons / Titles styles" = "Uygulama simgeleri / Başlıklar stilleri";
-"App Icons appearance" = "Uygulama simgeleri görünümü";
 "App is hidden" = "Uygulama gizli";
 "App is running but has no open window" = "Uygulama çalışıyor ancak açık penceresi yok";
 "Apparition delay of Switcher" = "Değiştiricinin görünme gecikmesi";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "Pro ile ScryTab’dan daha fazlasını elde edin";
 "Get Pro" = "Pro’yu Edinin";
 "Go back" = "Geri dön";
-"Grant permission" = "İzin ver";
 "Group apps" = "Uygulamaları grupla";
 "Group tabs" = "Sekmeleri grupla";
 "Help improve ScryTab" = "ScryTab’ın geliştirilmesine yardımcı olun";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "Menü çubuğunu içeren ekran";
 "Screen including mouse" = "Fareyi içeren ekran";
 "Screen showing ScryTab" = "ScryTab’ı gösteren ekran";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab en son kullandığınızda çöktü. Bir çökme raporu göndermek sorunun düzeltilmesine yardımcı olacaktır";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab, macOS için ücretsiz ve açık kaynaklı bir pencere değiştiricidir. Pro özellikleri 14 günlük ücretsiz deneme ile kullanılabilir.";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro, ücretsiz değiştiriciye ek olarak 4 özellik ekler.";
+"ScryTab Pro is still available" = "ScryTab Pro hâlâ mevcut";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab, pencerenin şu anda küçültülmüş veya tam ekran olduğunu bir durum simgesiyle gösterir.";
 "Search" = "Ara";
 "Search is a Pro feature." = "Arama bir Pro özelliğidir.";
 "Search windows by typing" = "Yazarak pencerelerde ara";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "Şu ekranlardan pencereleri göster";
 "Show windows from Spaces" = "Şu Alanlardan pencereleri göster";
 "Size" = "Boyut";
-"Skipped" = "Atlandı";
 "Small" = "Küçük";
 "Some Pro features have reverted to free defaults." = "Bazı Pro özellikleri ücretsiz varsayılanlara döndü.";
 "Source code" = "Kaynak kodu";
@@ -241,7 +237,6 @@
 "Sync with global value" = "Genel değerle eşitle";
 "System" = "Sistem";
 "System Default" = "Sistem Varsayılanı";
-"The App Icons style is a Pro feature." = "Uygulama simgeleri stili bir Pro özelliğidir.";
 "The application needs to restart to apply the imported settings." = "İçe aktarılan ayarları uygulamak için uygulamanın yeniden başlatılması gerekiyor.";
 "The application needs to restart to apply the language change." = "Dil değişikliğini uygulamak için uygulamanın yeniden başlatılması gerekiyor.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Sunucu gönderimi kabul etmedi. İnternet bağlantınızı denetleyip yeniden deneyin — taslağınız korunuyor.";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "Sunucudan beklenmeyen yanıt.";
 "Unlock extra shortcuts with Pro" = "Pro ile ek kısayolların kilidini açın";
 "Unlock Search with Pro" = "Pro ile Arama’nın kilidini açın";
-"Unlock the App Icons style with Pro" = "Pro ile Uygulama simgeleri stilinin kilidini açın";
 "Unlock the Titles style with Pro" = "Pro ile Başlıklar stilinin kilidini açın";
 "Up to 9 keyboard shortcuts" = "9’a kadar klavye kısayolu";
 "Update now" = "Şimdi güncelle";

@@ -26,13 +26,6 @@
 "All Spaces" = "كل المساحات";
 "Allowed" = "مسموح";
 "Alphabetical Order" = "ترتيب أبجدي";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "تعطّل ScryTab في آخر مرة استخدمته فيها. إرسال تقرير الأعطال سيساعد في إصلاح المشكلة";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab هو مُحوّل نوافذ مجاني ومفتوح المصدر لـ macOS. تتوفر ميزات Pro مع فترة تجريبية مجانية لمدة 14 يومًا.";
-"ScryTab needs some permissions" = "يحتاج ScryTab إلى بعض الأذونات";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "يضيف ScryTab Pro 4 ميزات تتجاوز المُحوّل المجاني.";
-"ScryTab Pro is still available" = "لا يزال ScryTab Pro متاحًا";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "سيُظهر ScryTab ما إذا كانت النافذة مصغّرة أو بملء الشاشة حاليًا برمز حالة.";
 "Always" = "دائمًا";
 "Always send crash reports" = "إرسال تقارير الأعطال دائمًا";
 "and press" = "ثم اضغط";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "نمطا أيقونات التطبيقات والعناوين";
 "App Icons & Window Titles styles" = "نمطا أيقونات التطبيقات وعناوين النوافذ";
 "App Icons / Titles styles" = "نمطا أيقونات التطبيقات / العناوين";
-"App Icons appearance" = "مظهر أيقونات التطبيقات";
 "App is hidden" = "التطبيق مخفي";
 "App is running but has no open window" = "التطبيق قيد التشغيل ولكن ليس لديه نافذة مفتوحة";
 "Apparition delay of Switcher" = "تأخير ظهور المُحوّل";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "احصل على المزيد من ScryTab مع Pro";
 "Get Pro" = "الحصول على Pro";
 "Go back" = "العودة";
-"Grant permission" = "منح الإذن";
 "Group apps" = "تجميع التطبيقات";
 "Group tabs" = "تجميع علامات التبويب";
 "Help improve ScryTab" = "ساعد في تحسين ScryTab";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "الشاشة التي تتضمن شريط القائمة";
 "Screen including mouse" = "الشاشة التي تتضمن الفأرة";
 "Screen showing ScryTab" = "الشاشة التي تعرض ScryTab";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "تعطّل ScryTab في آخر مرة استخدمته فيها. إرسال تقرير الأعطال سيساعد في إصلاح المشكلة";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab هو مُحوّل نوافذ مجاني ومفتوح المصدر لـ macOS. تتوفر ميزات Pro مع فترة تجريبية مجانية لمدة 14 يومًا.";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "يضيف ScryTab Pro 4 ميزات تتجاوز المُحوّل المجاني.";
+"ScryTab Pro is still available" = "لا يزال ScryTab Pro متاحًا";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "سيُظهر ScryTab ما إذا كانت النافذة مصغّرة أو بملء الشاشة حاليًا برمز حالة.";
 "Search" = "البحث";
 "Search is a Pro feature." = "البحث ميزة من ميزات Pro.";
 "Search windows by typing" = "البحث في النوافذ بالكتابة";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "إظهار النوافذ من الشاشات";
 "Show windows from Spaces" = "إظهار النوافذ من المساحات";
 "Size" = "الحجم";
-"Skipped" = "تم التخطي";
 "Small" = "صغير";
 "Some Pro features have reverted to free defaults." = "عادت بعض ميزات Pro إلى الإعدادات الافتراضية المجانية.";
 "Source code" = "الكود المصدري";
@@ -241,7 +237,6 @@
 "Sync with global value" = "المزامنة مع القيمة العامة";
 "System" = "النظام";
 "System Default" = "افتراضي النظام";
-"The App Icons style is a Pro feature." = "نمط أيقونات التطبيقات ميزة من ميزات Pro.";
 "The application needs to restart to apply the imported settings." = "يحتاج التطبيق إلى إعادة التشغيل لتطبيق الإعدادات المستوردة.";
 "The application needs to restart to apply the language change." = "يحتاج التطبيق إلى إعادة التشغيل لتطبيق تغيير اللغة.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "لم يقبل الخادم الإرسال. تحقق من اتصالك بالإنترنت وحاول مرة أخرى — تم الاحتفاظ بمسودتك.";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "استجابة غير متوقعة من الخادم.";
 "Unlock extra shortcuts with Pro" = "افتح الاختصارات الإضافية مع Pro";
 "Unlock Search with Pro" = "افتح البحث مع Pro";
-"Unlock the App Icons style with Pro" = "افتح نمط أيقونات التطبيقات مع Pro";
 "Unlock the Titles style with Pro" = "افتح نمط العناوين مع Pro";
 "Up to 9 keyboard shortcuts" = "ما يصل إلى 9 اختصارات لوحة المفاتيح";
 "Update now" = "التحديث الآن";

@@ -26,13 +26,6 @@
 "All Spaces" = "Alle Spaces";
 "Allowed" = "Toegestaan";
 "Alphabetical Order" = "Alfabetische volgorde";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab is de vorige keer gecrasht. Door een crashrapport te versturen help je het probleem op te lossen";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is een gratis, open-source vensterwisselaar voor macOS. Pro-functies zijn beschikbaar met een gratis proefperiode van 14 dagen.";
-"ScryTab needs some permissions" = "ScryTab heeft enkele rechten nodig";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro voegt 4 functies toe aan de gratis wisselaar.";
-"ScryTab Pro is still available" = "ScryTab Pro is nog steeds beschikbaar";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab toont met een statussymbool of het venster momenteel geminimaliseerd of in volledig scherm is.";
 "Always" = "Altijd";
 "Always send crash reports" = "Altijd crashrapporten versturen";
 "and press" = "en druk op";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "Stijlen App-symbolen en Titels";
 "App Icons & Window Titles styles" = "Stijlen App-symbolen en Venstertitels";
 "App Icons / Titles styles" = "Stijlen App-symbolen / Titels";
-"App Icons appearance" = "Weergave App-symbolen";
 "App is hidden" = "App is verborgen";
 "App is running but has no open window" = "App is actief maar heeft geen open venster";
 "Apparition delay of Switcher" = "Verschijningsvertraging van wisselaar";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "Haal meer uit ScryTab met Pro";
 "Get Pro" = "Pro nemen";
 "Go back" = "Terug";
-"Grant permission" = "Toegang verlenen";
 "Group apps" = "Apps groeperen";
 "Group tabs" = "Tabbladen groeperen";
 "Help improve ScryTab" = "Help ScryTab verbeteren";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "Scherm met menubalk";
 "Screen including mouse" = "Scherm met muis";
 "Screen showing ScryTab" = "Scherm dat ScryTab toont";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab is de vorige keer gecrasht. Door een crashrapport te versturen help je het probleem op te lossen";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is een gratis, open-source vensterwisselaar voor macOS. Pro-functies zijn beschikbaar met een gratis proefperiode van 14 dagen.";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro voegt 4 functies toe aan de gratis wisselaar.";
+"ScryTab Pro is still available" = "ScryTab Pro is nog steeds beschikbaar";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab toont met een statussymbool of het venster momenteel geminimaliseerd of in volledig scherm is.";
 "Search" = "Zoeken";
 "Search is a Pro feature." = "Zoeken is een Pro-functie.";
 "Search windows by typing" = "Vensters zoeken door te typen";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "Toon vensters van schermen";
 "Show windows from Spaces" = "Toon vensters van Spaces";
 "Size" = "Grootte";
-"Skipped" = "Overgeslagen";
 "Small" = "Klein";
 "Some Pro features have reverted to free defaults." = "Sommige Pro-functies zijn teruggezet naar de gratis standaardwaarden.";
 "Source code" = "Broncode";
@@ -241,7 +237,6 @@
 "Sync with global value" = "Synchroniseren met globale waarde";
 "System" = "Systeem";
 "System Default" = "Systeemstandaard";
-"The App Icons style is a Pro feature." = "De stijl App-symbolen is een Pro-functie.";
 "The application needs to restart to apply the imported settings." = "De app moet opnieuw worden gestart om de geïmporteerde instellingen toe te passen.";
 "The application needs to restart to apply the language change." = "De app moet opnieuw worden gestart om de taalwijziging toe te passen.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "De server heeft de inzending niet geaccepteerd. Controleer je internetverbinding en probeer opnieuw — je concept blijft bewaard.";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "Onverwacht antwoord van de server.";
 "Unlock extra shortcuts with Pro" = "Ontgrendel extra sneltoetsen met Pro";
 "Unlock Search with Pro" = "Ontgrendel Zoeken met Pro";
-"Unlock the App Icons style with Pro" = "Ontgrendel de stijl App-symbolen met Pro";
 "Unlock the Titles style with Pro" = "Ontgrendel de stijl Titels met Pro";
 "Up to 9 keyboard shortcuts" = "Tot 9 sneltoetsen";
 "Update now" = "Nu bijwerken";

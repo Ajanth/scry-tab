@@ -16,7 +16,6 @@ enum HardGateReason {
 enum ResolvedReason {
     case extraShortcut
     case search
-    case appIconsStyle
     case titlesStyle
     case nonEngaged
 
@@ -27,8 +26,6 @@ enum ResolvedReason {
             return NSLocalizedString("Unlock extra shortcuts with Pro", comment: "")
         case .search:
             return NSLocalizedString("Unlock Search with Pro", comment: "")
-        case .appIconsStyle:
-            return NSLocalizedString("Unlock the App Icons style with Pro", comment: "")
         case .titlesStyle:
             return NSLocalizedString("Unlock the Titles style with Pro", comment: "")
         case .nonEngaged:
@@ -38,10 +35,10 @@ enum ResolvedReason {
 }
 
 extension HardGateReason {
-    /// Priority order: extraShortcut > search > appIconsStyle / titlesStyle > nonEngaged.
+    /// Priority order: extraShortcut > search > titlesStyle > nonEngaged.
     /// `.proPreferences(_, true)` is search-on-release; the `appearanceStyle` payload distinguishes
-    /// `.appIcons` vs `.titles`. `.feature(.autoSize)` falls into `.nonEngaged` (the aspirational
-    /// fallback bucket).
+    /// `.titles` (Pro) from `.appIcons`/nil (free default → `.nonEngaged`). `.feature(.autoSize)`
+    /// falls into `.nonEngaged` (the aspirational fallback bucket).
     var resolved: ResolvedReason {
         switch self {
         case .feature(.extraShortcut):
@@ -53,18 +50,12 @@ extension HardGateReason {
         case .feature(.appIconsAndTitlesStyle):
             // Effectively unreachable: `.appIconsAndTitlesStyle` is degradable, so `attemptUse()`
             // short-circuits before reaching `attemptHardGatedFeature`. Read the live preference
-            // as the truthful fallback if it ever does fire.
-            switch Preferences.appearanceStyle {
-            case .appIcons: return .appIconsStyle
-            case .titles: return .titlesStyle
-            }
+            // as the truthful fallback if it ever does fire. App Icons is free, so only Titles is
+            // a Pro reason.
+            return Preferences.appearanceStyle == .titles ? .titlesStyle : .nonEngaged
         case .proPreferences(let appearanceStyle, let shortcut):
             if shortcut { return .search }
-            switch appearanceStyle {
-            case .appIcons: return .appIconsStyle
-            case .titles: return .titlesStyle
-            case nil: return .nonEngaged
-            }
+            return appearanceStyle == .titles ? .titlesStyle : .nonEngaged
         case .feature(.autoSize):
             return .nonEngaged
         }

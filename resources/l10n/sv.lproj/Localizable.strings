@@ -26,13 +26,6 @@
 "All Spaces" = "Alla skrivbord";
 "Allowed" = "Tillåten";
 "Alphabetical Order" = "Alfabetisk ordning";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab kraschade förra gången du använde den. Att skicka en kraschrapport hjälper till att åtgärda problemet";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab är en gratis fönsterväxlare med öppen källkod för macOS. Pro-funktioner är tillgängliga med en 14-dagars gratis provperiod.";
-"ScryTab needs some permissions" = "ScryTab behöver vissa behörigheter";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro lägger till 4 funktioner utöver den kostnadsfria växlaren.";
-"ScryTab Pro is still available" = "ScryTab Pro är fortfarande tillgängligt";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab visar med en statusikon om fönstret är minimerat eller i helskärm.";
 "Always" = "Alltid";
 "Always send crash reports" = "Skicka alltid kraschrapporter";
 "and press" = "och tryck";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "Stilar för Appikoner och Titlar";
 "App Icons & Window Titles styles" = "Stilar för Appikoner och Fönstertitlar";
 "App Icons / Titles styles" = "Stilar för Appikoner/Titlar";
-"App Icons appearance" = "Utseende för Appikoner";
 "App is hidden" = "App är dold";
 "App is running but has no open window" = "App körs men har inget öppet fönster";
 "Apparition delay of Switcher" = "Fördröjning innan växlaren visas";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "Få ut mer av ScryTab med Pro";
 "Get Pro" = "Skaffa Pro";
 "Go back" = "Tillbaka";
-"Grant permission" = "Bevilja behörighet";
 "Group apps" = "Gruppera appar";
 "Group tabs" = "Gruppera flikar";
 "Help improve ScryTab" = "Hjälp till att förbättra ScryTab";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "Skärm som innehåller menyraden";
 "Screen including mouse" = "Skärm som innehåller musen";
 "Screen showing ScryTab" = "Skärm som visar ScryTab";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab kraschade förra gången du använde den. Att skicka en kraschrapport hjälper till att åtgärda problemet";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab är en gratis fönsterväxlare med öppen källkod för macOS. Pro-funktioner är tillgängliga med en 14-dagars gratis provperiod.";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro lägger till 4 funktioner utöver den kostnadsfria växlaren.";
+"ScryTab Pro is still available" = "ScryTab Pro är fortfarande tillgängligt";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab visar med en statusikon om fönstret är minimerat eller i helskärm.";
 "Search" = "Sök";
 "Search is a Pro feature." = "Sök är en Pro-funktion.";
 "Search windows by typing" = "Sök fönster genom att skriva";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "Visa fönster från skärmar";
 "Show windows from Spaces" = "Visa fönster från skrivbord";
 "Size" = "Storlek";
-"Skipped" = "Hoppade över";
 "Small" = "Liten";
 "Some Pro features have reverted to free defaults." = "Vissa Pro-funktioner har återgått till gratisstandarden.";
 "Source code" = "Källkod";
@@ -241,7 +237,6 @@
 "Sync with global value" = "Synkronisera med globalt värde";
 "System" = "System";
 "System Default" = "Systemstandard";
-"The App Icons style is a Pro feature." = "Stilen Appikoner är en Pro-funktion.";
 "The application needs to restart to apply the imported settings." = "Programmet måste startas om för att tillämpa de importerade inställningarna.";
 "The application needs to restart to apply the language change." = "Programmet måste startas om för att tillämpa språkändringen.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Servern accepterade inte inlämningen. Kontrollera din internetanslutning och försök igen — ditt utkast har sparats.";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "Oväntat svar från servern.";
 "Unlock extra shortcuts with Pro" = "Lås upp extra kortkommandon med Pro";
 "Unlock Search with Pro" = "Lås upp Sök med Pro";
-"Unlock the App Icons style with Pro" = "Lås upp stilen Appikoner med Pro";
 "Unlock the Titles style with Pro" = "Lås upp stilen Titlar med Pro";
 "Up to 9 keyboard shortcuts" = "Upp till 9 kortkommandon";
 "Update now" = "Uppdatera nu";

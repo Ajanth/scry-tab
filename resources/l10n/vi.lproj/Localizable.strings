@@ -26,13 +26,6 @@
 "All Spaces" = "Tất cả Không gian";
 "Allowed" = "Cho phép";
 "Alphabetical Order" = "Thứ tự bảng chữ cái";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab đã gặp sự cố ở lần dùng trước. Gửi báo cáo sự cố sẽ giúp khắc phục vấn đề";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab là trình chuyển đổi cửa sổ miễn phí, mã nguồn mở cho macOS. Các tính năng Pro có sẵn với bản dùng thử miễn phí 14 ngày.";
-"ScryTab needs some permissions" = "ScryTab cần một số quyền";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro bổ sung 4 tính năng ngoài trình chuyển đổi miễn phí.";
-"ScryTab Pro is still available" = "ScryTab Pro vẫn còn khả dụng";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab sẽ hiển thị biểu tượng trạng thái nếu cửa sổ đang được thu nhỏ hoặc ở chế độ toàn màn hình.";
 "Always" = "Luôn luôn";
 "Always send crash reports" = "Luôn gửi báo cáo sự cố";
 "and press" = "và nhấn";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "Kiểu Biểu tượng ứng dụng & Tiêu đề";
 "App Icons & Window Titles styles" = "Kiểu Biểu tượng ứng dụng & Tiêu đề cửa sổ";
 "App Icons / Titles styles" = "Kiểu Biểu tượng ứng dụng / Tiêu đề";
-"App Icons appearance" = "Giao diện Biểu tượng ứng dụng";
 "App is hidden" = "Ứng dụng đang ẩn";
 "App is running but has no open window" = "Ứng dụng đang chạy nhưng không có cửa sổ mở";
 "Apparition delay of Switcher" = "Độ trễ xuất hiện của Trình chuyển đổi";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "Tận dụng tối đa ScryTab với Pro";
 "Get Pro" = "Mua Pro";
 "Go back" = "Quay lại";
-"Grant permission" = "Cấp quyền";
 "Group apps" = "Nhóm ứng dụng";
 "Group tabs" = "Nhóm tab";
 "Help improve ScryTab" = "Giúp cải thiện ScryTab";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "Màn hình có thanh menu";
 "Screen including mouse" = "Màn hình có con trỏ chuột";
 "Screen showing ScryTab" = "Màn hình hiển thị ScryTab";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab đã gặp sự cố ở lần dùng trước. Gửi báo cáo sự cố sẽ giúp khắc phục vấn đề";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab là trình chuyển đổi cửa sổ miễn phí, mã nguồn mở cho macOS. Các tính năng Pro có sẵn với bản dùng thử miễn phí 14 ngày.";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro bổ sung 4 tính năng ngoài trình chuyển đổi miễn phí.";
+"ScryTab Pro is still available" = "ScryTab Pro vẫn còn khả dụng";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab sẽ hiển thị biểu tượng trạng thái nếu cửa sổ đang được thu nhỏ hoặc ở chế độ toàn màn hình.";
 "Search" = "Tìm kiếm";
 "Search is a Pro feature." = "Tìm kiếm là tính năng Pro.";
 "Search windows by typing" = "Tìm cửa sổ bằng cách nhập";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "Hiển thị cửa sổ từ các màn hình";
 "Show windows from Spaces" = "Hiển thị cửa sổ từ các Không gian";
 "Size" = "Kích cỡ";
-"Skipped" = "Đã bỏ qua";
 "Small" = "Nhỏ";
 "Some Pro features have reverted to free defaults." = "Một số tính năng Pro đã trở về mặc định miễn phí.";
 "Source code" = "Mã nguồn";
@@ -241,7 +237,6 @@
 "Sync with global value" = "Đồng bộ với giá trị chung";
 "System" = "Hệ thống";
 "System Default" = "Mặc định hệ thống";
-"The App Icons style is a Pro feature." = "Kiểu Biểu tượng ứng dụng là tính năng Pro.";
 "The application needs to restart to apply the imported settings." = "Ứng dụng cần khởi động lại để áp dụng cài đặt đã nhập.";
 "The application needs to restart to apply the language change." = "Ứng dụng cần khởi động lại để áp dụng thay đổi ngôn ngữ.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Máy chủ không chấp nhận bản gửi. Vui lòng kiểm tra kết nối internet và thử lại — bản nháp của bạn được giữ lại.";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "Phản hồi không mong đợi từ máy chủ.";
 "Unlock extra shortcuts with Pro" = "Mở khóa phím tắt bổ sung với Pro";
 "Unlock Search with Pro" = "Mở khóa Tìm kiếm với Pro";
-"Unlock the App Icons style with Pro" = "Mở khóa kiểu Biểu tượng ứng dụng với Pro";
 "Unlock the Titles style with Pro" = "Mở khóa kiểu Tiêu đề với Pro";
 "Up to 9 keyboard shortcuts" = "Tối đa 9 phím tắt bàn phím";
 "Update now" = "Cập nhật ngay";

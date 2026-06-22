@@ -26,13 +26,6 @@
 "All Spaces" = "כל המרחבים";
 "Allowed" = "מותר";
 "Alphabetical Order" = "סדר אלפביתי";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab קרס בפעם האחרונה שהשתמשת בו. שליחת דיווח קריסה תסייע לתקן את הבעיה";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab הוא מחליף חלונות חינמי בקוד פתוח עבור macOS. תכונות Pro זמינות עם תקופת ניסיון חינמית של 14 יום.";
-"ScryTab needs some permissions" = "ScryTab זקוק להרשאות מסוימות";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro מוסיף 4 תכונות מעבר למחליף החינמי.";
-"ScryTab Pro is still available" = "ScryTab Pro עדיין זמין";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab יציג באמצעות סמל מצב אם החלון ממוזער או במסך מלא.";
 "Always" = "תמיד";
 "Always send crash reports" = "שלח תמיד דיווחי קריסה";
 "and press" = "ולחץ על";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "סגנונות סמלי יישומים וכותרות";
 "App Icons & Window Titles styles" = "סגנונות סמלי יישומים וכותרות חלונות";
 "App Icons / Titles styles" = "סגנונות סמלי יישומים / כותרות";
-"App Icons appearance" = "מראה סמלי יישומים";
 "App is hidden" = "יישום מוסתר";
 "App is running but has no open window" = "יישום פועל אך אין לו חלון פתוח";
 "Apparition delay of Switcher" = "השהיית הופעת המחליף";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "הפק יותר מ-ScryTab עם Pro";
 "Get Pro" = "קבל את Pro";
 "Go back" = "חזור";
-"Grant permission" = "הענק הרשאה";
 "Group apps" = "קבץ יישומים";
 "Group tabs" = "קבץ לשוניות";
 "Help improve ScryTab" = "סייע בשיפור ScryTab";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "מסך הכולל את שורת התפריטים";
 "Screen including mouse" = "מסך הכולל את העכבר";
 "Screen showing ScryTab" = "מסך המציג את ScryTab";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab קרס בפעם האחרונה שהשתמשת בו. שליחת דיווח קריסה תסייע לתקן את הבעיה";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab הוא מחליף חלונות חינמי בקוד פתוח עבור macOS. תכונות Pro זמינות עם תקופת ניסיון חינמית של 14 יום.";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro מוסיף 4 תכונות מעבר למחליף החינמי.";
+"ScryTab Pro is still available" = "ScryTab Pro עדיין זמין";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab יציג באמצעות סמל מצב אם החלון ממוזער או במסך מלא.";
 "Search" = "חיפוש";
 "Search is a Pro feature." = "חיפוש הוא תכונת Pro.";
 "Search windows by typing" = "חפש חלונות בהקלדה";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "הצג חלונות ממסכים";
 "Show windows from Spaces" = "הצג חלונות ממרחבים";
 "Size" = "גודל";
-"Skipped" = "דולג";
 "Small" = "קטן";
 "Some Pro features have reverted to free defaults." = "תכונות Pro מסוימות חזרו לברירות המחדל החינמיות.";
 "Source code" = "קוד מקור";
@@ -241,7 +237,6 @@
 "Sync with global value" = "סנכרן עם הערך הגלובלי";
 "System" = "מערכת";
 "System Default" = "ברירת המחדל של המערכת";
-"The App Icons style is a Pro feature." = "סגנון סמלי היישומים הוא תכונת Pro.";
 "The application needs to restart to apply the imported settings." = "היישום צריך להיפתח מחדש כדי להחיל את ההגדרות שיובאו.";
 "The application needs to restart to apply the language change." = "היישום צריך להיפתח מחדש כדי להחיל את שינוי השפה.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "השרת לא קיבל את ההגשה. בדוק את חיבור האינטרנט ונסה שוב — הטיוטה שלך נשמרת.";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "תגובה לא צפויה מהשרת.";
 "Unlock extra shortcuts with Pro" = "פתח קיצורי דרך נוספים עם Pro";
 "Unlock Search with Pro" = "פתח חיפוש עם Pro";
-"Unlock the App Icons style with Pro" = "פתח את סגנון סמלי היישומים עם Pro";
 "Unlock the Titles style with Pro" = "פתח את סגנון הכותרות עם Pro";
 "Up to 9 keyboard shortcuts" = "עד 9 קיצורי מקלדת";
 "Update now" = "עדכן כעת";

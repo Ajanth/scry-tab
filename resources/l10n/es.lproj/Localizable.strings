@@ -26,13 +26,6 @@
 "All Spaces" = "Todos los Espacios";
 "Allowed" = "Permitido";
 "Alphabetical Order" = "Orden alfabético";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab se cerró inesperadamente la última vez que lo usaste. Enviar un informe de problema ayudará a solucionarlo";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab es un selector de ventanas gratuito y de código abierto para macOS. Las funciones Pro están disponibles con una prueba gratuita de 14 días.";
-"ScryTab needs some permissions" = "ScryTab necesita algunos permisos";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro añade 4 funciones más allá del selector gratuito.";
-"ScryTab Pro is still available" = "ScryTab Pro sigue disponible";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab indica con un icono de estado si la ventana está minimizada o en pantalla completa.";
 "Always" = "Siempre";
 "Always send crash reports" = "Enviar siempre los informes de problema";
 "and press" = "y pulsa";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "Estilos Iconos de app y Títulos";
 "App Icons & Window Titles styles" = "Estilos Iconos de app y Títulos de ventana";
 "App Icons / Titles styles" = "Estilos Iconos de app / Títulos";
-"App Icons appearance" = "Apariencia de Iconos de app";
 "App is hidden" = "App oculta";
 "App is running but has no open window" = "La app se está ejecutando pero no tiene ventanas abiertas";
 "Apparition delay of Switcher" = "Retraso de aparición del selector";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "Obtén más de ScryTab con Pro";
 "Get Pro" = "Obtener Pro";
 "Go back" = "Volver";
-"Grant permission" = "Conceder permiso";
 "Group apps" = "Agrupar apps";
 "Group tabs" = "Agrupar pestañas";
 "Help improve ScryTab" = "Ayuda a mejorar ScryTab";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "Pantalla con la barra de menús";
 "Screen including mouse" = "Pantalla con el ratón";
 "Screen showing ScryTab" = "Pantalla que muestra ScryTab";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab se cerró inesperadamente la última vez que lo usaste. Enviar un informe de problema ayudará a solucionarlo";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab es un selector de ventanas gratuito y de código abierto para macOS. Las funciones Pro están disponibles con una prueba gratuita de 14 días.";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro añade 4 funciones más allá del selector gratuito.";
+"ScryTab Pro is still available" = "ScryTab Pro sigue disponible";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab indica con un icono de estado si la ventana está minimizada o en pantalla completa.";
 "Search" = "Buscar";
 "Search is a Pro feature." = "La búsqueda es una función Pro.";
 "Search windows by typing" = "Buscar ventanas escribiendo";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "Mostrar ventanas de las pantallas";
 "Show windows from Spaces" = "Mostrar ventanas de los Espacios";
 "Size" = "Tamaño";
-"Skipped" = "Omitido";
 "Small" = "Pequeño";
 "Some Pro features have reverted to free defaults." = "Algunas funciones Pro han vuelto a los valores predeterminados gratuitos.";
 "Source code" = "Código fuente";
@@ -241,7 +237,6 @@
 "Sync with global value" = "Sincronizar con el valor global";
 "System" = "Sistema";
 "System Default" = "Predeterminado del sistema";
-"The App Icons style is a Pro feature." = "El estilo Iconos de app es una función Pro.";
 "The application needs to restart to apply the imported settings." = "La aplicación debe reiniciarse para aplicar los ajustes importados.";
 "The application needs to restart to apply the language change." = "La aplicación debe reiniciarse para aplicar el cambio de idioma.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "El servidor no aceptó el envío. Comprueba tu conexión a internet e inténtalo de nuevo — tu borrador se conserva.";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "Respuesta inesperada del servidor.";
 "Unlock extra shortcuts with Pro" = "Desbloquea atajos adicionales con Pro";
 "Unlock Search with Pro" = "Desbloquea la búsqueda con Pro";
-"Unlock the App Icons style with Pro" = "Desbloquea el estilo Iconos de app con Pro";
 "Unlock the Titles style with Pro" = "Desbloquea el estilo Títulos con Pro";
 "Up to 9 keyboard shortcuts" = "Hasta 9 atajos de teclado";
 "Update now" = "Actualizar ahora";
