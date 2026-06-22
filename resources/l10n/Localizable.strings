@@ -89,6 +89,9 @@
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial.";
 
 /* No comment provided by engineer. */
+"ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
+
+/* No comment provided by engineer. */
 "ScryTab needs some permissions" = "ScryTab needs some permissions";
 
 /* No comment provided by engineer. */
@@ -167,6 +170,7 @@
 "Auto" = "Auto";
 
 /* No comment provided by engineer. */
+"Auto Size — larger tiles with few windows, more at once with many" = "Auto Size — larger tiles with few windows, more at once with many";
 
 /* No comment provided by engineer. */
 "Auto-install updates periodically" = "Auto-install updates periodically";
@@ -243,6 +247,7 @@
 "Dark" = "Dark";
 
 /* No comment provided by engineer. */
+"Dark Mode, trackpad gestures, and more" = "Dark Mode, trackpad gestures, and more";
 
 /* No comment provided by engineer. */
 "Deactivate and activate here" = "Deactivate and activate here";
@@ -562,6 +567,7 @@
 "Recently Focused First" = "Recently Focused First";
 
 /* No comment provided by engineer. */
+"Reliable, fast window switching" = "Reliable, fast window switching";
 
 /* No comment provided by engineer. */
 "Remember my choice" = "Remember my choice";
@@ -737,6 +743,7 @@
 "Support this project" = "Support this project";
 
 /* No comment provided by engineer. */
+"Switch between 2 different styles. You can customize them." = "Switch between 2 different styles. You can customize them.";
 
 /* No comment provided by engineer. */
 "Sync with global value" = "Sync with global value";

@@ -28,6 +28,7 @@
 "Alphabetical Order" = "Alphabetical Order";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed";
 "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial.";
+"ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
 "ScryTab needs some permissions" = "ScryTab needs some permissions";
 "ScryTab Pro" = "ScryTab Pro";
 "ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro adds 4 features beyond the free switcher.";
