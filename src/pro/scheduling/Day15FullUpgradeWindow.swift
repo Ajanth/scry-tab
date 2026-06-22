@@ -33,9 +33,6 @@ class Day15FullUpgradeWindow: ProPromptWindow {
         case .search:
             return revertSentence + "\n" + NSLocalizedString(
                 "Search is a Pro feature.", comment: "")
-        case .appIconsStyle:
-            return revertSentence + "\n" + NSLocalizedString(
-                "The App Icons style is a Pro feature.", comment: "")
         case .titlesStyle:
             return revertSentence + "\n" + NSLocalizedString(
                 "The Titles style is a Pro feature.", comment: "")

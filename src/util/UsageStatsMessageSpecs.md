@@ -7,7 +7,8 @@
 The Pro-transition prompts show "you've used Pro features N times." `UsageStatsTestable` computes that N
 from raw timestamps: it collapses the per-trigger and per-feature timestamps recorded during a switcher
 session into **distinct sessions**, so using several Pro features within one summon counts once, not
-many times. It also formats large counts for display.
+many times. It also formats large counts for display. The Pro features tracked are **Titles appearance,
+Extra shortcuts, and Search** — App Icons is the free default style and is not counted.
 
 ## Behavior & edge cases
 
@@ -26,7 +27,7 @@ Mirrors `UsageStatsMessageTests.swift` 1:1.
 
 - **testEmpty_returnsZero** — no activity → 0.
 - **testTriggersOnlyNoFeatures_returnsZero** — triggers but no Pro feature use → 0.
-- **testAppIconsAndSearchInSameSession_countsOne** — two Pro features in one session → 1.
+- **testTitlesAndSearchInSameSession_countsOne** — two Pro features in one session → 1.
 - **testCycleHeavySession_collapsesToOne** — lots of cycling in one session → 1.
 - **testTwoDistinctSessionsWithDifferentFeatures** — two separate sessions → 2.
 - **testSearchesMappedBackToOwningTriggers** — feature timestamps attributed to their owning trigger session.

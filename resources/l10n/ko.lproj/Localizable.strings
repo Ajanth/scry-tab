@@ -26,13 +26,6 @@
 "All Spaces" = "모든 Space";
 "Allowed" = "허용됨";
 "Alphabetical Order" = "알파벳 순서";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab이 마지막 사용 시 충돌했습니다. 충돌 보고서를 보내면 문제 해결에 도움이 됩니다";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab은 macOS용 무료 오픈 소스 윈도우 전환기입니다. Pro 기능은 14일 무료 체험으로 이용할 수 있습니다.";
-"ScryTab needs some permissions" = "ScryTab에 몇 가지 권한이 필요합니다";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro는 무료 전환기에 4가지 기능을 추가합니다.";
-"ScryTab Pro is still available" = "ScryTab Pro는 계속 이용할 수 있습니다";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab이 윈도우의 최소화 또는 전체 화면 상태를 상태 아이콘으로 표시합니다.";
 "Always" = "항상";
 "Always send crash reports" = "항상 충돌 보고서 보내기";
 "and press" = "그리고 누르기";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "앱 아이콘 및 제목 스타일";
 "App Icons & Window Titles styles" = "앱 아이콘 및 윈도우 제목 스타일";
 "App Icons / Titles styles" = "앱 아이콘 / 제목 스타일";
-"App Icons appearance" = "앱 아이콘 모양";
 "App is hidden" = "앱 숨김";
 "App is running but has no open window" = "앱이 실행 중이지만 열린 윈도우가 없음";
 "Apparition delay of Switcher" = "전환기 표시 지연 시간";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "Pro로 ScryTab을 더 활용하기";
 "Get Pro" = "Pro 받기";
 "Go back" = "뒤로 가기";
-"Grant permission" = "권한 부여";
 "Group apps" = "앱 그룹화";
 "Group tabs" = "탭 그룹화";
 "Help improve ScryTab" = "ScryTab 개선에 도움 주기";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "메뉴 막대가 있는 화면";
 "Screen including mouse" = "마우스가 있는 화면";
 "Screen showing ScryTab" = "ScryTab이 표시되는 화면";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab이 마지막 사용 시 충돌했습니다. 충돌 보고서를 보내면 문제 해결에 도움이 됩니다";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab은 macOS용 무료 오픈 소스 윈도우 전환기입니다. Pro 기능은 14일 무료 체험으로 이용할 수 있습니다.";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro는 무료 전환기에 4가지 기능을 추가합니다.";
+"ScryTab Pro is still available" = "ScryTab Pro는 계속 이용할 수 있습니다";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab이 윈도우의 최소화 또는 전체 화면 상태를 상태 아이콘으로 표시합니다.";
 "Search" = "검색";
 "Search is a Pro feature." = "검색은 Pro 기능입니다.";
 "Search windows by typing" = "입력하여 윈도우 검색";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "다음 화면의 윈도우 보이기";
 "Show windows from Spaces" = "다음 Space의 윈도우 보이기";
 "Size" = "크기";
-"Skipped" = "건너뜀";
 "Small" = "작게";
 "Some Pro features have reverted to free defaults." = "일부 Pro 기능이 무료 기본값으로 되돌아갔습니다.";
 "Source code" = "소스 코드";
@@ -241,7 +237,6 @@
 "Sync with global value" = "전역 값과 동기화";
 "System" = "시스템";
 "System Default" = "시스템 기본값";
-"The App Icons style is a Pro feature." = "앱 아이콘 스타일은 Pro 기능입니다.";
 "The application needs to restart to apply the imported settings." = "가져온 설정을 적용하려면 앱을 재시작해야 합니다.";
 "The application needs to restart to apply the language change." = "언어 변경을 적용하려면 앱을 재시작해야 합니다.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "서버에서 제출을 수락하지 않았습니다. 인터넷 연결을 확인하고 다시 시도해 주세요 — 초안은 보존됩니다.";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "서버에서 예기치 않은 응답이 왔습니다.";
 "Unlock extra shortcuts with Pro" = "Pro로 추가 단축키 잠금 해제";
 "Unlock Search with Pro" = "Pro로 검색 잠금 해제";
-"Unlock the App Icons style with Pro" = "Pro로 앱 아이콘 스타일 잠금 해제";
 "Unlock the Titles style with Pro" = "Pro로 제목 스타일 잠금 해제";
 "Up to 9 keyboard shortcuts" = "최대 9개의 키보드 단축키";
 "Update now" = "지금 업데이트";

@@ -26,13 +26,6 @@
 "All Spaces" = "すべての Space";
 "Allowed" = "許可";
 "Alphabetical Order" = "アルファベット順";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "前回の使用時に ScryTab がクラッシュしました。クラッシュレポートを送信すると問題の修正に役立ちます";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab は macOS 用の無料・オープンソースのウインドウスイッチャーです。Pro 機能は 14 日間の無料トライアルで利用できます。";
-"ScryTab needs some permissions" = "ScryTab にはいくつかの権限が必要です";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro は無料版に加えて 4 つの機能を追加します。";
-"ScryTab Pro is still available" = "ScryTab Pro は引き続き利用可能です";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ウインドウが現在最小化またはフルスクリーンの場合、ScryTab はステータスアイコンで表示します。";
 "Always" = "常に";
 "Always send crash reports" = "常にクラッシュレポートを送信";
 "and press" = "を押す";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "App アイコン & タイトルのスタイル";
 "App Icons & Window Titles styles" = "App アイコン & ウインドウタイトルのスタイル";
 "App Icons / Titles styles" = "App アイコン / タイトルのスタイル";
-"App Icons appearance" = "App アイコンの外観";
 "App is hidden" = "App は非表示";
 "App is running but has no open window" = "App は実行中ですが開いているウインドウはありません";
 "Apparition delay of Switcher" = "スイッチャーの表示遅延";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "Pro で ScryTab をさらに活用";
 "Get Pro" = "Pro を入手";
 "Go back" = "戻る";
-"Grant permission" = "権限を付与";
 "Group apps" = "App をグループ化";
 "Group tabs" = "タブをグループ化";
 "Help improve ScryTab" = "ScryTab の改善に協力";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "メニューバーを含む画面";
 "Screen including mouse" = "マウスのある画面";
 "Screen showing ScryTab" = "ScryTab を表示する画面";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "前回の使用時に ScryTab がクラッシュしました。クラッシュレポートを送信すると問題の修正に役立ちます";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab は macOS 用の無料・オープンソースのウインドウスイッチャーです。Pro 機能は 14 日間の無料トライアルで利用できます。";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro は無料版に加えて 4 つの機能を追加します。";
+"ScryTab Pro is still available" = "ScryTab Pro は引き続き利用可能です";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ウインドウが現在最小化またはフルスクリーンの場合、ScryTab はステータスアイコンで表示します。";
 "Search" = "検索";
 "Search is a Pro feature." = "検索は Pro 機能です。";
 "Search windows by typing" = "入力してウインドウを検索";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "対象の画面";
 "Show windows from Spaces" = "対象の Space";
 "Size" = "サイズ";
-"Skipped" = "スキップ";
 "Small" = "小";
 "Some Pro features have reverted to free defaults." = "一部の Pro 機能が無料版のデフォルトに戻りました。";
 "Source code" = "ソースコード";
@@ -241,7 +237,6 @@
 "Sync with global value" = "全体の値と同期";
 "System" = "システム";
 "System Default" = "システムのデフォルト";
-"The App Icons style is a Pro feature." = "App アイコンのスタイルは Pro 機能です。";
 "The application needs to restart to apply the imported settings." = "読み込んだ設定を適用するには App を再起動する必要があります。";
 "The application needs to restart to apply the language change." = "言語の変更を適用するには App を再起動する必要があります。";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "サーバーが送信を受け付けませんでした。インターネット接続を確認して再度お試しください — 下書きは保存されています。";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "サーバーから予期しない応答がありました。";
 "Unlock extra shortcuts with Pro" = "Pro で追加のショートカットを解除";
 "Unlock Search with Pro" = "Pro で検索を解除";
-"Unlock the App Icons style with Pro" = "Pro で App アイコンのスタイルを解除";
 "Unlock the Titles style with Pro" = "Pro でタイトルのスタイルを解除";
 "Up to 9 keyboard shortcuts" = "最大 9 個のキーボードショートカット";
 "Update now" = "今すぐアップデート";

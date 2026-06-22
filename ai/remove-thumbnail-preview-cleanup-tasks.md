@@ -40,7 +40,7 @@ The app should not request, probe, or mention Screen Recording, and should never
 - `AppearanceStylePreference` enum — but reduced from three cases to two (`appIcons`, `titles`). It remains a real runtime enum.
 - The appearance-style selector in `AppearanceTab` (now two options instead of three).
 - Per-shortcut `appearanceStyleOverride*` keys and the override row in `ShortcutEditor.AppearancePane`.
-- The Pro feature `ProFeature.appIconsAndTitlesStyle` and its entire monetization/prompt stack (`ProTransitionManager`, `ResolvedReason.appIconsStyle`/`.titlesStyle`, `rememberedAppearanceStyle`, usage stats `triggersAppIcons`/`triggersTitles`, `usedAppIconsOrTitles()`, Day 1/Day 15/Upgrade copy). App Icons and Titles were always the Pro-gated styles; `thumbnails` was the free default. Keeping both means the Pro layer is unchanged except for copy that references thumbnails/previews.
+- The Pro feature `ProFeature.appIconsAndTitlesStyle` and its monetization/prompt stack (`ProTransitionManager`, `ResolvedReason.titlesStyle`, `rememberedAppearanceStyle`, usage stat `triggersTitles`, Day 1/Day 15/Upgrade copy). **Resolved gating model:** removing `thumbnails` removed the only free style, so **App Icons is now the free default and only Titles is Pro-gated** (`PreferenceGate(freeEquivalent: .appIcons, isProValue: { $0 == .titles })`). App Icons usage is therefore NOT a Pro-usage signal — `triggersAppIcons` / `usedAppIconsOrTitles()` and the dead `ResolvedReason.appIconsStyle` path were removed. The Pro layer otherwise stays, minus copy that references thumbnails/previews.
 - App-icon image loading (the background queue that decodes icons).
 
 ## Compilation-Safe Sequencing
@@ -118,7 +118,7 @@ Work:
 - Add a migration that:
   - remaps persisted `appearanceStyle` and each `appearanceStyleOverride*`: `0 -> 0` (was thumbnails, now App Icons), `1 -> 0` (App Icons), `2 -> 1` (Titles). Old thumbnails users land on App Icons.
   - prunes the removed preview/capture/screen-recording keys from `UserDefaults.standard` and imported settings.
-- Keep `ProGatedPreferences.appearanceStyle` and `appearanceStyleOverride0` (App Icons/Titles remain Pro-gated).
+- Keep `ProGatedPreferences.appearanceStyle` and `appearanceStyleOverride0` (Titles is Pro-gated; App Icons is the free equivalent).
 - Keep `appearanceStyle` in `PreferencesEvents.preferencesRequiringUiReset`; remove `previewFocusedWindow`/`previewFadeInAnimation` from any reset lists.
 
 Acceptance:
@@ -276,13 +276,13 @@ Files:
 - `src/pro/scheduling/Day15HardGatePopover.swift`
 - `src/preferences/settings-window/tabs/UpgradeTab.swift`
 
-Keep unchanged (App Icons & Titles remain Pro):
+Keep (Titles is Pro; App Icons is the free default — see resolved gating model above):
 
 - `ProFeature.appIconsAndTitlesStyle` and its gating
-- `ResolvedReason.appIconsStyle` / `.titlesStyle`, `ProTransitionManager` style mapping
+- `ResolvedReason.titlesStyle` and `ProTransitionManager` style mapping (the `.appIconsStyle` path was removed as dead code — App Icons can't be hard-gated when it's free)
 - `rememberedAppearanceStyle` / `rememberedAppearanceStyleOverride`
 - `ProGatedPreferences.appearanceStyle` / `appearanceStyleOverride0`
-- `UsageStats` `triggersAppIcons` / `triggersTitles` / `usedAppIconsOrTitles()` and the "App Icons appearance" / "Titles appearance" names
+- `UsageStats` `triggersTitles` and the "Titles appearance" name (the `triggersAppIcons` key, `usedAppIconsOrTitles()`, and "App Icons appearance" name were removed — App Icons is free, so it isn't a Pro-usage signal)
 
 Work:
 

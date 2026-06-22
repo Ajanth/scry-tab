@@ -83,30 +83,6 @@
 "Alphabetical Order" = "Alphabetical Order";
 
 /* No comment provided by engineer. */
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed";
-
-/* No comment provided by engineer. */
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial.";
-
-/* No comment provided by engineer. */
-"ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
-
-/* No comment provided by engineer. */
-"ScryTab needs some permissions" = "ScryTab needs some permissions";
-
-/* No comment provided by engineer. */
-"ScryTab Pro" = "ScryTab Pro";
-
-/* No comment provided by engineer. */
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro adds 4 features beyond the free switcher.";
-
-/* No comment provided by engineer. */
-"ScryTab Pro is still available" = "ScryTab Pro is still available";
-
-/* No comment provided by engineer. */
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
-
-/* No comment provided by engineer. */
 "Always" = "Always";
 
 /* No comment provided by engineer. */
@@ -132,9 +108,6 @@
 
 /* No comment provided by engineer. */
 "App Icons / Titles styles" = "App Icons / Titles styles";
-
-/* No comment provided by engineer. */
-"App Icons appearance" = "App Icons appearance";
 
 /* No comment provided by engineer. */
 "App is hidden" = "App is hidden";
@@ -192,8 +165,6 @@
 
 /* No comment provided by engineer. */
 "Cancel" = "Cancel";
-
-/* No comment provided by engineer. */
 
 /* No comment provided by engineer. */
 "Check for updates now…" = "Check for updates now…";
@@ -307,8 +278,6 @@
 "Extra shortcuts are a Pro feature." = "Extra shortcuts are a Pro feature.";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "Fade out animation of Switcher" = "Fade out animation of Switcher";
 
 /* No comment provided by engineer. */
@@ -347,9 +316,6 @@
 /* No comment provided by engineer. */
 "Go back" = "Go back";
 
-/* Menubar callout button */
-"Grant permission" = "Grant permission";
-
 /* No comment provided by engineer. */
 "Group apps" = "Group apps";
 
@@ -361,8 +327,6 @@
 
 /* No comment provided by engineer. */
 "Hide" = "Hide";
-
-/* No comment provided by engineer. */
 
 /* No comment provided by engineer. */
 "Hide Space number labels" = "Hide Space number labels";
@@ -503,8 +467,6 @@
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
 
 /* No comment provided by engineer. */
@@ -527,8 +489,6 @@
 
 /* No comment provided by engineer. */
 "Please fill in the form" = "Please fill in the form";
-
-/* No comment provided by engineer. */
 
 /* No comment provided by engineer. */
 "Pro" = "Pro";
@@ -594,9 +554,28 @@
 "Screen including mouse" = "Screen including mouse";
 
 /* No comment provided by engineer. */
+"Screen showing ScryTab" = "Screen showing ScryTab";
 
 /* No comment provided by engineer. */
-"Screen showing ScryTab" = "Screen showing ScryTab";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed";
+
+/* No comment provided by engineer. */
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial.";
+
+/* No comment provided by engineer. */
+"ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
+
+/* No comment provided by engineer. */
+"ScryTab Pro" = "ScryTab Pro";
+
+/* No comment provided by engineer. */
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro adds 4 features beyond the free switcher.";
+
+/* No comment provided by engineer. */
+"ScryTab Pro is still available" = "ScryTab Pro is still available";
+
+/* No comment provided by engineer. */
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
 
 /* No comment provided by engineer. */
 "Search" = "Search";
@@ -710,9 +689,6 @@
 "Size" = "Size";
 
 /* No comment provided by engineer. */
-"Skipped" = "Skipped";
-
-/* No comment provided by engineer. */
 "Small" = "Small";
 
 /* No comment provided by engineer. */
@@ -755,9 +731,6 @@
 "System Default" = "System Default";
 
 /* No comment provided by engineer. */
-"The App Icons style is a Pro feature." = "The App Icons style is a Pro feature.";
-
-/* No comment provided by engineer. */
 "The application needs to restart to apply the imported settings." = "The application needs to restart to apply the imported settings.";
 
 /* No comment provided by engineer. */
@@ -781,14 +754,8 @@
 /* No comment provided by engineer. */
 "This permission is needed to focus windows after you release the shortcut" = "This permission is needed to focus windows after you release the shortcut";
 
-/* No comment provided by engineer. */
-
 /* LetsMove replacement alert */
 "This will keep your Downloads folder uncluttered." = "This will keep your Downloads folder uncluttered.";
-
-/* No comment provided by engineer. */
-
-/* Menubar callout subject */
 
 /* No comment provided by engineer. */
 "Title truncation" = "Title truncation";
@@ -827,9 +794,6 @@
 "Unlock Search with Pro" = "Unlock Search with Pro";
 
 /* No comment provided by engineer. */
-"Unlock the App Icons style with Pro" = "Unlock the App Icons style with Pro";
-
-/* No comment provided by engineer. */
 "Unlock the Titles style with Pro" = "Unlock the Titles style with Pro";
 
 /* No comment provided by engineer. */
@@ -843,8 +807,6 @@
 
 /* No comment provided by engineer. */
 "Usage" = "Usage";
-
-/* No comment provided by engineer. */
 
 /* No comment provided by engineer. */
 "Version" = "Version";
@@ -871,8 +833,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "What did you expect? What happened? Steps to reproduce…";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "When fullscreen" = "When fullscreen";
 
 /* No comment provided by engineer. */
@@ -889,8 +849,6 @@
 
 /* No comment provided by engineer. */
 "Window is on Space %d" = "Window is on Space %d";
-
-/* Menubar callout subject: the preview-selected-window feature */
 
 /* No comment provided by engineer. */
 "window switches" = "window switches";

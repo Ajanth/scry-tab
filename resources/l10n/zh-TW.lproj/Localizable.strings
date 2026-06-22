@@ -26,13 +26,6 @@
 "All Spaces" = "所有 Spaces";
 "Allowed" = "允許";
 "Alphabetical Order" = "字母順序";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab 在您上次使用時當機。傳送當機報告有助於修正問題";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab 是一款免費、開放原始碼的 macOS 視窗切換器。Pro 功能提供 14 天免費試用。";
-"ScryTab needs some permissions" = "ScryTab 需要部分權限";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro 在免費版切換器之上新增了 4 項功能。";
-"ScryTab Pro is still available" = "ScryTab Pro 仍可供使用";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab 會以狀態圖示顯示視窗目前是否為最小化或全螢幕。";
 "Always" = "永遠";
 "Always send crash reports" = "永遠傳送當機報告";
 "and press" = "並按下";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "App 圖像與標題樣式";
 "App Icons & Window Titles styles" = "App 圖像與視窗標題樣式";
 "App Icons / Titles styles" = "App 圖像 / 標題樣式";
-"App Icons appearance" = "App 圖像外觀";
 "App is hidden" = "App 已隱藏";
 "App is running but has no open window" = "App 正在執行，但沒有開啟的視窗";
 "Apparition delay of Switcher" = "切換器的顯示延遲";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "透過 Pro 取得 ScryTab 的更多功能";
 "Get Pro" = "取得 Pro";
 "Go back" = "返回";
-"Grant permission" = "授予權限";
 "Group apps" = "將 App 分組";
 "Group tabs" = "將分頁分組";
 "Help improve ScryTab" = "協助改善 ScryTab";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "包含選單列的螢幕";
 "Screen including mouse" = "包含滑鼠的螢幕";
 "Screen showing ScryTab" = "顯示 ScryTab 的螢幕";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab 在您上次使用時當機。傳送當機報告有助於修正問題";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab 是一款免費、開放原始碼的 macOS 視窗切換器。Pro 功能提供 14 天免費試用。";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro 在免費版切換器之上新增了 4 項功能。";
+"ScryTab Pro is still available" = "ScryTab Pro 仍可供使用";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab 會以狀態圖示顯示視窗目前是否為最小化或全螢幕。";
 "Search" = "搜尋";
 "Search is a Pro feature." = "搜尋是 Pro 功能。";
 "Search windows by typing" = "輸入文字以搜尋視窗";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "顯示來自螢幕的視窗";
 "Show windows from Spaces" = "顯示來自 Spaces 的視窗";
 "Size" = "大小";
-"Skipped" = "已跳過";
 "Small" = "小";
 "Some Pro features have reverted to free defaults." = "部分 Pro 功能已還原為免費預設值。";
 "Source code" = "原始碼";
@@ -241,7 +237,6 @@
 "Sync with global value" = "與全域值同步";
 "System" = "系統";
 "System Default" = "系統預設";
-"The App Icons style is a Pro feature." = "App 圖像樣式是 Pro 功能。";
 "The application needs to restart to apply the imported settings." = "App 需要重新啟動才能套用輸入的設定。";
 "The application needs to restart to apply the language change." = "App 需要重新啟動才能套用語言變更。";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "伺服器未接受此提交。請檢查您的網路連線並重試 — 您的草稿已保留。";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "伺服器回應異常。";
 "Unlock extra shortcuts with Pro" = "透過 Pro 解鎖額外快速鍵";
 "Unlock Search with Pro" = "透過 Pro 解鎖「搜尋」";
-"Unlock the App Icons style with Pro" = "透過 Pro 解鎖「App 圖像」樣式";
 "Unlock the Titles style with Pro" = "透過 Pro 解鎖「標題」樣式";
 "Up to 9 keyboard shortcuts" = "最多 9 組鍵盤快速鍵";
 "Update now" = "立即更新";

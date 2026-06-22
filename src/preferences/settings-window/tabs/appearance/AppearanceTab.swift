@@ -130,10 +130,10 @@ class IllustratedImageThemeView: ClickHoverImageView {
                                          _ theme: String,
                                          _ imageName: String = "") -> String {
         if imageName.isEmpty {
-            // thumbnails_light/app_icons_dark
+            // app_icons_light/titles_dark
             return style.image.name + "_" + theme
         }
-        // thumbnails_show_status_icons_light/app_icons_hide_colored_circles_light
+        // app_icons_hide_colored_circles_light/titles_show_status_icons_light
         return style.image.name + "_" + imageName + "_" + theme
     }
 

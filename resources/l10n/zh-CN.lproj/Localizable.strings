@@ -26,13 +26,6 @@
 "All Spaces" = "所有桌面";
 "Allowed" = "允许";
 "Alphabetical Order" = "按字母顺序";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab 在您上次使用时崩溃了。发送崩溃报告有助于修复问题";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab 是一款免费、开源的 macOS 窗口切换器。Pro 功能提供 14 天免费试用。";
-"ScryTab needs some permissions" = "ScryTab 需要一些权限";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro 在免费切换器之外新增 4 项功能。";
-"ScryTab Pro is still available" = "ScryTab Pro 仍然可用";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab 将通过状态图标显示窗口当前是否已最小化或全屏。";
 "Always" = "始终";
 "Always send crash reports" = "始终发送崩溃报告";
 "and press" = "然后按";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "应用图标和标题样式";
 "App Icons & Window Titles styles" = "应用图标和窗口标题样式";
 "App Icons / Titles styles" = "应用图标 / 标题样式";
-"App Icons appearance" = "应用图标外观";
 "App is hidden" = "应用已隐藏";
 "App is running but has no open window" = "应用正在运行但没有打开的窗口";
 "Apparition delay of Switcher" = "切换器出现延迟";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "通过 Pro 获取 ScryTab 更多功能";
 "Get Pro" = "获取 Pro";
 "Go back" = "返回";
-"Grant permission" = "授予权限";
 "Group apps" = "应用分组";
 "Group tabs" = "标签分组";
 "Help improve ScryTab" = "帮助改进 ScryTab";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "包含菜单栏的屏幕";
 "Screen including mouse" = "包含鼠标的屏幕";
 "Screen showing ScryTab" = "显示 ScryTab 的屏幕";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab 在您上次使用时崩溃了。发送崩溃报告有助于修复问题";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab 是一款免费、开源的 macOS 窗口切换器。Pro 功能提供 14 天免费试用。";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro 在免费切换器之外新增 4 项功能。";
+"ScryTab Pro is still available" = "ScryTab Pro 仍然可用";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab 将通过状态图标显示窗口当前是否已最小化或全屏。";
 "Search" = "搜索";
 "Search is a Pro feature." = "搜索是 Pro 功能。";
 "Search windows by typing" = "通过输入搜索窗口";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "显示来自屏幕的窗口";
 "Show windows from Spaces" = "显示来自桌面的窗口";
 "Size" = "大小";
-"Skipped" = "已跳过";
 "Small" = "小";
 "Some Pro features have reverted to free defaults." = "部分 Pro 功能已恢复为免费版默认值。";
 "Source code" = "源代码";
@@ -241,7 +237,6 @@
 "Sync with global value" = "与全局值同步";
 "System" = "系统";
 "System Default" = "系统默认";
-"The App Icons style is a Pro feature." = "应用图标样式是 Pro 功能。";
 "The application needs to restart to apply the imported settings." = "应用需要重启以应用导入的设置。";
 "The application needs to restart to apply the language change." = "应用需要重启以应用语言更改。";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "服务器未接受提交。请检查网络连接并重试 — 草稿已保留。";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "服务器返回意外响应。";
 "Unlock extra shortcuts with Pro" = "通过 Pro 解锁额外快捷键";
 "Unlock Search with Pro" = "通过 Pro 解锁搜索";
-"Unlock the App Icons style with Pro" = "通过 Pro 解锁应用图标样式";
 "Unlock the Titles style with Pro" = "通过 Pro 解锁标题样式";
 "Up to 9 keyboard shortcuts" = "最多 9 个键盘快捷键";
 "Update now" = "立即更新";

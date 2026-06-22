@@ -26,14 +26,6 @@
 "All Spaces" = "All Spaces";
 "Allowed" = "Allowed";
 "Alphabetical Order" = "Alphabetical Order";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial.";
-"ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
-"ScryTab needs some permissions" = "ScryTab needs some permissions";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro adds 4 features beyond the free switcher.";
-"ScryTab Pro is still available" = "ScryTab Pro is still available";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
 "Always" = "Always";
 "Always send crash reports" = "Always send crash reports";
 "and press" = "and press";
@@ -43,7 +35,6 @@
 "App Icons & Titles styles" = "App Icons & Titles styles";
 "App Icons & Window Titles styles" = "App Icons & Window Titles styles";
 "App Icons / Titles styles" = "App Icons / Titles styles";
-"App Icons appearance" = "App Icons appearance";
 "App is hidden" = "App is hidden";
 "App is running but has no open window" = "App is running but has no open window";
 "Apparition delay of Switcher" = "Apparition delay of Switcher";
@@ -113,7 +104,6 @@
 "Get more from ScryTab with Pro" = "Get more from ScryTab with Pro";
 "Get Pro" = "Get Pro";
 "Go back" = "Go back";
-"Grant permission" = "Grant permission";
 "Group apps" = "Group apps";
 "Group tabs" = "Group tabs";
 "Help improve ScryTab" = "Help improve ScryTab";
@@ -194,6 +184,13 @@
 "Screen including menu bar" = "Screen including menu bar";
 "Screen including mouse" = "Screen including mouse";
 "Screen showing ScryTab" = "Screen showing ScryTab";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial.";
+"ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro adds 4 features beyond the free switcher.";
+"ScryTab Pro is still available" = "ScryTab Pro is still available";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
 "Search" = "Search";
 "Search is a Pro feature." = "Search is a Pro feature.";
 "Search windows by typing" = "Search windows by typing";
@@ -231,7 +228,6 @@
 "Show windows from screens" = "Show windows from screens";
 "Show windows from Spaces" = "Show windows from Spaces";
 "Size" = "Size";
-"Skipped" = "Skipped";
 "Small" = "Small";
 "Some Pro features have reverted to free defaults." = "Some Pro features have reverted to free defaults.";
 "Source code" = "Source code";
@@ -246,7 +242,6 @@
 "Sync with global value" = "Sync with global value";
 "System" = "System";
 "System Default" = "System Default";
-"The App Icons style is a Pro feature." = "The App Icons style is a Pro feature.";
 "The application needs to restart to apply the imported settings." = "The application needs to restart to apply the imported settings.";
 "The application needs to restart to apply the language change." = "The application needs to restart to apply the language change.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved.";
@@ -268,7 +263,6 @@
 "Unexpected response from server." = "Unexpected response from server.";
 "Unlock extra shortcuts with Pro" = "Unlock extra shortcuts with Pro";
 "Unlock Search with Pro" = "Unlock Search with Pro";
-"Unlock the App Icons style with Pro" = "Unlock the App Icons style with Pro";
 "Unlock the Titles style with Pro" = "Unlock the Titles style with Pro";
 "Up to 9 keyboard shortcuts" = "Up to 9 keyboard shortcuts";
 "Update now" = "Update now";

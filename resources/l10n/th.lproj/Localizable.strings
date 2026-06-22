@@ -26,13 +26,6 @@
 "All Spaces" = "พื้นที่ทำงานทั้งหมด";
 "Allowed" = "อนุญาต";
 "Alphabetical Order" = "เรียงตามตัวอักษร";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab ขัดข้องในการใช้งานครั้งล่าสุด การส่งรายงานการขัดข้องจะช่วยแก้ไขปัญหา";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab เป็นโปรแกรมสลับหน้าต่างฟรีและโอเพนซอร์สสำหรับ macOS คุณสมบัติ Pro มีให้ทดลองใช้งานฟรี 14 วัน";
-"ScryTab needs some permissions" = "ScryTab ต้องการสิทธิ์บางอย่าง";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro เพิ่มคุณสมบัติ 4 อย่างนอกเหนือจากตัวสลับฟรี";
-"ScryTab Pro is still available" = "ScryTab Pro ยังคงพร้อมใช้งาน";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab จะแสดงไอคอนสถานะหากหน้าต่างถูกย่อหรืออยู่ในโหมดเต็มหน้าจอ";
 "Always" = "เสมอ";
 "Always send crash reports" = "ส่งรายงานการขัดข้องเสมอ";
 "and press" = "แล้วกด";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "สไตล์ไอคอนแอปและชื่อ";
 "App Icons & Window Titles styles" = "สไตล์ไอคอนแอปและชื่อหน้าต่าง";
 "App Icons / Titles styles" = "สไตล์ไอคอนแอป / ชื่อ";
-"App Icons appearance" = "ลักษณะไอคอนแอป";
 "App is hidden" = "แอปถูกซ่อน";
 "App is running but has no open window" = "แอปกำลังทำงานแต่ไม่มีหน้าต่างที่เปิดอยู่";
 "Apparition delay of Switcher" = "ความล่าช้าในการปรากฏของตัวสลับ";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "ใช้ ScryTab ได้มากขึ้นด้วย Pro";
 "Get Pro" = "รับ Pro";
 "Go back" = "ย้อนกลับ";
-"Grant permission" = "ให้สิทธิ์";
 "Group apps" = "จัดกลุ่มแอป";
 "Group tabs" = "จัดกลุ่มแท็บ";
 "Help improve ScryTab" = "ช่วยปรับปรุง ScryTab";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "หน้าจอที่มีแถบเมนู";
 "Screen including mouse" = "หน้าจอที่มีเมาส์";
 "Screen showing ScryTab" = "หน้าจอที่แสดง ScryTab";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab ขัดข้องในการใช้งานครั้งล่าสุด การส่งรายงานการขัดข้องจะช่วยแก้ไขปัญหา";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab เป็นโปรแกรมสลับหน้าต่างฟรีและโอเพนซอร์สสำหรับ macOS คุณสมบัติ Pro มีให้ทดลองใช้งานฟรี 14 วัน";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro เพิ่มคุณสมบัติ 4 อย่างนอกเหนือจากตัวสลับฟรี";
+"ScryTab Pro is still available" = "ScryTab Pro ยังคงพร้อมใช้งาน";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab จะแสดงไอคอนสถานะหากหน้าต่างถูกย่อหรืออยู่ในโหมดเต็มหน้าจอ";
 "Search" = "ค้นหา";
 "Search is a Pro feature." = "การค้นหาเป็นคุณสมบัติ Pro";
 "Search windows by typing" = "ค้นหาหน้าต่างโดยการพิมพ์";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "แสดงหน้าต่างจากหน้าจอ";
 "Show windows from Spaces" = "แสดงหน้าต่างจากพื้นที่ทำงาน";
 "Size" = "ขนาด";
-"Skipped" = "ข้าม";
 "Small" = "เล็ก";
 "Some Pro features have reverted to free defaults." = "คุณสมบัติ Pro บางอย่างกลับไปเป็นค่าเริ่มต้นแบบฟรีแล้ว";
 "Source code" = "ซอร์สโค้ด";
@@ -241,7 +237,6 @@
 "Sync with global value" = "ซิงค์กับค่าส่วนกลาง";
 "System" = "ระบบ";
 "System Default" = "ค่าเริ่มต้นของระบบ";
-"The App Icons style is a Pro feature." = "สไตล์ไอคอนแอปเป็นคุณสมบัติ Pro";
 "The application needs to restart to apply the imported settings." = "แอปพลิเคชันต้องรีสตาร์ทเพื่อนำการตั้งค่าที่นำเข้ามาใช้";
 "The application needs to restart to apply the language change." = "แอปพลิเคชันต้องรีสตาร์ทเพื่อนำการเปลี่ยนแปลงภาษามาใช้";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "เซิร์ฟเวอร์ไม่ยอมรับการส่ง โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตและลองอีกครั้ง — ฉบับร่างของคุณยังคงอยู่";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "การตอบกลับที่ไม่คาดคิดจากเซิร์ฟเวอร์";
 "Unlock extra shortcuts with Pro" = "ปลดล็อกทางลัดพิเศษด้วย Pro";
 "Unlock Search with Pro" = "ปลดล็อกการค้นหาด้วย Pro";
-"Unlock the App Icons style with Pro" = "ปลดล็อกสไตล์ไอคอนแอปด้วย Pro";
 "Unlock the Titles style with Pro" = "ปลดล็อกสไตล์ชื่อด้วย Pro";
 "Up to 9 keyboard shortcuts" = "ทางลัดแป้นพิมพ์สูงสุด 9 รายการ";
 "Update now" = "อัปเดตทันที";

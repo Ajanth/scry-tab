@@ -26,13 +26,6 @@
 "All Spaces" = "Semua Ruang";
 "Allowed" = "Diizinkan";
 "Alphabetical Order" = "Urutan Abjad";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab mengalami kerusakan saat terakhir kali Anda menggunakannya. Mengirim laporan kerusakan akan membantu memperbaiki masalah";
-"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab adalah pengalih jendela gratis dan sumber terbuka untuk macOS. Fitur Pro tersedia dengan uji coba gratis 14 hari.";
-"ScryTab needs some permissions" = "ScryTab memerlukan beberapa izin";
-"ScryTab Pro" = "ScryTab Pro";
-"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro menambahkan 4 fitur di luar pengalih gratis.";
-"ScryTab Pro is still available" = "ScryTab Pro masih tersedia";
-"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab akan menampilkan ikon status jika jendela saat ini diminimalkan atau dalam layar penuh.";
 "Always" = "Selalu";
 "Always send crash reports" = "Selalu kirim laporan kerusakan";
 "and press" = "lalu tekan";
@@ -42,7 +35,6 @@
 "App Icons & Titles styles" = "Gaya Ikon Aplikasi & Judul";
 "App Icons & Window Titles styles" = "Gaya Ikon Aplikasi & Judul Jendela";
 "App Icons / Titles styles" = "Gaya Ikon Aplikasi / Judul";
-"App Icons appearance" = "Tampilan Ikon Aplikasi";
 "App is hidden" = "Aplikasi disembunyikan";
 "App is running but has no open window" = "Aplikasi berjalan tetapi tidak memiliki jendela terbuka";
 "Apparition delay of Switcher" = "Penundaan kemunculan Pengalih";
@@ -110,7 +102,6 @@
 "Get more from ScryTab with Pro" = "Dapatkan lebih banyak dari ScryTab dengan Pro";
 "Get Pro" = "Dapatkan Pro";
 "Go back" = "Kembali";
-"Grant permission" = "Berikan izin";
 "Group apps" = "Kelompokkan aplikasi";
 "Group tabs" = "Kelompokkan tab";
 "Help improve ScryTab" = "Bantu tingkatkan ScryTab";
@@ -190,6 +181,12 @@
 "Screen including menu bar" = "Layar termasuk bilah menu";
 "Screen including mouse" = "Layar termasuk tetikus";
 "Screen showing ScryTab" = "Layar yang menampilkan ScryTab";
+"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab mengalami kerusakan saat terakhir kali Anda menggunakannya. Mengirim laporan kerusakan akan membantu memperbaiki masalah";
+"ScryTab is a free, open-source window switcher for macOS. Pro features are available with a 14-day free trial." = "ScryTab adalah pengalih jendela gratis dan sumber terbuka untuk macOS. Fitur Pro tersedia dengan uji coba gratis 14 hari.";
+"ScryTab Pro" = "ScryTab Pro";
+"ScryTab Pro adds 4 features beyond the free switcher." = "ScryTab Pro menambahkan 4 fitur di luar pengalih gratis.";
+"ScryTab Pro is still available" = "ScryTab Pro masih tersedia";
+"ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab akan menampilkan ikon status jika jendela saat ini diminimalkan atau dalam layar penuh.";
 "Search" = "Cari";
 "Search is a Pro feature." = "Pencarian adalah fitur Pro.";
 "Search windows by typing" = "Cari jendela dengan mengetik";
@@ -227,7 +224,6 @@
 "Show windows from screens" = "Tampilkan jendela dari layar";
 "Show windows from Spaces" = "Tampilkan jendela dari Ruang";
 "Size" = "Ukuran";
-"Skipped" = "Dilewati";
 "Small" = "Kecil";
 "Some Pro features have reverted to free defaults." = "Beberapa fitur Pro telah kembali ke bawaan gratis.";
 "Source code" = "Kode sumber";
@@ -241,7 +237,6 @@
 "Sync with global value" = "Sinkronkan dengan nilai global";
 "System" = "Sistem";
 "System Default" = "Bawaan Sistem";
-"The App Icons style is a Pro feature." = "Gaya Ikon Aplikasi adalah fitur Pro.";
 "The application needs to restart to apply the imported settings." = "Aplikasi perlu dimulai ulang untuk menerapkan pengaturan yang diimpor.";
 "The application needs to restart to apply the language change." = "Aplikasi perlu dimulai ulang untuk menerapkan perubahan bahasa.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Server tidak menerima kiriman. Periksa koneksi internet Anda dan coba lagi — draf Anda tetap tersimpan.";
@@ -263,7 +258,6 @@
 "Unexpected response from server." = "Respons tidak terduga dari server.";
 "Unlock extra shortcuts with Pro" = "Buka pintasan tambahan dengan Pro";
 "Unlock Search with Pro" = "Buka Pencarian dengan Pro";
-"Unlock the App Icons style with Pro" = "Buka gaya Ikon Aplikasi dengan Pro";
 "Unlock the Titles style with Pro" = "Buka gaya Judul dengan Pro";
 "Up to 9 keyboard shortcuts" = "Hingga 9 pintasan keyboard";
 "Update now" = "Perbarui sekarang";
