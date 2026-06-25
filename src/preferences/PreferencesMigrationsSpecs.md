@@ -83,15 +83,3 @@ Mirrors `PreferencesMigrationsTests.swift` 1:1.
 
 ### P. Dropdowns: English text → indexes
 - **testDropdownTextValuesBecomeIndexes** — `appsToShow "Active app"` → `"1"`; `theme "❖ Windows 10"` → `"1"`.
-
-### Q. Drop thumbnails appearance style (3 cases → 2)
-
-The `thumbnails` window-screenshot style was removed; `AppearanceStylePreference` is now `[appIcons, titles]`. Old persisted indexes (`0` thumbnails, `1` App Icons, `2` Titles) must remap onto the new two-case enum, and the preview/capture/screen-recording keys that fed the removed pipeline are pruned so an upgrade (or an imported settings plist) can't resurrect them.
-
-- **testAppearanceStyleThumbnailsRemapsToAppIcons** — `appearanceStyle "0"` (old thumbnails) → `"0"` (App Icons). Old free-tier thumbnails users land on App Icons.
-- **testAppearanceStyleAppIconsRemapsToNewIndex** — `appearanceStyle "1"` (old App Icons) → `"0"`.
-- **testAppearanceStyleTitlesRemapsToNewIndex** — `appearanceStyle "2"` (old Titles) → `"1"`.
-- **testAppearanceStyleOverrideKeysAreRemapped** — each `appearanceStyleOverride*` key remaps with the same `0→0, 1→0, 2→1` table.
-- **testAppearanceStyleNoStoredValueIsNoOp** — no stored style → key stays absent.
-- **testAppearanceStyleMigrationPrunesPreviewAndCaptureKeys** — `previewFocusedWindow`, `previewFocusedWindowOverride*`, `previewFadeInAnimation`, `captureWindowsInBackground`, `screenRecordingPermissionSkipped`, and `hideThumbnails` are removed.
-- **testAppearanceStyleMigrationKeepsTitleDisplayPreferences** — `showTitles`, `titleTruncation`, `showTabsAsWindows`, and `hideColoredCircles` survive untouched.
