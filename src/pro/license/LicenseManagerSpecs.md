@@ -4,7 +4,7 @@
 
 ## Summary
 
-`LicenseManager` is the single source of truth for whether the user has ScryTab **Pro**. It computes a `LicenseState` and notifies observers when it changes. The state drives every Pro gate in the app (search, lock-search, extra shortcuts, App Icons / Titles styles, Auto size, search-on-release) and the Pro-transition prompts.
+`LicenseManager` is the single source of truth for whether the user has ScryTab **Pro**. It computes a `LicenseState` and notifies observers when it changes. The state drives every Pro gate in the app (search, lock-search, extra shortcuts, Titles style, Auto size, search-on-release) and the Pro-transition prompts.
 
 It is built from three injected collaborators so the logic is testable without real I/O — the tests pass in mocks (`MockClock`, `MockKeychain`, `MockLicenseAPI`, all defined inline at the bottom of `LicenseManagerTests.swift`):
 

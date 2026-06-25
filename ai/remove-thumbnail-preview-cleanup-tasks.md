@@ -45,14 +45,13 @@ The app should not request, probe, or mention Screen Recording, and should never
 
 ## Compilation-Safe Sequencing
 
-`thumbnails` is currently the default style (`Preferences.appearanceStyle` defaults to `.thumbnails`, and override defaults are `.thumbnails`). Removing the enum case requires, in one compile-safe change set:
+`thumbnails` was removed before ScryTab had production users. Do not carry a legacy migration for old
+`appearanceStyle` indexes or old exported settings plists. Removing the enum case requires, in one
+compile-safe change set:
 
 1. Change the default style to `.appIcons` and override defaults to `.appIcons`.
-2. Add a migration remapping persisted `appearanceStyle`/`appearanceStyleOverride*` value `0` (old `thumbnails`) to the new App Icons index, and shifting `appIcons`(1)/`titles`(2) to their new indices.
-3. Remove the `.thumbnails` enum case and every `== .thumbnails` / `!= .thumbnails` branch in the renderer.
-4. Delete the capture pipeline and preview panel.
-
-Do not remove the `.thumbnails` case before the migration and default changes land, or persisted `appearanceStyle == 0` users will land on an invalid index.
+2. Remove the `.thumbnails` enum case and every `== .thumbnails` / `!= .thumbnails` branch in the renderer.
+3. Delete the capture pipeline and preview panel.
 
 ## Current Coupling Map
 
@@ -75,18 +74,15 @@ Objective: make the desired behavior explicit before deleting code.
 Work:
 
 - Update `src/switcher/AppearanceSpecs.md` and `src/switcher/AppearanceTests.swift` to describe two styles only (App Icons grid, Titles list). Remove any sizing/spec scenarios specific to `.thumbnails`.
-- Add migration scenarios to `src/preferences/PreferencesMigrationsSpecs.md` and `src/preferences/PreferencesMigrationsTests.swift`:
-  - persisted `appearanceStyle` / `appearanceStyleOverride*` value `0` (old `thumbnails`) remaps to App Icons
-  - values `1` (App Icons) and `2` (Titles) remap to their new indices `0` and `1`
-  - old `previewFocusedWindow*`, `previewFadeInAnimation`, `captureWindowsInBackground`, `screenRecordingPermissionSkipped`, and `hideThumbnails` keys are removed or ignored
-  - title-display preferences (`showTitles`, `titleTruncation`, `showTabsAsWindows`) and `hideColoredCircles` survive
+- Do not add migration scenarios for the removed thumbnails style. There are no production installs or
+  supported legacy settings exports to preserve.
 - Update `PRODUCT_FEATURE_INVENTORY.md` to remove the window-screenshot/thumbnail/preview/Screen Recording claims while keeping App Icons and Titles styles documented.
 
 Acceptance:
 
 - Specs describe two appearance styles (App Icons, Titles) and no window-screenshot style.
 - No spec promises thumbnail screenshots, selected-window previews, or Screen Recording recovery.
-- Migration tests cover old `thumbnails` users landing on App Icons.
+- No thumbnail-removal migration tests or compatibility behavior remain.
 
 ## Task 2 - Reduce Appearance Preferences To Two Styles
 
@@ -97,8 +93,6 @@ Files:
 - `src/preferences/MacroPreferences.swift`
 - `src/preferences/Preferences.swift`
 - `src/preferences/PreferenceDefinition.swift`
-- `src/preferences/PreferencesMigrations.swift`
-- `src/preferences/PreferencesMigrationsTests.swift`
 - `src/events/PreferencesEvents.swift`
 
 Work:
@@ -115,18 +109,16 @@ Work:
 - Keep `appearanceStyle`, `appearanceStyleOverride*`, `hideColoredCircles`, `showTitles`, `titleTruncation`, `showTabsAsWindows`, `showAppsOrWindows`, size, theme, and shortcut-style preferences.
 - Remove `previewFocusedWindow` from `appearanceOverrideBaseNames` and `overrideToGlobalKey`; keep `appearanceStyleOverride`, size, theme, and after-release shortcut style.
 - Remove `effectivePreviewSelectedWindow(_:)` and the `usesThumbnails` computed flag. Keep `effectiveAppearanceStyle(_:)` (it now returns `.appIcons` or `.titles`).
-- Add a migration that:
-  - remaps persisted `appearanceStyle` and each `appearanceStyleOverride*`: `0 -> 0` (was thumbnails, now App Icons), `1 -> 0` (App Icons), `2 -> 1` (Titles). Old thumbnails users land on App Icons.
-  - prunes the removed preview/capture/screen-recording keys from `UserDefaults.standard` and imported settings.
+- Do not add a migration for the removed thumbnails style or its removed preview/capture preferences.
+  Fresh defaults and `Preferences.ownedKeys` are the only supported settings shape.
 - Keep `ProGatedPreferences.appearanceStyle` and `appearanceStyleOverride0` (Titles is Pro-gated; App Icons is the free equivalent).
 - Keep `appearanceStyle` in `PreferencesEvents.preferencesRequiringUiReset`; remove `previewFocusedWindow`/`previewFadeInAnimation` from any reset lists.
 
 Acceptance:
 
 - `AppearanceStylePreference.allCases` has exactly two cases (`appIcons`, `titles`).
-- `rg -n "previewFocusedWindow|previewFadeInAnimation|screenRecordingPermissionSkipped|captureWindowsInBackground|hideThumbnails|usesThumbnails" src/preferences src/events/PreferencesEvents.swift` returns no runtime references (migration tests/specs naming old keys are allowed).
-- Old persisted `thumbnails` (value `0`) users migrate to App Icons; App Icons/Titles selections survive at their new indices.
-- Imported settings cannot re-enable removed preview/capture keys or re-select thumbnails.
+- `rg -n "previewFocusedWindow|previewFadeInAnimation|screenRecordingPermissionSkipped|captureWindowsInBackground|hideThumbnails|usesThumbnails|migrateAppearanceStyleDropThumbnails" src/preferences src/events/PreferencesEvents.swift` returns no references.
+- Imported settings cannot re-enable removed preview/capture keys because those keys are not owned preferences.
 
 ## Task 3 - Make Startup Accessibility-Only
 
@@ -248,7 +240,7 @@ Files:
 
 Work:
 
-- Keep the appearance-style selector but render only two options: App Icons and Titles (both keep their Pro badges as today). Remove the thumbnails card/radio option.
+- Keep the appearance-style selector but render only two options: App Icons and Titles. Titles keeps its Pro badge; App Icons is the free default. Remove the thumbnails card/radio option.
 - Remove the "Preview selected window" global row and per-shortcut override row.
 - Remove the "Fade in animation of Preview" row from `AnimationsSheet` and remove `previewFadeInAnimation` from the sheet search index.
 - Remove the "Capture windows in the background" row from General.
@@ -311,7 +303,7 @@ Files:
 Work:
 
 - Delete unused illustrations: all `resources/illustrations/thumbnails_*`. Keep `app_icons_*` and `titles_*` (both styles are still selectable and still illustrated in settings).
-- Remove stale l10n keys for: Screen Recording prompts, window thumbnails, "Preview selected window", preview fade animation, background capture, "high-quality thumbnails". Keep "App Icons", "Titles", "App Icons appearance", "Titles appearance".
+- Remove stale l10n keys for: Screen Recording prompts, window thumbnails, "Preview selected window", preview fade animation, background capture, "high-quality thumbnails". Keep "App Icons", "Titles", and "Titles appearance".
 - Refresh source strings using the repo l10n scripts, then prune translations consistently.
 - Update `docs/contributing.md`: delete thumbnail layout / thumbnail drag-drop manual QA sections (or rewrite for App Icons / Titles). Keep App Icons and Titles QA.
 - Update `PRODUCT_FEATURE_INVENTORY.md` to remove the screenshot/preview/Screen Recording features and document App Icons + Titles as the two surviving styles.
@@ -368,17 +360,17 @@ xcodebuild \
 Run cleanup searches (these strings must be gone; App Icons / Titles strings must remain):
 
 ```bash
-rg -n "ScreenRecordingPermission|Screen Recording|Privacy_ScreenCapture|screenRecordingPermissionSkipped|PermissionCalloutResolver|WindowThumbnails|PreviewPanel|WindowCapture|ScreenCaptureKit|SCScreenshotManager|CGSHWCaptureWindowList|ActiveWindowCaptures|previewFocusedWindow|previewFadeInAnimation|captureWindowsInBackground|hideThumbnails|usesThumbnails|thumbnails_.*heic|high-quality thumbnails|larger previews" src scry-tab.xcodeproj resources docs PRODUCT_FEATURE_INVENTORY.md
+rg -n "ScreenRecordingPermission|Screen Recording|Privacy_ScreenCapture|screenRecordingPermissionSkipped|PermissionCalloutResolver|WindowThumbnails|PreviewPanel|WindowCapture|ScreenCaptureKit|SCScreenshotManager|CGSHWCaptureWindowList|ActiveWindowCaptures|previewFocusedWindow|previewFadeInAnimation|captureWindowsInBackground|hideThumbnails|usesThumbnails|migrateAppearanceStyleDropThumbnails|thumbnails_.*heic|high-quality thumbnails|larger previews" src scry-tab.xcodeproj resources docs PRODUCT_FEATURE_INVENTORY.md
 
 # Sanity check: these MUST still exist
-rg -n "case appIcons|case titles|appIconsAndTitlesStyle|triggersAppIcons|triggersTitles" src
+rg -n "case appIcons|case titles|appIconsAndTitlesStyle|triggersTitles" src
 ```
 
 Acceptance:
 
 - Tests pass.
 - Debug build passes.
-- First cleanup search has no live runtime references (deliberate migration tests/specs or historical docs excepted, and called out in the final report).
+- First cleanup search has no live runtime references.
 - Second sanity search still returns the retained App Icons + Titles style and its Pro feature.
 - The app no longer asks for Screen Recording on fresh launch.
 - The switcher offers two appearance styles — App Icons (icon grid) and Titles (list) — selectable from the top of the Appearance tab, with no window-screenshot style and no preview overlay.

@@ -280,67 +280,6 @@ final class PreferencesMigrationsTests: XCTestCase {
         XCTAssertEqual(defaults.string(forKey: "theme"), "1")
     }
 
-    // MARK: - Q. Drop thumbnails appearance style (3 cases -> 2)
-
-    func testAppearanceStyleThumbnailsRemapsToAppIcons() {
-        defaults.set("0", forKey: "appearanceStyle") // 0 was thumbnails -> 0 (App Icons)
-        PreferencesMigrations.migrateAppearanceStyleDropThumbnails()
-        XCTAssertEqual(defaults.string(forKey: "appearanceStyle"), "0")
-    }
-
-    func testAppearanceStyleAppIconsRemapsToNewIndex() {
-        defaults.set("1", forKey: "appearanceStyle") // 1 was App Icons -> 0
-        PreferencesMigrations.migrateAppearanceStyleDropThumbnails()
-        XCTAssertEqual(defaults.string(forKey: "appearanceStyle"), "0")
-    }
-
-    func testAppearanceStyleTitlesRemapsToNewIndex() {
-        defaults.set("2", forKey: "appearanceStyle") // 2 was Titles -> 1
-        PreferencesMigrations.migrateAppearanceStyleDropThumbnails()
-        XCTAssertEqual(defaults.string(forKey: "appearanceStyle"), "1")
-    }
-
-    func testAppearanceStyleOverrideKeysAreRemapped() {
-        defaults.set("0", forKey: "appearanceStyleOverride") // slot 0: thumbnails -> App Icons (0)
-        defaults.set("2", forKey: "appearanceStyleOverride3") // slot 2: Titles -> 1
-        PreferencesMigrations.migrateAppearanceStyleDropThumbnails()
-        XCTAssertEqual(defaults.string(forKey: "appearanceStyleOverride"), "0")
-        XCTAssertEqual(defaults.string(forKey: "appearanceStyleOverride3"), "1")
-    }
-
-    func testAppearanceStyleNoStoredValueIsNoOp() {
-        PreferencesMigrations.migrateAppearanceStyleDropThumbnails()
-        XCTAssertNil(defaults.string(forKey: "appearanceStyle"))
-    }
-
-    func testAppearanceStyleMigrationPrunesPreviewAndCaptureKeys() {
-        defaults.set("true", forKey: "previewFocusedWindow")
-        defaults.set("true", forKey: "previewFocusedWindowOverride2")
-        defaults.set("true", forKey: "previewFadeInAnimation")
-        defaults.set("true", forKey: "captureWindowsInBackground")
-        defaults.set("true", forKey: "screenRecordingPermissionSkipped")
-        defaults.set("true", forKey: "hideThumbnails")
-        PreferencesMigrations.migrateAppearanceStyleDropThumbnails()
-        XCTAssertNil(defaults.string(forKey: "previewFocusedWindow"))
-        XCTAssertNil(defaults.string(forKey: "previewFocusedWindowOverride2"))
-        XCTAssertNil(defaults.string(forKey: "previewFadeInAnimation"))
-        XCTAssertNil(defaults.string(forKey: "captureWindowsInBackground"))
-        XCTAssertNil(defaults.string(forKey: "screenRecordingPermissionSkipped"))
-        XCTAssertNil(defaults.string(forKey: "hideThumbnails"))
-    }
-
-    func testAppearanceStyleMigrationKeepsTitleDisplayPreferences() {
-        defaults.set("1", forKey: "showTitles")
-        defaults.set("2", forKey: "titleTruncation")
-        defaults.set("1", forKey: "showTabsAsWindows")
-        defaults.set("true", forKey: "hideColoredCircles")
-        PreferencesMigrations.migrateAppearanceStyleDropThumbnails()
-        XCTAssertEqual(defaults.string(forKey: "showTitles"), "1")
-        XCTAssertEqual(defaults.string(forKey: "titleTruncation"), "2")
-        XCTAssertEqual(defaults.string(forKey: "showTabsAsWindows"), "1")
-        XCTAssertEqual(defaults.string(forKey: "hideColoredCircles"), "true")
-    }
-
     // MARK: - Helpers
 
     private func decodeExceptions() throws -> [ExceptionEntry] {

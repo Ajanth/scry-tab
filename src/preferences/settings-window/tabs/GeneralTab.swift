@@ -119,11 +119,6 @@ class GeneralTab {
         }
         let filtered = dict.filter { Preferences.ownedKeys.contains($0.key) }
         UserDefaults.standard.setPersistentDomain(filtered, forName: App.bundleIdentifier)
-        // Imports carry no `preferencesVersion` (it isn't an owned key), so the restart below sees a
-        // nil version and skips migrations. Old exports therefore store `appearanceStyle` against the
-        // pre-thumbnails 3-case enum; remap them here so App Icons/Titles survive and thumbnails can't
-        // be re-selected. Matches the imported-settings remap required by the cleanup contract.
-        PreferencesMigrations.migrateAppearanceStyleDropThumbnails()
         CachedUserDefaults.cache.withLock { $0.removeAll() }
         Preferences.invalidateAllCache()
         let alert = NSAlert()

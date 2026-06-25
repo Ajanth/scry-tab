@@ -29,7 +29,6 @@ class PreferencesMigrations {
     static func updateToNewPreferences(_ versionInPlist: String) {
         Logger.debug { "App-version:\(App.version), Plist-version:\(versionInPlist)" }
         for (version, migration) in [
-            ("0.0.1", migrateAppearanceStyleDropThumbnails),
             ("10.13.0", migrateGroupingToPerShortcut),
             ("10.12.0", migrateExceptionsTitleArray),
             ("10.12.0", migrateLanguagePreferenceIndex),
@@ -372,27 +371,6 @@ class PreferencesMigrations {
             if old == "true" {
                 Self.defaults.set("3", forKey: "menubarIcon")
             }
-        }
-    }
-
-    // AppearanceStylePreference dropped the `thumbnails` case (was index 0). The enum is now
-    // [appIcons, titles]. Stored indexes remap: old 0 (thumbnails) and old 1 (appIcons) both land
-    // on 0 (appIcons), old 2 (titles) lands on 1 (titles). Applies to the global key and every
-    // per-shortcut override. Also prunes the now-removed preview/capture/Screen-Recording keys.
-    static func migrateAppearanceStyleDropThumbnails() {
-        let remap: [String: String] = ["0": "0", "1": "0", "2": "1"]
-        let appearanceStyleKeys = ["appearanceStyle"]
-            + (0...Preferences.maxShortcutCount).map { Preferences.indexToName("appearanceStyleOverride", $0) }
-        for key in appearanceStyleKeys {
-            if let old = Self.defaults.string(forKey: key), let new = remap[old] {
-                Self.defaults.set(new, forKey: key)
-            }
-        }
-        var prunedKeys = ["previewFocusedWindow", "previewFadeInAnimation", "captureWindowsInBackground",
-                          "screenRecordingPermissionSkipped", "hideThumbnails"]
-        prunedKeys += (0...Preferences.maxShortcutCount).map { Preferences.indexToName("previewFocusedWindowOverride", $0) }
-        for key in prunedKeys {
-            Self.defaults.removeObject(forKey: key)
         }
     }
 
