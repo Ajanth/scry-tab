@@ -137,8 +137,7 @@ final class ShortcutEditor {
     }
 
     /// Re-display values without changing the bound index. Called when a global appearance pref
-    /// changes (non-overridden controls need to resnap to the new global) or after a pro-lock
-    /// transition (stored values may have been downgraded).
+    /// changes so non-overridden controls resnap to the new global value.
     func refreshFromCurrentBind() {
         bind(toShortcut: currentIndex)
     }
@@ -403,7 +402,6 @@ final class AppearancePane {
         AppearanceTab.labelSize,
         AppearanceTab.labelTheme,
         AppearanceTab.labelShortcutStyle,
-        ProBadgeView.proLabel,
     ] + AppearanceStylePreference.allCases.map { $0.localizedString }
       + AppearanceSizePreference.allCases.map { $0.localizedString }
       + AppearanceThemePreference.allCases.map { $0.localizedString }
@@ -424,42 +422,27 @@ final class AppearancePane {
             baseName: "appearanceStyleOverride",
             cases: AppearanceStylePreference.allCases,
             globalIndex: { Preferences.appearanceStyle.index },
-            proGatedIndices: AppearanceTab.proGatedAppearanceStyleIndices(),
             onChange: onChange)
-        AppearanceTab.addProBadgesToStyleButtons(style.stack)
 
         size = ShortcutOverrideSegmented(
             baseName: "appearanceSizeOverride",
             cases: AppearanceSizePreference.allCases,
             globalIndex: { Preferences.appearanceSize.index },
-            proGatedIndices: [AppearanceSizePreference.allCases.firstIndex(of: .auto)!],
             segmentWidth: 100,
-            attachBadge: { c in AppearanceTab.addProBadgeToAutoSegment(c) },
-            refreshBadge: { c, overlay in
-                AppearanceTab.refreshTrailingSegmentBadge(c, proIndex: AppearanceSizePreference.allCases.firstIndex(of: .auto)!, overlay: overlay)
-            },
             onChange: onChange)
 
         theme = ShortcutOverrideSegmented(
             baseName: "appearanceThemeOverride",
             cases: AppearanceThemePreference.allCases,
             globalIndex: { Preferences.appearanceTheme.index },
-            proGatedIndices: [],
             segmentWidth: 100,
-            attachBadge: nil,
-            refreshBadge: nil,
             onChange: onChange)
 
         shortcutStyle = ShortcutOverrideSegmented(
             baseName: "shortcutStyleOverride",
             cases: ShortcutStylePreference.allCases,
             globalIndex: { Preferences.shortcutStyle.index },
-            proGatedIndices: [ShortcutStylePreference.allCases.firstIndex(of: .searchOnRelease)!],
             segmentWidth: 100,
-            attachBadge: { c in AppearanceTab.addProBadgeToShortcutStyleSegment(c, proIndex: ShortcutStylePreference.allCases.firstIndex(of: .searchOnRelease)!) },
-            refreshBadge: { c, overlay in
-                AppearanceTab.refreshTrailingSegmentBadge(c, proIndex: ShortcutStylePreference.allCases.firstIndex(of: .searchOnRelease)!, overlay: overlay)
-            },
             onChange: onChange)
 
         let table = TableGroupView(width: width)
@@ -519,44 +502,29 @@ final class ShortcutBoundDropdown: PopupButtonLikeSystemSettings {
 
 /// A segmented control wired to a per-shortcut "override" preference (e.g. `appearanceSizeOverride2`).
 /// Displays the override value when one is set, otherwise the global. Owns its own unlink button
-/// and an optional pro-badge overlay on a Pro-gated segment.
+/// and its own unlink button.
 final class ShortcutOverrideSegmented {
     let segmented: NSSegmentedControl
     let unlink: NSButton
-    private let badgeOverlay: ProBadgeView.SegmentOverlay?
 
     private let baseName: String
     private let cases: [MacroPreference]
     private let globalIndex: () -> Int
-    private let proGatedIndices: Set<Int>
-    private let refreshBadge: ((NSSegmentedControl, ProBadgeView.SegmentOverlay) -> Void)?
     private let onChange: (() -> Void)?
     private var currentShortcutIndex: Int = 0
 
     init(baseName: String,
          cases: [MacroPreference],
          globalIndex: @escaping () -> Int,
-         proGatedIndices: Set<Int>,
          segmentWidth: CGFloat,
-         attachBadge: ((NSSegmentedControl) -> ProBadgeView.SegmentOverlay)?,
-         refreshBadge: ((NSSegmentedControl, ProBadgeView.SegmentOverlay) -> Void)?,
          onChange: (() -> Void)?) {
         self.baseName = baseName
         self.cases = cases
         self.globalIndex = globalIndex
-        self.proGatedIndices = proGatedIndices
-        self.refreshBadge = refreshBadge
         self.onChange = onChange
 
         segmented = LabelAndControl.makeSegmentedControl(
             Preferences.indexToName(baseName, 0), cases, segmentWidth: segmentWidth, extraAction: nil)
-        badgeOverlay = attachBadge?(segmented)
-        if let overlay = badgeOverlay {
-            overlay.badge.onWindowKeyChanged = { [weak segmented] in
-                guard let segmented, let refreshBadge else { return }
-                refreshBadge(segmented, overlay)
-            }
-        }
         unlink = ShortcutEditor.makeUnlinkButton()
 
         let weakSelf = WeakRef(self)
@@ -581,21 +549,10 @@ final class ShortcutOverrideSegmented {
         let clamped = max(0, min(displayedIndex, cases.count - 1))
         segmented.selectedSegment = clamped
         unlink.isHidden = !Preferences.hasOverride(baseName, index)
-        refreshOverlayIfNeeded()
     }
 
     private func handleClick(_ control: NSSegmentedControl) {
         let newIndex = control.selectedSegment
-        // Pro-lock intercept: clicking a Pro-gated segment while locked redirects to Upgrade.
-        if proGatedIndices.contains(newIndex) && LicenseManager.shared.isProLocked {
-            let stored = CachedUserDefaults.intFromMacroPref(
-                Preferences.indexToName(baseName, currentShortcutIndex), cases)
-            let revertTo = Preferences.hasOverride(baseName, currentShortcutIndex) ? stored : globalIndex()
-            control.selectedSegment = max(0, min(revertTo, cases.count - 1))
-            refreshOverlayIfNeeded()
-            UpgradeTab.navigateToUpgradeTab()
-            return
-        }
         let key = Preferences.indexToName(baseName, currentShortcutIndex)
         let decision = OverrideClickResolver.decide(
             newIndex: newIndex,
@@ -608,7 +565,6 @@ final class ShortcutOverrideSegmented {
             unlink.isHidden = false
             onChange?()
         }
-        refreshOverlayIfNeeded()
     }
 
     private func unlinkOverride() {
@@ -616,14 +572,7 @@ final class ShortcutOverrideSegmented {
         // Resnap to global.
         segmented.selectedSegment = max(0, min(globalIndex(), cases.count - 1))
         unlink.isHidden = true
-        refreshOverlayIfNeeded()
         onChange?()
-    }
-
-    private func refreshOverlayIfNeeded() {
-        if let overlay = badgeOverlay, let refreshBadge {
-            refreshBadge(segmented, overlay)
-        }
     }
 }
 
@@ -636,27 +585,23 @@ final class ShortcutOverrideRadios {
     private let baseName: String
     private let cases: [MacroPreference]
     private let globalIndex: () -> Int
-    private let proGatedIndices: Set<Int>
     private let onChange: (() -> Void)?
     private var currentShortcutIndex: Int = 0
 
     init(baseName: String,
          cases: [MacroPreference],
          globalIndex: @escaping () -> Int,
-         proGatedIndices: Set<Int>,
          onChange: (() -> Void)?) {
         self.baseName = baseName
         self.cases = cases
         self.globalIndex = globalIndex
-        self.proGatedIndices = proGatedIndices
         self.onChange = onChange
 
         stack = LabelAndControl.makeImageRadioButtons(
             Preferences.indexToName(baseName, 0),
             cases as! [ImageMacroPreference],
             extraAction: nil,
-            buttonSpacing: 10,
-            proGatedIndices: proGatedIndices)
+            buttonSpacing: 10)
         unlink = ShortcutEditor.makeUnlinkButton()
 
         let weakSelf = WeakRef(self)
@@ -693,13 +638,6 @@ final class ShortcutOverrideRadios {
     private func handleClick(buttonIndex i: Int) {
         let buttonViews = stack.arrangedSubviews.compactMap { $0 as? ImageTextButtonView }
         let key = Preferences.indexToName(baseName, currentShortcutIndex)
-        if proGatedIndices.contains(i) && LicenseManager.shared.isProLocked {
-            // Snap back to the stored value.
-            let storedIndex = Int(UserDefaults.standard.string(forKey: key) ?? "") ?? -1
-            for (j, b) in buttonViews.enumerated() { b.state = (j == storedIndex) ? .on : .off }
-            UpgradeTab.navigateToUpgradeTab()
-            return
-        }
         let decision = OverrideClickResolver.decide(
             newIndex: i,
             hasOverride: Preferences.hasOverride(baseName, currentShortcutIndex),

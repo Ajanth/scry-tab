@@ -1,24 +1,6 @@
 import Cocoa
 import ShortcutRecorder
 
-// Stubs so ProBadgeView.swift compiles in the test target. The real Symbols
-// enum and NSImage.fromSymbol live in TileFontIconView.swift and
-// HelperExtensions.swift respectively, neither of which is in the test
-// target's source membership. Tests never actually render an icon, so a
-// minimal stub satisfying the signatures is enough — isTemplate = true
-// matches the production contract that ProBadgeViewSegmentTests asserts on.
-enum Symbols: String {
-    case stub = ""
-}
-
-extension NSImage {
-    static func fromSymbol(_ symbol: Symbols, pointSize: CGFloat, rotated180: Bool = false) -> NSImage {
-        let image = NSImage()
-        image.isTemplate = true
-        return image
-    }
-}
-
 // Test-target reimplementation of `SettingsSearchIndex`'s inline-registration API. The production
 // type lives in the app target but its `sheetSearchableStrings(forButtonAction:)` references the
 // sheet classes + AppearanceTab/ControlsTab selectors, which would drag the whole settings window

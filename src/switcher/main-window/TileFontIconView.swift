@@ -44,8 +44,6 @@ enum Symbols: String {
     case sunMax = "􀆭"                // sun.max
     case moonFill = "􀆺"              // moon.fill
     case laptopcomputer = "􀟛"        // laptopcomputer
-    // Pro badge dot on the menubar status icon
-    case starFill = "􀋃"              // star.fill
 }
 
 class TileFontIconView: NSView {

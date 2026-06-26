@@ -4,9 +4,9 @@ import XCTest
 /// `SearchModeResolver` kernel. Pure data in, `Equatable` decision out — no AppKit, no globals.
 /// `TilesView` / `ShortcutAction` execute these decisions; this suite is the spec for what they do.
 ///
-/// Groups: A entry · B toggle route · C enter-editing (+Pro gate) · D disable · E lock/unlock
-/// (+Pro gate) · F escape-depends-on-entry · G nav/tab · H shortcut pass-through · I text
-/// pass-through (cmd+A/C/V/X) · J IME/menu early return · K field editability.
+/// Groups: A entry · B toggle route · C enter-editing · D disable · E lock/unlock · F
+/// escape-depends-on-entry · G nav/tab · H shortcut pass-through · I text pass-through
+/// (cmd+A/C/V/X) · J IME/menu early return · K field editability.
 final class SearchModeResolverTests: XCTestCase {
 
     // MARK: - A. Session entry
@@ -33,27 +33,18 @@ final class SearchModeResolverTests: XCTestCase {
         XCTAssertEqual(SearchModeResolver.toggle(mode: .locked), .enterEditing)
     }
 
-    // MARK: - C. Enter editing (Pro-gated)
+    // MARK: - C. Enter editing
 
     func testEnterFromOffEntersEditingAndRefreshes() {
-        XCTAssertEqual(SearchModeResolver.enableEditing(mode: .off, canSearch: true), .enterEditing(refreshUi: true))
+        XCTAssertEqual(SearchModeResolver.enableEditing(mode: .off), .enterEditing(refreshUi: true))
     }
 
     func testEnterFromLockedEntersEditingWithoutRefresh() {
-        XCTAssertEqual(SearchModeResolver.enableEditing(mode: .locked, canSearch: true), .enterEditing(refreshUi: false))
+        XCTAssertEqual(SearchModeResolver.enableEditing(mode: .locked), .enterEditing(refreshUi: false))
     }
 
     func testEnterWhenAlreadyEditingJustPlacesCaret() {
-        XCTAssertEqual(SearchModeResolver.enableEditing(mode: .editing, canSearch: true), .placeCaretOnly)
-    }
-
-    func testEnterBlockedWhenSearchNotEntitledFromOff() {
-        XCTAssertEqual(SearchModeResolver.enableEditing(mode: .off, canSearch: false), .proGateBlocked(.search))
-    }
-
-    func testEnterBlockedWhenSearchNotEntitledFromLocked() {
-        // Gate is checked before the already-editing / state branches.
-        XCTAssertEqual(SearchModeResolver.enableEditing(mode: .locked, canSearch: false), .proGateBlocked(.search))
+        XCTAssertEqual(SearchModeResolver.enableEditing(mode: .editing), .placeCaretOnly)
     }
 
     // MARK: - D. Disable
@@ -70,27 +61,18 @@ final class SearchModeResolverTests: XCTestCase {
         XCTAssertEqual(SearchModeResolver.disable(mode: .off), .noOp)
     }
 
-    // MARK: - E. Lock / unlock (Pro-gated)
+    // MARK: - E. Lock / unlock
 
     func testLockFromEditingLocksResults() {
-        XCTAssertEqual(SearchModeResolver.lock(mode: .editing, canLockSearch: true), .lockResults)
+        XCTAssertEqual(SearchModeResolver.lock(mode: .editing), .lockResults)
     }
 
     func testLockFromLockedUnlocksToEditing() {
-        XCTAssertEqual(SearchModeResolver.lock(mode: .locked, canLockSearch: true), .unlockToEditing)
+        XCTAssertEqual(SearchModeResolver.lock(mode: .locked), .unlockToEditing)
     }
 
     func testLockFromOffIsNoOp() {
-        XCTAssertEqual(SearchModeResolver.lock(mode: .off, canLockSearch: true), .noOp)
-    }
-
-    func testLockBlockedWhenNotEntitledFromEditing() {
-        XCTAssertEqual(SearchModeResolver.lock(mode: .editing, canLockSearch: false), .proGateBlocked(.lockSearch))
-    }
-
-    func testLockBlockedWhenNotEntitledFromLocked() {
-        // Gate is checked before the editing/locked branch.
-        XCTAssertEqual(SearchModeResolver.lock(mode: .locked, canLockSearch: false), .proGateBlocked(.lockSearch))
+        XCTAssertEqual(SearchModeResolver.lock(mode: .off), .noOp)
     }
 
     // MARK: - F. Escape depends on how search was entered

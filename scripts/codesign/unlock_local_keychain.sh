@@ -3,7 +3,7 @@
 # Local-dev only: make the self-signed Debug signing key usable by codesign
 # without a Keychain unlock prompt. Safe to run before every build (idempotent,
 # no-op if the keychain doesn't exist, e.g. on CI). Does NOT touch the login
-# keychain or the app's license keychain items.
+# keychain.
 
 set -u
 

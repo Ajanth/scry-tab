@@ -5,8 +5,8 @@
 `NSControl.onAction` is a convenience extension (defined in `HelperExtensionsTestable.swift`) that
 replaces the classic target/action pair with a stored **closure**: assigning `control.onAction = { … }`
 wires the control's `target`/`action` to invoke that closure, and reading the property back returns the
-stored closure. It's the backbone of `AppearanceTab`'s Pro-lock **wrap pattern** — a control's existing
-action is read, captured as `original`, and re-wrapped so a Pro-gate check can run first and then
+stored closure. It's the backbone of controls that need to wrap an existing action — a control's
+existing action is read, captured as `original`, and re-wrapped so validation can run first and then
 optionally fall through to `original?(control)`.
 
 ## Behavior & edge cases
@@ -37,5 +37,5 @@ Mirrors `OnActionExtensionTests.swift` 1:1.
 
 ### C. Wrap pattern (the AppearanceTab use case)
 - **testWrapPatternInvokesPreviousClosureOnFallthrough** — a wrapper that calls `original?(c)` runs both the wrapper and the captured original.
-- **testWrapPatternSkipsPreviousClosureOnEarlyReturn** — a wrapper that returns early (the Pro-locked branch) does NOT fire the original, so the Pro value is never written to `Preferences`.
+- **testWrapPatternSkipsPreviousClosureOnEarlyReturn** — a wrapper that returns early does NOT fire the original.
 - **testOriginalClosureSurvivesReassignment** — the captured `original` still fires after `onAction` is reassigned many times (no premature release).

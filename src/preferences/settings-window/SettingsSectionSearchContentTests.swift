@@ -5,9 +5,9 @@ import Cocoa
 /// build-time "base" from a replaceable "dynamic" part.
 ///
 /// Why this suite exists: typing "sho" stopped highlighting ControlsTab's "Shortcut 1"/"Shortcut 2"
-/// sidebar rows after they were rebuilt (the +/- buttons, a recorder edit, an input-source change,
-/// the pro-lock observer). The rows are recreated *outside* the section's build-time `indexed { }`
-/// scope, so their inline registration no-ops and the section's cached targets keep pointing at the
+/// sidebar rows after they were rebuilt (the +/- buttons, a recorder edit, or an input-source
+/// change). The rows are recreated *outside* the section's build-time `indexed { }` scope, so their
+/// inline registration no-ops and the section's cached targets keep pointing at the
 /// removed labels. The fix routes such rows through the dynamic part and re-publishes them wholesale
 /// on every rebuild. These tests pin that the dynamic part is searchable, that re-publishing
 /// *replaces* (never accumulates, never leaves a stale target), and that highlighting drives it.
