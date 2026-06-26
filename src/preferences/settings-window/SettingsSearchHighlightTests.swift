@@ -16,8 +16,8 @@ import Cocoa
 ///      so a section's search actually drives it. (Tier B: factory ⇄ index wiring.)
 ///
 /// The sidebar rows feed `NSTextField` labels into `highlightTarget`; the rounded-section rows
-/// feed `LightLabel`. Both overloads are covered. (`SidebarListRow` itself — and its Pro-badge
-/// recycling — is covered separately in `SidebarListTests`; it compiles into this target fine.)
+/// feed `LightLabel`. Both overloads are covered. (`SidebarListRow` itself is covered separately
+/// in `SidebarListTests`; it compiles into this target fine.)
 final class SettingsSearchHighlightTests: XCTestCase {
 
     // MARK: - Tier A: NSTextField highlight target (what sidebar rows use)

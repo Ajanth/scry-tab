@@ -17,7 +17,6 @@ class PreferencesMigrations {
     static func migratePreferences() {
         let preferencesKey = "preferencesVersion"
         let existingVersion = Self.defaults.string(forKey: preferencesKey)
-        ProTransitionState.markFreshInstallIfUnknown(existingVersion == nil)
         if let versionInPlist = existingVersion {
             if versionInPlist != "#VERSION#" && versionInPlist.compare(App.version, options: .numeric) != .orderedDescending {
                 updateToNewPreferences(versionInPlist)

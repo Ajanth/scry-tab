@@ -2,16 +2,11 @@ struct UsageStats {
     private static let defaults = UserDefaults(suiteName: "\(App.bundleIdentifier).usage")!
     private static let writeQueue = DispatchQueue(label: "UsageStats.writeQueue", qos: .utility)
     private static let maxAge: TimeInterval = 365 * 24 * 3600
-    private static let allKeys = ["triggers", "searches", "triggersTitles", "triggersAutoSize", "triggersExtraShortcuts"]
+    private static let allKeys = ["triggers", "searches"]
     private(set) static var searchRecordedThisSession = false
 
     static func recordTrigger(_ shortcutIndex: Int) {
         record("triggers")
-        if shortcutIndex > 0 && shortcutIndex < Preferences.maxShortcutCount { record("triggersExtraShortcuts") }
-        let style = Preferences.effectiveAppearanceStyle(shortcutIndex)
-        // App Icons is the free default style, so it isn't a Pro-feature signal; only Titles is.
-        if style == .titles { record("triggersTitles") }
-        if Preferences.effectiveAppearanceSize(shortcutIndex) == .auto { record("triggersAutoSize") }
     }
 
     static func recordSearchIfFirst() {
@@ -30,26 +25,6 @@ struct UsageStats {
     }
 
     static var triggerCount: Int { count("triggers", since: Date.distantPast) }
-
-    static var usedProFeaturesSessionCount: Int {
-        UsageStatsTestable.proFeatureSessionCount(
-            triggers: getTimestamps("triggers"),
-            titles: getTimestamps("triggersTitles"),
-            extraShortcuts: getTimestamps("triggersExtraShortcuts"),
-            searches: getTimestamps("searches"))
-    }
-
-    static func formatCount(_ n: Int) -> String { UsageStatsTestable.formatCount(n) }
-
-    static func usedProFeatureNames() -> [String] {
-        UsageStatsTestable.proFeatureNames().compactMap {
-            count($0.key, since: Date.distantPast) > 0 ? $0.name : nil
-        }
-    }
-
-    static func usedSearch() -> Bool { count("searches", since: Date.distantPast) > 0 }
-    static func usedAutoSize() -> Bool { count("triggersAutoSize", since: Date.distantPast) > 0 }
-    static func usedExtraShortcuts() -> Bool { count("triggersExtraShortcuts", since: Date.distantPast) > 0 }
 
     static func prune() {
         let cutoff = Int(Date().timeIntervalSince1970 - maxAge)

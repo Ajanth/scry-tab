@@ -7,8 +7,8 @@ import Cocoa
 /// Why the split exists: most controls are built once, so the push-based index harvested at build
 /// time stays valid for the session. But ControlsTab's shortcut sidebar rows ("Shortcut 1",
 /// "Shortcut 2", …) are torn down and recreated by `refreshShortcutRows` — which runs *outside* the
-/// build scope (via `preferenceChanged`, the +/- buttons, input-source changes, the pro-lock
-/// observer, …). Their inline `registerSearchContent` no-ops there (no active builder), and the
+/// build scope (via `preferenceChanged`, the +/- buttons, input-source changes, and similar
+/// refreshes). Their inline `registerSearchContent` no-ops there (no active builder), and the
 /// section's base targets keep pointing at the now-removed labels, so a query like "sho" stopped
 /// lighting up the rebuilt rows. Sections that manage such rows skip them in the build-time walk
 /// (so they never land in `base`) and re-publish them here via `setDynamic` after every rebuild —
