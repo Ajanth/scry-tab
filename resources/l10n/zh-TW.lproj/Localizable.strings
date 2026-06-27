@@ -97,7 +97,6 @@
 "Lock search" = "鎖定搜尋";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS 將 ⌘⌥⎋、⌘⌥⇧⎋ 和 ⌘⌥⇧⌃⎋ 保留作「強制結束」之用，且無法解除指派。ScryTab 無法使用這些組合鍵。\n\n您的變更會將其中之一指派給：%@。";
 "Medium" = "中";
-"Menubar icon" = "選單列圖像";
 "Middle" = "中間";
 "Minimize/Deminimize window" = "最小化／還原視窗";
 "Miscellaneous" = "其他";

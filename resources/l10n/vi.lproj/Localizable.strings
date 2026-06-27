@@ -97,7 +97,6 @@
 "Lock search" = "Khóa tìm kiếm";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS dành riêng ⌘⌥⎋, ⌘⌥⇧⎋, và ⌘⌥⇧⌃⎋ cho Buộc thoát và không thể gỡ bỏ. ScryTab không thể sử dụng chúng.\n\nThay đổi của bạn sẽ gán một trong số đó cho: %@.";
 "Medium" = "Trung bình";
-"Menubar icon" = "Biểu tượng thanh menu";
 "Middle" = "Giữa";
 "Minimize/Deminimize window" = "Thu nhỏ/Khôi phục cửa sổ";
 "Miscellaneous" = "Khác";

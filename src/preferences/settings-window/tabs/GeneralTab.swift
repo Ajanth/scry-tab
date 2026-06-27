@@ -2,8 +2,6 @@ import Cocoa
 import Sparkle
 
 class GeneralTab {
-    static var menubarIconDropdown: NSPopUpButton?
-    static var menuIconShownToggle: Switch?
     static var updatesPolicyDropdown: NSPopUpButton?
     static var crashPolicyDropdown: NSPopUpButton?
     static var policyLock = false
@@ -11,13 +9,6 @@ class GeneralTab {
     static func initTab() -> NSView {
         let startAtLogin = TableGroupView.Row(leftTitle: NSLocalizedString("Start at login", comment: ""),
             rightViews: [LabelAndControl.makeSwitch("startAtLogin")])
-        menubarIconDropdown = LabelAndControl.makeDropdown("menubarIcon", MenubarIconPreference.allCases)
-        menuIconShownToggle = LabelAndControl.makeSwitch("menubarIconShown")
-        let menubarIcon = TableGroupView.Row(leftTitle: NSLocalizedString("Menubar icon", comment: ""),
-            rightViews: [
-                menubarIconDropdown!,
-                menuIconShownToggle!,
-            ])
         let language = TableGroupView.Row(leftTitle: NSLocalizedString("Language", comment: ""),
             rightViews: [LabelAndControl.makeDropdown("language", LanguagePreference.allCases, extraAction: setLanguageCallback)])
         updatesPolicyDropdown = LabelAndControl.makeDropdown("updatePolicy", UpdatePolicyPreference.allCases)
@@ -26,19 +17,8 @@ class GeneralTab {
         crashPolicyDropdown = LabelAndControl.makeDropdown("crashPolicy", CrashPolicyPreference.allCases)
         let crashPolicy = TableGroupView.Row(leftTitle: NSLocalizedString("Crash reports policy", comment: ""),
             rightViews: [crashPolicyDropdown!])
-        for i in 0..<MenubarIconPreference.allCases.count {
-            let image = NSImage.initCopy("menubar-\(i)")
-            image.isTemplate = i < 2
-            image.size = NSSize(width: 22, height: 22)
-            menubarIconDropdown!.item(at: i)!.image = image
-        }
-        let cell = menubarIconDropdown!.cell! as! NSPopUpButtonCell
-        cell.bezelStyle = .regularSquare
-        cell.arrowPosition = .arrowAtBottom
-        cell.imagePosition = .imageOverlaps
         let table = TableGroupView(width: SettingsWindow.contentWidth)
         table.addRow(startAtLogin)
-        table.addRow(menubarIcon)
         table.addNewTable()
         table.addRow(language)
         table.addNewTable()
@@ -62,15 +42,11 @@ class GeneralTab {
     }
 
     static func cleanup() {
-        menubarIconDropdown = nil
-        menuIconShownToggle = nil
         updatesPolicyDropdown = nil
         crashPolicyDropdown = nil
     }
 
     static func refreshControlsFromPreferences() {
-        menubarIconDropdown?.selectItem(at: CachedUserDefaults.intFromMacroPref("menubarIcon", MenubarIconPreference.allCases))
-        menubarIconDropdown?.isEnabled = Preferences.menubarIconShown
         updatesPolicyDropdown?.selectItem(at: CachedUserDefaults.intFromMacroPref("updatePolicy", UpdatePolicyPreference.allCases))
         crashPolicyDropdown?.selectItem(at: CachedUserDefaults.intFromMacroPref("crashPolicy", CrashPolicyPreference.allCases))
     }

@@ -85,10 +85,8 @@
 		5FDF9EAE2FB3582300703843 /* AppCenter in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDF9EAD2FB3582300703843 /* AppCenter */; };
 		5FDF9EB02FB3582300703843 /* AppCenterCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDF9EAF2FB3582300703843 /* AppCenterCrashes */; };
 		5FDF9EB12FB3584300703843 /* Sparkle in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 5FDF9EA52FB3575B00703843 /* Sparkle */; };
-		64C6A0192E08311D01D96E4E /* menubar-1.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 126D5AA615CEE89F73C22DA7 /* menubar-1.pdf */; };
 		6D42BE46F595D567EDBF559A /* DynamicColorTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA0000000000000DCFFF1 /* DynamicColorTextField.swift */; };
 		6E800CF06EE430DCCF9CE47B /* ObjCExceptionCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E7DD4D4CA23EE28B22048CE6 /* ObjCExceptionCatcher.m */; };
-		7D589F3A0C8DF93BA9E094C5 /* menubar-2.pdf in Resources */ = {isa = PBXBuildFile; fileRef = BC07818D6FCBEFC756C64296 /* menubar-2.pdf */; };
 		AA0C8A100000000000000001 /* AXCallScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0C8A000000000000000001 /* AXCallScheduler.swift */; };
 		AA0C8A1000000000000000B1 /* CGSCallScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0C8A0000000000000000B1 /* CGSCallScheduler.swift */; };
 		AA0C8A1000000000000000B2 /* ProcessCallScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0C8A0000000000000000B2 /* ProcessCallScheduler.swift */; };
@@ -158,7 +156,6 @@
 		BF0CAAAA0000000000001001 /* SearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CAAAA0000000000000001 /* SearchTests.swift */; };
 		BF0CBBBB0000000000001001 /* OnActionExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CBBBB0000000000000001 /* OnActionExtensionTests.swift */; };
 		BF0CEEEE0000000000001001 /* PersistedWindowFrameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0CEEEE0000000000000001 /* PersistedWindowFrameTests.swift */; };
-		C79742CA78D3CC74B6920437 /* menubar-0.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 02540420CE27E6C973652426 /* menubar-0.pdf */; };
 		D04BA0000000000000DCFFF2 /* DynamicColorTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA0000000000000DCFFF1 /* DynamicColorTextField.swift */; };
 		D04BA00000000000C0DE0002 /* SettingsSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA00000000000C0DE0001 /* SettingsSearch.swift */; };
 		D04BA00000000000C0DE0012 /* ShortcutAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA00000000000C0DE0010 /* ShortcutAction.swift */; };
@@ -289,8 +286,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		02540420CE27E6C973652426 /* menubar-0.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "menubar-0.pdf"; sourceTree = "<group>"; };
-		126D5AA615CEE89F73C22DA7 /* menubar-1.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "menubar-1.pdf"; sourceTree = "<group>"; };
 		1C9610B2E76F1E429C8D3660 /* titles_show_running_windows_light@2x.heic */ = {isa = PBXFileReference; lastKnownFileType = image.heic; path = "titles_show_running_windows_light@2x.heic"; sourceTree = "<group>"; };
 		1C9611039BDBE0C84F349BA1 /* titles_show_status_icons_light@2x.heic */ = {isa = PBXFileReference; lastKnownFileType = image.heic; path = "titles_show_status_icons_light@2x.heic"; sourceTree = "<group>"; };
 		1C96127120349FE18C5C39DA /* app_icons_show_running_windows_light@2x.heic */ = {isa = PBXFileReference; lastKnownFileType = image.heic; path = "app_icons_show_running_windows_light@2x.heic"; sourceTree = "<group>"; };
@@ -379,7 +374,6 @@
 		AECF000000000000000000A1 /* Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
 		AECF000000000000000000B1 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		BB0000000000000000000001 /* TabGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabGroup.swift; sourceTree = "<group>"; };
-		BC07818D6FCBEFC756C64296 /* menubar-2.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "menubar-2.pdf"; sourceTree = "<group>"; };
 		BF0C8070A1BBA8B425C8EF34 /* IOKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IOKit.swift; sourceTree = "<group>"; };
 		BF0C80CD087C6384E0340F4E /* convert_font_to_png.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = convert_font_to_png.sh; sourceTree = "<group>"; };
 		BF0C80F8FAA00FF3D9682F26 /* DebugMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
@@ -809,16 +803,6 @@
 				AECF000000000000000000B1 /* Secrets.swift */,
 			);
 			path = api;
-			sourceTree = "<group>";
-		};
-		BF0C80536B40523C5DB23BE2 /* menubar */ = {
-			isa = PBXGroup;
-			children = (
-				02540420CE27E6C973652426 /* menubar-0.pdf */,
-				126D5AA615CEE89F73C22DA7 /* menubar-1.pdf */,
-				BC07818D6FCBEFC756C64296 /* menubar-2.pdf */,
-			);
-			path = menubar;
 			sourceTree = "<group>";
 		};
 		BF0C827B752F58F79EDB6B6C /* experimentations */ = {
@@ -1271,7 +1255,6 @@
 			isa = PBXGroup;
 			children = (
 				BF0C86C288D4FD8F92D3C7DB /* app */,
-				BF0C80536B40523C5DB23BE2 /* menubar */,
 			);
 			path = icons;
 			sourceTree = "<group>";
@@ -1600,9 +1583,6 @@
 				BF0C8BD4410A3D597409C328 /* InfoPlist.strings in Resources */,
 				BF0C86B26D16AFC588C88DB4 /* Localizable.strings in Resources */,
 				BF0C8668A861AD9E42D26842 /* InfoPlist.strings in Resources */,
-				C79742CA78D3CC74B6920437 /* menubar-0.pdf in Resources */,
-				64C6A0192E08311D01D96E4E /* menubar-1.pdf in Resources */,
-				7D589F3A0C8DF93BA9E094C5 /* menubar-2.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

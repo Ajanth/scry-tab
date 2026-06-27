@@ -32,8 +32,6 @@ class Preferences {
             "showTitles": ShowTitlesPreference.windowTitle.indexAsString,
             "fadeOutAnimation": "false",
             "startAtLogin": "true",
-            "menubarIcon": MenubarIconPreference.outlined.indexAsString,
-            "menubarIconShown": "true",
             "language": LanguagePreference.systemDefault.indexAsString,
             "exceptions": defaultExceptions(),
             "updatePolicy": UpdatePolicyPreference.autoCheck.indexAsString,
@@ -139,8 +137,6 @@ class Preferences {
     static func groupApps(_ i: Int) -> GroupAppsPreference { CachedUserDefaults.macroPref(indexToName("showAppsOrWindows", i), GroupAppsPreference.allCases) }
     static func groupTabs(_ i: Int) -> GroupTabsPreference { CachedUserDefaults.macroPref(indexToName("showTabsAsWindows", i), GroupTabsPreference.allCases) }
     static var shortcutStyle: ShortcutStylePreference { CachedUserDefaults.macroPref("shortcutStyle", ShortcutStylePreference.allCases) }
-    static var menubarIcon: MenubarIconPreference { CachedUserDefaults.macroPref("menubarIcon", MenubarIconPreference.allCases) }
-    static var menubarIconShown: Bool { CachedUserDefaults.bool("menubarIconShown") }
     static var language: LanguagePreference { CachedUserDefaults.macroPref("language", LanguagePreference.allCases) }
 
     static let minShortcutCount = 1

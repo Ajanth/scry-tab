@@ -3,7 +3,6 @@ import Cocoa
 class Menubar {
     static var statusItem: NSStatusItem!
     static var menu: NSMenu!
-    private static var isVisibleObserver: NSKeyValueObservation?
 
     @discardableResult
     static func addMenuItem(_ title: String, _ action: Selector, _ keyEquivalent: String, _ symbolName: String?, _ color: NSColor? = nil, _ target: AnyObject? = nil) -> NSMenuItem {
@@ -36,12 +35,11 @@ class Menubar {
         statusItem.target = self
         statusItem.button!.action = #selector(statusItemOnClick)
         statusItem.button!.sendAction(on: [.leftMouseDown, .rightMouseDown])
-        // Apply icon prefs eagerly here, while the status item is still being added to the
-        // menubar. Doing it later (from PreferencesEvents.initialize) sets `button.image` after
-        // the WindowServer has already laid the menubar out at its imageless default size, then
-        // invalidates NSStatusBarContentView mid-FBS-scene-update — `_NSDetectedLayoutRecursion`.
-        applyMenubarIconPreferences()
-        observeRemovalFromMenubar()
+        // Load the app icon eagerly here, while the status item is still being added to the
+        // menubar. Doing it later sets `button.image` after the WindowServer has already laid
+        // the menubar out at its imageless default size, then invalidates NSStatusBarContentView
+        // mid-FBS-scene-update — `_NSDetectedLayoutRecursion`.
+        loadAppIcon()
         #if DEBUG
         installQAMenuMiddleClickMonitor()
         #endif
@@ -72,39 +70,9 @@ class Menubar {
         }
     }
 
-    static func menubarIconCallback(_: NSControl?) {
-        guard statusItem != nil else { return }
-        applyMenubarIconPreferences()
-        if let menubarIconDropdown = GeneralTab.menubarIconDropdown {
-            menubarIconDropdown.isEnabled = Preferences.menubarIconShown
-        }
-    }
-
-    static private func applyMenubarIconPreferences() {
-        if Preferences.menubarIconShown {
-            loadPreferredIcon()
-        } else {
-            statusItem.isVisible = false
-        }
-    }
-
-    // The user can ⌘-drag the icon off the menubar (enabled by `.removalAllowed`). When that
-    // happens, `isVisible` flips true→false and we persist the preference. Observing here in
-    // `Menubar` rather than in `GeneralTab` means we react whether or not Settings is open.
-    static private func observeRemovalFromMenubar() {
-        statusItem.behavior = .removalAllowed
-        isVisibleObserver = statusItem.observe(\.isVisible, options: [.old, .new]) { _, change in
-            if change.oldValue == true && change.newValue == false {
-                Preferences.set("menubarIconShown", "false")
-                GeneralTab.menuIconShownToggle?.setSilently(.off)
-            }
-        }
-    }
-
-    static private func loadPreferredIcon() {
-        let i = Preferences.menubarIcon.indexAsString
-        let image = NSImage(named: "menubar-\(i)")!
-        image.isTemplate = i != "2"
+    static private func loadAppIcon() {
+        let image = NSImage(named: NSImage.applicationIconName)!
+        image.isTemplate = false
         statusItem.button!.image = image
         statusItem.isVisible = true
         statusItem.button!.imageScaling = .scaleProportionallyUpOrDown
