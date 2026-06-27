@@ -114,22 +114,27 @@ class App: AppCenterApplication {
     }
 
     @objc static func showSettingsWindow() {
+        showSettingsWindow(route: .appearance)
+    }
+
+    static func showSettingsWindow(route: SettingsRoute) {
         guard Menubar.statusItem != nil else {
             pendingShowSettingsWindow = true
             return
         }
-        initializeSettingsWindowIfNeeded()
+        initializeSettingsWindowIfNeeded(route: route)
+        SettingsWindow.shared?.navigate(to: route)
         showSecondaryWindow(SettingsWindow.shared!)
         if SettingsWindow.shared!.isVisible != true {
-            let window = SettingsWindow()
+            let window = SettingsWindow(initialRoute: route)
+            window.navigate(to: route)
             showSecondaryWindow(window)
             window.orderFrontRegardless()
         }
     }
 
     @objc static func showAboutWindow() {
-        initializeAboutWindowIfNeeded()
-        showSecondaryWindow(AboutWindow.shared!)
+        showSettingsWindow(route: .about)
     }
 
     static func showSecondaryWindow(_ window: NSWindow) {
@@ -148,8 +153,8 @@ class App: AppCenterApplication {
         }
     }
 
-    private static func initializeSettingsWindowIfNeeded() {
-        if SettingsWindow.shared == nil { _ = SettingsWindow() }
+    private static func initializeSettingsWindowIfNeeded(route: SettingsRoute = .appearance) {
+        if SettingsWindow.shared == nil { _ = SettingsWindow(initialRoute: route) }
     }
 
     private static func initializeAboutWindowIfNeeded() {

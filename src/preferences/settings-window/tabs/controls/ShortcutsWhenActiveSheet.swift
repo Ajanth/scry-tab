@@ -24,6 +24,10 @@ class ShortcutsWhenActiveSheet: SheetWindow {
     ]
 
     override func makeContentView() -> NSView {
+        Self.makeContentView(width: SheetWindow.width)
+    }
+
+    static func makeContentView(width: CGFloat) -> NSView {
         let focusWindowShortcut = TableGroupView.Row(leftTitle: Self.labelFocus,
             rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelFocus, "focusWindowShortcut", Preferences.focusWindowShortcut, labelPosition: .right)[0]])
         let previousWindowShortcut = TableGroupView.Row(leftTitle: Self.labelPrevious,
@@ -40,7 +44,7 @@ class ShortcutsWhenActiveSheet: SheetWindow {
             rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelQuit, "quitAppShortcut", Preferences.quitAppShortcut, labelPosition: .right)[0]])
         let hideShowAppShortcut = TableGroupView.Row(leftTitle: Self.labelHideShow,
             rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelHideShow, "hideShowAppShortcut", Preferences.hideShowAppShortcut, labelPosition: .right)[0]])
-        let table = TableGroupView(title: Self.title, width: SheetWindow.width)
+        let table = TableGroupView(title: Self.title, width: width)
         _ = table.addRow(focusWindowShortcut)
         _ = table.addRow(previousWindowShortcut)
         _ = table.addRow(cancelShortcut)

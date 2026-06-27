@@ -33,4 +33,17 @@ extension Preferences {
             shortcutStyle: CachedUserDefaults.macroPref(indexToName("shortcutStyle", index), ShortcutStylePreference.allCases)
         )
     }
+
+    static func shortcutIdentifier(at index: Int) -> String {
+        let key = indexToName("shortcutIdentifier", index)
+        if let value = all[key] as? String, !value.isEmpty { return value }
+        let value = UUID().uuidString
+        set(key, value, false)
+        return value
+    }
+
+    static func shortcutIndex(forIdentifier id: String) -> Int? {
+        guard !id.isEmpty else { return nil }
+        return (0..<shortcutCount).first { shortcutIdentifier(at: $0) == id }
+    }
 }

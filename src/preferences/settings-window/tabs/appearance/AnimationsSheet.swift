@@ -9,7 +9,11 @@ class AnimationsSheet: SheetWindow {
     static let searchableStrings: [String] = [title, labelDelay, labelFadeOut]
 
     override func makeContentView() -> NSView {
-        let table = TableGroupView(title: Self.title, width: SheetWindow.width)
+        Self.makeContentView(width: SheetWindow.width)
+    }
+
+    static func makeContentView(width: CGFloat) -> NSView {
+        let table = TableGroupView(title: Self.title, width: width)
         let slider = LabelAndControl.makeLabelWithSlider("", "windowDisplayDelay", 0, 900, 19, true, "ms", width: 180)
         let rule = slider[1]
         let indicator = slider[2] as! NSTextField

@@ -42,6 +42,7 @@ class Preferences {
             "settingsWindowShownOnFirstLaunch": "false",
         ]
         (0..<maxShortcutCount).forEach { index in
+            values[indexToName("shortcutIdentifier", index)] = ""
             values[indexToName("holdShortcut", index)] = defaultShortcut("⌥")
             values[indexToName("nextWindowShortcut", index)] = defaultShortcut(index == 0 ? "⇥" : (index == 1 ? keyAboveTabDependingOnInputSource() : ""))
         }
