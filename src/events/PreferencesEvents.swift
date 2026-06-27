@@ -61,7 +61,6 @@ class PreferencesEvents {
         }
         ControlsTab.preferenceChanged(key)
         switch key {
-        case "menubarIcon", "menubarIconShown": applyMenubarPreferencesIfReady()
         case "nextWindowGesture": TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled)
         case "startAtLogin": LoginItem.applyCurrentPreference()
         case "updatePolicy": applyUpdatePolicyPreference()
@@ -69,11 +68,6 @@ class PreferencesEvents {
         case let k where (isOverrideKey(k) || isPerShortcutGroupingKey(k)) && TilesPanel.shared != nil: App.resetPreferencesDependentComponents()
         default: break
         }
-    }
-
-    private static func applyMenubarPreferencesIfReady() {
-        guard Menubar.statusItem != nil else { return }
-        Menubar.menubarIconCallback(nil)
     }
 
     private static func applyUpdatePolicyPreference() {
