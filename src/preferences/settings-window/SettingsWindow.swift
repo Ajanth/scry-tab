@@ -4,6 +4,7 @@ private struct SettingsSectionDefinition {
     let id: String
     let title: String
     let symbol: Symbols
+    let route: SettingsRoute
     /// Deferred view builder so `addSection` can wrap construction in
     /// `SettingsSearchIndex.indexed { ... }` and harvest inline-registered search strings +
     /// highlight targets as the section's factories build their widgets. The closure is invoked
@@ -16,6 +17,12 @@ private struct SettingsSectionDefinition {
     /// section's *dynamic* search content (at build time, and again after each rebuild via
     /// `refreshSectionSearchContent`). nil for sections with no such rows.
     let registerDynamicSearchContent: (() -> Void)?
+}
+
+private enum SettingsSidebarItem {
+    case group(SettingsSectionDefinition)
+    case page(SettingsSectionDefinition)
+    case result(SettingsSearchDescriptorMatch)
 }
 
 private final class SettingsSection {
@@ -74,7 +81,10 @@ private final class SettingsSection {
 private final class SettingsSidebarCellView: NSTableCellView {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "SettingsSidebarCell")
     private let iconView = NSImageView()
+    private let textStack = NSStackView()
     private let titleLabel = NSTextField(labelWithString: "")
+    private let subtitleLabel = NSTextField(labelWithString: "")
+    private var isGroup = false
 
     override var backgroundStyle: NSView.BackgroundStyle {
         didSet { refreshStyle() }
@@ -94,36 +104,61 @@ private final class SettingsSidebarCellView: NSTableCellView {
         iconView.setContentHuggingPriority(.required, for: .horizontal)
         titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        subtitleLabel.lineBreakMode = .byTruncatingTail
+        subtitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        textStack.orientation = .vertical
+        textStack.alignment = .leading
+        textStack.spacing = 1
+        textStack.addArrangedSubview(titleLabel)
+        textStack.addArrangedSubview(subtitleLabel)
         iconView.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        textStack.translatesAutoresizingMaskIntoConstraints = false
         addSubview(iconView)
-        addSubview(titleLabel)
-        // Standard `NSTableCellView` layout for an `NSTableView.style = .sourceList` sidebar:
-        // a small leading inset, an icon, a fixed gap, then the title label. AppKit handles the
-        // selection highlight pill and the sidebar material/background.
+        addSubview(textStack)
         NSLayoutConstraint.activate([
             iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: SettingsWindow.sidebarItemContentInset),
             iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
             iconView.widthAnchor.constraint(equalToConstant: 22),
             iconView.heightAnchor.constraint(equalToConstant: 22),
-            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -SettingsWindow.sidebarItemContentInset),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            textStack.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6),
+            textStack.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -SettingsWindow.sidebarItemContentInset),
+            textStack.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
         refreshStyle()
     }
 
     func configure(_ section: SettingsSection) {
-        titleLabel.stringValue = section.title
-        iconView.image = section.icon
+        configure(title: section.title, subtitle: nil, icon: section.icon, isGroup: false)
+    }
+
+    func configure(_ definition: SettingsSectionDefinition, icon: NSImage) {
+        configure(title: definition.title, subtitle: nil, icon: icon, isGroup: false)
+    }
+
+    func configureGroup(_ definition: SettingsSectionDefinition, icon: NSImage) {
+        configure(title: definition.title, subtitle: nil, icon: icon, isGroup: true)
+    }
+
+    func configure(_ match: SettingsSearchDescriptorMatch, icon: NSImage) {
+        configure(title: match.descriptor.title, subtitle: match.descriptor.subtitle, icon: icon, isGroup: false)
+    }
+
+    private func configure(title: String, subtitle: String?, icon: NSImage, isGroup: Bool) {
+        self.isGroup = isGroup
+        titleLabel.stringValue = title
+        subtitleLabel.stringValue = subtitle ?? ""
+        subtitleLabel.isHidden = (subtitle ?? "").isEmpty
+        iconView.image = icon
         iconView.image?.isTemplate = true
         refreshStyle()
     }
 
     private func refreshStyle() {
         let selected = backgroundStyle == .emphasized
-        titleLabel.font = NSFont.systemFont(ofSize: 13.5, weight: .medium)
-        titleLabel.textColor = selected ? .white : .labelColor
+        titleLabel.font = NSFont.systemFont(ofSize: isGroup ? 11.5 : 13.5, weight: isGroup ? .semibold : .medium)
+        subtitleLabel.font = NSFont.systemFont(ofSize: 11)
+        titleLabel.textColor = selected ? .white : (isGroup ? .secondaryLabelColor : .labelColor)
+        subtitleLabel.textColor = selected ? .white : .secondaryLabelColor
         if #available(macOS 10.14, *) {
             iconView.contentTintColor = selected ? .white : .secondaryLabelColor
         }
@@ -217,9 +252,12 @@ class SettingsWindow: NSWindow {
     private let sectionsDocumentView = SettingsFlippedView(frame: .zero)
     private let sectionsStack = NSStackView()
     private let quitButton = NSButton(title: String(format: NSLocalizedString("Quit %@", comment: "%@ is ScryTab"), App.name), target: nil, action: #selector(NSApplication.terminate(_:)))
+    private let navigationController = SettingsNavigationController()
+    private lazy var definitions = sectionDefinitions()
     private var sections = [SettingsSection]()
-    private var visibleSections = [SettingsSection]()
+    private var visibleSidebarItems = [SettingsSidebarItem]()
     private var selectedSectionId: String?
+    private var sectionScrollPositions = [String: CGFloat]()
     private var sectionsStackBottomConstraint: NSLayoutConstraint!
     private var sheetHighlightTargets = [ObjectIdentifier: [SettingsSearchHighlightTarget]]()
     private var liveResizeOriginX: CGFloat?
@@ -227,7 +265,7 @@ class SettingsWindow: NSWindow {
     private var lastContentScrollY: CGFloat?
     private var isProgrammaticScrollInProgress = false
 
-    convenience init() {
+    convenience init(initialRoute: SettingsRoute = .appearance) {
         // Leading pad is the title-to-divider gap; trailing pad is the card-outer-edge-to-window
         // gap. They're intentionally asymmetric because `TableGroupView`'s ~10pt internal padding
         // already adds a visual gap on the right — so the visible content sits roughly the same
@@ -244,6 +282,7 @@ class SettingsWindow: NSWindow {
         minSize = NSSize(width: windowWidth, height: Self.minWindowHeight)
         maxSize = NSSize(width: windowWidth, height: CGFloat.greatestFiniteMagnitude)
         setupWindow()
+        navigationController.navigate(to: Self.normalizedRoute(initialRoute))
         setupView()
         // setFrameAutosaveNameSafely applies the persisted frame (dropping a corrupt one that would
         // otherwise abort the app) and returns whether a VALID saved frame existed — false on first
@@ -275,17 +314,20 @@ class SettingsWindow: NSWindow {
         }
     }
 
+    private static func normalizedRoute(_ route: SettingsRoute) -> SettingsRoute {
+        route.normalizedDeletedShortcut {
+            Preferences.shortcutIndex(forIdentifier: $0) != nil
+        }
+    }
+
     private func setupView() {
         setupSplitView()
         setupSidebar()
         setupContentPane()
-        sectionDefinitions().forEach { addSection($0) }
+        visibleSidebarItems = definitions.map { .page($0) }
+        sidebarTableView.reloadData()
+        navigate(to: navigationController.selectedRoute)
         refreshControlsFromSettings()
-        // Publish each section's dynamic search content (its rebuilt-after-build sidebar rows) now
-        // that the section objects exist. Uses `self` directly — `SettingsWindow.shared` isn't
-        // assigned until `init` finishes, so ControlsTab's own refresh calls no-op until then.
-        sections.forEach { refreshSectionSearchContent($0.id) }
-        applySearch("")
     }
 
     private func setupSplitView() {
@@ -305,7 +347,6 @@ class SettingsWindow: NSWindow {
 
     private func setupSidebar() {
         setupSearchField(sidebarContainer)
-        setupQuitButton(sidebarContainer)
         setupSidebarTable(sidebarContainer)
         // Match macOS System Settings: Tab cycles between the search field and the sidebar
         // table only. The nextValidKeyView overrides on these two subclasses keep AppKit's
@@ -334,7 +375,6 @@ class SettingsWindow: NSWindow {
         sectionsStack.alignment = .leading
         sectionsStack.translatesAutoresizingMaskIntoConstraints = false
         sectionsDocumentView.addSubview(sectionsStack)
-        installContentScrollObserver()
         NSLayoutConstraint.activate([
             rightScrollView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
             rightScrollView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
@@ -407,7 +447,7 @@ class SettingsWindow: NSWindow {
             // too far in.
             sidebarScrollView.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
             sidebarScrollView.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
-            sidebarScrollView.bottomAnchor.constraint(equalTo: quitButton.topAnchor, constant: -10),
+            sidebarScrollView.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -10),
         ])
     }
 
@@ -425,15 +465,121 @@ class SettingsWindow: NSWindow {
 
     private func sectionDefinitions() -> [SettingsSectionDefinition] {
         [
-            SettingsSectionDefinition(id: "appearance", title: NSLocalizedString("Appearance", comment: ""), symbol: .paintpalette, builder: AppearanceTab.initTab, registerDynamicSearchContent: nil),
-            SettingsSectionDefinition(id: "controls", title: NSLocalizedString("Controls", comment: ""), symbol: .command, builder: ControlsTab.initTab, registerDynamicSearchContent: ControlsTab.registerSidebarRowsSearchContent),
-            SettingsSectionDefinition(id: "general", title: NSLocalizedString("General", comment: ""), symbol: .gearshape, builder: GeneralTab.initTab, registerDynamicSearchContent: nil),
-            SettingsSectionDefinition(id: "exceptions", title: NSLocalizedString("Exceptions", comment: ""), symbol: .handRaised, builder: ExceptionsTab.initTab, registerDynamicSearchContent: nil),
+            SettingsSectionDefinition(id: "appearance", title: NSLocalizedString("Appearance", comment: ""), symbol: .paintpalette, route: .appearance, builder: AppearanceTab.initTab, registerDynamicSearchContent: nil),
+            SettingsSectionDefinition(id: "controls", title: NSLocalizedString("Controls", comment: ""), symbol: .command, route: .controls(nil), builder: ControlsTab.initTab, registerDynamicSearchContent: ControlsTab.registerSidebarRowsSearchContent),
+            SettingsSectionDefinition(id: "general", title: NSLocalizedString("General", comment: ""), symbol: .gearshape, route: .general, builder: GeneralTab.initTab, registerDynamicSearchContent: nil),
+            SettingsSectionDefinition(id: "exceptions", title: NSLocalizedString("Exceptions", comment: ""), symbol: .handRaised, route: .exceptions(nil), builder: ExceptionsTab.initTab, registerDynamicSearchContent: nil),
+            SettingsSectionDefinition(id: "about", title: NSLocalizedString("About", comment: ""), symbol: .circledInfo, route: .about, builder: AboutTab.initTab, registerDynamicSearchContent: nil),
         ]
+    }
+
+    private func searchDescriptors() -> [SettingsSearchDescriptor] {
+        staticPageSearchDescriptors() + shortcutSearchDescriptors() + exceptionSearchDescriptors()
+    }
+
+    private func searchSidebarItems(query: String) -> [SettingsSidebarItem] {
+        let pageOrder = definitions.compactMap { $0.route.page }
+        return SettingsSearchDescriptorMatcher.groupedMatches(query: query, descriptors: searchDescriptors(), pageOrder: pageOrder).flatMap { group in
+            guard let definition = definition(for: group.page) else { return group.matches.map(SettingsSidebarItem.result) }
+            return [SettingsSidebarItem.group(definition)] + group.matches.map(SettingsSidebarItem.result)
+        }
+    }
+
+    private func staticPageSearchDescriptors() -> [SettingsSearchDescriptor] {
+        [
+            SettingsSearchDescriptor(id: "appearance", route: .appearance, sectionID: "appearance", title: NSLocalizedString("Appearance", comment: ""), keywords: [
+                NSLocalizedString("Size", comment: ""),
+                NSLocalizedString("Theme", comment: ""),
+                NSLocalizedString("After keys are released", comment: ""),
+                NSLocalizedString("Show on", comment: ""),
+            ] + AppearanceStylePreference.allCases.map(\.localizedString)
+              + AppearanceSizePreference.allCases.map(\.localizedString)
+              + AppearanceThemePreference.allCases.map(\.localizedString)
+              + ShortcutStylePreference.allCases.map(\.localizedString)
+              + ShowOnScreenPreference.allCases.map(\.localizedString)
+              + AnimationsSheet.searchableStrings + CustomizeStyleSheet.searchableStrings),
+            SettingsSearchDescriptor(id: "controls-gesture", route: .controls(.gesture), sectionID: "controls", title: NSLocalizedString("Gesture", comment: ""), keywords: [
+                NSLocalizedString("Trackpad", comment: ""),
+                NSLocalizedString("Filtering", comment: ""),
+                NSLocalizedString("Appearance", comment: ""),
+                NSLocalizedString("Ordering", comment: ""),
+            ]),
+            SettingsSearchDescriptor(id: "controls-active", route: .controls(.activeShortcuts), sectionID: "controls", title: NSLocalizedString("Shortcuts while ScryTab is active", comment: ""), keywords: ShortcutsWhenActiveSheet.searchableStrings),
+            SettingsSearchDescriptor(id: "controls-navigation-pointer", route: .controls(.navigationPointer), sectionID: "controls", title: NSLocalizedString("Navigation & pointer", comment: ""), keywords: AdditionalControlsSheet.searchableStrings),
+            SettingsSearchDescriptor(id: "general", route: .general, sectionID: "general", title: NSLocalizedString("General", comment: ""), keywords: [
+                NSLocalizedString("Start at login", comment: ""),
+                NSLocalizedString("Language", comment: ""),
+                NSLocalizedString("Updates policy", comment: ""),
+                NSLocalizedString("Check for updates now…", comment: ""),
+                NSLocalizedString("Crash reports policy", comment: ""),
+                NSLocalizedString("Export settings…", comment: ""),
+                NSLocalizedString("Import settings…", comment: ""),
+                NSLocalizedString("Reset settings and restart…", comment: ""),
+            ] + LanguagePreference.allCases.map(\.localizedString)
+              + UpdatePolicyPreference.allCases.map(\.localizedString)
+              + CrashPolicyPreference.allCases.map(\.localizedString)),
+            SettingsSearchDescriptor(id: "exceptions", route: .exceptions(nil), sectionID: "exceptions", title: NSLocalizedString("Exceptions", comment: ""), keywords: [
+                NSLocalizedString("Hide", comment: ""),
+                NSLocalizedString("Ignore shortcuts", comment: ""),
+                NSLocalizedString("Add a running app", comment: ""),
+                NSLocalizedString("Add an app from disk", comment: ""),
+            ]),
+            SettingsSearchDescriptor(id: "about", route: .about, sectionID: "about", title: NSLocalizedString("About", comment: ""), keywords: [
+                App.name,
+                App.version,
+                App.licence,
+                NSLocalizedString("Website", comment: ""),
+                NSLocalizedString("Source code", comment: ""),
+                NSLocalizedString("Usage", comment: ""),
+                NSLocalizedString("Acknowledgments", comment: ""),
+            ]),
+        ]
+    }
+
+    private func shortcutSearchDescriptors() -> [SettingsSearchDescriptor] {
+        (0..<Preferences.shortcutCount).map { index in
+            let id = Preferences.shortcutIdentifier(at: index)
+            return SettingsSearchDescriptor(id: "shortcut-\(id)",
+                                            route: .controls(.shortcut(id: id, pane: nil)),
+                                            sectionID: "controls",
+                                            title: NSLocalizedString("Shortcut", comment: "") + " " + String(index + 1),
+                                            keywords: FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings,
+                                            valueProvider: { [index] in
+                                                [
+                                                    Preferences.shortcut(Preferences.indexToName("holdShortcut", index))?.keyEquivalent ?? "",
+                                                    Preferences.shortcut(Preferences.indexToName("nextWindowShortcut", index))?.keyEquivalent ?? "",
+                                                ]
+                                            })
+        }
+    }
+
+    private func exceptionSearchDescriptors() -> [SettingsSearchDescriptor] {
+        Preferences.exceptions.map {
+            SettingsSearchDescriptor(id: "exception-\($0.bundleIdentifier)",
+                                     route: .exceptions(.bundleIdentifier($0.bundleIdentifier)),
+                                     sectionID: "exceptions",
+                                     title: $0.bundleIdentifier,
+                                     keywords: [NSLocalizedString("Bundle ID", comment: ""), NSLocalizedString("Hide", comment: ""), NSLocalizedString("Ignore shortcuts", comment: "")])
+        }
     }
 
     private func sidebarImage(_ definition: SettingsSectionDefinition) -> NSImage {
         return NSImage.fromSymbol(definition.symbol, pointSize: 18)
+    }
+
+    private func definition(for page: SettingsTopLevelPage) -> SettingsSectionDefinition? {
+        definitions.first { $0.id == page.rawValue }
+    }
+
+    private func section(for definition: SettingsSectionDefinition) -> SettingsSection {
+        if let section = sections.first(where: { $0.id == definition.id }) {
+            return section
+        }
+        addSection(definition)
+        let section = sections.last!
+        section.container.isHidden = selectedSectionId != definition.id
+        refreshSectionSearchContent(definition.id)
+        return section
     }
 
     private func addSection(_ definition: SettingsSectionDefinition) {
@@ -532,6 +678,7 @@ class SettingsWindow: NSWindow {
     }
 
     private func updateVisibleSectionsSpacing() {
+        let visibleSections = sections.filter { !$0.container.isHidden }
         visibleSections.enumerated().forEach { index, section in
             let isFirst = index == 0
             let isLast = index == visibleSections.count - 1
@@ -969,6 +1116,7 @@ class SettingsWindow: NSWindow {
     }
 
     private func sectionAtCurrentScrollPosition(_ triggerRatio: CGFloat) -> SettingsSection? {
+        let visibleSections = sections.filter { !$0.container.isHidden }
         guard !visibleSections.isEmpty else { return nil }
         let visibleBounds = rightScrollView.contentView.bounds
         let sectionTopY = visibleBounds.minY + visibleBounds.height * triggerRatio
@@ -978,8 +1126,59 @@ class SettingsWindow: NSWindow {
     }
 
     func navigateToSection(_ sectionId: String) {
-        guard let section = sections.first(where: { $0.id == sectionId }) else { return }
-        selectSection(section, scroll: true)
+        guard let definition = definitions.first(where: { $0.id == sectionId }) else { return }
+        navigate(to: definition.route)
+    }
+
+    func navigate(to route: SettingsRoute) {
+        let route = Self.normalizedRoute(route)
+        guard let page = route.page, let definition = definition(for: page) else { return }
+        storeCurrentScrollPosition()
+        navigationController.navigate(to: route)
+        _ = section(for: definition)
+        if page == .about { AboutTab.refreshSettingsUsageStats() }
+        sections.forEach { $0.container.isHidden = $0.id != definition.id }
+        selectedSectionId = definition.id
+        updateVisibleSectionsSpacing()
+        sectionsDocumentView.layoutSubtreeIfNeeded()
+        restoreScrollPosition(for: definition.id)
+        selectSidebarRow(for: definition)
+        applyDestination(route)
+        highlightCurrentPageForActiveSearch()
+    }
+
+    private func storeCurrentScrollPosition() {
+        guard let selectedSectionId else { return }
+        sectionScrollPositions[selectedSectionId] = rightScrollView.contentView.bounds.minY
+    }
+
+    private func restoreScrollPosition(for sectionId: String) {
+        let targetY = sectionScrollPositions[sectionId] ?? 0
+        rightScrollView.contentView.scroll(to: NSPoint(x: 0, y: targetY))
+        rightScrollView.reflectScrolledClipView(rightScrollView.contentView)
+        lastContentScrollY = targetY
+    }
+
+    private func selectSidebarRow(for definition: SettingsSectionDefinition) {
+        guard SettingsSearch.isQueryEmpty(searchField.stringValue) else { return }
+        guard let row = visibleSidebarItems.firstIndex(where: {
+            if case .page(let itemDefinition) = $0 { return itemDefinition.id == definition.id }
+            return false
+        }), sidebarTableView.selectedRow != row else { return }
+        sidebarTableView.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
+    }
+
+    private func applyDestination(_ route: SettingsRoute) {
+        if case .controls(let destination?) = route {
+            ControlsTab.selectDestination(destination)
+        } else if case .exceptions(let destination?) = route {
+            ExceptionsTab.selectDestination(destination)
+        }
+    }
+
+    private func highlightCurrentPageForActiveSearch() {
+        guard !SettingsSearch.isQueryEmpty(searchField.stringValue) else { return }
+        sections.first { $0.id == selectedSectionId }?.highlightMatches(searchField.stringValue)
     }
 
     /// Run `changes` while preserving the user's scroll position. If the change in document height
@@ -1001,6 +1200,7 @@ class SettingsWindow: NSWindow {
 
     private func selectSection(_ section: SettingsSection, scroll: Bool, selectInSidebar: Bool = true) {
         selectedSectionId = section.id
+        let visibleSections = sections.filter { !$0.container.isHidden }
         if selectInSidebar, let row = visibleSections.firstIndex(where: { $0.id == section.id }), sidebarTableView.selectedRow != row {
             sidebarTableView.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
         }
@@ -1024,37 +1224,59 @@ class SettingsWindow: NSWindow {
         Popover.shared.updateSearchContext(query) { query, text in
             SettingsSearch.match(query, in: text)?.ranges ?? []
         }
-        let hasQuery = !SettingsSearch.isQueryEmpty(query)
-        let matchingSections = sections.filter { !hasQuery || $0.matches(query) }
-        visibleSections = matchingSections
-        let visibleSectionIds = Set(visibleSections.map(\.id))
-        sections.forEach {
-            let isVisible = visibleSectionIds.contains($0.id)
-            $0.container.isHidden = !isVisible
-            if isVisible && hasQuery {
-                $0.highlightMatches(query)
-            } else {
-                $0.clearHighlights()
-            }
-        }
+        sections.forEach { $0.clearHighlights() }
         applySearchToVisibleSheets(query)
-        updateVisibleSectionsSpacing()
+        if SettingsSearch.isQueryEmpty(query) {
+            navigationController.restorePreviousNonSearchRoute()
+            visibleSidebarItems = definitions.map { .page($0) }
+            sidebarTableView.reloadData()
+            navigate(to: navigationController.selectedRoute)
+            return
+        }
+        navigationController.updateSearch(query: query)
+        visibleSidebarItems = searchSidebarItems(query: query)
         sidebarTableView.reloadData()
-        guard !visibleSections.isEmpty else {
-            selectedSectionId = nil
+        highlightCurrentPageForActiveSearch()
+        guard !visibleSidebarItems.isEmpty else {
             sidebarTableView.deselectAll(nil)
             return
         }
-        if let selectedSectionId, let row = visibleSections.firstIndex(where: { $0.id == selectedSectionId }) {
-            selectSection(visibleSections[row], scroll: true)
+        deselectInvalidSidebarSelection()
+    }
+
+    private func deselectInvalidSidebarSelection() {
+        let row = sidebarTableView.selectedRow
+        guard row >= 0 else { return }
+        guard row < visibleSidebarItems.count else {
+            sidebarTableView.deselectAll(nil)
             return
         }
-        selectSection(visibleSections[0], scroll: true)
+        if case .group = visibleSidebarItems[row] {
+            sidebarTableView.deselectAll(nil)
+        }
     }
 
     override func close() {
         hideAppIfLastWindowIsClosed()
         super.close()
+    }
+
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command,
+           event.charactersIgnoringModifiers?.lowercased() == "f" {
+            makeFirstResponder(searchField)
+            return true
+        }
+        return super.performKeyEquivalent(with: event)
+    }
+
+    override func cancelOperation(_ sender: Any?) {
+        guard !SettingsSearch.isQueryEmpty(searchField.stringValue) else {
+            super.cancelOperation(sender)
+            return
+        }
+        searchField.stringValue = ""
+        applySearch("")
     }
 }
 
@@ -1095,29 +1317,56 @@ extension SettingsWindow: NSSearchFieldDelegate {
 
 extension SettingsWindow: NSTableViewDataSource, NSTableViewDelegate {
     func numberOfRows(in tableView: NSTableView) -> Int {
-        visibleSections.count
+        visibleSidebarItems.count
     }
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        30
+        switch visibleSidebarItems[row] {
+        case .group:
+            return 26
+        case .result(let match):
+            return (match.descriptor.subtitle ?? "").isEmpty ? 30 : 42
+        case .page:
+            return 30
+        }
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let section = visibleSections[row]
         let cell = tableView.makeView(withIdentifier: SettingsSidebarCellView.identifier, owner: self) as? SettingsSidebarCellView ?? {
             let view = SettingsSidebarCellView()
             view.identifier = SettingsSidebarCellView.identifier
             return view
         }()
-        cell.configure(section)
+        switch visibleSidebarItems[row] {
+        case .group(let definition):
+            cell.configureGroup(definition, icon: sidebarImage(definition))
+        case .page(let definition):
+            cell.configure(definition, icon: sidebarImage(definition))
+        case .result(let match):
+            let page = match.descriptor.route.page ?? .appearance
+            let definition = definition(for: page) ?? definitions[0]
+            cell.configure(match, icon: sidebarImage(definition))
+        }
         return cell
+    }
+
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        guard row >= 0, row < visibleSidebarItems.count else { return false }
+        if case .group = visibleSidebarItems[row] { return false }
+        return true
     }
 
     func tableViewSelectionDidChange(_ notification: Notification) {
         let row = sidebarTableView.selectedRow
-        guard row >= 0, row < visibleSections.count else { return }
-        let section = visibleSections[row]
-        if selectedSectionId == section.id { return }
-        selectSection(section, scroll: true, selectInSidebar: false)
+        guard row >= 0, row < visibleSidebarItems.count else { return }
+        switch visibleSidebarItems[row] {
+        case .group:
+            return
+        case .page(let definition):
+            if selectedSectionId == definition.id { return }
+            navigate(to: definition.route)
+        case .result(let match):
+            navigate(to: match.descriptor.route)
+        }
     }
 }

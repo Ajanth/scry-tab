@@ -381,10 +381,8 @@ class AppearanceTab: NSObject {
 
     static func initTab() -> NSView {
         customizeStyleButton = NSButton(title: getCustomizeStyleButtonTitle(), target: self, action: #selector(showCustomizeStyleSheet))
-        animationsButton = NSButton(title: NSLocalizedString("Animations…", comment: ""), target: self, action: #selector(showAnimationsSheet))
-        // Sheets are constructed lazily on first show — see `showCustomizeStyleSheet` /
-        // `showAnimationsSheet`. Pre-build search is satisfied by the sheets' static
-        // `searchableStrings`, consulted through `SettingsSearchIndex`.
+        // The customize sheet is constructed lazily on first show. Animation controls were moved
+        // inline for routed Settings, so search can target them without opening a sheet.
         return makeView()
     }
 
@@ -402,13 +400,14 @@ class AppearanceTab: NSObject {
     private static func makeView() -> NSStackView {
         let appearanceView = makeAppearanceView()
         let multipleScreensView = makeMultipleScreensView()
+        let motionView = AnimationsSheet.makeContentView(width: SettingsWindow.contentWidth)
         // `padding: 0` — `TableGroupSetView` adds 20pt of horizontal inset by default before its
         // inner content stack. The enclosing section (from `SettingsWindow.addSection`) already
         // provides the section's left margin via `contentHorizontalPadding`, so adding another
         // 20pt here pushes the TGV content to `container.leading + 20`, while the section title
         // sits at `container.leading + TableGroupView.padding(10)` — a 10pt visible misalignment
         // between the title and the row content below it.
-        let view = TableGroupSetView(originalViews: [appearanceView, multipleScreensView, animationsButton], titleTableGroupSpacing: 15, padding: 0, bottomPadding: 0)
+        let view = TableGroupSetView(originalViews: [appearanceView, multipleScreensView, motionView], titleTableGroupSpacing: 15, padding: 0, bottomPadding: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.widthAnchor.constraint(equalToConstant: view.fittingSize.width).isActive = true
         return view
@@ -505,8 +504,8 @@ class AppearanceTab: NSObject {
     }
 
     @objc static func overrideInfoClicked(_ sender: NSButton) {
-        SettingsWindow.shared?.navigateToSection("controls")
-        ControlsTab.selectShortcutAndShowAppearance(sender.tag)
+        let id = Preferences.shortcutIdentifier(at: sender.tag)
+        SettingsWindow.shared?.navigate(to: .controls(.shortcut(id: id, pane: .appearance)))
     }
 
     private static func addAfterKeysReleasedRow(_ table: TableGroupView) {

@@ -343,6 +343,15 @@ class ExceptionsTab {
         }
     }
 
+    static func selectDestination(_ destination: ExceptionDestination?) {
+        guard let destination else { return }
+        switch destination {
+        case .bundleIdentifier(let bundleId):
+            guard let index = items.firstIndex(where: { $0.bundleIdentifier == bundleId }) else { return }
+            selectIndex(index)
+        }
+    }
+
     private static func refreshSelection() {
         rows.enumerated().forEach { $1.setSelected($0 == selectedIndex) }
         if selectedIndex >= 0, selectedIndex < items.count {

@@ -20,6 +20,10 @@ class AdditionalControlsSheet: SheetWindow {
     ] + CursorFollowFocus.allCases.map { $0.localizedString }
 
     override func makeContentView() -> NSView {
+        Self.makeContentView(width: SheetWindow.width)
+    }
+
+    static func makeContentView(width: CGFloat) -> NSView {
         let enableArrows = TableGroupView.Row(leftTitle: Self.labelArrows,
             rightViews: [LabelAndControl.makeSwitch("arrowKeysEnabled", extraAction: ControlsTab.arrowKeysEnabledCallback)])
         let enableVimKeys = TableGroupView.Row(leftTitle: Self.labelVim,
@@ -34,11 +38,11 @@ class AdditionalControlsSheet: SheetWindow {
         ControlsTab.vimKeysCheckbox = enableVimKeys.rightViews[0] as? Switch
         ControlsTab.arrowKeysEnabledCallback(ControlsTab.arrowKeysCheckbox)
         ControlsTab.vimKeysEnabledCallback(ControlsTab.vimKeysCheckbox)
-        let table1 = TableGroupView(title: Self.title, width: SheetWindow.width)
+        let table1 = TableGroupView(title: Self.title, width: width)
         _ = table1.addRow(enableArrows)
         _ = table1.addRow(enableVimKeys)
         _ = table1.addRow(enableMouse)
-        let table2 = TableGroupView(title: Self.titleMiscellaneous, width: SheetWindow.width)
+        let table2 = TableGroupView(title: Self.titleMiscellaneous, width: width)
         _ = table2.addRow(enableCursorFollowFocus)
         _ = table2.addRow(enableTrackpadHapticFeedback)
         let view = TableGroupSetView(originalViews: [table1, table2], padding: 0)

@@ -1,8 +1,10 @@
 import Cocoa
 
 class AboutTab {
+    private static weak var settingsUsageTextView: NSTextView?
+
     static func initTab() -> NSView {
-        makeContentView()
+        makeSettingsContentView(columnWidth: SettingsWindow.contentWidth)
     }
 
     static func makeContentView(_ fitToContent: Bool = true, _ showFeedbackButton: Bool = true, _ centerHero: Bool = false) -> NSView {
@@ -34,6 +36,62 @@ class AboutTab {
             grid.fit()
         }
         return grid
+    }
+
+    static func makeSettingsContentView(columnWidth: CGFloat) -> NSView {
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 30
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        let aboutView = makeContentView(false, false, false)
+        let usageTextView = makeUsageTextView(columnWidth)
+        let acknowledgmentsView = AcknowledgmentsTab.makeContentView(columnWidth: columnWidth, shouldFit: false, verticallyStacked: true)
+        settingsUsageTextView = usageTextView
+        stack.addArrangedSubview(aboutView)
+        stack.addArrangedSubview(usageTextView)
+        stack.addArrangedSubview(acknowledgmentsView)
+        stack.setCustomSpacing(15, after: usageTextView)
+        refreshSettingsUsageStats()
+        NSLayoutConstraint.activate([
+            aboutView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+            aboutView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+            usageTextView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+            usageTextView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+            acknowledgmentsView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+            acknowledgmentsView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+        ])
+        return stack
+    }
+
+    static func refreshSettingsUsageStats() {
+        guard let settingsUsageTextView else { return }
+        updateUsageStats(settingsUsageTextView)
+    }
+
+    private static func makeUsageTextView(_ columnWidth: CGFloat) -> NSTextView {
+        let textView = NSTextView()
+        textView.textContainer!.widthTracksTextView = true
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.drawsBackground = false
+        textView.isSelectable = true
+        textView.isEditable = false
+        textView.enabledTextCheckingTypes = 0
+        textView.frame.size.width = columnWidth
+        return textView
+    }
+
+    private static func updateUsageStats(_ textView: NSTextView) {
+        let now = Date()
+        let weekCount = UsageStats.count("triggers", since: now.addingTimeInterval(-7 * 24 * 3600))
+        let monthCount = UsageStats.count("triggers", since: now.addingTimeInterval(-30 * 24 * 3600))
+        let yearCount = UsageStats.count("triggers", since: now.addingTimeInterval(-365 * 24 * 3600))
+        let markdown = "## \(NSLocalizedString("Usage", comment: ""))\n\nYou have used ScryTab:\n\u{2022} **\(weekCount)** times in the past week\n\u{2022} **\(monthCount)** times in the past month\n\u{2022} **\(yearCount)** times in the past year"
+        textView.textStorage!.setAttributedString(Markdown.toAttributedString(markdown))
+        textView.layoutManager!.ensureLayout(for: textView.textContainer!)
+        let usedRect = textView.layoutManager!.usedRect(for: textView.textContainer!)
+        textView.invalidateIntrinsicContentSize()
+        textView.fit(usedRect.width, usedRect.height)
     }
 }
 

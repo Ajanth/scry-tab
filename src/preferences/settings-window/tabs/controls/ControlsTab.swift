@@ -48,6 +48,8 @@ class ControlsTab {
     private static var shortcutEditorWidth: CGFloat { SettingsWindow.contentWidth - shortcutSidebarWidth - 1 }
     static var shortcutEditorContentWidth: CGFloat { shortcutEditorWidth - shortcutEditorRightPadding }
     private static let gestureSelectionIndex = -1
+    private static let activeShortcutsSelectionIndex = -2
+    private static let navigationPointerSelectionIndex = -3
     private static let staticManagedShortcutPreferences = [
         "focusWindowShortcut", "previousWindowShortcut", "cancelShortcut", "searchShortcut", "lockSearchShortcut",
         "closeWindowShortcut", "minDeminWindowShortcut", "toggleFullscreenWindowShortcut", "quitAppShortcut", "hideShowAppShortcut",
@@ -68,6 +70,7 @@ class ControlsTab {
         "hideShowAppShortcut": NSLocalizedString("Hide/Show app", comment: ""),
     ]
     private static let removableShortcutPreferences = [
+        "shortcutIdentifier",
         "holdShortcut", "nextWindowShortcut",
         "appsToShow", "spacesToShow", "screensToShow",
         "showMinimizedWindows", "showHiddenWindows", "showFullscreenWindows", "showWindowlessApps",
@@ -89,6 +92,8 @@ class ControlsTab {
 
     private static var editor: ShortcutEditor!
     private static var gestureEditorView: NSView?
+    private static var activeShortcutsView: NSView?
+    private static var navigationPointerView: NSView?
     private static var gestureEditorTabControl: NSSegmentedControl?
     /// Outer container of the gesture editor — used by `ensureGesturePaneBuilt` to append a pane
     /// to it the first time the user selects that segment. Kept weak via the static-let pattern
@@ -101,6 +106,8 @@ class ControlsTab {
     private static var shortcutRowsStackView: NSStackView?
     private static var shortcutRows = [SidebarListRow]()
     private static var gestureSidebarRow: SidebarListRow?
+    private static var activeShortcutsSidebarRow: SidebarListRow?
+    private static var navigationPointerSidebarRow: SidebarListRow?
     private static var shortcutCountButtons: NSSegmentedControl?
     private static var shortcutRowsScrollView: NSScrollView?
     private static var shortcutRowsScrollObserver: NSObjectProtocol?
@@ -120,18 +127,14 @@ class ControlsTab {
         tabSegmentSearchableStrings[shortcutEntry.key] = shortcutEntry.perSegmentStrings
 
         gestureEditorView = makeGestureEditor()
+        activeShortcutsView = ShortcutsWhenActiveSheet.makeContentView(width: shortcutEditorContentWidth)
+        navigationPointerView = AdditionalControlsSheet.makeContentView(width: shortcutEditorContentWidth)
 
         let shortcutsView = makeShortcutsView()
-        let additionalControlsButton = NSButton(title: NSLocalizedString("Additional controls…", comment: ""), target: self, action: #selector(showAdditionalControlsSettings))
-        let shortcutsButton = NSButton(title: NSLocalizedString("Shortcuts when active…", comment: ""), target: self, action: #selector(showShortcutsSettings))
-        let tools = StackView([additionalControlsButton, shortcutsButton], .horizontal)
-        let view = TableGroupSetView(originalViews: [shortcutsView], toolsViews: [tools], padding: 0, bottomPadding: 0, othersAlignment: .leading, toolsAlignment: .trailing)
-
-        // Sheets are built lazily on first show. Pre-build search visibility is provided by
-        // their static `searchableStrings`, consulted through `SettingsSearchIndex`.
+        let view = TableGroupSetView(originalViews: [shortcutsView], padding: 0, bottomPadding: 0, othersAlignment: .leading, toolsAlignment: .trailing)
 
         refreshShortcutUi()
-        let initialBindIndex = (selectedShortcutIndex == gestureSelectionIndex) ? 0 : selectedShortcutIndex
+        let initialBindIndex = selectedShortcutIndex >= 0 ? selectedShortcutIndex : 0
         editor.bind(toShortcut: initialBindIndex)
         (0..<Preferences.shortcutCount).forEach { initializeShortcutRecorderState($0) }
 
@@ -152,6 +155,8 @@ class ControlsTab {
         tabSegmentSearchableStrings.removeAll()
         editor = nil
         gestureEditorView = nil
+        activeShortcutsView = nil
+        navigationPointerView = nil
         gestureEditorTabControl = nil
         gestureEditorContainer = nil
         gestureFilteringPane = nil
@@ -159,6 +164,8 @@ class ControlsTab {
         gestureOrderingPane = nil
         shortcutRowsStackView = nil
         gestureSidebarRow = nil
+        activeShortcutsSidebarRow = nil
+        navigationPointerSidebarRow = nil
         shortcutCountButtons = nil
         shortcutRowsScrollView = nil
     }
@@ -227,8 +234,11 @@ class ControlsTab {
 
     private static func showEditor(forShortcut: Bool) {
         editor?.view.isHidden = !forShortcut
-        gestureEditorView?.isHidden = forShortcut
-        if !forShortcut {
+        let isGesture = selectedShortcutIndex == gestureSelectionIndex
+        gestureEditorView?.isHidden = !isGesture
+        activeShortcutsView?.isHidden = selectedShortcutIndex != activeShortcutsSelectionIndex
+        navigationPointerView?.isHidden = selectedShortcutIndex != navigationPointerSelectionIndex
+        if isGesture {
             // The gesture editor's tabControl + pane visibility may have drifted out of sync
             // while it was hidden (user switched tabs on the shortcut editor in the meantime).
             // Resync from the shared `ShortcutEditor.selectedTabSegment` before showing it.
@@ -255,6 +265,8 @@ class ControlsTab {
         pane.widthAnchor.constraint(equalToConstant: shortcutEditorWidth).isActive = true
         var views: [NSView] = [editor.view]
         if let gestureEditorView { views.append(gestureEditorView) }
+        if let activeShortcutsView { views.append(activeShortcutsView) }
+        if let navigationPointerView { views.append(navigationPointerView) }
         let editorsStack = NSStackView(views: views)
         editorsStack.orientation = .vertical
         editorsStack.alignment = .leading
@@ -307,10 +319,26 @@ class ControlsTab {
         gestureRow.onMouseEntered = { _, view in setHoveredShortcutRow(view as? SidebarListRow) }
         gestureRow.onMouseExited = { _, _ in setHoveredShortcutRow(nil) }
         gestureSidebarRow = gestureRow
+        let activeShortcutsSeparator = sidebarSeparatorView()
+        let activeShortcutsRow = SidebarListRow()
+        activeShortcutsRow.onClick = { _, _ in selectActiveShortcuts() }
+        activeShortcutsRow.onMouseEntered = { _, view in setHoveredShortcutRow(view as? SidebarListRow) }
+        activeShortcutsRow.onMouseExited = { _, _ in setHoveredShortcutRow(nil) }
+        activeShortcutsSidebarRow = activeShortcutsRow
+        let navigationPointerSeparator = sidebarSeparatorView()
+        let navigationPointerRow = SidebarListRow()
+        navigationPointerRow.onClick = { _, _ in selectNavigationPointer() }
+        navigationPointerRow.onMouseEntered = { _, view in setHoveredShortcutRow(view as? SidebarListRow) }
+        navigationPointerRow.onMouseExited = { _, _ in setHoveredShortcutRow(nil) }
+        navigationPointerSidebarRow = navigationPointerRow
         listContainer.addSubview(shortcutsSection)
         shortcutsSection.addSubview(rowsScrollView)
         shortcutsSection.addSubview(gestureSeparator)
         shortcutsSection.addSubview(gestureRow)
+        shortcutsSection.addSubview(activeShortcutsSeparator)
+        shortcutsSection.addSubview(activeShortcutsRow)
+        shortcutsSection.addSubview(navigationPointerSeparator)
+        shortcutsSection.addSubview(navigationPointerRow)
         let plus = NSImage.fromSymbol(.plus, pointSize: 11)
         let minus = NSImage.fromSymbol(.minus, pointSize: 11)
         let countButtons = NSSegmentedControl(images: [plus, minus], trackingMode: .momentary, target: self, action: #selector(updateShortcutCount(_:)))
@@ -351,7 +379,23 @@ class ControlsTab {
             gestureRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
             gestureRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
             gestureRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
-            gestureRow.bottomAnchor.constraint(equalTo: shortcutsSection.bottomAnchor),
+            gestureRow.bottomAnchor.constraint(equalTo: activeShortcutsSeparator.topAnchor),
+            activeShortcutsSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
+            activeShortcutsSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            activeShortcutsSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
+            activeShortcutsSeparator.bottomAnchor.constraint(equalTo: activeShortcutsRow.topAnchor),
+            activeShortcutsRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
+            activeShortcutsRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            activeShortcutsRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
+            activeShortcutsRow.bottomAnchor.constraint(equalTo: navigationPointerSeparator.topAnchor),
+            navigationPointerSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
+            navigationPointerSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            navigationPointerSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
+            navigationPointerSeparator.bottomAnchor.constraint(equalTo: navigationPointerRow.topAnchor),
+            navigationPointerRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
+            navigationPointerRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            navigationPointerRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
+            navigationPointerRow.bottomAnchor.constraint(equalTo: shortcutsSection.bottomAnchor),
             buttonsRow.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: sidebarHorizontalPadding),
             buttonsRow.trailingAnchor.constraint(lessThanOrEqualTo: listContainer.trailingAnchor, constant: -sidebarHorizontalPadding),
             buttonsRow.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor, constant: -TableGroupView.padding),
@@ -469,13 +513,19 @@ class ControlsTab {
     // MARK: - Selection
 
     private static func refreshShortcutUi() {
-        if selectedShortcutIndex != gestureSelectionIndex {
+        if selectedShortcutIndex >= 0 {
             selectedShortcutIndex = max(0, min(selectedShortcutIndex, Preferences.shortcutCount - 1))
+        } else if !isFixedDestinationSelection(selectedShortcutIndex) {
+            selectedShortcutIndex = 0
         }
         refreshShortcutRows()
         refreshGestureRow()
         refreshShortcutSelection()
         refreshShortcutCountButtons()
+    }
+
+    private static func isFixedDestinationSelection(_ index: Int) -> Bool {
+        index == gestureSelectionIndex || index == activeShortcutsSelectionIndex || index == navigationPointerSelectionIndex
     }
 
     private static func refreshShortcutRows() {
@@ -532,7 +582,11 @@ class ControlsTab {
     private static func refreshShortcutSelection() {
         shortcutRows.enumerated().forEach { $1.setSelected($0 == selectedShortcutIndex) }
         gestureSidebarRow?.setSelected(selectedShortcutIndex == gestureSelectionIndex)
+        activeShortcutsSidebarRow?.setSelected(selectedShortcutIndex == activeShortcutsSelectionIndex)
+        navigationPointerSidebarRow?.setSelected(selectedShortcutIndex == navigationPointerSelectionIndex)
         if selectedShortcutIndex == gestureSelectionIndex {
+            showEditor(forShortcut: false)
+        } else if selectedShortcutIndex == activeShortcutsSelectionIndex || selectedShortcutIndex == navigationPointerSelectionIndex {
             showEditor(forShortcut: false)
         } else {
             editor?.bind(toShortcut: selectedShortcutIndex)
@@ -542,7 +596,7 @@ class ControlsTab {
 
     private static func refreshShortcutCountButtons() {
         shortcutCountButtons?.setEnabled(Preferences.shortcutCount < Preferences.maxShortcutCount, forSegment: 0)
-        shortcutCountButtons?.setEnabled(Preferences.shortcutCount > Preferences.minShortcutCount && selectedShortcutIndex != gestureSelectionIndex, forSegment: 1)
+        shortcutCountButtons?.setEnabled(Preferences.shortcutCount > Preferences.minShortcutCount && selectedShortcutIndex >= 0, forSegment: 1)
     }
 
     private static func selectShortcut(_ index: Int) {
@@ -558,12 +612,52 @@ class ControlsTab {
         refreshShortcutCountButtons()
     }
 
+    private static func selectActiveShortcuts() {
+        selectedShortcutIndex = activeShortcutsSelectionIndex
+        refreshShortcutSelection()
+        refreshShortcutCountButtons()
+    }
+
+    private static func selectNavigationPointer() {
+        selectedShortcutIndex = navigationPointerSelectionIndex
+        refreshShortcutSelection()
+        refreshShortcutCountButtons()
+    }
+
+    static func normalizedDestination(_ destination: ControlsDestination?) -> ControlsDestination? {
+        guard case .shortcut(let id, let pane) = destination else { return destination }
+        guard Preferences.shortcutIndex(forIdentifier: id) != nil else { return nil }
+        return .shortcut(id: id, pane: pane)
+    }
+
+    static func selectDestination(_ destination: ControlsDestination?) {
+        guard let destination = normalizedDestination(destination) else {
+            selectShortcut(min(max(selectedShortcutIndex, 0), max(Preferences.shortcutCount - 1, 0)))
+            return
+        }
+        switch destination {
+        case .shortcut(let id, let pane):
+            guard let index = Preferences.shortcutIndex(forIdentifier: id) else {
+                selectDestination(nil)
+                return
+            }
+            selectShortcut(index)
+            if pane == .appearance { editor?.showAppearanceSegment() }
+        case .gesture:
+            selectGesture()
+        case .activeShortcuts:
+            selectActiveShortcuts()
+        case .navigationPointer:
+            selectNavigationPointer()
+        }
+    }
+
     @objc private static func updateShortcutCount(_ sender: NSSegmentedControl) {
         let segment = sender.selectedSegment
         sender.selectedSegment = -1
         if segment == 0 {
             addShortcutSlot()
-        } else if segment == 1 && selectedShortcutIndex != gestureSelectionIndex {
+        } else if segment == 1 && selectedShortcutIndex >= 0 {
             removeShortcutSlot()
         }
     }
@@ -580,7 +674,8 @@ class ControlsTab {
 
     private static func removeShortcutSlot() {
         let currentCount = Preferences.shortcutCount
-        guard currentCount > Preferences.minShortcutCount, selectedShortcutIndex != gestureSelectionIndex else { return }
+        guard currentCount > Preferences.minShortcutCount, selectedShortcutIndex >= 0 else { return }
+        (0..<currentCount).forEach { _ = Preferences.shortcutIdentifier(at: $0) }
         let removedIndex = min(selectedShortcutIndex, currentCount - 1)
         if removedIndex < currentCount - 1 {
             for index in removedIndex..<(currentCount - 1) {
@@ -599,6 +694,7 @@ class ControlsTab {
     }
 
     private static func setAddedShortcutTriggerDefaults(_ index: Int) {
+        Preferences.set(Preferences.indexToName("shortcutIdentifier", index), UUID().uuidString, false)
         Preferences.setShortcut(Preferences.indexToName("holdShortcut", index), keyEquivalent: "⌥", false)
         Preferences.setShortcut(Preferences.indexToName("nextWindowShortcut", index), keyEquivalent: "", false)
         Preferences.set(Preferences.indexToName("appsToShow", index), AppsToShowPreference.all.indexAsString, false)
@@ -641,11 +737,17 @@ class ControlsTab {
 
     private static func gestureTitle() -> String { NSLocalizedString("Gesture", comment: "") }
     private static func gestureSummary() -> String { Preferences.nextWindowGesture.localizedString }
+    private static func activeShortcutsTitle() -> String { NSLocalizedString("Shortcuts while ScryTab is active", comment: "") }
+    private static func navigationPointerTitle() -> String { NSLocalizedString("Navigation & pointer", comment: "") }
 
     private static func refreshGestureRow() {
         guard let gestureSidebarRow else { return }
         gestureSidebarRow.setContent(gestureTitle(), gestureSummary())
         gestureSidebarRow.setSelected(selectedShortcutIndex == gestureSelectionIndex)
+        activeShortcutsSidebarRow?.setContent(activeShortcutsTitle(), NSLocalizedString("Window actions", comment: ""))
+        activeShortcutsSidebarRow?.setSelected(selectedShortcutIndex == activeShortcutsSelectionIndex)
+        navigationPointerSidebarRow?.setContent(navigationPointerTitle(), NSLocalizedString("Keyboard, mouse, and trackpad", comment: ""))
+        navigationPointerSidebarRow?.setSelected(selectedShortcutIndex == navigationPointerSelectionIndex)
     }
 
     /// Register the current sidebar rows (the shortcut rows + the persistent gesture row) into the
@@ -658,6 +760,8 @@ class ControlsTab {
     static func registerSidebarRowsSearchContent() {
         shortcutRows.forEach { $0.registerSearchContent() }
         gestureSidebarRow?.registerSearchContent()
+        activeShortcutsSidebarRow?.registerSearchContent()
+        navigationPointerSidebarRow?.registerSearchContent()
     }
 
     // MARK: - Hover state
@@ -675,6 +779,12 @@ class ControlsTab {
         shortcutRows.forEach { $0.setHovered($0 === row) }
         if let gestureSidebarRow {
             gestureSidebarRow.setHovered(gestureSidebarRow === row)
+        }
+        if let activeShortcutsSidebarRow {
+            activeShortcutsSidebarRow.setHovered(activeShortcutsSidebarRow === row)
+        }
+        if let navigationPointerSidebarRow {
+            navigationPointerSidebarRow.setHovered(navigationPointerSidebarRow === row)
         }
     }
 
