@@ -112,6 +112,7 @@ class App {
         var tilesPanel = TilesPanelMock()
     }
     static let app = AppMock()
+    static let name = "ScryTab"
     static let bundleIdentifier = "com.perpro.scry-tab"
 }
 

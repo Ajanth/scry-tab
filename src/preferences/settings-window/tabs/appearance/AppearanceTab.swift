@@ -1,264 +1,5 @@
 import Cocoa
 
-struct ShowHideRowInfo {
-    var rowId: String!
-    var uncheckedImage: String!
-    var checkedImage: String!
-    var supportedStyles: [AppearanceStylePreference]!
-    var subTitle: String?
-    var leftViews = [NSView]()
-    var rightViews = [NSView]()
-}
-
-class IllustratedImageThemeView: ClickHoverImageView {
-    override var acceptsFirstResponder: Bool { false }
-    static let padding = CGFloat(4)
-    /// Shown when the current Appearance style doesn't support a Show/Hide option (the illustration
-    /// is for another style). Exposed so `CustomizeStyleSheet.searchableStrings` can reference it
-    /// without re-`NSLocalizedString`-ing the same English text.
-    static let placeholderLabelText = NSLocalizedString("Applies in other Appearances", comment: "")
-    var style: AppearanceStylePreference!
-    var theme: String!
-    var imageName: String!
-    var isFocused: Bool = false
-    private var placeholderLabel: NSTextField!
-
-    /// Loads an illustration from the bundle without going through `NSImage(named:)`'s global
-    /// named cache (which never releases). Pairs with `cacheMode = .never` so the per-image scaled
-    /// bitmap cache is also disabled. Lets ARC reclaim the bitmap when no view holds the image.
-    static func loadIllustration(_ name: String) -> NSImage? {
-        guard let path = Bundle.main.path(forResource: "\(name)@2x", ofType: "heic") else { return nil }
-        let image = NSImage(contentsOfFile: path)
-        image?.cacheMode = .never
-        return image
-    }
-
-    init(_ style: AppearanceStylePreference, _ width: CGFloat) {
-        // TODO: The appearance theme functionality has not been implemented yet.
-        // We will implement it later; for now, use the light theme.
-        let theme = "light"
-        let imageName = IllustratedImageThemeView.getConcatenatedImageName(style, theme)
-        let imageView = NSImageView(image: IllustratedImageThemeView.loadIllustration(imageName)!)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.imageScaling = .scaleProportionallyUpOrDown
-        imageView.wantsLayer = true
-        imageView.layer!.masksToBounds = true
-        imageView.layer!.cornerRadius = TableGroupView.cornerRadius
-        super.init(infoCircle: imageView)
-        self.style = style
-        self.theme = theme
-        self.imageName = imageName
-        translatesAutoresizingMaskIntoConstraints = false
-        wantsLayer = true
-        let imageWidth = width - IllustratedImageThemeView.padding
-        let imageHeight = imageWidth / 1.6
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: imageWidth),
-            imageView.heightAnchor.constraint(equalToConstant: imageHeight),
-            imageView.topAnchor.constraint(equalTo: topAnchor, constant: IllustratedImageThemeView.padding),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -IllustratedImageThemeView.padding),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: IllustratedImageThemeView.padding),
-            imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -IllustratedImageThemeView.padding),
-        ])
-        let placeholder = NSTextField(labelWithString: IllustratedImageThemeView.placeholderLabelText)
-        placeholder.font = NSFont.systemFont(ofSize: NSFont.systemFontSize + 3)
-        placeholder.textColor = .secondaryLabelColor
-        placeholder.alignment = .center
-        placeholder.translatesAutoresizingMaskIntoConstraints = false
-        placeholder.isHidden = true
-        addSubview(placeholder)
-        NSLayoutConstraint.activate([
-            placeholder.centerXAnchor.constraint(equalTo: centerXAnchor),
-            placeholder.centerYAnchor.constraint(equalTo: centerYAnchor),
-            placeholder.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: IllustratedImageThemeView.padding + 8),
-            placeholder.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -(IllustratedImageThemeView.padding + 8)),
-        ])
-        placeholderLabel = placeholder
-        highlight(false)
-        onClick = { (event, view) in
-            self.highlight(false)
-        }
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("Class only supports programmatic initialization")
-    }
-
-    private func setBorder() {
-        layer?.cornerRadius = TableGroupView.cornerRadius + 3
-        layer?.borderColor = isFocused ? NSColor.systemAccentColor.cgColor : NSColor.lightGray.cgColor
-        layer?.borderWidth = 3
-    }
-
-    private func setFocused(_ focused: Bool) {
-        isFocused = focused
-    }
-
-    func highlight(_ highlighted: Bool, _ imageName: String = "") {
-        if highlighted && imageName.isEmpty {
-            return
-        }
-        setFocused(highlighted)
-        setBorder()
-        placeholderLabel.isHidden = true
-        infoCircle.isHidden = false
-        if highlighted {
-            updateImage(imageName)
-        } else {
-            (infoCircle as! NSImageView).image = IllustratedImageThemeView.loadIllustration(self.imageName)
-        }
-    }
-
-    func showPlaceholder() {
-        setFocused(true)
-        setBorder()
-        infoCircle.isHidden = true
-        placeholderLabel.isHidden = false
-    }
-
-    private func updateImage(_ imageName: String) {
-        (infoCircle as! NSImageView).image = IllustratedImageThemeView.loadIllustration(getStyleThemeImageName(imageName))
-    }
-
-    static func getConcatenatedImageName(_ style: AppearanceStylePreference,
-                                         _ theme: String,
-                                         _ imageName: String = "") -> String {
-        if imageName.isEmpty {
-            // app_icons_light/titles_dark
-            return style.image.name + "_" + theme
-        }
-        // app_icons_hide_colored_circles_light/titles_show_status_icons_light
-        return style.image.name + "_" + imageName + "_" + theme
-    }
-
-    func getStyleThemeImageName(_ imageName: String = "") -> String {
-        return IllustratedImageThemeView.getConcatenatedImageName(style, theme, imageName)
-    }
-
-    static func resetImage(_ illustratedImageView: IllustratedImageThemeView, _ event: NSEvent, _ view: NSView) {
-        let locationInView = view.convert(event.locationInWindow, from: nil)
-        if !view.bounds.contains(locationInView) {
-            illustratedImageView.highlight(false)
-        }
-    }
-}
-
-class ShowHideIllustratedView {
-    // Row labels exposed so `CustomizeStyleSheet.searchableStrings` can reference them without
-    // duplicating `NSLocalizedString` calls. Each is the single source of truth for that row's
-    // localized text; `setupItems` below uses these constants when building the rows.
-    static let hideStatusIconsLabel = NSLocalizedString("Hide status icons", comment: "")
-    static let hideStatusIconsSubtitle = NSLocalizedString("ScryTab will show if the window is currently minimized or fullscreen with a status icon.", comment: "")
-    static let hideSpaceNumberLabelsLabel = NSLocalizedString("Hide Space number labels", comment: "")
-
-    private let style: AppearanceStylePreference
-    private var showHideRows = [ShowHideRowInfo]()
-    var illustratedImageView: IllustratedImageThemeView!
-    var table: TableGroupView!
-
-    init(_ style: AppearanceStylePreference, _ illustratedImageView: IllustratedImageThemeView) {
-        self.style = style
-        self.illustratedImageView = illustratedImageView
-        setupItems()
-    }
-
-    func makeView() -> TableGroupSetView {
-        table = TableGroupView(width: CustomizeStyleSheet.width)
-        for row in showHideRows {
-            table.addRow(leftViews: row.leftViews, rightViews: row.rightViews, onClick: { [weak self] _, _ in
-                self?.clickCheckbox(rowId: row.rowId)
-                self?.updateImageView(rowId: row.rowId)
-            }, onMouseEntered: { [weak self] _, _ in
-                self?.updateImageView(rowId: row.rowId)
-            })
-        }
-        table.onMouseExited = { [weak self] event, view in
-            guard let self else { return }
-            IllustratedImageThemeView.resetImage(self.illustratedImageView, event, view)
-        }
-        return TableGroupSetView(originalViews: [table], padding: 0)
-    }
-
-    private func setupItems() {
-        var hideStatusIcons = ShowHideRowInfo()
-        hideStatusIcons.rowId = "hideStatusIcons"
-        hideStatusIcons.uncheckedImage = "show_status_icons"
-        hideStatusIcons.checkedImage = "hide_status_icons"
-        hideStatusIcons.supportedStyles = [.appIcons, .titles]
-        hideStatusIcons.leftViews = [TableGroupView.makeText(ShowHideIllustratedView.hideStatusIconsLabel)]
-        hideStatusIcons.subTitle = ShowHideIllustratedView.hideStatusIconsSubtitle
-        hideStatusIcons.rightViews.append(LabelAndControl.makeInfoButton(searchableTooltipTexts: [hideStatusIcons.subTitle!], onMouseEntered: { event, view in
-            Popover.shared.show(event: event, positioningView: view, message: hideStatusIcons.subTitle!)
-        }, onMouseExited: { event, view in
-            Popover.shared.hide()
-        }))
-        hideStatusIcons.rightViews.append(LabelAndControl.makeSwitch(hideStatusIcons.rowId, extraAction: { sender in
-            self.onCheckboxClicked(sender: sender, rowId: hideStatusIcons.rowId)
-        }))
-        showHideRows.append(hideStatusIcons)
-        var hideSpaceNumberLabels = ShowHideRowInfo()
-        hideSpaceNumberLabels.rowId = "hideSpaceNumberLabels"
-        hideSpaceNumberLabels.uncheckedImage = "show_space_number_labels"
-        hideSpaceNumberLabels.checkedImage = "hide_space_number_labels"
-        hideSpaceNumberLabels.supportedStyles = [.appIcons, .titles]
-        hideSpaceNumberLabels.leftViews = [TableGroupView.makeText(ShowHideIllustratedView.hideSpaceNumberLabelsLabel)]
-        hideSpaceNumberLabels.rightViews.append(LabelAndControl.makeSwitch(hideSpaceNumberLabels.rowId, extraAction: { sender in
-            self.onCheckboxClicked(sender: sender, rowId: hideSpaceNumberLabels.rowId)
-        }))
-        showHideRows.append(hideSpaceNumberLabels)
-    }
-
-    /// Handles the event when a checkbox is clicked.
-    /// Updates the image view based on the state of the checkbox.
-    ///
-    /// - Parameters:
-    ///   - sender: The checkbox button that was clicked.
-    ///   - rowId: The identifier for the row associated with the checkbox.
-    private func onCheckboxClicked(sender: NSControl, rowId: String) {
-        if let sender = sender as? NSButton {
-            let isChecked = sender.state == .on
-            updateImageView(rowId: rowId, isChecked: isChecked)
-        }
-    }
-
-    private func updateImageView(rowId: String, isChecked: Bool) {
-        guard let row = showHideRows.first(where: { $0.rowId.elementsEqual(rowId) }) else { return }
-        if !row.supportedStyles.contains(style) {
-            illustratedImageView.showPlaceholder()
-            return
-        }
-        let imageName = isChecked ? row.checkedImage : row.uncheckedImage
-        illustratedImageView.highlight(true, imageName!)
-    }
-
-    private func updateImageView(rowId: String) {
-        guard let row = showHideRows.first(where: { $0.rowId.elementsEqual(rowId) }) else { return }
-        if !row.supportedStyles.contains(style) {
-            illustratedImageView.showPlaceholder()
-            return
-        }
-        row.rightViews.forEach { view in
-            if let checkbox = view as? NSButton {
-                let isChecked = checkbox.state == .on
-                let imageName = isChecked ? row.checkedImage : row.uncheckedImage
-                illustratedImageView.highlight(true, imageName!)
-            }
-        }
-    }
-
-    private func clickCheckbox(rowId: String) {
-        let row = showHideRows.first {
-            $0.rowId.elementsEqual(rowId)
-        }
-        row?.rightViews.forEach { view in
-            if let checkbox = view as? NSButton {
-                // Toggle the checkbox state
-                checkbox.state = (checkbox.state == .on) ? .off : .on
-            }
-        }
-    }
-}
-
 class Popover: NSPopover {
     static let shared = Popover()
     private var hidingInitiated = true
@@ -367,11 +108,13 @@ class AppearanceTab: NSObject {
     static let labelSize = NSLocalizedString("Size", comment: "")
     static let labelTheme = NSLocalizedString("Theme", comment: "")
     static let labelShortcutStyle = NSLocalizedString("After keys are released", comment: "")
+    static let labelApparitionDelay = NSLocalizedString("Apparition delay of Switcher", comment: "")
+    static let labelFadeOut = NSLocalizedString("Fade out animation of Switcher", comment: "")
+    /// Pre-build search strings for the inline Motion section (moved out of `AnimationsSheet`).
+    static let motionSearchableStrings: [String] = [labelApparitionDelay, labelFadeOut]
 
     static var customizeStyleButton: NSButton!
-    static var animationsButton: NSButton!
     static var customizeStyleSheet: CustomizeStyleSheet!
-    static var animationsSheet: AnimationsSheet!
 
     /// One icon button per overridable preference, parked at the trailing edge of each row (same
     /// position as the "unlink" icon in the per-shortcut Appearance section in `ControlsTab`).
@@ -381,9 +124,15 @@ class AppearanceTab: NSObject {
 
     static func initTab() -> NSView {
         customizeStyleButton = NSButton(title: getCustomizeStyleButtonTitle(), target: self, action: #selector(showCustomizeStyleSheet))
-        // The customize sheet is constructed lazily on first show. Animation controls were moved
+        // The customize sheet is constructed lazily on first show. Motion controls were moved
         // inline for routed Settings, so search can target them without opening a sheet.
-        return makeView()
+        let form = SettingsFormView()
+        form.addSection(applicationInterfaceSection())
+        form.addSection(switcherStyleSection())
+        form.addSection(layoutAndBehaviorSection())
+        form.addSection(motionSection())
+        refreshAllOverrideInfoLabels()
+        return form
     }
 
     static func cleanup() {
@@ -391,60 +140,107 @@ class AppearanceTab: NSObject {
         // badly with our manual nil-out and causes double-release. ARC reclaims the sheet
         // when the static ref is nilled.
         customizeStyleButton = nil
-        animationsButton = nil
         customizeStyleSheet = nil
-        animationsSheet = nil
         overrideInfoIcons.removeAll()
+        SettingsFocusRegistry.shared.unregisterPrefix("appearance-")
     }
 
-    private static func makeView() -> NSStackView {
-        let appearanceView = makeAppearanceView()
-        let multipleScreensView = makeMultipleScreensView()
-        let motionView = AnimationsSheet.makeContentView(width: SettingsWindow.contentWidth)
-        // `padding: 0` — `TableGroupSetView` adds 20pt of horizontal inset by default before its
-        // inner content stack. The enclosing section (from `SettingsWindow.addSection`) already
-        // provides the section's left margin via `contentHorizontalPadding`, so adding another
-        // 20pt here pushes the TGV content to `container.leading + 20`, while the section title
-        // sits at `container.leading + TableGroupView.padding(10)` — a 10pt visible misalignment
-        // between the title and the row content below it.
-        let view = TableGroupSetView(originalViews: [appearanceView, multipleScreensView, motionView], titleTableGroupSpacing: 15, padding: 0, bottomPadding: 0)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.widthAnchor.constraint(equalToConstant: view.fittingSize.width).isActive = true
-        return view
+    private static func applicationInterfaceSection() -> SettingsSectionView {
+        let section = SettingsSectionView(title: NSLocalizedString("Application interface", comment: ""))
+        if #available(macOS 10.14, *) {
+            let dropdown = PopupButtonLikeSystemSettings()
+            let cases = ApplicationInterfaceAppearancePreference.allCases
+            dropdown.addItems(withTitles: cases.map { $0.localizedString })
+            dropdown.selectItem(at: cases.firstIndex(of: Preferences.applicationInterfaceAppearance) ?? 0)
+            SettingsSearchIndex.registerStrings(cases.map { $0.localizedString })
+            SettingsSearchIndex.registerTarget(SettingsWindow.highlightTarget(dropdown))
+            let row = SettingsRowView(title: NSLocalizedString("Appearance", comment: ""), subtitle: NSLocalizedString("Choose the Appearance of Settings and secondary windows. The switcher follows its own theme.", comment: ""), content: [LabelAndControl.setupControl(dropdown, "applicationInterfaceAppearance")])
+            row.registerFocusAnchor("appearance-applicationInterface", focalControl: dropdown)
+            section.addRow(row)
+        }
+        return section
     }
 
-    private static func makeAppearanceView() -> NSView {
-        let table = TableGroupView(subTitle: NSLocalizedString("Switch between 2 different styles. You can customize them.", comment: ""),
-            width: SettingsWindow.contentWidth)
+    private static func switcherStyleSection() -> SettingsSectionView {
+        let section = SettingsSectionView(title: NSLocalizedString("Switcher style", comment: ""), footer: NSLocalizedString("Switch between 2 different styles. You can customize them.", comment: ""))
         let styleButtons = LabelAndControl.makeImageRadioButtons("appearanceStyle", AppearanceStylePreference.allCases, extraAction: { _ in
             toggleCustomizeStyleButton()
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
         }, buttonSpacing: 10)
-        // For the style row, the control is a horizontal stack of style cards centered in the row.
-        // Wrap [styleButtons, overrideIcon] in another HStack so the icon trails the cards — same
-        // pattern the per-shortcut Appearance section uses for its style + unlink pair.
         let styleOverrideIcon = makeOverrideIcon("appearanceStyleOverride")
         let styleRow = NSStackView(views: [styleButtons, styleOverrideIcon])
         styleRow.orientation = .horizontal
         styleRow.alignment = .centerY
-        styleRow.spacing = TableGroupView.padding
-        table.addRow(secondaryViews: [styleRow], secondaryViewsAlignment: .centerX)
-        let sizeControl = LabelAndControl.makeSegmentedControl("appearanceSize", AppearanceSizePreference.allCases, segmentWidth: 105, extraAction: { control in
+        let styleRowView = SettingsRowView(title: NSLocalizedString("Style", comment: ""), content: [styleRow])
+        styleRowView.registerFocusAnchor("appearance-style")
+        section.addRow(styleRowView)
+        let customizeRow = SettingsRowView(title: NSLocalizedString("Customize", comment: ""), content: [customizeStyleButton])
+        customizeRow.registerFocusAnchor("appearance-customize", focalControl: customizeStyleButton)
+        section.addRow(customizeRow)
+        return section
+    }
+
+    private static func layoutAndBehaviorSection() -> SettingsSectionView {
+        let section = SettingsSectionView(title: NSLocalizedString("Layout and behavior", comment: ""))
+        let sizeControl = LabelAndControl.makeSegmentedControl("appearanceSize", AppearanceSizePreference.allCases, segmentWidth: 105, extraAction: { _ in
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
         })
-        table.addRow(leftText: AppearanceTab.labelSize,
-            rightViews: [sizeControl, makeOverrideIcon("appearanceSizeOverride")])
-        table.addRow(leftText: AppearanceTab.labelTheme,
-            rightViews: [LabelAndControl.makeSegmentedControl("appearanceTheme", AppearanceThemePreference.allCases, segmentWidth: 105, extraAction: { _ in
-                ControlsTab.syncOverrideControlsToGlobal()
-                refreshAllOverrideInfoLabels()
-            }), makeOverrideIcon("appearanceThemeOverride")])
-        addAfterKeysReleasedRow(table)
-        table.addRow(rightViews: customizeStyleButton)
-        refreshAllOverrideInfoLabels()
-        return table
+        let sizeRow = SettingsRowView(title: labelSize, content: [sizeControl, makeOverrideIcon("appearanceSizeOverride")])
+        sizeRow.registerFocusAnchor("appearance-size", focalControl: sizeControl)
+        section.addRow(sizeRow)
+        let themeControl = LabelAndControl.makeSegmentedControl("appearanceTheme", AppearanceThemePreference.allCases, segmentWidth: 105, extraAction: { _ in
+            ControlsTab.syncOverrideControlsToGlobal()
+            refreshAllOverrideInfoLabels()
+        })
+        let themeRow = SettingsRowView(title: labelTheme, content: [themeControl, makeOverrideIcon("appearanceThemeOverride")])
+        themeRow.registerFocusAnchor("appearance-theme", focalControl: themeControl)
+        section.addRow(themeRow)
+        let shortcutStyleControl = LabelAndControl.makeSegmentedControl("shortcutStyle", ShortcutStylePreference.allCases, segmentWidth: 105, extraAction: { _ in
+            ControlsTab.syncOverrideControlsToGlobal()
+            refreshAllOverrideInfoLabels()
+        })
+        let shortcutStyleRow = SettingsRowView(title: labelShortcutStyle, content: [shortcutStyleControl, makeOverrideIcon("shortcutStyleOverride")])
+        shortcutStyleRow.registerFocusAnchor("appearance-shortcutStyle", focalControl: shortcutStyleControl)
+        section.addRow(shortcutStyleRow)
+        let showOnDropdown = LabelAndControl.makeDropdown("showOnScreen", ShowOnScreenPreference.allCases)
+        let showOnRow = SettingsRowView(title: NSLocalizedString("Show on", comment: ""), content: [showOnDropdown])
+        showOnRow.registerFocusAnchor("appearance-showOn", focalControl: showOnDropdown)
+        section.addRow(showOnRow)
+        return section
+    }
+
+    private static func motionSection() -> SettingsSectionView {
+        let section = SettingsSectionView(title: NSLocalizedString("Motion", comment: ""))
+        let apparitionRow = makeApparitionDelayRow()
+        apparitionRow.registerFocusAnchor("appearance-apparitionDelay")
+        section.addRow(apparitionRow)
+        let fadeSwitch = LabelAndControl.makeSwitch("fadeOutAnimation")
+        let fadeRow = SettingsRowView(title: labelFadeOut, content: [fadeSwitch])
+        fadeRow.registerFocusAnchor("appearance-fadeOut", focalControl: fadeSwitch)
+        section.addRow(fadeRow)
+        return section
+    }
+
+    private static func makeApparitionDelayRow() -> SettingsRowView {
+        let value = CachedUserDefaults.int("windowDisplayDelay")
+        let formatter = MeasurementFormatter()
+        formatter.numberFormatter = NumberFormatter()
+        let suffix = NSTextField(labelWithString: formatter.string(from: Measurement(value: Double(value), unit: Unit(symbol: "ms"))))
+        suffix.identifier = NSUserInterfaceItemIdentifier("windowDisplayDelay" + ControlIdentifierDiscriminator.SUFFIX.rawValue)
+        suffix.textColor = .secondaryLabelColor
+        let slider = NSSlider()
+        slider.minValue = 0
+        slider.maxValue = 900
+        slider.stringValue = String(value)
+        slider.isContinuous = true
+        slider.numberOfTickMarks = 19
+        slider.allowsTickMarkValuesOnly = true
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.widthAnchor.constraint(equalToConstant: 180).isActive = true
+        _ = LabelAndControl.setupControl(slider, "windowDisplayDelay")
+        return SettingsRowView(title: labelApparitionDelay, content: [slider, suffix])
     }
 
     /// Build the override-indicator icon button parked at the trailing edge of each global row.
@@ -508,22 +304,6 @@ class AppearanceTab: NSObject {
         SettingsWindow.shared?.navigate(to: .controls(.shortcut(id: id, pane: .appearance)))
     }
 
-    private static func addAfterKeysReleasedRow(_ table: TableGroupView) {
-        let control = LabelAndControl.makeSegmentedControl("shortcutStyle", ShortcutStylePreference.allCases, segmentWidth: 105, extraAction: { control in
-            ControlsTab.syncOverrideControlsToGlobal()
-            refreshAllOverrideInfoLabels()
-        })
-        table.addRow(leftText: AppearanceTab.labelShortcutStyle,
-            rightViews: [control, makeOverrideIcon("shortcutStyleOverride")])
-    }
-
-    private static func makeMultipleScreensView() -> NSView {
-        let table = TableGroupView(title: NSLocalizedString("Multiple screens", comment: ""), width: SettingsWindow.contentWidth)
-        _ = table.addRow(leftText: NSLocalizedString("Show on", comment: ""),
-            rightViews: LabelAndControl.makeDropdown("showOnScreen", ShowOnScreenPreference.allCases))
-        return table
-    }
-
     private static func getCustomizeStyleButtonTitle() -> String {
         return NSLocalizedString("Customize more…", comment: "")
     }
@@ -537,11 +317,6 @@ class AppearanceTab: NSObject {
     @objc static func showCustomizeStyleSheet() {
         if customizeStyleSheet == nil { customizeStyleSheet = CustomizeStyleSheet() }
         SettingsWindow.shared.beginSheetWithSearchHighlight(customizeStyleSheet)
-    }
-
-    @objc static func showAnimationsSheet() {
-        if animationsSheet == nil { animationsSheet = AnimationsSheet() }
-        SettingsWindow.shared.beginSheetWithSearchHighlight(animationsSheet)
     }
 
 }

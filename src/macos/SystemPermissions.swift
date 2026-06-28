@@ -59,6 +59,7 @@ class SystemPermissions {
             if PermissionsWindow.shared != nil {
                 PermissionsWindow.updatePermissionViews()
             }
+            GeneralTab.refreshAccessibilityPermissionRow()
         }
     }
 

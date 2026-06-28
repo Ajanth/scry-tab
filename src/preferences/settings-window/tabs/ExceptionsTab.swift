@@ -2,12 +2,12 @@ import Cocoa
 
 class ExceptionsTab {
     private static let sidebarWidth = CGFloat(280)
-    private static let rowHeight = CGFloat(56)
+    private static let rowHeight = DesignMetric.richListRowHeight
     private static let iconSize = CGFloat(40)
     private static let minContainerHeight = CGFloat(470)
-    private static let sidebarHorizontalPadding = TableGroupView.padding
-    private static let editorTopBottomPadding = TableGroupView.padding
-    private static let editorHorizontalPadding = TableGroupView.padding
+    private static let sidebarHorizontalPadding = DesignMetric.rowHorizontalPadding
+    private static let editorTopBottomPadding = DesignMetric.formOuterPadding
+    private static let editorHorizontalPadding = DesignMetric.rowHorizontalPadding
     private static var editorWidth: CGFloat { SettingsWindow.contentWidth - sidebarWidth - 1 }
     private static var editorContentWidth: CGFloat { editorWidth - 2 * editorHorizontalPadding }
 
@@ -20,6 +20,7 @@ class ExceptionsTab {
     private static var sidebarSection: SidebarListContainer?
     private static var editorView: ExceptionEditorView!
     private static var countButtons: NSSegmentedControl?
+    private static var emptyStateView: NSView?
 
     static func initTab() -> NSView {
         items = Preferences.exceptions
@@ -37,6 +38,8 @@ class ExceptionsTab {
             NotificationCenter.default.removeObserver(observer)
             rowsScrollObserver = nil
         }
+        SettingsFocusRegistry.shared.unregisterPrefix("exception-")
+        SettingsFocusRegistry.shared.unregister(SettingsFocusAnchorID.exceptions)
         items.removeAll()
         rows.removeAll()
         selectedIndex = -1
@@ -48,8 +51,7 @@ class ExceptionsTab {
     }
 
     private static func makeContainer() -> NSView {
-        let container = makeSidebarEditorContainer(sidebar: makeSidebar(), editor: makeEditorPane(), minHeight: minContainerHeight)
-        return TableGroupSetView(originalViews: [container], padding: 0, bottomPadding: 0)
+        return makeSidebarEditorContainer(sidebar: makeSidebar(), editor: makeEditorPane(), minHeight: minContainerHeight)
     }
 
     private static func makeSidebar() -> NSView {
@@ -62,6 +64,7 @@ class ExceptionsTab {
 
         let section = SidebarListContainer()
         sidebarSection = section
+        SettingsFocusRegistry.shared.register(SettingsFocusAnchorID.exceptions, section)
         section.onArrowKey = { direction in
             guard !items.isEmpty else { return }
             let next: Int
@@ -114,17 +117,17 @@ class ExceptionsTab {
             rows.leadingAnchor.constraint(equalTo: documentView.leadingAnchor),
             rows.trailingAnchor.constraint(equalTo: documentView.trailingAnchor),
             rows.bottomAnchor.constraint(lessThanOrEqualTo: documentView.bottomAnchor),
-            section.topAnchor.constraint(equalTo: listContainer.topAnchor, constant: TableGroupView.padding),
+            section.topAnchor.constraint(equalTo: listContainer.topAnchor, constant: DesignMetric.rowVerticalPadding),
             section.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: sidebarHorizontalPadding),
             section.trailingAnchor.constraint(equalTo: listContainer.trailingAnchor, constant: -sidebarHorizontalPadding),
-            section.bottomAnchor.constraint(equalTo: buttons.topAnchor, constant: -TableGroupView.padding),
+            section.bottomAnchor.constraint(equalTo: buttons.topAnchor, constant: -DesignMetric.rowVerticalPadding),
             scrollView.topAnchor.constraint(equalTo: section.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: section.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: section.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: section.bottomAnchor),
             buttons.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: sidebarHorizontalPadding),
             buttons.trailingAnchor.constraint(lessThanOrEqualTo: listContainer.trailingAnchor, constant: -sidebarHorizontalPadding),
-            buttons.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor, constant: -TableGroupView.padding),
+            buttons.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor, constant: -DesignMetric.rowVerticalPadding),
         ])
         return sidebar
     }
@@ -137,7 +140,7 @@ class ExceptionsTab {
         NSLayoutConstraint.activate([
             editorView.topAnchor.constraint(equalTo: pane.topAnchor, constant: editorTopBottomPadding),
             // No leading padding: the card sits right after the separator. Visual gap from the
-            // sidebar section comes from the sidebar's own trailing margin (TableGroupView.padding).
+            // sidebar section comes from the sidebar's own trailing margin (DesignMetric.rowHorizontalPadding).
             editorView.leadingAnchor.constraint(equalTo: pane.leadingAnchor),
             editorView.trailingAnchor.constraint(equalTo: pane.trailingAnchor, constant: -editorHorizontalPadding),
             editorView.bottomAnchor.constraint(lessThanOrEqualTo: pane.bottomAnchor, constant: -editorTopBottomPadding),
@@ -270,13 +273,27 @@ class ExceptionsTab {
     private static func refreshSidebarRows() {
         guard let rowsStack else { return }
         setHoveredRow(nil)
+        SettingsFocusRegistry.shared.unregisterPrefix("exception-")
         rowsStack.arrangedSubviews.forEach {
             rowsStack.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
         rows.removeAll(keepingCapacity: true)
+        emptyStateView?.removeFromSuperview()
+        emptyStateView = nil
+        if items.isEmpty {
+            let empty = makeEmptyStateView()
+            emptyStateView = empty
+            rowsStack.addArrangedSubview(empty)
+            empty.leadingAnchor.constraint(equalTo: rowsStack.leadingAnchor).isActive = true
+            empty.trailingAnchor.constraint(equalTo: rowsStack.trailingAnchor).isActive = true
+            empty.topAnchor.constraint(greaterThanOrEqualTo: rowsStack.topAnchor, constant: 40).isActive = true
+            return
+        }
         for index in 0..<items.count {
             let row = SidebarListRow()
+            let bundleId = items[index].bundleIdentifier
+            SettingsFocusRegistry.shared.register(SettingsFocusAnchorID.exception(bundleId), row)
             applyContent(row, index: index)
             row.setSelected(index == selectedIndex)
             row.onClick = { [weak row] _, _ in
@@ -298,12 +315,40 @@ class ExceptionsTab {
             if index < items.count - 1 {
                 let separator = sidebarSeparatorView()
                 rowsStack.addArrangedSubview(separator)
-                separator.leadingAnchor.constraint(equalTo: rowsStack.leadingAnchor, constant: TableGroupView.padding).isActive = true
-                separator.trailingAnchor.constraint(equalTo: rowsStack.trailingAnchor, constant: -TableGroupView.padding).isActive = true
-                separator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth).isActive = true
+                separator.leadingAnchor.constraint(equalTo: rowsStack.leadingAnchor, constant: DesignMetric.rowHorizontalPadding).isActive = true
+                separator.trailingAnchor.constraint(equalTo: rowsStack.trailingAnchor, constant: -DesignMetric.rowHorizontalPadding).isActive = true
+                separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
             }
         }
         syncHoverState()
+    }
+
+    private static func makeEmptyStateView() -> NSView {
+        let container = NSView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        let label = NSTextField(wrappingLabelWithString: NSLocalizedString("No applications excluded.", comment: ""))
+        label.font = DesignTypography.supportingText
+        label.textColor = .secondaryLabelColor
+        label.alignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        let addButton = SurfaceButton(title: NSLocalizedString("Add application", comment: ""), role: .flat) { _ in
+            guard let buttons = countButtons else { return }
+            showAddMenu(near: buttons)
+        }
+        let column = NSStackView(views: [label, addButton])
+        column.orientation = .vertical
+        column.alignment = .centerX
+        column.spacing = 12
+        column.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(column)
+        NSLayoutConstraint.activate([
+            column.topAnchor.constraint(equalTo: container.topAnchor),
+            column.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            column.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            column.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            container.heightAnchor.constraint(greaterThanOrEqualToConstant: 120),
+        ])
+        return container
     }
 
     private static func applyContent(_ row: SidebarListRow, index: Int) {

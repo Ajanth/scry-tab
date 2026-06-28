@@ -61,7 +61,6 @@
 		5F21C9E02C6E94240091F72F /* ShortcutsWhenActiveSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F21C9DF2C6E94240091F72F /* ShortcutsWhenActiveSheet.swift */; };
 		5F21C9E22C6E94410091F72F /* AdditionalControlsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F21C9E12C6E94410091F72F /* AdditionalControlsSheet.swift */; };
 		5F21C9E42C6E94700091F72F /* CustomizeStyleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F21C9E32C6E94700091F72F /* CustomizeStyleSheet.swift */; };
-		5F21C9E62C6E94920091F72F /* AnimationsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F21C9E52C6E94920091F72F /* AnimationsSheet.swift */; };
 		5F21C9E82C6E96A00091F72F /* SheetWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F21C9E72C6E96A00091F72F /* SheetWindow.swift */; };
 		5F4753072CEE5A2E002C6C5E /* AppearanceTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C8D57C86AF492D43A576D /* AppearanceTestable.swift */; };
 		5F791E4B2F1C65E100B6419C /* ApplicationDiscriminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F791E4A2F1C65E100B6419C /* ApplicationDiscriminator.swift */; };
@@ -165,6 +164,18 @@
 		5F9A10000000000000000002 /* SettingsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9A10000000000000000001 /* SettingsRoute.swift */; };
 		5F9A10000000000000000003 /* SettingsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9A10000000000000000001 /* SettingsRoute.swift */; };
 		5F9A10000000000000000006 /* SettingsRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9A10000000000000000005 /* SettingsRouteTests.swift */; };
+		5F7100010000000000000002 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100010000000000000001 /* DesignTokens.swift */; };
+		5F7100010000000000000003 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100010000000000000001 /* DesignTokens.swift */; };
+		5F7100020000000000000002 /* DesignColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100020000000000000001 /* DesignColors.swift */; };
+		5F7100020000000000000003 /* DesignColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100020000000000000001 /* DesignColors.swift */; };
+		5F7100030000000000000002 /* MaterialSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100030000000000000001 /* MaterialSurfaceView.swift */; };
+		5F7100030000000000000003 /* MaterialSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100030000000000000001 /* MaterialSurfaceView.swift */; };
+		5F7100040000000000000002 /* SettingsFormComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100040000000000000001 /* SettingsFormComponents.swift */; };
+		5F7100050000000000000002 /* DesignControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100050000000000000001 /* DesignControls.swift */; };
+		5F7100060000000000000002 /* SelectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100060000000000000001 /* SelectionListView.swift */; };
+		5F7100070000000000000002 /* MaterialPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100070000000000000001 /* MaterialPresentation.swift */; };
+		5F7100090000000000000003 /* DesignSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100090000000000000001 /* DesignSystemTests.swift */; };
+		5F71000A0000000000000002 /* ComponentGalleryWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F71000A0000000000000001 /* ComponentGalleryWindow.swift */; };
 		D04BA004884A273D4D2D3EF1 /* HelperExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAD91161791D42FEC4A60 /* HelperExtensions.swift */; };
 		D04BA0182F4734A5C8BB63DC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BA5461DAEE9B5350C3020 /* Localizable.strings */; };
 		D04BA03B560B681AF96E4610 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BA88ED495C54CFE0B7B87 /* InfoPlist.strings */; };
@@ -252,6 +263,13 @@
 		D04BAE2200000000ED005003 /* SettingsSectionSearchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED005002 /* SettingsSectionSearchContent.swift */; };
 		D04BAE2200000000ED005T11 /* SettingsSectionSearchContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED005T12 /* SettingsSectionSearchContentTests.swift */; };
 		D04BAE2200000000ED006T11 /* SidebarListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED006T12 /* SidebarListTests.swift */; };
+		D04BAE2200000000ED007001 /* SettingsSearchFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED007002 /* SettingsSearchFocus.swift */; };
+		D04BAE2200000000ED007R01 /* SettingsFocusRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED007R02 /* SettingsFocusRegistry.swift */; };
+		D04BAE2200000000ED007R03 /* SettingsFocusRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED007R02 /* SettingsFocusRegistry.swift */; };
+		D04BAE2200000000ED007T11 /* SettingsSearchFocusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED007T12 /* SettingsSearchFocusTests.swift */; };
+		D04BAE2200000000ED007T13 /* SettingsFormComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100040000000000000001 /* SettingsFormComponents.swift */; };
+		D04BAE2200000000ED007T14 /* DesignControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7100050000000000000001 /* DesignControls.swift */; };
+		D04BAE2200000000ED007T15 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C96189273B7482124C36F4C /* Switch.swift */; };
 		D04BAE8B16A06A10E2FA94DE /* AccessibilityEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA8FDCF137D892114F5F3 /* AccessibilityEvents.swift */; };
 		D04BAF12DF5D15B9D7D316A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BA61693F710CD7BD054D7 /* InfoPlist.strings */; };
 		D04BAFB217F9F8E58C3B09AD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BA82BB17B85A88A5D2B87 /* InfoPlist.strings */; };
@@ -343,7 +361,6 @@
 		5F21C9DF2C6E94240091F72F /* ShortcutsWhenActiveSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsWhenActiveSheet.swift; sourceTree = "<group>"; };
 		5F21C9E12C6E94410091F72F /* AdditionalControlsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalControlsSheet.swift; sourceTree = "<group>"; };
 		5F21C9E32C6E94700091F72F /* CustomizeStyleSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeStyleSheet.swift; sourceTree = "<group>"; };
-		5F21C9E52C6E94920091F72F /* AnimationsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationsSheet.swift; sourceTree = "<group>"; };
 		5F21C9E72C6E96A00091F72F /* SheetWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetWindow.swift; sourceTree = "<group>"; };
 		5F3C6CCF2F8CE7120021CEDF /* extract_latest_changelog.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = extract_latest_changelog.sh; sourceTree = "<group>"; };
 		5F791E4A2F1C65E100B6419C /* ApplicationDiscriminator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDiscriminator.swift; sourceTree = "<group>"; };
@@ -581,8 +598,22 @@
 		D04BAE2200000000ED004002 /* SettingsSearchHighlight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSearchHighlight.swift; sourceTree = "<group>"; };
 		D04BAE2200000000ED004T12 /* SettingsSearchHighlightTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSearchHighlightTests.swift; sourceTree = "<group>"; };
 		D04BAE2200000000ED005002 /* SettingsSectionSearchContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSectionSearchContent.swift; sourceTree = "<group>"; };
+		D04BAE2200000000ED007002 /* SettingsSearchFocus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSearchFocus.swift; sourceTree = "<group>"; };
+		D04BAE2200000000ED007R02 /* SettingsFocusRegistry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsFocusRegistry.swift; sourceTree = "<group>"; };
+		D04BAE2200000000ED007S12 /* SettingsSearchFocusSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = SettingsSearchFocusSpecs.md; sourceTree = "<group>"; };
+		D04BAE2200000000ED007T12 /* SettingsSearchFocusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSearchFocusTests.swift; sourceTree = "<group>"; };
 		D04BAE2200000000ED005T12 /* SettingsSectionSearchContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSectionSearchContentTests.swift; sourceTree = "<group>"; };
 		D04BAE2200000000ED006T12 /* SidebarListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListTests.swift; sourceTree = "<group>"; };
+		5F7100010000000000000001 /* DesignTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTokens.swift; sourceTree = "<group>"; };
+		5F7100020000000000000001 /* DesignColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignColors.swift; sourceTree = "<group>"; };
+		5F7100030000000000000001 /* MaterialSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialSurfaceView.swift; sourceTree = "<group>"; };
+		5F7100040000000000000001 /* SettingsFormComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFormComponents.swift; sourceTree = "<group>"; };
+		5F7100050000000000000001 /* DesignControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignControls.swift; sourceTree = "<group>"; };
+		5F7100060000000000000001 /* SelectionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionListView.swift; sourceTree = "<group>"; };
+		5F7100070000000000000001 /* MaterialPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialPresentation.swift; sourceTree = "<group>"; };
+		5F7100080000000000000001 /* DesignSystemSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DesignSystemSpecs.md; sourceTree = "<group>"; };
+		5F7100090000000000000001 /* DesignSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemTests.swift; sourceTree = "<group>"; };
+		5F71000A0000000000000001 /* ComponentGalleryWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentGalleryWindow.swift; sourceTree = "<group>"; };
 		D04BAE2BF28F187307C29FDE /* ru */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ru; path = Localizable.strings; sourceTree = "<group>"; };
 		D04BAE333F7170E87C5AC0EF /* CustomRecorderControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomRecorderControl.swift; sourceTree = "<group>"; };
 		D04BAED1C4D6BB8E24847E79 /* TitleLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleLabel.swift; sourceTree = "<group>"; };
@@ -735,7 +766,6 @@
 			children = (
 				D04BA64F1F344007EA13BA05 /* AppearanceTab.swift */,
 				5F21C9E32C6E94700091F72F /* CustomizeStyleSheet.swift */,
-				5F21C9E52C6E94920091F72F /* AnimationsSheet.swift */,
 			);
 			path = appearance;
 			sourceTree = "<group>";
@@ -973,6 +1003,7 @@
 		D04BA0D80B24E72B9B981A1D /* debug */ = {
 			isa = PBXGroup;
 			children = (
+				5F7100170000000000000001 /* design-system */,
 				5FBB24D22F389A0400BF7E14 /* Benchmark.swift */,
 				BF0CA0005555666677778888 /* QAMenu.swift */,
 			);
@@ -1070,10 +1101,83 @@
 			path = .github;
 			sourceTree = "<group>";
 		};
+		5F7100100000000000000001 /* design-system */ = {
+			isa = PBXGroup;
+			children = (
+				5F7100110000000000000001 /* tokens-and-appearance */,
+				5F7100120000000000000001 /* surfaces */,
+				5F7100130000000000000001 /* forms */,
+				5F7100140000000000000001 /* controls */,
+				5F7100150000000000000001 /* lists */,
+				5F7100160000000000000001 /* presentation */,
+				5F7100080000000000000001 /* DesignSystemSpecs.md */,
+				5F7100090000000000000001 /* DesignSystemTests.swift */,
+			);
+			path = "design-system";
+			sourceTree = "<group>";
+		};
+		5F7100110000000000000001 /* tokens-and-appearance */ = {
+			isa = PBXGroup;
+			children = (
+				5F7100010000000000000001 /* DesignTokens.swift */,
+				5F7100020000000000000001 /* DesignColors.swift */,
+			);
+			path = "tokens-and-appearance";
+			sourceTree = "<group>";
+		};
+		5F7100120000000000000001 /* surfaces */ = {
+			isa = PBXGroup;
+			children = (
+				5F7100030000000000000001 /* MaterialSurfaceView.swift */,
+			);
+			path = surfaces;
+			sourceTree = "<group>";
+		};
+		5F7100130000000000000001 /* forms */ = {
+			isa = PBXGroup;
+			children = (
+				5F7100040000000000000001 /* SettingsFormComponents.swift */,
+			);
+			path = forms;
+			sourceTree = "<group>";
+		};
+		5F7100140000000000000001 /* controls */ = {
+			isa = PBXGroup;
+			children = (
+				5F7100050000000000000001 /* DesignControls.swift */,
+			);
+			path = controls;
+			sourceTree = "<group>";
+		};
+		5F7100150000000000000001 /* lists */ = {
+			isa = PBXGroup;
+			children = (
+				5F7100060000000000000001 /* SelectionListView.swift */,
+			);
+			path = lists;
+			sourceTree = "<group>";
+		};
+		5F7100160000000000000001 /* presentation */ = {
+			isa = PBXGroup;
+			children = (
+				5F7100070000000000000001 /* MaterialPresentation.swift */,
+			);
+			path = presentation;
+			sourceTree = "<group>";
+		};
+		5F7100170000000000000001 /* design-system */ = {
+			isa = PBXGroup;
+			children = (
+				5F71000A0000000000000001 /* ComponentGalleryWindow.swift */,
+			);
+			path = "design-system";
+			sourceTree = "<group>";
+		};
 		D04BA2CBF267F267225CA671 /* kit */ = {
 			isa = PBXGroup;
 			children = (
 				D04BA6D57A1456C07318B8EA /* GridView.swift */,
+				5F7100100000000000000001 /* design-system */,
 				D04BAA41B9A74189B065D856 /* text */,
 				D04BAE333F7170E87C5AC0EF /* CustomRecorderControl.swift */,
 				D04BA8AC77465E1B2BC947CF /* StackView.swift */,
@@ -1382,6 +1486,10 @@
 				D04BAE2200000000ED004002 /* SettingsSearchHighlight.swift */,
 				D04BAE2200000000ED004T12 /* SettingsSearchHighlightTests.swift */,
 				D04BAE2200000000ED005002 /* SettingsSectionSearchContent.swift */,
+				D04BAE2200000000ED007002 /* SettingsSearchFocus.swift */,
+				D04BAE2200000000ED007R02 /* SettingsFocusRegistry.swift */,
+				D04BAE2200000000ED007S12 /* SettingsSearchFocusSpecs.md */,
+				D04BAE2200000000ED007T12 /* SettingsSearchFocusTests.swift */,
 				D04BAE2200000000ED005T12 /* SettingsSectionSearchContentTests.swift */,
 				D04BAE2200000000ED006T12 /* SidebarListTests.swift */,
 				D04BAFF80A98CF287F85DA23 /* SidebarList.swift */,
@@ -1664,6 +1772,11 @@
 				5FC5980000000000000C0003 /* CGSSymbolicHotKey.swift in Sources */,
 				D04BAE2200000000ED004T11 /* SettingsSearchHighlightTests.swift in Sources */,
 				D04BAE2200000000ED005T11 /* SettingsSectionSearchContentTests.swift in Sources */,
+				D04BAE2200000000ED007T11 /* SettingsSearchFocusTests.swift in Sources */,
+				D04BAE2200000000ED007R03 /* SettingsFocusRegistry.swift in Sources */,
+				D04BAE2200000000ED007T13 /* SettingsFormComponents.swift in Sources */,
+				D04BAE2200000000ED007T14 /* DesignControls.swift in Sources */,
+				D04BAE2200000000ED007T15 /* Switch.swift in Sources */,
 				D04BAFF90A98CF287F85DA25 /* SidebarList.swift in Sources */,
 				D04BAE2200000000ED006T11 /* SidebarListTests.swift in Sources */,
 				D04BAE2200000000ED005003 /* SettingsSectionSearchContent.swift in Sources */,
@@ -1672,6 +1785,10 @@
 				D04BAE2200000000ED004T03 /* SettingsSearch.swift in Sources */,
 				5F9A10000000000000000003 /* SettingsRoute.swift in Sources */,
 				5F9A10000000000000000006 /* SettingsRouteTests.swift in Sources */,
+				5F7100010000000000000003 /* DesignTokens.swift in Sources */,
+				5F7100020000000000000003 /* DesignColors.swift in Sources */,
+				5F7100030000000000000003 /* MaterialSurfaceView.swift in Sources */,
+				5F7100090000000000000003 /* DesignSystemTests.swift in Sources */,
 				6D42BE46F595D567EDBF559A /* DynamicColorTextField.swift in Sources */,
 				D04BAE2100000000ED003001 /* LightLabel.swift in Sources */,
 				BF0C8C5FA4B401A8C0F75B7A /* KeyboardEventsTestable.swift in Sources */,
@@ -1764,7 +1881,6 @@
 				5FA1E0B22F50000100A1A1A1 /* PreferencesEvents.swift in Sources */,
 				D04BA4A11F821548EE3C5E95 /* Bash.swift in Sources */,
 				5FBB24D32F389A0400BF7E14 /* Benchmark.swift in Sources */,
-				5F21C9E62C6E94920091F72F /* AnimationsSheet.swift in Sources */,
 				D04BAFB90E00AA5D662EAF24 /* PermissionsWindow.swift in Sources */,
 				D04BA7E39FA539DD8316447A /* PermissionView.swift in Sources */,
 				D04BA446D702C5E252AF2319 /* TitleLabel.swift in Sources */,
@@ -1786,11 +1902,20 @@
 				D04BAE2000000000ED002001 /* SettingsSearchIndex.swift in Sources */,
 				D04BAE2200000000ED004001 /* SettingsSearchHighlight.swift in Sources */,
 				D04BAE2200000000ED005001 /* SettingsSectionSearchContent.swift in Sources */,
+				D04BAE2200000000ED007001 /* SettingsSearchFocus.swift in Sources */,
+				D04BAE2200000000ED007R01 /* SettingsFocusRegistry.swift in Sources */,
 				BF0C8CC5057406014FD612CC /* ATShortcut.swift in Sources */,
 				D04BA00000000000C0DE0012 /* ShortcutAction.swift in Sources */,
 				D04BA00000000000C0DE0021 /* SwitcherSession.swift in Sources */,
 				D04BA00000000000C0DE0041 /* Tooltips.swift in Sources */,
 				5F9A10000000000000000002 /* SettingsRoute.swift in Sources */,
+				5F7100010000000000000002 /* DesignTokens.swift in Sources */,
+				5F7100020000000000000002 /* DesignColors.swift in Sources */,
+				5F7100030000000000000002 /* MaterialSurfaceView.swift in Sources */,
+				5F7100040000000000000002 /* SettingsFormComponents.swift in Sources */,
+				5F7100050000000000000002 /* DesignControls.swift in Sources */,
+				5F7100060000000000000002 /* SelectionListView.swift in Sources */,
+				5F7100070000000000000002 /* MaterialPresentation.swift in Sources */,
 				BF0C898511686611E4D7D81E /* Button.swift in Sources */,
 				BF0C8E16F38203AEC71E062B /* TableView.swift in Sources */,
 				BF0C832C5BF4C8E9C95F7767 /* MissionControl.swift in Sources */,
@@ -1832,6 +1957,7 @@
 				BF0C88A9AB286CB7CDC1019E /* MainMenu.swift in Sources */,
 				BF0C826C7F8C5F68732FD75B /* DebugMenu.swift in Sources */,
 				BF0CA0001111222233334444 /* QAMenu.swift in Sources */,
+				5F71000A0000000000000002 /* ComponentGalleryWindow.swift in Sources */,
 				BF0C8E5F4E4D5F7DAEE07C20 /* TilesPanelBackgroundView.swift in Sources */,
 				BF0C8AD478399D2E97AE3FB4 /* CustomRecorderControlTestable.swift in Sources */,
 				BF0C8A5FA46C5E74A071FF4C /* ScrollwheelEvents.swift in Sources */,
