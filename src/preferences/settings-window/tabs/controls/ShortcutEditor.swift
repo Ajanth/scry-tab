@@ -44,7 +44,7 @@ final class ShortcutEditor {
     private static let contentMinHeight: CGFloat = 400
     /// Fixed height for the Trigger row content (recorder + labels). Pinned rather than derived
     /// from `mainRow.fittingSize.height` because `RecorderControl`'s intrinsic height isn't
-    /// guaranteed to be set when the trigger row snapshots it, which previously
+    /// guaranteed to be set when `TableGroupView.setMainRow` snapshots it, which previously
     /// produced inconsistent Trigger row heights across shortcuts.
     static let triggerRowContentHeight: CGFloat = 22
 
@@ -68,11 +68,10 @@ final class ShortcutEditor {
         SettingsSearchIndex.registerStrings(AppearancePane.searchableStrings)
         SettingsSearchIndex.registerStrings(OrderingPane.searchableStrings)
 
-        let triggerSection = SettingsSectionView()
-        let triggerRow = SettingsRowView(title: ShortcutEditor.triggerLabel, content: [trigger.view])
-        triggerSection.addRow(triggerRow)
-        SettingsSearchIndex.registerString(ShortcutEditor.triggerLabel)
-        SettingsSearchIndex.registerTarget(SettingsSearchHighlight.highlightTarget(triggerRow.titleLabel))
+        let triggerTable = TableGroupView(width: width)
+        triggerTable.addRow(TableGroupView.Row(
+            leftTitle: ShortcutEditor.triggerLabel,
+            rightViews: [trigger.view]))
 
         let labels = [
             ShortcutEditor.tabLabelFiltering,
@@ -106,14 +105,14 @@ final class ShortcutEditor {
         outerContainer = NSStackView()
         outerContainer.orientation = .vertical
         outerContainer.alignment = .leading
-        outerContainer.spacing = DesignMetric.sectionGap
+        outerContainer.spacing = TableGroupSetView.tableGroupSpacing
         outerContainer.distribution = .fill
-        outerContainer.addArrangedSubview(triggerSection)
+        outerContainer.addArrangedSubview(triggerTable)
         outerContainer.addArrangedSubview(tabControl)
         outerContainer.addArrangedSubview(bottomSpacer)
         // Extra breathing room below the Trigger row — it's the headline action of the editor
         // and the tab control / content tables that follow are secondary configuration.
-        outerContainer.setCustomSpacing(10, after: triggerSection)
+        outerContainer.setCustomSpacing(10, after: triggerTable)
         outerContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: ShortcutEditor.contentMinHeight).isActive = true
         view = outerContainer
 
@@ -235,7 +234,7 @@ final class TriggerBinding {
         let stack = NSStackView(views: [holdLabelField, holdRecorder, andPressLabel, nextRecorder])
         stack.orientation = .horizontal
         stack.alignment = .centerY
-        stack.spacing = DesignMetric.rowContentGap
+        stack.spacing = TableGroupView.spacing
         stack.heightAnchor.constraint(equalToConstant: ShortcutEditor.triggerRowContentHeight).isActive = true
         view = stack
 
@@ -333,15 +332,15 @@ final class FilteringPane {
         showFullscreen = ShortcutBoundDropdown(baseName: "showFullscreenWindows", cases: ShowHowPreference.allCases.filter { $0 != .showAtTheEnd })
         showWindowless = ShortcutBoundDropdown(baseName: "showWindowlessApps", cases: ShowHowPreference.allCases)
 
-        let section = SettingsSectionView()
-        section.addRow(ShortcutEditor.makeRow(Self.labelApps, appsToShow))
-        section.addRow(ShortcutEditor.makeRow(Self.labelSpaces, spacesToShow))
-        section.addRow(ShortcutEditor.makeRow(Self.labelScreens, screensToShow))
-        section.addRow(ShortcutEditor.makeRow(Self.labelMinimized, showMinimized))
-        section.addRow(ShortcutEditor.makeRow(Self.labelHidden, showHidden))
-        section.addRow(ShortcutEditor.makeRow(Self.labelFullscreen, showFullscreen))
-        section.addRow(ShortcutEditor.makeRow(Self.labelWindowless, showWindowless))
-        view = section
+        let table = TableGroupView(width: width)
+        table.addRow(leftViews: [TableGroupView.makeText(Self.labelApps)], rightViews: [appsToShow])
+        table.addRow(leftViews: [TableGroupView.makeText(Self.labelSpaces)], rightViews: [spacesToShow])
+        table.addRow(leftViews: [TableGroupView.makeText(Self.labelScreens)], rightViews: [screensToShow])
+        table.addRow(TableGroupView.Row(leftTitle: Self.labelMinimized, rightViews: [showMinimized]))
+        table.addRow(TableGroupView.Row(leftTitle: Self.labelHidden, rightViews: [showHidden]))
+        table.addRow(TableGroupView.Row(leftTitle: Self.labelFullscreen, rightViews: [showFullscreen]))
+        table.addRow(TableGroupView.Row(leftTitle: Self.labelWindowless, rightViews: [showWindowless]))
+        view = table
     }
 
     func bind(toShortcut index: Int) {
@@ -379,11 +378,11 @@ final class OrderingPane {
         showTabsAsWindows = ShortcutBoundDropdown(baseName: "showTabsAsWindows", cases: GroupTabsPreference.allCases)
         windowOrder = ShortcutBoundDropdown(baseName: "windowOrder", cases: WindowOrderPreference.allCases)
 
-        let section = SettingsSectionView()
-        section.addRow(ShortcutEditor.makeRow(Self.labelGroupApps, showAppsOrWindows))
-        section.addRow(ShortcutEditor.makeRow(Self.labelGroupTabs, showTabsAsWindows))
-        section.addRow(ShortcutEditor.makeRow(Self.labelWindowOrder, windowOrder))
-        view = section
+        let table = TableGroupView(width: width)
+        table.addRow(TableGroupView.Row(leftTitle: Self.labelGroupApps, rightViews: [showAppsOrWindows]))
+        table.addRow(TableGroupView.Row(leftTitle: Self.labelGroupTabs, rightViews: [showTabsAsWindows]))
+        table.addRow(TableGroupView.Row(leftTitle: Self.labelWindowOrder, rightViews: [windowOrder]))
+        view = table
     }
 
     func bind(toShortcut index: Int) {
@@ -446,19 +445,16 @@ final class AppearancePane {
             segmentWidth: 100,
             onChange: onChange)
 
-        let section = SettingsSectionView()
+        let table = TableGroupView(width: width)
         let styleRow = NSStackView(views: [style.stack, style.unlink])
         styleRow.orientation = .horizontal
         styleRow.alignment = .centerY
-        styleRow.spacing = DesignMetric.rowContentGap
-        let styleSettingsRow = SettingsRowView(title: NSLocalizedString("Style", comment: ""), content: [styleRow])
-        section.addRow(styleSettingsRow)
-        SettingsSearchIndex.registerString(NSLocalizedString("Style", comment: ""))
-        SettingsSearchIndex.registerTarget(SettingsSearchHighlight.highlightTarget(styleSettingsRow.titleLabel))
-        section.addRow(ShortcutEditor.makeRow(AppearanceTab.labelSize, NSStackView(views: [size.segmented, size.unlink])))
-        section.addRow(ShortcutEditor.makeRow(AppearanceTab.labelTheme, NSStackView(views: [theme.segmented, theme.unlink])))
-        section.addRow(ShortcutEditor.makeRow(AppearanceTab.labelShortcutStyle, NSStackView(views: [shortcutStyle.segmented, shortcutStyle.unlink])))
-        view = section
+        styleRow.spacing = TableGroupView.padding
+        table.addRow(secondaryViews: [styleRow], secondaryViewsAlignment: .centerX)
+        table.addRow(leftText: AppearanceTab.labelSize, rightViews: [size.segmented, size.unlink])
+        table.addRow(leftText: AppearanceTab.labelTheme, rightViews: [theme.segmented, theme.unlink])
+        table.addRow(leftText: AppearanceTab.labelShortcutStyle, rightViews: [shortcutStyle.segmented, shortcutStyle.unlink])
+        view = table
     }
 
     func bind(toShortcut index: Int) {
@@ -694,16 +690,6 @@ extension ShortcutEditor {
         button.heightAnchor.constraint(equalToConstant: 20).isActive = true
         button.isHidden = true
         return button
-    }
-
-    /// Builds a design-system row and registers its title + highlight target with the active
-    /// `SettingsSearchIndex`, mirroring the inline registration that the legacy
-    /// used to perform. Shared by the recycled editor's panes and the in-page sheet contents.
-    static func makeRow(_ title: String, _ control: NSView) -> SettingsRowView {
-        let row = SettingsRowView(title: title, content: [control])
-        SettingsSearchIndex.registerString(title)
-        SettingsSearchIndex.registerTarget(SettingsSearchHighlight.highlightTarget(row.titleLabel))
-        return row
     }
 }
 

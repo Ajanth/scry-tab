@@ -1,33 +1,6 @@
 import XCTest
 
 final class SettingsRouteTests: XCTestCase {
-    func testShellGroupsProductPagesUnderScryTabAndAboutUnderApplication() {
-        let groups = SettingsTopLevelPage.groupedForShell()
-        XCTAssertEqual(groups.map(\.group), [.scryTab, .application])
-        XCTAssertEqual(groups[0].pages, [.appearance, .controls, .general, .exceptions])
-        XCTAssertEqual(groups[1].pages, [.about])
-    }
-
-    func testShellMetadataDefinesPageIconsAndBaseColors() {
-        XCTAssertEqual(SettingsTopLevelPage.appearance.shellMetadata.icon, .paintpalette)
-        XCTAssertEqual(SettingsTopLevelPage.controls.shellMetadata.baseColor, .indigo)
-        XCTAssertEqual(SettingsTopLevelPage.general.shellMetadata.baseColor, .green)
-        XCTAssertEqual(SettingsTopLevelPage.exceptions.shellMetadata.baseColor, .orange)
-        XCTAssertEqual(SettingsTopLevelPage.about.shellMetadata.sidebarGroup, .application)
-        XCTAssertEqual(SettingsTopLevelPage.about.shellMetadata.baseColor, .neutralGray)
-    }
-
-    func testApplicationInterfaceAppearanceResolvesIndependentlyFromSwitcherTheme() {
-        XCTAssertEqual(ApplicationInterfaceAppearancePreference.system.resolvedAppearance(supportsDarkMode: true), .system)
-        XCTAssertEqual(ApplicationInterfaceAppearancePreference.light.resolvedAppearance(supportsDarkMode: true), .aqua)
-        XCTAssertEqual(ApplicationInterfaceAppearancePreference.dark.resolvedAppearance(supportsDarkMode: true), .darkAqua)
-    }
-
-    func testApplicationInterfaceAppearanceFallsBackToLightWithoutDarkMode() {
-        XCTAssertEqual(ApplicationInterfaceAppearancePreference.system.resolvedAppearance(supportsDarkMode: false), .aqua)
-        XCTAssertEqual(ApplicationInterfaceAppearancePreference.dark.resolvedAppearance(supportsDarkMode: false), .aqua)
-    }
-
     func testInitialSearchRouteNormalizesToAppearance() {
         let navigation = SettingsNavigationController(initialRoute: .search(query: "theme"))
         XCTAssertEqual(navigation.selectedRoute, .appearance)

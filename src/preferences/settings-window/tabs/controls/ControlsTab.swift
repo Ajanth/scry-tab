@@ -27,6 +27,9 @@ class ControlsTab {
     static var arrowKeysCheckbox: Switch!
     static var vimKeysCheckbox: Switch!
 
+    static var shortcutsWhenActiveSheet: ShortcutsWhenActiveSheet!
+    static var additionalControlsSheet: AdditionalControlsSheet!
+
     /// Map from a tab-segment `NSSegmentedControl` (Filtering / Appearance / Ordering) to the
     /// per-segment list of searchable strings. Consulted by
     /// `SettingsWindow.highlightTarget(_ segmentedControl:)` to bubble a search match into the
@@ -38,10 +41,10 @@ class ControlsTab {
     // MARK: - Layout constants (unchanged from the old monolithic editor)
 
     private static let shortcutSidebarWidth = CGFloat(180)
-    private static let sidebarRowHeight = DesignMetric.standardListRowHeight
-    private static let sidebarHorizontalPadding = DesignMetric.rowHorizontalPadding
-    private static let shortcutEditorTopBottomPadding = DesignMetric.formOuterPadding
-    private static let shortcutEditorRightPadding = DesignMetric.rowHorizontalPadding
+    private static let sidebarRowHeight = CGFloat(52)
+    private static let sidebarHorizontalPadding = TableGroupView.padding
+    private static let shortcutEditorTopBottomPadding = TableGroupView.padding
+    private static let shortcutEditorRightPadding = TableGroupView.padding
     private static var shortcutEditorWidth: CGFloat { SettingsWindow.contentWidth - shortcutSidebarWidth - 1 }
     static var shortcutEditorContentWidth: CGFloat { shortcutEditorWidth - shortcutEditorRightPadding }
     private static let gestureSelectionIndex = -1
@@ -128,7 +131,7 @@ class ControlsTab {
         navigationPointerView = AdditionalControlsSheet.makeContentView(width: shortcutEditorContentWidth)
 
         let shortcutsView = makeShortcutsView()
-        let view = shortcutsView
+        let view = TableGroupSetView(originalViews: [shortcutsView], padding: 0, bottomPadding: 0, othersAlignment: .leading, toolsAlignment: .trailing)
 
         refreshShortcutUi()
         let initialBindIndex = selectedShortcutIndex >= 0 ? selectedShortcutIndex : 0
@@ -143,8 +146,8 @@ class ControlsTab {
             NotificationCenter.default.removeObserver(observer)
             shortcutRowsScrollObserver = nil
         }
-        SettingsFocusRegistry.shared.unregisterPrefix("controls-")
-        SettingsFocusRegistry.shared.unregisterPrefix("shortcut-")
+        shortcutsWhenActiveSheet = nil
+        additionalControlsSheet = nil
         arrowKeysCheckbox = nil
         vimKeysCheckbox = nil
         shortcutControls.removeAll()
@@ -316,21 +319,18 @@ class ControlsTab {
         gestureRow.onMouseEntered = { _, view in setHoveredShortcutRow(view as? SidebarListRow) }
         gestureRow.onMouseExited = { _, _ in setHoveredShortcutRow(nil) }
         gestureSidebarRow = gestureRow
-        SettingsFocusRegistry.shared.register(SettingsFocusAnchorID.controlsGesture, gestureRow)
         let activeShortcutsSeparator = sidebarSeparatorView()
         let activeShortcutsRow = SidebarListRow()
         activeShortcutsRow.onClick = { _, _ in selectActiveShortcuts() }
         activeShortcutsRow.onMouseEntered = { _, view in setHoveredShortcutRow(view as? SidebarListRow) }
         activeShortcutsRow.onMouseExited = { _, _ in setHoveredShortcutRow(nil) }
         activeShortcutsSidebarRow = activeShortcutsRow
-        SettingsFocusRegistry.shared.register(SettingsFocusAnchorID.controlsActive, activeShortcutsRow)
         let navigationPointerSeparator = sidebarSeparatorView()
         let navigationPointerRow = SidebarListRow()
         navigationPointerRow.onClick = { _, _ in selectNavigationPointer() }
         navigationPointerRow.onMouseEntered = { _, view in setHoveredShortcutRow(view as? SidebarListRow) }
         navigationPointerRow.onMouseExited = { _, _ in setHoveredShortcutRow(nil) }
         navigationPointerSidebarRow = navigationPointerRow
-        SettingsFocusRegistry.shared.register(SettingsFocusAnchorID.controlsNavigationPointer, navigationPointerRow)
         listContainer.addSubview(shortcutsSection)
         shortcutsSection.addSubview(rowsScrollView)
         shortcutsSection.addSubview(gestureSeparator)
@@ -364,17 +364,17 @@ class ControlsTab {
             rows.leadingAnchor.constraint(equalTo: documentView.leadingAnchor),
             rows.trailingAnchor.constraint(equalTo: documentView.trailingAnchor),
             rows.bottomAnchor.constraint(lessThanOrEqualTo: documentView.bottomAnchor),
-            shortcutsSection.topAnchor.constraint(equalTo: listContainer.topAnchor, constant: DesignMetric.rowVerticalPadding),
+            shortcutsSection.topAnchor.constraint(equalTo: listContainer.topAnchor, constant: TableGroupView.padding),
             shortcutsSection.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: sidebarHorizontalPadding),
             shortcutsSection.trailingAnchor.constraint(equalTo: listContainer.trailingAnchor, constant: -sidebarHorizontalPadding),
-            shortcutsSection.bottomAnchor.constraint(equalTo: buttonsRow.topAnchor, constant: -DesignMetric.rowVerticalPadding),
+            shortcutsSection.bottomAnchor.constraint(equalTo: buttonsRow.topAnchor, constant: -TableGroupView.padding),
             rowsScrollView.topAnchor.constraint(equalTo: shortcutsSection.topAnchor),
             rowsScrollView.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
             rowsScrollView.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
             rowsScrollView.bottomAnchor.constraint(equalTo: gestureSeparator.topAnchor),
             gestureSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
             gestureSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
-            gestureSeparator.heightAnchor.constraint(equalToConstant: 1),
+            gestureSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
             gestureSeparator.bottomAnchor.constraint(equalTo: gestureRow.topAnchor),
             gestureRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
             gestureRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
@@ -382,7 +382,7 @@ class ControlsTab {
             gestureRow.bottomAnchor.constraint(equalTo: activeShortcutsSeparator.topAnchor),
             activeShortcutsSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
             activeShortcutsSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
-            activeShortcutsSeparator.heightAnchor.constraint(equalToConstant: 1),
+            activeShortcutsSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
             activeShortcutsSeparator.bottomAnchor.constraint(equalTo: activeShortcutsRow.topAnchor),
             activeShortcutsRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
             activeShortcutsRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
@@ -390,7 +390,7 @@ class ControlsTab {
             activeShortcutsRow.bottomAnchor.constraint(equalTo: navigationPointerSeparator.topAnchor),
             navigationPointerSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
             navigationPointerSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
-            navigationPointerSeparator.heightAnchor.constraint(equalToConstant: 1),
+            navigationPointerSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
             navigationPointerSeparator.bottomAnchor.constraint(equalTo: navigationPointerRow.topAnchor),
             navigationPointerRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
             navigationPointerRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
@@ -398,7 +398,7 @@ class ControlsTab {
             navigationPointerRow.bottomAnchor.constraint(equalTo: shortcutsSection.bottomAnchor),
             buttonsRow.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: sidebarHorizontalPadding),
             buttonsRow.trailingAnchor.constraint(lessThanOrEqualTo: listContainer.trailingAnchor, constant: -sidebarHorizontalPadding),
-            buttonsRow.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor, constant: -DesignMetric.rowVerticalPadding),
+            buttonsRow.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor, constant: -TableGroupView.padding),
         ])
         refreshGestureRow()
         return sidebar
@@ -424,11 +424,8 @@ class ControlsTab {
         triggerContent.heightAnchor.constraint(equalToConstant: ShortcutEditor.triggerRowContentHeight).isActive = true
 
         let width = shortcutEditorContentWidth
-        let triggerSection = SettingsSectionView()
-        let triggerRow = SettingsRowView(title: ShortcutEditor.triggerLabel, content: [triggerContent])
-        triggerSection.addRow(triggerRow)
-        SettingsSearchIndex.registerString(ShortcutEditor.triggerLabel)
-        SettingsSearchIndex.registerTarget(SettingsSearchHighlight.highlightTarget(triggerRow.titleLabel))
+        let triggerTable = TableGroupView(width: width)
+        triggerTable.addRow(TableGroupView.Row(leftTitle: ShortcutEditor.triggerLabel, rightViews: [triggerContent]))
 
         // Section-level search registration: every pane's static strings go into the active
         // SettingsSearchIndex even though we haven't built the panes yet. This keeps the
@@ -471,10 +468,10 @@ class ControlsTab {
         let container = NSStackView()
         container.orientation = .vertical
         container.alignment = .leading
-        container.spacing = DesignMetric.sectionGap
-        container.addArrangedSubview(triggerSection)
+        container.spacing = TableGroupSetView.tableGroupSpacing
+        container.addArrangedSubview(triggerTable)
         container.addArrangedSubview(tabControl)
-        container.setCustomSpacing(10, after: triggerSection)
+        container.setCustomSpacing(10, after: triggerTable)
         gestureEditorContainer = container
 
         // Build the initially-selected pane so the editor isn't empty when first shown.
@@ -545,13 +542,10 @@ class ControlsTab {
             shortcutRows.append(makeShortcutRow(index: shortcutRows.count))
         }
         if shortcutRows.count > count {
-            SettingsFocusRegistry.shared.unregisterPrefix("shortcut-")
             shortcutRows.removeLast(shortcutRows.count - count)
         }
         for index in 0..<count {
             let row = shortcutRows[index]
-            let id = Preferences.shortcutIdentifier(at: index)
-            SettingsFocusRegistry.shared.register(SettingsFocusAnchorID.shortcut(id), row)
             row.setContent(shortcutTitle(index), shortcutSummary(index))
             row.setSelected(index == selectedShortcutIndex && selectedShortcutIndex != gestureSelectionIndex)
             rows.addArrangedSubview(row)
@@ -562,9 +556,9 @@ class ControlsTab {
             if index < count - 1 {
                 let separator = sidebarSeparatorView()
                 rows.addArrangedSubview(separator)
-                separator.leadingAnchor.constraint(equalTo: rows.leadingAnchor, constant: DesignMetric.rowHorizontalPadding).isActive = true
-                separator.trailingAnchor.constraint(equalTo: rows.trailingAnchor, constant: -DesignMetric.rowHorizontalPadding).isActive = true
-                separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+                separator.leadingAnchor.constraint(equalTo: rows.leadingAnchor, constant: TableGroupView.padding).isActive = true
+                separator.trailingAnchor.constraint(equalTo: rows.trailingAnchor, constant: -TableGroupView.padding).isActive = true
+                separator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth).isActive = true
             }
         }
         syncShortcutSidebarHoverState()
@@ -858,6 +852,16 @@ class ControlsTab {
                 }
             }
         }
+    }
+
+    @objc static func showShortcutsSettings() {
+        if shortcutsWhenActiveSheet == nil { shortcutsWhenActiveSheet = ShortcutsWhenActiveSheet() }
+        SettingsWindow.shared.beginSheetWithSearchHighlight(shortcutsWhenActiveSheet)
+    }
+
+    @objc static func showAdditionalControlsSettings() {
+        if additionalControlsSheet == nil { additionalControlsSheet = AdditionalControlsSheet() }
+        SettingsWindow.shared.beginSheetWithSearchHighlight(additionalControlsSheet)
     }
 
     private static func addShortcut(_ triggerPhase: ShortcutTriggerPhase, _ scope: ShortcutScope, _ shortcut: Shortcut, _ controlId: String, _ index: Int?) {

@@ -59,7 +59,6 @@ class SystemPermissions {
             if PermissionsWindow.shared != nil {
                 PermissionsWindow.updatePermissionViews()
             }
-            GeneralTab.refreshAccessibilityPermissionRow()
         }
     }
 
@@ -101,6 +100,13 @@ class SystemPermissions {
     static func setFrequentTimer() {
         timerIsFrequent = true
         timer.schedule(deadline: .now(), repeating: 0.5, leeway: .milliseconds(500))
+    }
+
+    static func handleEventTapCreationFailure(_ name: String) {
+        Logger.error { "\(name) event tap unavailable; keeping app running and showing permissions window" }
+        AccessibilityPermission.status = .notGranted
+        if timer != nil { setFrequentTimer() }
+        App.showPermissionsWindow()
     }
 
     private static func setImmediateTimer() {

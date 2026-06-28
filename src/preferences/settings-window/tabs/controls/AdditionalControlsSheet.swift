@@ -24,32 +24,28 @@ class AdditionalControlsSheet: SheetWindow {
     }
 
     static func makeContentView(width: CGFloat) -> NSView {
-        let arrowsSwitch = LabelAndControl.makeSwitch("arrowKeysEnabled", extraAction: ControlsTab.arrowKeysEnabledCallback)
-        let vimSwitch = LabelAndControl.makeSwitch("vimKeysEnabled", extraAction: ControlsTab.vimKeysEnabledCallback)
-        let mouseSwitch = LabelAndControl.makeSwitch("mouseHoverEnabled")
-        let cursorDropdown = LabelAndControl.makeDropdown("cursorFollowFocus", CursorFollowFocus.allCases)
-        let trackpadSwitch = LabelAndControl.makeSwitch("trackpadHapticFeedbackEnabled")
-        ControlsTab.arrowKeysCheckbox = arrowsSwitch
-        ControlsTab.vimKeysCheckbox = vimSwitch
+        let enableArrows = TableGroupView.Row(leftTitle: Self.labelArrows,
+            rightViews: [LabelAndControl.makeSwitch("arrowKeysEnabled", extraAction: ControlsTab.arrowKeysEnabledCallback)])
+        let enableVimKeys = TableGroupView.Row(leftTitle: Self.labelVim,
+            rightViews: [LabelAndControl.makeSwitch("vimKeysEnabled", extraAction: ControlsTab.vimKeysEnabledCallback)])
+        let enableMouse = TableGroupView.Row(leftTitle: Self.labelMouse,
+            rightViews: [LabelAndControl.makeSwitch("mouseHoverEnabled")])
+        let enableCursorFollowFocus = TableGroupView.Row(leftTitle: Self.labelCursorFollow,
+            rightViews: [LabelAndControl.makeDropdown("cursorFollowFocus", CursorFollowFocus.allCases)])
+        let enableTrackpadHapticFeedback = TableGroupView.Row(leftTitle: Self.labelTrackpad,
+            rightViews: [LabelAndControl.makeSwitch("trackpadHapticFeedbackEnabled")])
+        ControlsTab.arrowKeysCheckbox = enableArrows.rightViews[0] as? Switch
+        ControlsTab.vimKeysCheckbox = enableVimKeys.rightViews[0] as? Switch
         ControlsTab.arrowKeysEnabledCallback(ControlsTab.arrowKeysCheckbox)
         ControlsTab.vimKeysEnabledCallback(ControlsTab.vimKeysCheckbox)
-        let form = SettingsFormView()
-        let selection = SettingsSectionView(title: Self.title)
-        selection.addRow(makeRow(Self.labelArrows, arrowsSwitch))
-        selection.addRow(makeRow(Self.labelVim, vimSwitch))
-        selection.addRow(makeRow(Self.labelMouse, mouseSwitch))
-        form.addSection(selection)
-        let misc = SettingsSectionView(title: Self.titleMiscellaneous)
-        misc.addRow(makeRow(Self.labelCursorFollow, cursorDropdown))
-        misc.addRow(makeRow(Self.labelTrackpad, trackpadSwitch))
-        form.addSection(misc)
-        return form
-    }
-
-    private static func makeRow(_ title: String, _ control: NSView) -> SettingsRowView {
-        let row = SettingsRowView(title: title, content: [control])
-        SettingsSearchIndex.registerString(title)
-        SettingsSearchIndex.registerTarget(SettingsSearchHighlight.highlightTarget(row.titleLabel))
-        return row
+        let table1 = TableGroupView(title: Self.title, width: width)
+        _ = table1.addRow(enableArrows)
+        _ = table1.addRow(enableVimKeys)
+        _ = table1.addRow(enableMouse)
+        let table2 = TableGroupView(title: Self.titleMiscellaneous, width: width)
+        _ = table2.addRow(enableCursorFollowFocus)
+        _ = table2.addRow(enableTrackpadHapticFeedback)
+        let view = TableGroupSetView(originalViews: [table1, table2], padding: 0)
+        return view
     }
 }

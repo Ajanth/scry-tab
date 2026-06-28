@@ -52,7 +52,7 @@ class CursorEvents {
             // we run on main-thread directly since all we do is check NSEvent and UI coordinates, which we must do on main-thread
             CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, .commonModes)
         } else {
-            App.restart()
+            SystemPermissions.handleEventTapCreationFailure("Cursor")
         }
     }
 

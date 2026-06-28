@@ -1,20 +1,9 @@
 import Cocoa
 
-private func settingsSymbol(for icon: SettingsPageIconKind) -> Symbols {
-    switch icon {
-    case .paintpalette: return .paintpalette
-    case .command: return .command
-    case .gearshape: return .gearshape
-    case .handRaised: return .handRaised
-    case .circledInfo: return .circledInfo
-    }
-}
-
 private struct SettingsSectionDefinition {
     let id: String
     let title: String
     let symbol: Symbols
-    let baseColor: SettingsPageBaseColor
     let route: SettingsRoute
     /// Deferred view builder so `addSection` can wrap construction in
     /// `SettingsSearchIndex.indexed { ... }` and harvest inline-registered search strings +
@@ -28,30 +17,10 @@ private struct SettingsSectionDefinition {
     /// section's *dynamic* search content (at build time, and again after each rebuild via
     /// `refreshSectionSearchContent`). nil for sections with no such rows.
     let registerDynamicSearchContent: (() -> Void)?
-
-    init(page: SettingsTopLevelPage,
-         route: SettingsRoute,
-         builder: @escaping () -> NSView,
-         registerDynamicSearchContent: (() -> Void)?) {
-        let metadata = page.shellMetadata
-        id = page.rawValue
-        title = metadata.title
-        symbol = settingsSymbol(for: metadata.icon)
-        baseColor = metadata.baseColor
-        self.route = route
-        self.builder = builder
-        self.registerDynamicSearchContent = registerDynamicSearchContent
-    }
-}
-
-private struct SettingsSidebarGroupItem {
-    let title: String
-    let icon: NSImage?
-    let baseColor: SettingsPageBaseColor?
 }
 
 private enum SettingsSidebarItem {
-    case group(SettingsSidebarGroupItem)
+    case group(SettingsSectionDefinition)
     case page(SettingsSectionDefinition)
     case result(SettingsSearchDescriptorMatch)
 }
@@ -116,11 +85,6 @@ private final class SettingsSidebarCellView: NSTableCellView {
     private let titleLabel = NSTextField(labelWithString: "")
     private let subtitleLabel = NSTextField(labelWithString: "")
     private var isGroup = false
-    private var iconTintColor: NSColor = .secondaryLabelColor
-    private var textLeadingToIcon: NSLayoutConstraint!
-    private var textLeadingToSuperview: NSLayoutConstraint!
-    private var textCenterY: NSLayoutConstraint!
-    private var windowObservers = [NSObjectProtocol]()
 
     override var backgroundStyle: NSView.BackgroundStyle {
         didSet { refreshStyle() }
@@ -135,28 +99,8 @@ private final class SettingsSidebarCellView: NSTableCellView {
         fatalError("Class only supports programmatic initialization")
     }
 
-    deinit {
-        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
-    }
-
-    override func viewDidMoveToWindow() {
-        super.viewDidMoveToWindow()
-        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
-        windowObservers.removeAll()
-        guard let window else { refreshStyle(); return }
-        for name in [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification] {
-            windowObservers.append(NotificationCenter.default.addObserver(forName: name, object: window, queue: .main) { [weak self] _ in
-                self?.refreshStyle()
-            })
-        }
-        refreshStyle()
-    }
-
     private func setupView() {
         iconView.imageScaling = .scaleProportionallyDown
-        iconView.wantsLayer = true
-        iconView.layer?.cornerRadius = DesignMetric.sidebarIconRadius
-        iconView.layer?.masksToBounds = true
         iconView.setContentHuggingPriority(.required, for: .horizontal)
         titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -164,57 +108,48 @@ private final class SettingsSidebarCellView: NSTableCellView {
         subtitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         textStack.orientation = .vertical
         textStack.alignment = .leading
-        textStack.spacing = DesignMetric.compactTextStackGap
+        textStack.spacing = 1
         textStack.addArrangedSubview(titleLabel)
         textStack.addArrangedSubview(subtitleLabel)
         iconView.translatesAutoresizingMaskIntoConstraints = false
         textStack.translatesAutoresizingMaskIntoConstraints = false
         addSubview(iconView)
         addSubview(textStack)
-        textLeadingToIcon = textStack.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: DesignMetric.sidebarItemIconTextGap)
-        textLeadingToSuperview = textStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: SettingsWindow.sidebarItemContentInset)
-        textCenterY = textStack.centerYAnchor.constraint(equalTo: centerYAnchor)
         NSLayoutConstraint.activate([
             iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: SettingsWindow.sidebarItemContentInset),
             iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            iconView.widthAnchor.constraint(equalToConstant: DesignMetric.sidebarItemIconSize),
-            iconView.heightAnchor.constraint(equalToConstant: DesignMetric.sidebarItemIconSize),
+            iconView.widthAnchor.constraint(equalToConstant: 22),
+            iconView.heightAnchor.constraint(equalToConstant: 22),
+            textStack.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6),
             textStack.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -SettingsWindow.sidebarItemContentInset),
-            textCenterY,
+            textStack.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
-        textLeadingToIcon.isActive = true
         refreshStyle()
     }
 
     func configure(_ section: SettingsSection) {
-        configure(title: section.title, subtitle: nil, icon: section.icon, baseColor: .neutralGray, isGroup: false)
+        configure(title: section.title, subtitle: nil, icon: section.icon, isGroup: false)
     }
 
     func configure(_ definition: SettingsSectionDefinition, icon: NSImage) {
-        configure(title: definition.title, subtitle: nil, icon: icon, baseColor: definition.baseColor, isGroup: false)
+        configure(title: definition.title, subtitle: nil, icon: icon, isGroup: false)
     }
 
-    func configureGroup(_ group: SettingsSidebarGroupItem, topGap: CGFloat) {
-        configure(title: group.title, subtitle: nil, icon: group.icon, baseColor: group.baseColor, isGroup: true, topGap: topGap)
+    func configureGroup(_ definition: SettingsSectionDefinition, icon: NSImage) {
+        configure(title: definition.title, subtitle: nil, icon: icon, isGroup: true)
     }
 
-    func configure(_ match: SettingsSearchDescriptorMatch, icon: NSImage, baseColor: SettingsPageBaseColor) {
-        configure(title: match.descriptor.title, subtitle: match.descriptor.subtitle, icon: icon, baseColor: baseColor, isGroup: false)
+    func configure(_ match: SettingsSearchDescriptorMatch, icon: NSImage) {
+        configure(title: match.descriptor.title, subtitle: match.descriptor.subtitle, icon: icon, isGroup: false)
     }
 
-    private func configure(title: String, subtitle: String?, icon: NSImage?, baseColor: SettingsPageBaseColor?, isGroup: Bool, topGap: CGFloat = 0) {
+    private func configure(title: String, subtitle: String?, icon: NSImage, isGroup: Bool) {
         self.isGroup = isGroup
         titleLabel.stringValue = title
         subtitleLabel.stringValue = subtitle ?? ""
         subtitleLabel.isHidden = (subtitle ?? "").isEmpty
         iconView.image = icon
         iconView.image?.isTemplate = true
-        iconView.isHidden = icon == nil
-        textLeadingToIcon.isActive = false
-        textLeadingToSuperview.isActive = false
-        (icon == nil ? textLeadingToSuperview : textLeadingToIcon).isActive = true
-        textCenterY.constant = isGroup ? (topGap - DesignMetric.sidebarGroupLabelToItemsGap) / 2 : 0
-        iconTintColor = baseColor.map(SettingsWindow.color) ?? .secondaryLabelColor
         refreshStyle()
     }
 
@@ -224,12 +159,8 @@ private final class SettingsSidebarCellView: NSTableCellView {
         subtitleLabel.font = NSFont.systemFont(ofSize: 11)
         titleLabel.textColor = selected ? .white : (isGroup ? .secondaryLabelColor : .labelColor)
         subtitleLabel.textColor = selected ? .white : .secondaryLabelColor
-        let contentAlpha: CGFloat = selected || (window?.isKeyWindow ?? true) ? 1 : 0.5
-        titleLabel.alphaValue = contentAlpha
-        subtitleLabel.alphaValue = contentAlpha
-        iconView.alphaValue = contentAlpha
         if #available(macOS 10.14, *) {
-            iconView.contentTintColor = selected ? .white : iconTintColor
+            iconView.contentTintColor = selected ? .white : .secondaryLabelColor
         }
     }
 }
@@ -254,44 +185,6 @@ private final class SidebarTableView: NSTableView {
     override var previousValidKeyView: NSView? { tabPeer }
 }
 
-private final class SidebarFadeScrollView: NSScrollView {
-    private let fadeMask = CAGradientLayer()
-
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-        wantsLayer = true
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("Class only supports programmatic initialization")
-    }
-
-    override func layout() {
-        super.layout()
-        updateFadeMask()
-    }
-
-    override func reflectScrolledClipView(_ clipView: NSClipView) {
-        super.reflectScrolledClipView(clipView)
-        updateFadeMask()
-    }
-
-    private func updateFadeMask() {
-        guard let layer else { return }
-        guard let documentView, documentView.frame.height > contentView.bounds.height + 1 else {
-            layer.mask = nil
-            return
-        }
-        let fade = min(DesignMetric.sidebarFadeMaskHeight / max(bounds.height, 1), 0.5)
-        fadeMask.frame = bounds
-        fadeMask.startPoint = CGPoint(x: 0.5, y: 0)
-        fadeMask.endPoint = CGPoint(x: 0.5, y: 1)
-        fadeMask.colors = [NSColor.clear.cgColor, NSColor.black.cgColor, NSColor.black.cgColor, NSColor.clear.cgColor]
-        fadeMask.locations = [0, NSNumber(value: Double(fade)), NSNumber(value: Double(1 - fade)), 1]
-        layer.mask = fadeMask
-    }
-}
-
 private final class SidebarSearchField: NSSearchField {
     weak var tabPeer: NSView?
 
@@ -300,27 +193,41 @@ private final class SidebarSearchField: NSSearchField {
 }
 
 class SettingsWindow: NSWindow {
-    static let contentWidth = CGFloat(670)
-    static let width = DesignMetric.settingsWindowWidth
-    /// Horizontal margin inside each section between the section container and legacy
-    /// TableGroupView surfaces.
+    static let contentWidth = CGFloat(710)
+    static let width = contentWidth
+    /// Horizontal margin inside each section between the section's container and the
+    /// TableGroupView's rounded background, so the gray-bg blocks "float" inside the section
+    /// rather than extend edge-to-edge. The window width includes 2× this on top of the regular
+    /// `contentWidth`, so TGVs keep their natural width and gain a visible gutter on each side.
     static let sectionContentHorizontalMargin = CGFloat(15)
-    private static let sidebarWidth = DesignMetric.sidebarWidth
-    private static let contentHorizontalPadding = CGFloat(0)
-    private static let contentTrailingPadding = CGFloat(0)
+    static let sidebarActionButtonHeight: CGFloat = {
+        let button = NSButton(title: " ", target: nil, action: nil)
+        button.bezelStyle = .rounded
+        return button.fittingSize.height
+    }()
+    private static let sidebarWidth = CGFloat(175)
+    /// Outer left pad between the splitview divider and the TableGroupView background. Kept
+    /// symmetric with `contentTrailingPadding` so the visible TGV "shoulders" match on both sides.
+    private static let contentHorizontalPadding = CGFloat(5)
+    /// Trailing pad between the TableGroupView and the window edge. The visible gap from the
+    /// right-most control to the window edge is `contentTrailingPadding + TableGroupView.padding`
+    /// (= 5 + 10 = 15pt), since `TableGroupView` adds ~10pt of internal padding on the right of
+    /// each row's content.
+    private static let contentTrailingPadding = CGFloat(5)
     private static let contentTopPadding = CGFloat(0)
-    private static let topSectionTitlePadding = CGFloat(16)
+    private static let topSectionTitlePadding = CGFloat(20)
     private static let contentBottomPadding = CGFloat(20)
+    static let sectionTitleSpacing = CGFloat(10)
     private static let sectionInterSectionSpacing = CGFloat(15)
     private static let sectionBottomSpacing = CGFloat(30) - sectionInterSectionSpacing
     private static let sectionScrollTopPadding = CGFloat(20)
     private static let sectionSelectionTriggerRatioWhenScrollingDown = CGFloat(0.4)
     private static let sectionSelectionTriggerRatioWhenScrollingUp = CGFloat(0.6)
     private static let sectionSelectionDirectionDeltaThreshold = CGFloat(0.25)
-    private static let minWindowHeight = DesignMetric.settingsWindowMinHeight
-    private static let defaultWindowHeight = DesignMetric.settingsWindowHeight
-    private static let sidebarTopInset = CGFloat(52)
-    private static let sidebarHorizontalPadding = CGFloat(12)
+    private static let minWindowHeight = CGFloat(400)
+    private static let defaultWindowHeight = CGFloat(570)
+    private static let sidebarTopInset = CGFloat(40)
+    private static let sidebarHorizontalPadding = CGFloat(10)
     /// Padding inside the row's cell view between the cell's leading edge and the icon.
     /// `NSTableView.style = .sourceList` already inserts the cell content into its rounded
     /// highlight pill, so we only add a small visual breathing-room here.
@@ -335,19 +242,16 @@ class SettingsWindow: NSWindow {
     static var canBecomeKey_ = true
     override var canBecomeKey: Bool { Self.canBecomeKey_ }
 
-    private let windowSurface = MaterialSurfaceView(role: .window)
+    private let splitViewController = NSSplitViewController()
     private let sidebarContainer = NSView()
     private let contentContainer = NSView()
-    private let contentDivider = NSBox()
-    private let pageHeaderView = NSView()
-    private let pageHeaderIconView = NSImageView()
-    private let pageHeaderTitleLabel = NSTextField(labelWithString: "")
     private let searchField = SidebarSearchField(frame: .zero)
-    private let sidebarScrollView = SidebarFadeScrollView()
+    private let sidebarScrollView = NSScrollView()
     private let sidebarTableView = SidebarTableView()
     private let rightScrollView = NSScrollView()
     private let sectionsDocumentView = SettingsFlippedView(frame: .zero)
     private let sectionsStack = NSStackView()
+    private let quitButton = NSButton(title: String(format: NSLocalizedString("Quit %@", comment: "%@ is ScryTab"), App.name), target: nil, action: #selector(NSApplication.terminate(_:)))
     private let navigationController = SettingsNavigationController()
     private lazy var definitions = sectionDefinitions()
     private var sections = [SettingsSection]()
@@ -360,14 +264,18 @@ class SettingsWindow: NSWindow {
     private var sectionSelectionTriggerRatio = SettingsWindow.sectionSelectionTriggerRatioWhenScrollingDown
     private var lastContentScrollY: CGFloat?
     private var isProgrammaticScrollInProgress = false
-    private var pageFocusViews = [String: NSView]()
-    /// One-shot anchor identifier carried from a search-result selection into `navigate(to:)`.
-    /// Consumed (niled) by `resolvePendingFocusAnchor` after the destination page is shown so a
-    /// later plain navigation does not re-highlight a previously focused control.
-    var pendingFocusID: String?
 
     convenience init(initialRoute: SettingsRoute = .appearance) {
-        let windowWidth = Self.width
+        // Leading pad is the title-to-divider gap; trailing pad is the card-outer-edge-to-window
+        // gap. They're intentionally asymmetric because `TableGroupView`'s ~10pt internal padding
+        // already adds a visual gap on the right — so the visible content sits roughly the same
+        // distance from the window edge as the title sits from the divider.
+        // Window width = sidebar + content + outer paddings + section's horizontal margins on
+        // both sides. The section margins give TableGroupViews (gray-bg blocks) a visible gutter
+        // on each side; without that extra width, narrower content (e.g. a TGV using
+        // `contentWidth`) would leave dead space relative to wider content (e.g. the Controls
+        // tab's sidebar+editor layout, which already consumes the full `contentWidth`).
+        let windowWidth = Self.sidebarWidth + Self.contentWidth + Self.contentHorizontalPadding + Self.contentTrailingPadding + 2 * Self.sectionContentHorizontalMargin
         self.init(contentRect: NSRect(x: 0, y: 0, width: windowWidth, height: Self.defaultWindowHeight),
                   styleMask: [.titled, .miniaturizable, .closable, .resizable, .fullSizeContentView],
                   backing: .buffered, defer: false)
@@ -404,26 +312,6 @@ class SettingsWindow: NSWindow {
             toolbarStyle = .unified
             titlebarSeparatorStyle = .none
         }
-        refreshInterfaceAppearance()
-    }
-
-    func refreshInterfaceAppearance() {
-        appearance = Self.nsAppearance(for: Preferences.applicationInterfaceAppearance)
-        windowSurface.refreshAppearance()
-        sidebarTableView.reloadData()
-        sidebarScrollView.needsLayout = true
-        updatePageHeaderForSelectedRoute()
-    }
-
-    private static func nsAppearance(for preference: ApplicationInterfaceAppearancePreference) -> NSAppearance? {
-        if #available(macOS 10.14, *) {
-            switch preference.resolvedAppearance(supportsDarkMode: true) {
-            case .system: return nil
-            case .aqua: return NSAppearance(named: .aqua)
-            case .darkAqua: return NSAppearance(named: .darkAqua)
-            }
-        }
-        return NSAppearance(named: .aqua)
     }
 
     private static func normalizedRoute(_ route: SettingsRoute) -> SettingsRoute {
@@ -433,39 +321,28 @@ class SettingsWindow: NSWindow {
     }
 
     private func setupView() {
-        setupShell()
+        setupSplitView()
         setupSidebar()
         setupContentPane()
-        visibleSidebarItems = pageSidebarItems()
+        visibleSidebarItems = definitions.map { .page($0) }
         sidebarTableView.reloadData()
-        sidebarScrollView.needsLayout = true
         navigate(to: navigationController.selectedRoute)
         refreshControlsFromSettings()
     }
 
-    private func setupShell() {
-        contentView = windowSurface
-        sidebarContainer.translatesAutoresizingMaskIntoConstraints = false
-        contentContainer.translatesAutoresizingMaskIntoConstraints = false
-        contentDivider.boxType = .separator
-        contentDivider.translatesAutoresizingMaskIntoConstraints = false
-        windowSurface.addSubview(sidebarContainer)
-        windowSurface.addSubview(contentDivider)
-        windowSurface.addSubview(contentContainer)
-        NSLayoutConstraint.activate([
-            sidebarContainer.topAnchor.constraint(equalTo: windowSurface.topAnchor),
-            sidebarContainer.leadingAnchor.constraint(equalTo: windowSurface.leadingAnchor),
-            sidebarContainer.bottomAnchor.constraint(equalTo: windowSurface.bottomAnchor),
-            sidebarContainer.widthAnchor.constraint(equalToConstant: Self.sidebarWidth),
-            contentDivider.topAnchor.constraint(equalTo: windowSurface.topAnchor),
-            contentDivider.leadingAnchor.constraint(equalTo: sidebarContainer.trailingAnchor),
-            contentDivider.bottomAnchor.constraint(equalTo: windowSurface.bottomAnchor),
-            contentDivider.widthAnchor.constraint(equalToConstant: DesignMetric.settingsDividerWidth),
-            contentContainer.topAnchor.constraint(equalTo: windowSurface.topAnchor),
-            contentContainer.leadingAnchor.constraint(equalTo: contentDivider.trailingAnchor),
-            contentContainer.trailingAnchor.constraint(equalTo: windowSurface.trailingAnchor),
-            contentContainer.bottomAnchor.constraint(equalTo: windowSurface.bottomAnchor),
-        ])
+    private func setupSplitView() {
+        let sidebarVC = NSViewController()
+        sidebarVC.view = sidebarContainer
+        let contentVC = NSViewController()
+        contentVC.view = contentContainer
+        let sidebarItem = NSSplitViewItem(sidebarWithViewController: sidebarVC)
+        sidebarItem.canCollapse = false
+        sidebarItem.minimumThickness = Self.sidebarWidth
+        sidebarItem.maximumThickness = Self.sidebarWidth
+        let contentItem = NSSplitViewItem(viewController: contentVC)
+        splitViewController.splitViewItems = [sidebarItem, contentItem]
+        splitViewController.splitView.dividerStyle = .thin
+        contentViewController = splitViewController
     }
 
     private func setupSidebar() {
@@ -480,7 +357,6 @@ class SettingsWindow: NSWindow {
     }
 
     private func setupContentPane() {
-        setupPageHeader()
         rightScrollView.drawsBackground = false
         rightScrollView.hasVerticalScroller = true
         rightScrollView.hasHorizontalScroller = false
@@ -502,7 +378,7 @@ class SettingsWindow: NSWindow {
         NSLayoutConstraint.activate([
             rightScrollView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
             rightScrollView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
-            rightScrollView.topAnchor.constraint(equalTo: pageHeaderView.bottomAnchor),
+            rightScrollView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
             rightScrollView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor),
             sectionsStack.topAnchor.constraint(equalTo: sectionsDocumentView.topAnchor, constant: Self.contentTopPadding),
             sectionsStack.leadingAnchor.constraint(equalTo: sectionsDocumentView.leadingAnchor, constant: Self.contentHorizontalPadding),
@@ -511,31 +387,6 @@ class SettingsWindow: NSWindow {
         ])
         sectionsStackBottomConstraint = sectionsStack.bottomAnchor.constraint(equalTo: sectionsDocumentView.bottomAnchor, constant: -Self.contentBottomPadding)
         sectionsStackBottomConstraint.isActive = true
-    }
-
-    private func setupPageHeader() {
-        pageHeaderView.translatesAutoresizingMaskIntoConstraints = false
-        pageHeaderIconView.translatesAutoresizingMaskIntoConstraints = false
-        pageHeaderIconView.imageScaling = .scaleProportionallyDown
-        pageHeaderTitleLabel.font = DesignTypography.pageTitle
-        pageHeaderTitleLabel.lineBreakMode = .byTruncatingTail
-        pageHeaderTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentContainer.addSubview(pageHeaderView)
-        pageHeaderView.addSubview(pageHeaderIconView)
-        pageHeaderView.addSubview(pageHeaderTitleLabel)
-        NSLayoutConstraint.activate([
-            pageHeaderView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
-            pageHeaderView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
-            pageHeaderView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
-            pageHeaderView.heightAnchor.constraint(equalToConstant: DesignMetric.pageHeaderHeight),
-            pageHeaderIconView.leadingAnchor.constraint(equalTo: pageHeaderView.leadingAnchor, constant: DesignMetric.pageHeaderHorizontalPadding),
-            pageHeaderIconView.centerYAnchor.constraint(equalTo: pageHeaderView.centerYAnchor),
-            pageHeaderIconView.widthAnchor.constraint(equalToConstant: DesignMetric.pageHeaderIconSize),
-            pageHeaderIconView.heightAnchor.constraint(equalToConstant: DesignMetric.pageHeaderIconSize),
-            pageHeaderTitleLabel.leadingAnchor.constraint(equalTo: pageHeaderIconView.trailingAnchor, constant: DesignMetric.pageHeaderIconTitleGap),
-            pageHeaderTitleLabel.trailingAnchor.constraint(lessThanOrEqualTo: pageHeaderView.trailingAnchor, constant: -DesignMetric.pageHeaderHorizontalPadding),
-            pageHeaderTitleLabel.centerYAnchor.constraint(equalTo: pageHeaderView.centerYAnchor),
-        ])
     }
 
     private func installContentScrollObserver() {
@@ -566,12 +417,12 @@ class SettingsWindow: NSWindow {
 
     private func setupSidebarTable(_ parent: NSView) {
         sidebarScrollView.drawsBackground = false
-        sidebarScrollView.hasVerticalScroller = false
+        sidebarScrollView.hasVerticalScroller = true
         sidebarScrollView.hasHorizontalScroller = false
         sidebarScrollView.scrollerStyle = .overlay
         sidebarTableView.headerView = nil
-        sidebarTableView.intercellSpacing = .zero
-        sidebarTableView.rowHeight = 32
+        sidebarTableView.intercellSpacing = NSSize(width: 0, height: 2)
+        sidebarTableView.rowHeight = 30
         sidebarTableView.selectionHighlightStyle = .sourceList
         sidebarTableView.backgroundColor = .clear
         sidebarTableView.focusRingType = .none
@@ -588,25 +439,37 @@ class SettingsWindow: NSWindow {
         sidebarScrollView.translatesAutoresizingMaskIntoConstraints = false
         parent.addSubview(sidebarScrollView)
         NSLayoutConstraint.activate([
-            sidebarScrollView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: DesignMetric.sidebarSearchToListGap),
+            sidebarScrollView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 12),
             // The scroll view sits flush to the sidebar edges. The `.sourceList` selection style
             // adds its own ~10pt internal inset for the row highlight pill, so the pill ends up
             // aligned with the search field (which itself is inset by `sidebarHorizontalPadding`
             // = 10pt). Insetting the scroll view here would compound that and push the highlight
             // too far in.
-            sidebarScrollView.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: Self.sidebarHorizontalPadding),
-            sidebarScrollView.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -Self.sidebarHorizontalPadding),
-            sidebarScrollView.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -12),
+            sidebarScrollView.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
+            sidebarScrollView.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
+            sidebarScrollView.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -10),
+        ])
+    }
+
+    private func setupQuitButton(_ parent: NSView) {
+        quitButton.toolTip = quitButton.title
+        quitButton.bezelStyle = .rounded
+        quitButton.translatesAutoresizingMaskIntoConstraints = false
+        parent.addSubview(quitButton)
+        NSLayoutConstraint.activate([
+            quitButton.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
+            quitButton.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -10),
+            quitButton.widthAnchor.constraint(lessThanOrEqualTo: parent.widthAnchor, constant: -Self.sidebarHorizontalPadding * 2),
         ])
     }
 
     private func sectionDefinitions() -> [SettingsSectionDefinition] {
         [
-            SettingsSectionDefinition(page: .appearance, route: .appearance, builder: AppearanceTab.initTab, registerDynamicSearchContent: nil),
-            SettingsSectionDefinition(page: .controls, route: .controls(nil), builder: ControlsTab.initTab, registerDynamicSearchContent: ControlsTab.registerSidebarRowsSearchContent),
-            SettingsSectionDefinition(page: .general, route: .general, builder: GeneralTab.initTab, registerDynamicSearchContent: nil),
-            SettingsSectionDefinition(page: .exceptions, route: .exceptions(nil), builder: ExceptionsTab.initTab, registerDynamicSearchContent: nil),
-            SettingsSectionDefinition(page: .about, route: .about, builder: AboutTab.initTab, registerDynamicSearchContent: nil),
+            SettingsSectionDefinition(id: "appearance", title: NSLocalizedString("Appearance", comment: ""), symbol: .paintpalette, route: .appearance, builder: AppearanceTab.initTab, registerDynamicSearchContent: nil),
+            SettingsSectionDefinition(id: "controls", title: NSLocalizedString("Controls", comment: ""), symbol: .command, route: .controls(nil), builder: ControlsTab.initTab, registerDynamicSearchContent: ControlsTab.registerSidebarRowsSearchContent),
+            SettingsSectionDefinition(id: "general", title: NSLocalizedString("General", comment: ""), symbol: .gearshape, route: .general, builder: GeneralTab.initTab, registerDynamicSearchContent: nil),
+            SettingsSectionDefinition(id: "exceptions", title: NSLocalizedString("Exceptions", comment: ""), symbol: .handRaised, route: .exceptions(nil), builder: ExceptionsTab.initTab, registerDynamicSearchContent: nil),
+            SettingsSectionDefinition(id: "about", title: NSLocalizedString("About", comment: ""), symbol: .circledInfo, route: .about, builder: AboutTab.initTab, registerDynamicSearchContent: nil),
         ]
     }
 
@@ -618,116 +481,65 @@ class SettingsWindow: NSWindow {
         let pageOrder = definitions.compactMap { $0.route.page }
         return SettingsSearchDescriptorMatcher.groupedMatches(query: query, descriptors: searchDescriptors(), pageOrder: pageOrder).flatMap { group in
             guard let definition = definition(for: group.page) else { return group.matches.map(SettingsSidebarItem.result) }
-            return [SettingsSidebarItem.group(groupItem(for: definition))] + group.matches.map(SettingsSidebarItem.result)
+            return [SettingsSidebarItem.group(definition)] + group.matches.map(SettingsSidebarItem.result)
         }
-    }
-
-    private func pageSidebarItems() -> [SettingsSidebarItem] {
-        SettingsTopLevelPage.groupedForShell(definitions.compactMap { $0.route.page }).flatMap { group, pages in
-            [SettingsSidebarItem.group(SettingsSidebarGroupItem(title: group.title, icon: nil, baseColor: nil))] + pages.compactMap {
-                definition(for: $0).map(SettingsSidebarItem.page)
-            }
-        }
-    }
-
-    private func groupItem(for definition: SettingsSectionDefinition) -> SettingsSidebarGroupItem {
-        SettingsSidebarGroupItem(title: definition.title, icon: sidebarImage(definition), baseColor: definition.baseColor)
     }
 
     private func staticPageSearchDescriptors() -> [SettingsSearchDescriptor] {
         [
-            SettingsSearchDescriptor(id: "appearance-applicationInterface", route: .appearance, sectionID: "appearance",
-                title: NSLocalizedString("Application interface", comment: ""),
-                keywords: ApplicationInterfaceAppearancePreference.allCases.map(\.localizedString)
-                  + [NSLocalizedString("Settings", comment: "")]),
-            SettingsSearchDescriptor(id: "appearance-style", route: .appearance, sectionID: "appearance",
-                title: NSLocalizedString("Style", comment: ""),
-                subtitle: NSLocalizedString("Switcher style", comment: ""),
-                keywords: AppearanceStylePreference.allCases.map(\.localizedString)
-                  + CustomizeStyleSheet.searchableStrings),
-            SettingsSearchDescriptor(id: "appearance-customize", route: .appearance, sectionID: "appearance",
-                title: NSLocalizedString("Customize", comment: ""),
-                keywords: CustomizeStyleSheet.searchableStrings),
-            SettingsSearchDescriptor(id: "appearance-size", route: .appearance, sectionID: "appearance",
-                title: AppearanceTab.labelSize,
-                keywords: AppearanceSizePreference.allCases.map(\.localizedString)),
-            SettingsSearchDescriptor(id: "appearance-theme", route: .appearance, sectionID: "appearance",
-                title: AppearanceTab.labelTheme,
-                keywords: AppearanceThemePreference.allCases.map(\.localizedString)),
-            SettingsSearchDescriptor(id: "appearance-shortcutStyle", route: .appearance, sectionID: "appearance",
-                title: AppearanceTab.labelShortcutStyle,
-                keywords: ShortcutStylePreference.allCases.map(\.localizedString)),
-            SettingsSearchDescriptor(id: "appearance-showOn", route: .appearance, sectionID: "appearance",
-                title: NSLocalizedString("Show on", comment: ""),
-                keywords: ShowOnScreenPreference.allCases.map(\.localizedString)),
-            SettingsSearchDescriptor(id: "appearance-apparitionDelay", route: .appearance, sectionID: "appearance",
-                title: AppearanceTab.labelApparitionDelay,
-                keywords: [NSLocalizedString("Motion", comment: "")]),
-            SettingsSearchDescriptor(id: "appearance-fadeOut", route: .appearance, sectionID: "appearance",
-                title: AppearanceTab.labelFadeOut),
-            SettingsSearchDescriptor(id: SettingsFocusAnchorID.controlsGesture, route: .controls(.gesture), sectionID: "controls", title: NSLocalizedString("Gesture", comment: ""), keywords: [
+            SettingsSearchDescriptor(id: "appearance", route: .appearance, sectionID: "appearance", title: NSLocalizedString("Appearance", comment: ""), keywords: [
+                NSLocalizedString("Size", comment: ""),
+                NSLocalizedString("Theme", comment: ""),
+                NSLocalizedString("After keys are released", comment: ""),
+                NSLocalizedString("Show on", comment: ""),
+            ] + AppearanceStylePreference.allCases.map(\.localizedString)
+              + AppearanceSizePreference.allCases.map(\.localizedString)
+              + AppearanceThemePreference.allCases.map(\.localizedString)
+              + ShortcutStylePreference.allCases.map(\.localizedString)
+              + ShowOnScreenPreference.allCases.map(\.localizedString)
+              + AnimationsSheet.searchableStrings + CustomizeStyleSheet.searchableStrings),
+            SettingsSearchDescriptor(id: "controls-gesture", route: .controls(.gesture), sectionID: "controls", title: NSLocalizedString("Gesture", comment: ""), keywords: [
                 NSLocalizedString("Trackpad", comment: ""),
                 NSLocalizedString("Filtering", comment: ""),
                 NSLocalizedString("Appearance", comment: ""),
                 NSLocalizedString("Ordering", comment: ""),
             ]),
-            SettingsSearchDescriptor(id: SettingsFocusAnchorID.controlsActive, route: .controls(.activeShortcuts), sectionID: "controls", title: NSLocalizedString("Shortcuts while ScryTab is active", comment: ""), keywords: ShortcutsWhenActiveSheet.searchableStrings),
-            SettingsSearchDescriptor(id: SettingsFocusAnchorID.controlsNavigationPointer, route: .controls(.navigationPointer), sectionID: "controls", title: NSLocalizedString("Navigation & pointer", comment: ""), keywords: AdditionalControlsSheet.searchableStrings),
-            SettingsSearchDescriptor(id: "general-startAtLogin", route: .general, sectionID: "general",
-                title: NSLocalizedString("Start at login", comment: ""),
-                keywords: [NSLocalizedString("Startup", comment: "")]),
-            SettingsSearchDescriptor(id: "general-language", route: .general, sectionID: "general",
-                title: NSLocalizedString("Language", comment: ""),
-                subtitle: NSLocalizedString("Changing the language requires a restart.", comment: ""),
-                keywords: LanguagePreference.allCases.map(\.localizedString)),
-            SettingsSearchDescriptor(id: "general-updatesPolicy", route: .general, sectionID: "general",
-                title: NSLocalizedString("Updates policy", comment: ""),
-                keywords: UpdatePolicyPreference.allCases.map(\.localizedString)),
-            SettingsSearchDescriptor(id: "general-checkForUpdates", route: .general, sectionID: "general",
-                title: NSLocalizedString("Check for updates", comment: ""),
-                keywords: [NSLocalizedString("Check for updates now…", comment: "")]),
-            SettingsSearchDescriptor(id: "general-crashPolicy", route: .general, sectionID: "general",
-                title: NSLocalizedString("Crash reports policy", comment: ""),
-                keywords: CrashPolicyPreference.allCases.map(\.localizedString)),
-            SettingsSearchDescriptor(id: "general-accessibilityPermission", route: .general, sectionID: "general",
-                title: NSLocalizedString("Accessibility", comment: ""),
-                keywords: [
-                    NSLocalizedString("Privacy & diagnostics", comment: ""),
-                    NSLocalizedString("Permission", comment: ""),
-                    NSLocalizedString("System Settings", comment: ""),
-                    NSLocalizedString("Granted", comment: ""),
-                    NSLocalizedString("Not granted", comment: ""),
-                ]),
-            SettingsSearchDescriptor(id: "general-exportImport", route: .general, sectionID: "general",
-                title: NSLocalizedString("Export and import", comment: ""),
-                keywords: [NSLocalizedString("Export settings…", comment: ""), NSLocalizedString("Import settings…", comment: "")]),
-            SettingsSearchDescriptor(id: "general-reset", route: .general, sectionID: "general",
-                title: NSLocalizedString("Reset settings and restart", comment: ""),
-                keywords: [NSLocalizedString("Reset settings and restart…", comment: "")]),
-            SettingsSearchDescriptor(id: SettingsFocusAnchorID.exceptions, route: .exceptions(nil), sectionID: "exceptions", title: NSLocalizedString("Exceptions", comment: ""), keywords: [
+            SettingsSearchDescriptor(id: "controls-active", route: .controls(.activeShortcuts), sectionID: "controls", title: NSLocalizedString("Shortcuts while ScryTab is active", comment: ""), keywords: ShortcutsWhenActiveSheet.searchableStrings),
+            SettingsSearchDescriptor(id: "controls-navigation-pointer", route: .controls(.navigationPointer), sectionID: "controls", title: NSLocalizedString("Navigation & pointer", comment: ""), keywords: AdditionalControlsSheet.searchableStrings),
+            SettingsSearchDescriptor(id: "general", route: .general, sectionID: "general", title: NSLocalizedString("General", comment: ""), keywords: [
+                NSLocalizedString("Start at login", comment: ""),
+                NSLocalizedString("Language", comment: ""),
+                NSLocalizedString("Updates policy", comment: ""),
+                NSLocalizedString("Check for updates now…", comment: ""),
+                NSLocalizedString("Crash reports policy", comment: ""),
+                NSLocalizedString("Export settings…", comment: ""),
+                NSLocalizedString("Import settings…", comment: ""),
+                NSLocalizedString("Reset settings and restart…", comment: ""),
+            ] + LanguagePreference.allCases.map(\.localizedString)
+              + UpdatePolicyPreference.allCases.map(\.localizedString)
+              + CrashPolicyPreference.allCases.map(\.localizedString)),
+            SettingsSearchDescriptor(id: "exceptions", route: .exceptions(nil), sectionID: "exceptions", title: NSLocalizedString("Exceptions", comment: ""), keywords: [
                 NSLocalizedString("Hide", comment: ""),
                 NSLocalizedString("Ignore shortcuts", comment: ""),
                 NSLocalizedString("Add a running app", comment: ""),
                 NSLocalizedString("Add an app from disk", comment: ""),
             ]),
-            SettingsSearchDescriptor(id: "about-hero", route: .about, sectionID: "about",
-                title: NSLocalizedString("About", comment: ""),
-                subtitle: App.version,
-                keywords: [App.name, App.licence,
-                    NSLocalizedString("Website", comment: ""),
-                    NSLocalizedString("Source code", comment: ""),
-                    NSLocalizedString("Feedback", comment: "")]),
-            SettingsSearchDescriptor(id: "about-usage", route: .about, sectionID: "about",
-                title: NSLocalizedString("Usage", comment: "")),
-            SettingsSearchDescriptor(id: "about-acknowledgments", route: .about, sectionID: "about",
-                title: NSLocalizedString("Acknowledgments", comment: "")),
+            SettingsSearchDescriptor(id: "about", route: .about, sectionID: "about", title: NSLocalizedString("About", comment: ""), keywords: [
+                App.name,
+                App.version,
+                App.licence,
+                NSLocalizedString("Website", comment: ""),
+                NSLocalizedString("Source code", comment: ""),
+                NSLocalizedString("Usage", comment: ""),
+                NSLocalizedString("Acknowledgments", comment: ""),
+            ]),
         ]
     }
 
     private func shortcutSearchDescriptors() -> [SettingsSearchDescriptor] {
         (0..<Preferences.shortcutCount).map { index in
             let id = Preferences.shortcutIdentifier(at: index)
-            return SettingsSearchDescriptor(id: SettingsFocusAnchorID.shortcut(id),
+            return SettingsSearchDescriptor(id: "shortcut-\(id)",
                                             route: .controls(.shortcut(id: id, pane: nil)),
                                             sectionID: "controls",
                                             title: NSLocalizedString("Shortcut", comment: "") + " " + String(index + 1),
@@ -743,7 +555,7 @@ class SettingsWindow: NSWindow {
 
     private func exceptionSearchDescriptors() -> [SettingsSearchDescriptor] {
         Preferences.exceptions.map {
-            SettingsSearchDescriptor(id: SettingsFocusAnchorID.exception($0.bundleIdentifier),
+            SettingsSearchDescriptor(id: "exception-\($0.bundleIdentifier)",
                                      route: .exceptions(.bundleIdentifier($0.bundleIdentifier)),
                                      sectionID: "exceptions",
                                      title: $0.bundleIdentifier,
@@ -753,18 +565,6 @@ class SettingsWindow: NSWindow {
 
     private func sidebarImage(_ definition: SettingsSectionDefinition) -> NSImage {
         return NSImage.fromSymbol(definition.symbol, pointSize: 18)
-    }
-
-    static func color(_ baseColor: SettingsPageBaseColor) -> NSColor {
-        switch baseColor {
-        case .teal: return .systemTeal
-        case .indigo:
-            if #available(macOS 10.15, *) { return .systemIndigo }
-            return .systemBlue
-        case .green: return .systemGreen
-        case .orange: return .systemOrange
-        case .neutralGray: return .secondaryLabelColor
-        }
     }
 
     private func definition(for page: SettingsTopLevelPage) -> SettingsSectionDefinition? {
@@ -787,27 +587,41 @@ class SettingsWindow: NSWindow {
         // call inside (`LabelAndControl.makeDropdown`, `TableGroupView.makeText`,
         // etc.) pushes its searchable strings and highlight targets into a per-section `Builder`.
         // The harvested results become the section's `searchableStrings` / `highlightTargets`
-        // directly — no second-pass walk over the view tree. The fixed shell header owns the
-        // visible page title, so the detached section title contributes text only.
-        let sectionTitle = LightLabel(definition.title)
-        sectionTitle.font = NSFont.systemFont(ofSize: 15, weight: .medium)
-        sectionTitle.lineBreakMode = .byWordWrapping
-        sectionTitle.maximumNumberOfLines = 0
-        let (sectionView, builder) = SettingsSearchIndex.indexed {
-            definition.builder()
+        // directly — no second-pass walk over the view tree. The section title is also produced
+        // here so its label registration is captured by the same indexed scope.
+        let sectionTitleBox: (title: LightLabel, view: NSView)
+        let (built, builder) = SettingsSearchIndex.indexed { () -> (title: LightLabel, view: NSView) in
+            let sectionTitle = TableGroupView.makeText(definition.title, bold: true)
+            sectionTitle.font = NSFont.systemFont(ofSize: 15, weight: .medium)
+            sectionTitle.lineBreakMode = .byWordWrapping
+            sectionTitle.maximumNumberOfLines = 0
+            let view = definition.builder()
+            return (sectionTitle, view)
         }
+        sectionTitleBox = built
+        let sectionTitle = sectionTitleBox.title
+        let sectionView = sectionTitleBox.view
         let container = NSView()
         let spacer = NSView()
+        container.addSubview(sectionTitle)
         container.addSubview(sectionView)
         container.addSubview(spacer)
+        sectionTitle.translatesAutoresizingMaskIntoConstraints = false
         sectionView.translatesAutoresizingMaskIntoConstraints = false
         spacer.translatesAutoresizingMaskIntoConstraints = false
         container.translatesAutoresizingMaskIntoConstraints = false
-        let titleTopConstraint = sectionView.topAnchor.constraint(equalTo: container.topAnchor)
+        let titleTopConstraint = sectionTitle.topAnchor.constraint(equalTo: container.topAnchor)
         let interSectionSpacingConstraint = spacer.topAnchor.constraint(equalTo: sectionView.bottomAnchor, constant: Self.sectionInterSectionSpacing)
         let spacerHeightConstraint = spacer.heightAnchor.constraint(equalToConstant: Self.sectionBottomSpacing)
         NSLayoutConstraint.activate([
             titleTopConstraint,
+            // Section title sits at the section content's left margin + the TableGroupView's
+            // internal padding — i.e., the same x as the row content text inside the TGV below
+            // it. The TGV itself is inset by `sectionContentHorizontalMargin`; the title needs
+            // to also account for the TGV's internal `TableGroupView.padding` so they line up.
+            sectionTitle.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: Self.sectionContentHorizontalMargin + TableGroupView.padding),
+            sectionTitle.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            sectionView.topAnchor.constraint(equalTo: sectionTitle.bottomAnchor, constant: Self.sectionTitleSpacing),
             // 15pt horizontal margin between the section's left/right and the TGV's rounded
             // background, so the gray-bg block floats inside the section instead of touching
             // the splitview divider / window edge.
@@ -836,7 +650,7 @@ class SettingsWindow: NSWindow {
                                       definition.title,
                                       sidebarImage(definition),
                                       container,
-                                      sectionView,
+                                      sectionTitle,
                                       search,
                                       definition.registerDynamicSearchContent,
                                       interSectionSpacingConstraint,
@@ -878,6 +692,9 @@ class SettingsWindow: NSWindow {
         var textValues = [String]()
         var highlightTargets = [SettingsSearchHighlightTarget]()
         textValues.append(sectionTitle.stringValue)
+        if let target = SettingsSearchHighlight.highlightTarget(sectionTitle) {
+            highlightTargets.append(target)
+        }
         collectSearchContent(root, &textValues, &highlightTargets, skipSidebarRows: skipSidebarRows)
         return (Array(Set(textValues)), highlightTargets)
     }
@@ -1167,6 +984,9 @@ class SettingsWindow: NSWindow {
     private static func sheet(forSearchButton button: NSButton) -> SheetWindow? {
         guard let action = button.action else { return nil }
         if action == #selector(AppearanceTab.showCustomizeStyleSheet) { return AppearanceTab.customizeStyleSheet }
+        if action == #selector(AppearanceTab.showAnimationsSheet) { return AppearanceTab.animationsSheet }
+        if action == #selector(ControlsTab.showShortcutsSettings) { return ControlsTab.shortcutsWhenActiveSheet }
+        if action == #selector(ControlsTab.showAdditionalControlsSettings) { return ControlsTab.additionalControlsSheet }
         return nil
     }
 
@@ -1313,8 +1133,6 @@ class SettingsWindow: NSWindow {
     func navigate(to route: SettingsRoute) {
         let route = Self.normalizedRoute(route)
         guard let page = route.page, let definition = definition(for: page) else { return }
-        let previousSectionId = selectedSectionId
-        storeCurrentFocus()
         storeCurrentScrollPosition()
         navigationController.navigate(to: route)
         _ = section(for: definition)
@@ -1325,55 +1143,8 @@ class SettingsWindow: NSWindow {
         sectionsDocumentView.layoutSubtreeIfNeeded()
         restoreScrollPosition(for: definition.id)
         selectSidebarRow(for: definition)
-        updatePageHeader(definition)
         applyDestination(route)
         highlightCurrentPageForActiveSearch()
-        if route.prefersRestoredPageFocus {
-            restoreFocus(for: definition.id)
-        }
-        animatePageTransitionIfNeeded(previousSectionId != nil && previousSectionId != definition.id)
-        resolvePendingFocusAnchor()
-    }
-
-    private func storeCurrentFocus() {
-        guard let selectedSectionId, let view = firstResponder as? NSView else { return }
-        guard view.isDescendant(of: sectionsDocumentView) else { return }
-        pageFocusViews[selectedSectionId] = view
-    }
-
-    private func restoreFocus(for sectionId: String) {
-        guard let view = pageFocusViews[sectionId], view.window === self, view.isDescendant(of: sectionsDocumentView) else { return }
-        DispatchQueue.main.async { [weak self, weak view] in
-            guard let self, let view, view.window === self else { return }
-            self.makeFirstResponder(view)
-        }
-    }
-
-    private func animatePageTransitionIfNeeded(_ shouldAnimate: Bool) {
-        guard shouldAnimate, isVisible else { return }
-        let duration = DesignMotion.duration(.normal, reduceMotion: DesignAccessibilityOptions.current.reduceMotion)
-        pageHeaderView.alphaValue = 0
-        rightScrollView.alphaValue = 0
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = duration
-            pageHeaderView.animator().alphaValue = 1
-            rightScrollView.animator().alphaValue = 1
-        }
-    }
-
-    private func updatePageHeaderForSelectedRoute() {
-        guard let page = navigationController.selectedRoute.page, let definition = definition(for: page) else { return }
-        updatePageHeader(definition)
-    }
-
-    private func updatePageHeader(_ definition: SettingsSectionDefinition) {
-        let image = NSImage.fromSymbol(definition.symbol, pointSize: 22)
-        image.isTemplate = true
-        pageHeaderIconView.image = image
-        pageHeaderTitleLabel.stringValue = definition.title
-        if #available(macOS 10.14, *) {
-            pageHeaderIconView.contentTintColor = Self.color(definition.baseColor)
-        }
     }
 
     private func storeCurrentScrollPosition() {
@@ -1429,11 +1200,8 @@ class SettingsWindow: NSWindow {
 
     private func selectSection(_ section: SettingsSection, scroll: Bool, selectInSidebar: Bool = true) {
         selectedSectionId = section.id
-        let row = visibleSidebarItems.firstIndex {
-            if case .page(let definition) = $0 { return definition.id == section.id }
-            return false
-        }
-        if selectInSidebar, let row, sidebarTableView.selectedRow != row {
+        let visibleSections = sections.filter { !$0.container.isHidden }
+        if selectInSidebar, let row = visibleSections.firstIndex(where: { $0.id == section.id }), sidebarTableView.selectedRow != row {
             sidebarTableView.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: false)
         }
         guard scroll else { return }
@@ -1460,16 +1228,14 @@ class SettingsWindow: NSWindow {
         applySearchToVisibleSheets(query)
         if SettingsSearch.isQueryEmpty(query) {
             navigationController.restorePreviousNonSearchRoute()
-            visibleSidebarItems = pageSidebarItems()
+            visibleSidebarItems = definitions.map { .page($0) }
             sidebarTableView.reloadData()
-            sidebarScrollView.needsLayout = true
             navigate(to: navigationController.selectedRoute)
             return
         }
         navigationController.updateSearch(query: query)
         visibleSidebarItems = searchSidebarItems(query: query)
         sidebarTableView.reloadData()
-        sidebarScrollView.needsLayout = true
         highlightCurrentPageForActiveSearch()
         guard !visibleSidebarItems.isEmpty else {
             sidebarTableView.deselectAll(nil)
@@ -1511,28 +1277,6 @@ class SettingsWindow: NSWindow {
         }
         searchField.stringValue = ""
         applySearch("")
-    }
-}
-
-private extension SettingsRoute {
-    var prefersRestoredPageFocus: Bool {
-        switch self {
-        case .appearance, .general, .about, .controls(nil), .exceptions(nil):
-            return true
-        case .controls, .exceptions, .search:
-            return false
-        }
-    }
-}
-
-private extension NSView {
-    func isDescendant(of ancestor: NSView) -> Bool {
-        var view: NSView? = self
-        while let current = view {
-            if current === ancestor { return true }
-            view = current.superview
-        }
-        return false
     }
 }
 
@@ -1579,18 +1323,12 @@ extension SettingsWindow: NSTableViewDataSource, NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         switch visibleSidebarItems[row] {
         case .group:
-            return sidebarGroupTopGap(forRow: row) + DesignMetric.sidebarGroupLabelHeight + DesignMetric.sidebarGroupLabelToItemsGap
+            return 26
         case .result(let match):
-            return (match.descriptor.subtitle ?? "").isEmpty ? 32 : 44
+            return (match.descriptor.subtitle ?? "").isEmpty ? 30 : 42
         case .page:
-            return 32
+            return 30
         }
-    }
-
-    private func sidebarGroupTopGap(forRow row: Int) -> CGFloat {
-        guard row > 0 else { return 0 }
-        guard case .group = visibleSidebarItems[row] else { return 0 }
-        return DesignMetric.sidebarGroupGap
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -1600,14 +1338,14 @@ extension SettingsWindow: NSTableViewDataSource, NSTableViewDelegate {
             return view
         }()
         switch visibleSidebarItems[row] {
-        case .group(let group):
-            cell.configureGroup(group, topGap: sidebarGroupTopGap(forRow: row))
+        case .group(let definition):
+            cell.configureGroup(definition, icon: sidebarImage(definition))
         case .page(let definition):
             cell.configure(definition, icon: sidebarImage(definition))
         case .result(let match):
             let page = match.descriptor.route.page ?? .appearance
             let definition = definition(for: page) ?? definitions[0]
-            cell.configure(match, icon: sidebarImage(definition), baseColor: definition.baseColor)
+            cell.configure(match, icon: sidebarImage(definition))
         }
         return cell
     }
@@ -1628,7 +1366,7 @@ extension SettingsWindow: NSTableViewDataSource, NSTableViewDelegate {
             if selectedSectionId == definition.id { return }
             navigate(to: definition.route)
         case .result(let match):
-            navigate(to: match.descriptor.route, focusing: match.descriptor.id)
+            navigate(to: match.descriptor.route)
         }
     }
 }
