@@ -387,9 +387,6 @@ extension App: NSApplicationDelegate {
         App.shared.disableRelaunchOnLogin()
         Logger.initialize()
         Logger.info { "Launching ScryTab \(App.version)" }
-        #if DEBUG
-        UserDefaults.standard.set(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
-        #endif
         #if !DEBUG
         MoveToApplicationsFolder.promptIfNeeded()
         #endif

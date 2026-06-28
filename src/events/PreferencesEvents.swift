@@ -61,7 +61,6 @@ class PreferencesEvents {
         }
         ControlsTab.preferenceChanged(key)
         switch key {
-        case "applicationInterfaceAppearance": SettingsWindow.shared?.refreshInterfaceAppearance()
         case "nextWindowGesture": TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled)
         case "startAtLogin": LoginItem.applyCurrentPreference()
         case "updatePolicy": applyUpdatePolicyPreference()
