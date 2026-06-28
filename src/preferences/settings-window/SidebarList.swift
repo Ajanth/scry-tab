@@ -41,15 +41,12 @@ class SidebarListContainer: NSView {
     /// Optional keyboard navigation hook. When set, the container accepts first responder
     /// status and forwards up/down arrow key events to this callback.
     var onArrowKey: ((ArrowDirection) -> Void)?
+    private let surface = MaterialSurfaceView(role: .plateau)
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         translatesAutoresizingMaskIntoConstraints = false
-        wantsLayer = true
-        layer?.cornerRadius = TableGroupView.cornerRadius
-        layer?.borderWidth = TableGroupView.borderWidth
-        layer?.masksToBounds = true
-        refreshColors()
+        setupSurface()
     }
 
     required init?(coder: NSCoder) {
@@ -70,14 +67,15 @@ class SidebarListContainer: NSView {
         }
     }
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-        refreshColors()
-    }
-
-    private func refreshColors() {
-        layer?.backgroundColor = NSColor.tableBackgroundColor.cgColor
-        layer?.borderColor = NSColor.tableBorderColor.cgColor
+    private func setupSurface() {
+        surface.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(surface)
+        NSLayoutConstraint.activate([
+            surface.topAnchor.constraint(equalTo: topAnchor),
+            surface.leadingAnchor.constraint(equalTo: leadingAnchor),
+            surface.trailingAnchor.constraint(equalTo: trailingAnchor),
+            surface.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
     }
 }
 
@@ -90,6 +88,7 @@ class SidebarListRow: ClickHoverStackView {
     private let summaryLabel = DynamicColorTextField(labelWithString: "")
     private let chevronLabel = DynamicColorTextField(labelWithString: "›")
     private let textColumn = NSStackView()
+    private let selectionSurface = MaterialSurfaceView(role: .selection)
     private var isSelectedRow = false
     private var isHoveredRow = false
     private var windowObservers = [NSObjectProtocol]()
@@ -101,7 +100,7 @@ class SidebarListRow: ClickHoverStackView {
         spacing = 8
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        layer?.cornerRadius = TableGroupView.cornerRadius
+        setupSurface()
         iconView.translatesAutoresizingMaskIntoConstraints = false
         iconView.imageScaling = .scaleProportionallyUpOrDown
         iconView.isHidden = true
@@ -114,7 +113,7 @@ class SidebarListRow: ClickHoverStackView {
         titleLabel.lineBreakMode = .byTruncatingHead
         titleLabel.cell?.usesSingleLineMode = true
         summaryLabel.alignment = .left
-        summaryLabel.font = NSFont.systemFont(ofSize: 11)
+        summaryLabel.font = DesignTypography.footnoteText
         summaryLabel.lineBreakMode = .byTruncatingTail
         summaryLabel.cell?.usesSingleLineMode = true
         chevronLabel.font = NSFont.systemFont(ofSize: 22)
@@ -136,15 +135,26 @@ class SidebarListRow: ClickHoverStackView {
         addArrangedSubview(textColumn)
         addArrangedSubview(spacer)
         addArrangedSubview(chevronLabel)
-        iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: TableGroupView.padding).isActive = true
+        iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DesignMetric.rowHorizontalPadding).isActive = true
         textColumn.leadingAnchor.constraint(greaterThanOrEqualTo: iconView.trailingAnchor, constant: 8).isActive = true
         textColumn.trailingAnchor.constraint(lessThanOrEqualTo: chevronLabel.leadingAnchor, constant: -8).isActive = true
-        chevronLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -TableGroupView.padding).isActive = true
+        chevronLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DesignMetric.rowHorizontalPadding).isActive = true
         updateStyle()
     }
 
     required init?(coder: NSCoder) {
         fatalError("Class only supports programmatic initialization")
+    }
+
+    private func setupSurface() {
+        selectionSurface.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(selectionSurface, positioned: .below, relativeTo: nil)
+        NSLayoutConstraint.activate([
+            selectionSurface.topAnchor.constraint(equalTo: topAnchor),
+            selectionSurface.leadingAnchor.constraint(equalTo: leadingAnchor),
+            selectionSurface.trailingAnchor.constraint(equalTo: trailingAnchor),
+            selectionSurface.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
     }
 
     // The whole row is clickable. Without these overrides, clicks land on the inner labels
@@ -244,50 +254,24 @@ class SidebarListRow: ClickHoverStackView {
 
     private enum LabelRole { case title, summary, chevron }
 
-    /// We have to branch on `isWindowKey` ourselves because `layer.backgroundColor` takes a
-    /// `CGColor`, which freezes the semantic NSColor at the moment of assignment — it doesn't
-    /// auto-resolve to its inactive variant later. The window key-state observer in
-    /// `viewDidMoveToWindow` calls `updateStyle()` whenever the window gains or loses key,
-    /// re-running this branch with the now-current state. Same pattern AppKit uses for table
-    /// cells in source-list style.
+    /// We have to branch on `isWindowKey` ourselves because label colors take a frozen semantic
+    /// `NSColor`. The window key-state observer in `viewDidMoveToWindow` calls `updateStyle()`
+    /// whenever the window gains or loses key, re-running this branch with the now-current state.
     private func textColor(for role: LabelRole) -> NSColor {
+        let environment = DesignSystemEnvironment.current(for: self)
         if isSelectedRow {
-            // Key: white text on the accent-colored row. Non-key: revert to label color so the
-            // text stays readable against the gray unemphasized selection background.
-            return isWindowKey ? .alternateSelectedControlTextColor : .labelColor
+            // Selected rows use the accent fill; keep label readable on either active or inactive window.
+            return isWindowKey ? .white : DesignSystemColors.color(.textPrimary, environment: environment)
         }
         switch role {
-            case .title: return .labelColor
-            case .summary, .chevron: return .secondaryLabelColor
+            case .title: return DesignSystemColors.color(.textPrimary, environment: environment)
+            case .summary, .chevron: return DesignSystemColors.color(.textSecondary, environment: environment)
         }
     }
 
     private func updateStyle() {
-        let isKey = isWindowKey
-        let selectedBackground: NSColor
-        if #available(macOS 10.14, *) {
-            // `controlAccentColor` matches the blue NSSegmentedControl uses for its selected
-            // segment, so the shortcut sidebar selection visually lines up with the
-            // Filtering / Appearance tabs and the segmented buttons above.
-            // `unemphasizedSelectedContentBackgroundColor` is what AppKit table cells fall back
-            // to when the window isn't key.
-            selectedBackground = isKey ? .controlAccentColor : .unemphasizedSelectedContentBackgroundColor
-        } else {
-            selectedBackground = isKey ? .systemAccentColor : .lightGray
-        }
-        let backgroundColor: NSColor
-        if isSelectedRow {
-            backgroundColor = selectedBackground
-        } else if isHoveredRow {
-            backgroundColor = selectedBackground.withAlphaComponent(0.14)
-        } else {
-            backgroundColor = .clear
-        }
-        titleLabel.font = NSFont.systemFont(ofSize: 13, weight: isSelectedRow ? .semibold : .regular)
-        let previousAppearance = NSAppearance.current
-        NSAppearance.current = effectiveAppearance
-        layer?.backgroundColor = backgroundColor.cgColor
-        NSAppearance.current = previousAppearance
+        selectionSurface.componentState = DesignComponentState(isEnabled: true, isPressed: false, isSelected: isSelectedRow, isHovered: isHoveredRow && !isSelectedRow, isFocused: false)
+        titleLabel.font = NSFont.systemFont(ofSize: DesignTypography.rowTitle.pointSize, weight: isSelectedRow ? .semibold : .regular)
         titleLabel.needsDisplay = true
         summaryLabel.needsDisplay = true
         chevronLabel.needsDisplay = true

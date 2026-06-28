@@ -74,6 +74,8 @@ final class QAMenu: NSPanel {
         }
         let settingsButton = NSButton(title: "Settings…", target: nil, action: nil)
         settingsButton.onAction = { _ in App.showSettingsWindow() }
+        let galleryButton = NSButton(title: "Components…", target: nil, action: nil)
+        galleryButton.onAction = { _ in ComponentGalleryWindow.showGallery() }
         let openOnLaunchCheckbox = NSButton(checkboxWithTitle: "Open on launch", target: nil, action: nil)
         openOnLaunchCheckbox.state = Self.openSettingsOnLaunch ? .on : .off
         openOnLaunchCheckbox.onAction = { sender in
@@ -92,6 +94,7 @@ final class QAMenu: NSPanel {
         topRow.orientation = .horizontal
         topRow.spacing = 8
         topRow.addView(settingsButton, in: .leading)
+        topRow.addView(galleryButton, in: .leading)
         topRow.addView(openOnLaunchCheckbox, in: .leading)
         topRow.addView(quitButton, in: .trailing)
         stack.addArrangedSubview(topRow)

@@ -13,13 +13,18 @@ class AboutTab {
         let appIconSize = NSSize(width: 128, height: 128)
         appIcon.updateContents(.cgImage(App.appIcon(for: appIconSize)), appIconSize)
         appIcon.fit(128, 128)
-        let appText = StackView([
+        var textViews: [NSView] = [
             BoldLabel(App.name),
-            NSTextField(wrappingLabelWithString: NSLocalizedString("Version", comment: "") + " " + App.version),
+            makeVersionRow(),
             NSTextField(wrappingLabelWithString: App.licence),
             HyperlinkLabel(NSLocalizedString("Website", comment: ""), Endpoints.website),
             HyperlinkLabel(NSLocalizedString("Source code", comment: ""), App.repository),
-        ], .vertical)
+        ]
+        if showFeedbackButton {
+            let feedback = HyperlinkLabel(NSLocalizedString("Feedback", comment: "")) { App.showFeedbackPanel() }
+            textViews.append(feedback)
+        }
+        let appText = StackView(textViews, .vertical)
         appText.spacing = GridView.interPadding / 2
         let rowToSeparate = 3
         appText.views[rowToSeparate].topAnchor.constraint(equalTo: appText.views[rowToSeparate - 1].bottomAnchor, constant: GridView.interPadding).isActive = true
@@ -38,30 +43,43 @@ class AboutTab {
         return grid
     }
 
+    private static func makeVersionRow() -> NSView {
+        let versionLabel = NSTextField(labelWithString: NSLocalizedString("Version", comment: "") + " " + App.version)
+        let copyButton = SurfaceButton(title: NSLocalizedString("Copy version", comment: ""), role: .flat) { _ in
+            NSPasteboard.general.clearContents()
+            NSPasteboard.general.setString(App.version, forType: .string)
+        }
+        let row = NSStackView(views: [versionLabel, copyButton])
+        row.orientation = .horizontal
+        row.alignment = .centerY
+        row.spacing = DesignMetric.rowContentGap
+        row.translatesAutoresizingMaskIntoConstraints = false
+        return row
+    }
+
     static func makeSettingsContentView(columnWidth: CGFloat) -> NSView {
-        let stack = NSStackView()
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 30
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        let aboutView = makeContentView(false, false, false)
+        SettingsFocusRegistry.shared.unregisterPrefix("about-")
+        let form = SettingsFormView()
+        let aboutView = makeContentView(false, true, false)
+        form.addArrangedSubview(aboutView)
+        aboutView.leadingAnchor.constraint(equalTo: form.leadingAnchor, constant: form.edgeInsets.left).isActive = true
+        aboutView.trailingAnchor.constraint(equalTo: form.trailingAnchor, constant: -form.edgeInsets.right).isActive = true
+        SettingsFocusRegistry.shared.register("about-hero", aboutView)
         let usageTextView = makeUsageTextView(columnWidth)
-        let acknowledgmentsView = AcknowledgmentsTab.makeContentView(columnWidth: columnWidth, shouldFit: false, verticallyStacked: true)
         settingsUsageTextView = usageTextView
-        stack.addArrangedSubview(aboutView)
-        stack.addArrangedSubview(usageTextView)
-        stack.addArrangedSubview(acknowledgmentsView)
-        stack.setCustomSpacing(15, after: usageTextView)
+        let usageSection = SettingsSectionView(title: NSLocalizedString("Usage", comment: ""))
+        let usageRow = SettingsRowView(title: NSLocalizedString("Activity", comment: ""), content: [usageTextView])
+        usageRow.registerFocusAnchor("about-usage")
+        usageSection.addRow(usageRow)
+        form.addSection(usageSection)
+        let acknowledgmentsView = AcknowledgmentsTab.makeContentView(columnWidth: columnWidth, shouldFit: false, verticallyStacked: true)
+        let ackSection = SettingsSectionView(title: NSLocalizedString("Acknowledgments", comment: ""))
+        let ackRow = SettingsRowView(title: "", content: [acknowledgmentsView], showsSeparator: false)
+        ackRow.registerFocusAnchor("about-acknowledgments")
+        ackSection.addRow(ackRow)
+        form.addSection(ackSection)
         refreshSettingsUsageStats()
-        NSLayoutConstraint.activate([
-            aboutView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            aboutView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-            usageTextView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            usageTextView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-            acknowledgmentsView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            acknowledgmentsView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-        ])
-        return stack
+        return form
     }
 
     static func refreshSettingsUsageStats() {

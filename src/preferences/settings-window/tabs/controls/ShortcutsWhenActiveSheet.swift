@@ -1,4 +1,5 @@
 import Cocoa
+import ShortcutRecorder
 
 class ShortcutsWhenActiveSheet: SheetWindow {
     private static let title = NSLocalizedString("Shortcuts When Active", comment: "")
@@ -28,36 +29,28 @@ class ShortcutsWhenActiveSheet: SheetWindow {
     }
 
     static func makeContentView(width: CGFloat) -> NSView {
-        let focusWindowShortcut = TableGroupView.Row(leftTitle: Self.labelFocus,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelFocus, "focusWindowShortcut", Preferences.focusWindowShortcut, labelPosition: .right)[0]])
-        let previousWindowShortcut = TableGroupView.Row(leftTitle: Self.labelPrevious,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelPrevious, "previousWindowShortcut", Preferences.previousWindowShortcut, labelPosition: .right)[0]])
-        let cancelShortcut = TableGroupView.Row(leftTitle: Self.labelCancel,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelCancel, "cancelShortcut", Preferences.cancelShortcut, labelPosition: .right)[0]])
-        let closeWindowShortcut = TableGroupView.Row(leftTitle: Self.labelClose,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelClose, "closeWindowShortcut", Preferences.closeWindowShortcut, labelPosition: .right)[0]])
-        let minDeminWindowShortcut = TableGroupView.Row(leftTitle: Self.labelMinDemin,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelMinDemin, "minDeminWindowShortcut", Preferences.minDeminWindowShortcut, labelPosition: .right)[0]])
-        let toggleFullscreenWindowShortcut = TableGroupView.Row(leftTitle: Self.labelFullscreen,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelFullscreen, "toggleFullscreenWindowShortcut", Preferences.toggleFullscreenWindowShortcut, labelPosition: .right)[0]])
-        let quitAppShortcut = TableGroupView.Row(leftTitle: Self.labelQuit,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelQuit, "quitAppShortcut", Preferences.quitAppShortcut, labelPosition: .right)[0]])
-        let hideShowAppShortcut = TableGroupView.Row(leftTitle: Self.labelHideShow,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelHideShow, "hideShowAppShortcut", Preferences.hideShowAppShortcut, labelPosition: .right)[0]])
-        let table = TableGroupView(title: Self.title, width: width)
-        _ = table.addRow(focusWindowShortcut)
-        _ = table.addRow(previousWindowShortcut)
-        _ = table.addRow(cancelShortcut)
-        _ = table.addRow(leftText: Self.labelSearch,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelSearch, "searchShortcut", Preferences.searchShortcut, labelPosition: .right)[0]])
-        _ = table.addRow(leftText: Self.labelLockSearch,
-            rightViews: [LabelAndControl.makeLabelWithRecorder(Self.labelLockSearch, "lockSearchShortcut", Preferences.lockSearchShortcut, labelPosition: .right)[0]])
-        _ = table.addRow(closeWindowShortcut)
-        _ = table.addRow(minDeminWindowShortcut)
-        _ = table.addRow(toggleFullscreenWindowShortcut)
-        _ = table.addRow(quitAppShortcut)
-        _ = table.addRow(hideShowAppShortcut)
-        return table
+        let section = SettingsSectionView(title: Self.title)
+        section.addRow(makeRecorderRow(Self.labelFocus, "focusWindowShortcut", Preferences.focusWindowShortcut))
+        section.addRow(makeRecorderRow(Self.labelPrevious, "previousWindowShortcut", Preferences.previousWindowShortcut))
+        section.addRow(makeRecorderRow(Self.labelCancel, "cancelShortcut", Preferences.cancelShortcut))
+        section.addRow(makeRecorderRow(Self.labelSearch, "searchShortcut", Preferences.searchShortcut))
+        section.addRow(makeRecorderRow(Self.labelLockSearch, "lockSearchShortcut", Preferences.lockSearchShortcut))
+        section.addRow(makeRecorderRow(Self.labelClose, "closeWindowShortcut", Preferences.closeWindowShortcut))
+        section.addRow(makeRecorderRow(Self.labelMinDemin, "minDeminWindowShortcut", Preferences.minDeminWindowShortcut))
+        section.addRow(makeRecorderRow(Self.labelFullscreen, "toggleFullscreenWindowShortcut", Preferences.toggleFullscreenWindowShortcut))
+        section.addRow(makeRecorderRow(Self.labelQuit, "quitAppShortcut", Preferences.quitAppShortcut))
+        section.addRow(makeRecorderRow(Self.labelHideShow, "hideShowAppShortcut", Preferences.hideShowAppShortcut))
+        let form = SettingsFormView()
+        form.addSection(section)
+        return form
+    }
+
+    private static func makeRecorderRow(_ title: String, _ rawName: String, _ shortcut: Shortcut?) -> SettingsRowView {
+        let recorder = LabelAndControl.makeLabelWithRecorder(title, rawName, shortcut, labelPosition: .right)[0]
+        let row = SettingsRowView(title: title, content: [recorder])
+        SettingsSearchIndex.registerString(title)
+        SettingsSearchIndex.registerTarget(SettingsSearchHighlight.highlightTarget(row.titleLabel))
+        return row
     }
 
 }

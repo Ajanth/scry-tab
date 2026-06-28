@@ -23,6 +23,7 @@ class Preferences {
             "cursorFollowFocus": CursorFollowFocus.never.indexAsString,
             "hideColoredCircles": "false",
             "windowDisplayDelay": "100",
+            "applicationInterfaceAppearance": ApplicationInterfaceAppearancePreference.system.indexAsString,
             "appearanceStyle": AppearanceStylePreference.appIcons.indexAsString,
             "appearanceSize": AppearanceSizePreference.auto.indexAsString,
             "appearanceTheme": AppearanceThemePreference.system.indexAsString,
@@ -111,6 +112,7 @@ class Preferences {
     static var settingsWindowShownOnFirstLaunch: Bool { CachedUserDefaults.bool("settingsWindowShownOnFirstLaunch") }
 
     // macro values
+    static var applicationInterfaceAppearance: ApplicationInterfaceAppearancePreference { CachedUserDefaults.macroPref("applicationInterfaceAppearance", ApplicationInterfaceAppearancePreference.allCases) }
     static var appearanceStyle: AppearanceStylePreference { CachedUserDefaults.macroPref("appearanceStyle", AppearanceStylePreference.allCases) }
     static var appearanceSize: AppearanceSizePreference { CachedUserDefaults.macroPref("appearanceSize", AppearanceSizePreference.allCases) }
     static var appearanceTheme: AppearanceThemePreference { CachedUserDefaults.macroPref("appearanceTheme", AppearanceThemePreference.allCases) }
