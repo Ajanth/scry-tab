@@ -15,6 +15,7 @@ import ShortcutRecorder
 /// identity and tree shape stay constant across shortcut switches.
 final class ShortcutEditor {
     let view: NSView
+    var onSelectedSegmentChanged: ((Int) -> Void)?
 
     private let trigger: TriggerBinding
     /// Panes are constructed lazily on first selection — only one is visible at a time, so
@@ -150,10 +151,13 @@ final class ShortcutEditor {
 
     /// Externally-driven tab swap — used by ControlsTab to keep the gesture editor's tab in sync
     /// with the shortcut editor when the user changes it on the other one.
-    func applySelectedSegment(_ segment: Int) {
+    func applySelectedSegment(_ segment: Int, notifySelectionChange: Bool = true) {
         ShortcutEditor.selectedTabSegment = segment
         tabControl.selectedSegment = segment
         ensurePaneBuilt(forSegment: segment)
+        if notifySelectionChange {
+            onSelectedSegmentChanged?(segment)
+        }
     }
 
     private func ensurePaneBuilt(forSegment segment: Int) {

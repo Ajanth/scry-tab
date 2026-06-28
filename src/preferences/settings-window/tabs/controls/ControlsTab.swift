@@ -123,6 +123,9 @@ class ControlsTab {
 
     static func initTab() -> NSView {
         editor = ShortcutEditor(width: shortcutEditorContentWidth)
+        editor.onSelectedSegmentChanged = { _ in
+            ControlsTab.syncSelectedDestinationRoute()
+        }
         let shortcutEntry = editor.tabSegmentSearchableStringsEntry
         tabSegmentSearchableStrings[shortcutEntry.key] = shortcutEntry.perSegmentStrings
 
@@ -178,6 +181,7 @@ class ControlsTab {
             applyActiveShortcutPreferences()
             (0..<Preferences.shortcutCount).forEach { initializeShortcutRecorderState($0) }
             refreshShortcutUi()
+            syncSelectedDestinationRoute()
         case "nextWindowGesture":
             refreshGestureRow()
         case let k where isShortcutPreferenceKey(k):
@@ -599,35 +603,80 @@ class ControlsTab {
         shortcutCountButtons?.setEnabled(Preferences.shortcutCount > Preferences.minShortcutCount && selectedShortcutIndex >= 0, forSegment: 1)
     }
 
-    private static func selectShortcut(_ index: Int) {
+    private static func selectShortcut(_ index: Int, syncRoute: Bool = true) {
         guard (0..<Preferences.shortcutCount).contains(index) else { return }
         selectedShortcutIndex = index
         refreshShortcutSelection()
         refreshShortcutCountButtons()
+        if syncRoute { syncSelectedDestinationRoute() }
     }
 
-    private static func selectGesture() {
+    private static func selectGesture(syncRoute: Bool = true) {
         selectedShortcutIndex = gestureSelectionIndex
         refreshShortcutSelection()
         refreshShortcutCountButtons()
+        if syncRoute { syncSelectedDestinationRoute() }
     }
 
-    private static func selectActiveShortcuts() {
+    private static func selectActiveShortcuts(syncRoute: Bool = true) {
         selectedShortcutIndex = activeShortcutsSelectionIndex
         refreshShortcutSelection()
         refreshShortcutCountButtons()
+        if syncRoute { syncSelectedDestinationRoute() }
     }
 
-    private static func selectNavigationPointer() {
+    private static func selectNavigationPointer(syncRoute: Bool = true) {
         selectedShortcutIndex = navigationPointerSelectionIndex
         refreshShortcutSelection()
         refreshShortcutCountButtons()
+        if syncRoute { syncSelectedDestinationRoute() }
     }
 
     static func normalizedDestination(_ destination: ControlsDestination?) -> ControlsDestination? {
         guard case .shortcut(let id, let pane) = destination else { return destination }
         guard Preferences.shortcutIndex(forIdentifier: id) != nil else { return nil }
         return .shortcut(id: id, pane: pane)
+    }
+
+    private static func currentShortcutPane() -> ControlsPaneDestination {
+        switch ShortcutEditor.selectedTabSegment {
+        case 1: return .appearance
+        case 2: return .ordering
+        default: return .filtering
+        }
+    }
+
+    private static func currentDestination() -> ControlsDestination? {
+        switch selectedShortcutIndex {
+        case gestureSelectionIndex:
+            return .gesture
+        case activeShortcutsSelectionIndex:
+            return .activeShortcuts
+        case navigationPointerSelectionIndex:
+            return .navigationPointer
+        default:
+            guard (0..<Preferences.shortcutCount).contains(selectedShortcutIndex) else { return nil }
+            return .shortcut(id: Preferences.shortcutIdentifier(at: selectedShortcutIndex), pane: currentShortcutPane())
+        }
+    }
+
+    private static func syncSelectedDestinationRoute() {
+        guard let destination = currentDestination() else { return }
+        SettingsWindow.shared?.syncVisibleRoute(.controls(destination))
+    }
+
+    private static func applyShortcutPane(_ pane: ControlsPaneDestination?) {
+        guard let pane else { return }
+        switch pane {
+        case .trigger:
+            break
+        case .filtering:
+            editor?.applySelectedSegment(0, notifySelectionChange: false)
+        case .appearance:
+            editor?.applySelectedSegment(1, notifySelectionChange: false)
+        case .ordering:
+            editor?.applySelectedSegment(2, notifySelectionChange: false)
+        }
     }
 
     static func selectDestination(_ destination: ControlsDestination?) {
@@ -641,14 +690,14 @@ class ControlsTab {
                 selectDestination(nil)
                 return
             }
-            selectShortcut(index)
-            if pane == .appearance { editor?.showAppearanceSegment() }
+            selectShortcut(index, syncRoute: false)
+            applyShortcutPane(pane)
         case .gesture:
-            selectGesture()
+            selectGesture(syncRoute: false)
         case .activeShortcuts:
-            selectActiveShortcuts()
+            selectActiveShortcuts(syncRoute: false)
         case .navigationPointer:
-            selectNavigationPointer()
+            selectNavigationPointer(syncRoute: false)
         }
     }
 
