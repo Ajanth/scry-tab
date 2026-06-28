@@ -555,10 +555,14 @@ class SettingsWindow: NSWindow {
 
     private func exceptionSearchDescriptors() -> [SettingsSearchDescriptor] {
         Preferences.exceptions.map {
-            SettingsSearchDescriptor(id: "exception-\($0.bundleIdentifier)",
-                                     route: .exceptions(.bundleIdentifier($0.bundleIdentifier)),
+            let bundleId = $0.bundleIdentifier
+            let displayInfo = AppDisplayInfo.resolve(bundleId: bundleId)
+            let subtitle = displayInfo.name == bundleId ? nil : bundleId
+            return SettingsSearchDescriptor(id: "exception-\(bundleId)",
+                                     route: .exceptions(.bundleIdentifier(bundleId)),
                                      sectionID: "exceptions",
-                                     title: $0.bundleIdentifier,
+                                     title: displayInfo.name,
+                                     subtitle: subtitle,
                                      keywords: [NSLocalizedString("Bundle ID", comment: ""), NSLocalizedString("Hide", comment: ""), NSLocalizedString("Ignore shortcuts", comment: "")])
         }
     }
@@ -1128,6 +1132,12 @@ class SettingsWindow: NSWindow {
     func navigateToSection(_ sectionId: String) {
         guard let definition = definitions.first(where: { $0.id == sectionId }) else { return }
         navigate(to: definition.route)
+    }
+
+    func syncVisibleRoute(_ route: SettingsRoute) {
+        let route = Self.normalizedRoute(route)
+        guard let page = route.page, page.rawValue == selectedSectionId else { return }
+        navigationController.navigate(to: route)
     }
 
     func navigate(to route: SettingsRoute) {

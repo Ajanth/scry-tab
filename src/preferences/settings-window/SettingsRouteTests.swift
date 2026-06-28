@@ -21,6 +21,15 @@ final class SettingsRouteTests: XCTestCase {
         XCTAssertEqual(navigation.previousNonSearchRoute, .general)
     }
 
+    func testNavigateDuringSearchUpdatesRestoreRoute() {
+        let navigation = SettingsNavigationController(initialRoute: .controls(.gesture))
+        navigation.updateSearch(query: "shortcut")
+        let route = SettingsRoute.controls(.shortcut(id: "existing", pane: .ordering))
+        navigation.navigate(to: route)
+        XCTAssertEqual(navigation.selectedRoute, route)
+        XCTAssertEqual(navigation.previousNonSearchRoute, route)
+    }
+
     func testEmptySearchRestoresPreviousNonSearchRoute() {
         let navigation = SettingsNavigationController(initialRoute: .exceptions(nil))
         navigation.updateSearch(query: "bundle")

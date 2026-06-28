@@ -16,6 +16,7 @@ Models Settings navigation independently from AppKit view construction.
   non-search page to restore to.
 - Navigating to a non-search route updates both the selected route and previous non-search route.
 - Starting search preserves the route that was selected before search.
+- Navigating again while search is active replaces the route that search will restore to.
 - Clearing search restores the previous non-search route.
 - A controls deep link to a deleted shortcut normalizes to the Controls root route.
 - A controls deep link to an existing shortcut preserves its requested pane.
@@ -31,6 +32,7 @@ Mirrors `SettingsRouteTests.swift` 1:1.
 - **testInitialSearchRouteNormalizesToAppearance** — a search route cannot be the initial restore route, so navigation starts on Appearance.
 - **testNavigateUpdatesPreviousNonSearchRoute** — navigating to a normal page updates the selected and previous non-search routes.
 - **testSearchPreservesPreviousNonSearchRoute** — starting search stores the route that was active before search.
+- **testNavigateDuringSearchUpdatesRestoreRoute** — once search is active, navigating to a new non-search route makes that route the new restore target.
 - **testEmptySearchRestoresPreviousNonSearchRoute** — empty or whitespace search restores the previous non-search route.
 - **testDeletedShortcutRouteFallsBackToControlsRoot** — a stale shortcut deep link normalizes to the Controls root route.
 - **testExistingShortcutRouteKeepsPane** — a valid shortcut deep link keeps its stable ID and requested pane.

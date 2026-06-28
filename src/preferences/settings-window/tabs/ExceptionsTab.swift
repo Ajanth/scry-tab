@@ -239,6 +239,7 @@ class ExceptionsTab {
         if let existing = items.firstIndex(where: { $0.bundleIdentifier == bundleId }) {
             selectedIndex = existing
             refreshSelection()
+            syncSelectedDestinationRoute()
             return
         }
         items.append(ExceptionEntry(bundleIdentifier: bundleId, hide: .always, ignore: .none, windowTitleContains: nil))
@@ -247,6 +248,7 @@ class ExceptionsTab {
         refreshSidebarRows()
         refreshSelection()
         refreshCountButtons()
+        syncSelectedDestinationRoute()
     }
 
     private static func removeSelected() {
@@ -261,6 +263,7 @@ class ExceptionsTab {
         refreshSidebarRows()
         refreshSelection()
         refreshCountButtons()
+        syncSelectedDestinationRoute()
     }
 
     private static func savePreferences() {
@@ -333,7 +336,7 @@ class ExceptionsTab {
         }
     }
 
-    private static func selectIndex(_ index: Int) {
+    private static func selectIndex(_ index: Int, syncRoute: Bool = true) {
         guard index >= 0, index < items.count else { return }
         selectedIndex = index
         refreshSelection()
@@ -341,6 +344,7 @@ class ExceptionsTab {
         if index < rows.count {
             rows[index].scrollToVisible(rows[index].bounds)
         }
+        if syncRoute { syncSelectedDestinationRoute() }
     }
 
     static func selectDestination(_ destination: ExceptionDestination?) {
@@ -348,8 +352,17 @@ class ExceptionsTab {
         switch destination {
         case .bundleIdentifier(let bundleId):
             guard let index = items.firstIndex(where: { $0.bundleIdentifier == bundleId }) else { return }
-            selectIndex(index)
+            selectIndex(index, syncRoute: false)
         }
+    }
+
+    private static func currentDestination() -> ExceptionDestination? {
+        guard selectedIndex >= 0, selectedIndex < items.count else { return nil }
+        return .bundleIdentifier(items[selectedIndex].bundleIdentifier)
+    }
+
+    private static func syncSelectedDestinationRoute() {
+        SettingsWindow.shared?.syncVisibleRoute(.exceptions(currentDestination()))
     }
 
     private static func refreshSelection() {
@@ -363,6 +376,7 @@ class ExceptionsTab {
                 if ExceptionsTab.selectedIndex < ExceptionsTab.rows.count {
                     ExceptionsTab.applyContent(ExceptionsTab.rows[ExceptionsTab.selectedIndex], index: ExceptionsTab.selectedIndex)
                 }
+                ExceptionsTab.syncSelectedDestinationRoute()
             }
         } else {
             editorView.clear()
