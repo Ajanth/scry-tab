@@ -52,7 +52,7 @@ class PermissionsWindow: NSWindow {
         Self.accessibilityView = PermissionView(
             .accessibility,
             NSLocalizedString("Accessibility", comment: ""),
-            NSLocalizedString("This permission is needed to focus windows after you release the shortcut", comment: ""),
+            String(format: NSLocalizedString("This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count.", comment: ""), App.displayName),
             NSLocalizedString("Open Accessibility Settings…", comment: ""),
             "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility",
         )
