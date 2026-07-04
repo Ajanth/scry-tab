@@ -39,29 +39,17 @@ class AboutTab {
     }
 
     static func makeSettingsContentView(columnWidth: CGFloat) -> NSView {
-        let stack = NSStackView()
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 30
-        stack.translatesAutoresizingMaskIntoConstraints = false
+        let contentWidth = columnWidth - 2 * TableGroupView.padding
         let aboutView = makeContentView(false, false, false)
-        let usageTextView = makeUsageTextView(columnWidth)
-        let acknowledgmentsView = AcknowledgmentsTab.makeContentView(columnWidth: columnWidth, shouldFit: false, verticallyStacked: true)
+        let usageTextView = makeUsageTextView(contentWidth)
+        let acknowledgmentsView = AcknowledgmentsTab.makeContentView(columnWidth: contentWidth, shouldFit: false, verticallyStacked: true)
+        let table = TableGroupView(width: columnWidth)
         settingsUsageTextView = usageTextView
-        stack.addArrangedSubview(aboutView)
-        stack.addArrangedSubview(usageTextView)
-        stack.addArrangedSubview(acknowledgmentsView)
-        stack.setCustomSpacing(15, after: usageTextView)
+        table.addRow(leftViews: [aboutView], isAddSeparator: false)
+        table.addRow(leftViews: [usageTextView])
+        table.addRow(leftViews: [acknowledgmentsView])
         refreshSettingsUsageStats()
-        NSLayoutConstraint.activate([
-            aboutView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            aboutView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-            usageTextView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            usageTextView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-            acknowledgmentsView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            acknowledgmentsView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-        ])
-        return stack
+        return TableGroupSetView(originalViews: [table], padding: 0, bottomPadding: 0)
     }
 
     static func refreshSettingsUsageStats() {

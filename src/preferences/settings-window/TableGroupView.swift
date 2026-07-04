@@ -4,11 +4,11 @@ import Cocoa
 /// with specific handling for `TableGroupView` and other view types.
 class TableGroupSetView: NSStackView {
     override var acceptsFirstResponder: Bool { true }
-    static let spacing = CGFloat(20)
-    static let tableGroupSpacing = CGFloat(5)
+    static let spacing = DesignSystem.Metrics.sectionGap
+    static let tableGroupSpacing = DesignSystem.Metrics.sectionGap
     static let othersSpacing = CGFloat(10)
-    static let titleTableGroupSpacing = CGFloat(20)
-    static let padding = CGFloat(20)
+    static let titleTableGroupSpacing = DesignSystem.Metrics.headerFooterGap
+    static let padding = DesignSystem.Metrics.formOuterPadding
     static let leftRightPadding = 2 * TableGroupSetView.padding
 
     var verticalViews = [NSView]()
@@ -183,10 +183,10 @@ class TableGroupSetView: NSStackView {
 /// A custom component view that organizes titles and rows in a stack view format,
 /// likes system settings UI, with configurable styles and events.
 class TableGroupView: ClickHoverStackView {
-    static let spacing = CGFloat(10)
-    static let padding = CGFloat(10)
-    static let rowIntraSpacing = CGFloat(5)
-    static let cornerRadius = CGFloat(5)
+    static let spacing = CGFloat(8)
+    static let padding = DesignSystem.Metrics.rowHorizontalPadding
+    static let rowIntraSpacing = DesignSystem.Metrics.headerFooterGap
+    static let cornerRadius = DesignSystem.Metrics.joinedOuterRowRadius
     static let borderWidth = CGFloat(1)
 
     var title: String?
@@ -244,14 +244,14 @@ class TableGroupView: ClickHoverStackView {
         super.draw(dirtyRect)
         // Reset table colors
         tableStackViews.forEach { table in
-            table.layer?.backgroundColor = NSColor.tableBackgroundColor.cgColor
-            table.layer?.borderColor = NSColor.tableBorderColor.cgColor
+            table.layer?.backgroundColor = DesignSystem.semanticCGColor(.surfacePlateau, in: table)
+            table.layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: table)
         }
         rowInfoTables.forEach { table in
             table.forEach { row in
-                row.view.layer?.backgroundColor = NSColor.tableBackgroundColor.cgColor
-                row.previousSeparator?.layer?.backgroundColor = NSColor.tableSeparatorColor.cgColor
-                row.nextSeparator?.layer?.backgroundColor = NSColor.tableSeparatorColor.cgColor
+                row.view.layer?.backgroundColor = NSColor.clear.cgColor
+                row.previousSeparator?.layer?.backgroundColor = DesignSystem.semanticCGColor(.borderSubtle, in: row.previousSeparator)
+                row.nextSeparator?.layer?.backgroundColor = DesignSystem.semanticCGColor(.borderSubtle, in: row.nextSeparator)
             }
         }
     }
@@ -293,7 +293,7 @@ class TableGroupView: ClickHoverStackView {
         if let subTitle {
             subTitleLabel.stringValue = subTitle
             subTitleLabel.font = NSFont.systemFont(ofSize: 12)
-            subTitleLabel.textColor = .gray
+            subTitleLabel.textColor = .secondaryLabelColor
             subTitleLabel.alignment = .natural
             subTitleLabel.lineBreakMode = .byWordWrapping
             subTitleLabel.maximumNumberOfLines = 0
@@ -341,10 +341,16 @@ class TableGroupView: ClickHoverStackView {
         tableStackView.orientation = .vertical
         tableStackView.spacing = 0
         tableStackView.wantsLayer = true
-        tableStackView.layer!.backgroundColor = NSColor.tableBackgroundColor.cgColor
+        tableStackView.layer!.backgroundColor = DesignSystem.semanticCGColor(.surfacePlateau, in: tableStackView)
         tableStackView.layer!.cornerRadius = TableGroupView.cornerRadius
-        tableStackView.layer!.borderColor = NSColor.tableBorderColor.cgColor
+        tableStackView.layer!.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: tableStackView)
         tableStackView.layer!.borderWidth = TableGroupView.borderWidth
+        if !DesignSystem.isDark(effectiveAppearance) {
+            tableStackView.layer?.shadowColor = NSColor.black.cgColor
+            tableStackView.layer?.shadowOpacity = 0.10
+            tableStackView.layer?.shadowRadius = 0.5
+            tableStackView.layer?.shadowOffset = CGSize(width: 0, height: -0.5)
+        }
         addArrangedSubview(tableStackView)
         tableStackViews.append(tableStackView)
         rowInfoTables.append([RowInfo]())
@@ -437,6 +443,7 @@ class TableGroupView: ClickHoverStackView {
         rowView.alignment = .leading
         rowView.spacing = TableGroupView.rowIntraSpacing
         rowView.wantsLayer = true
+        rowView.heightAnchor.constraint(greaterThanOrEqualToConstant: DesignSystem.Metrics.standardControlMinHeight).isActive = true
         return rowView
     }
 
@@ -499,7 +506,7 @@ class TableGroupView: ClickHoverStackView {
     private func createSubLabel(with text: String) -> NSTextField {
         let subLabel = NSTextField(wrappingLabelWithString: text)
         subLabel.font = NSFont.systemFont(ofSize: 12)
-        subLabel.textColor = .gray
+        subLabel.textColor = .secondaryLabelColor
         subLabel.alignment = .left
         subLabel.lineBreakMode = .byWordWrapping
         subLabel.maximumNumberOfLines = 0
@@ -548,7 +555,7 @@ class TableGroupView: ClickHoverStackView {
         let separator = NSView()
         separator.translatesAutoresizingMaskIntoConstraints = false
         separator.wantsLayer = true
-        separator.layer?.backgroundColor = NSColor.tableSeparatorColor.cgColor
+        separator.layer?.backgroundColor = DesignSystem.semanticCGColor(.borderSubtle, in: separator)
         tableStackView.addArrangedSubview(separator)
         separator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth).isActive = true
         separator.centerXAnchor.constraint(equalTo: tableStackView.centerXAnchor).isActive = true
@@ -589,7 +596,7 @@ class TableGroupView: ClickHoverStackView {
     }
 
     private func addMouseEnteredEffects(_ rowInfo: RowInfo) {
-        rowInfo.view.layer?.backgroundColor = NSColor.tableHoverColor.cgColor
+        rowInfo.view.layer?.backgroundColor = DesignSystem.semanticCGColor(.surfaceHover, in: rowInfo.view)
         adjustSeparatorWidth(separator: rowInfo.previousSeparator, isMouseInside: true)
         adjustSeparatorWidth(separator: rowInfo.nextSeparator, isMouseInside: true)
     }

@@ -28,7 +28,7 @@ private enum SettingsSidebarItem {
 private final class SettingsSection {
     let id: String
     let title: String
-    let icon: NSImage
+    let icon: SettingsPageIconDescriptor
     let container: NSView
     let anchor: NSView
     let search: SettingsSectionSearchContent
@@ -41,7 +41,7 @@ private final class SettingsSection {
 
     init(_ id: String,
          _ title: String,
-         _ icon: NSImage,
+         _ icon: SettingsPageIconDescriptor,
          _ container: NSView,
          _ anchor: NSView,
          _ search: SettingsSectionSearchContent,
@@ -80,11 +80,12 @@ private final class SettingsSection {
 
 private final class SettingsSidebarCellView: NSTableCellView {
     static let identifier = NSUserInterfaceItemIdentifier(rawValue: "SettingsSidebarCell")
-    private let iconView = NSImageView()
+    private let iconView = SettingsPageIconView()
     private let textStack = NSStackView()
     private let titleLabel = NSTextField(labelWithString: "")
     private let subtitleLabel = NSTextField(labelWithString: "")
     private var isGroup = false
+    private var windowObservers = [NSObjectProtocol]()
 
     override var backgroundStyle: NSView.BackgroundStyle {
         didSet { refreshStyle() }
@@ -99,8 +100,22 @@ private final class SettingsSidebarCellView: NSTableCellView {
         fatalError("Class only supports programmatic initialization")
     }
 
+    deinit {
+        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
+        windowObservers.removeAll()
+        guard let window else { refreshStyle(); return }
+        for name in [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification] {
+            windowObservers.append(NotificationCenter.default.addObserver(forName: name, object: window, queue: .main) { [weak self] _ in self?.refreshStyle() })
+        }
+        refreshStyle()
+    }
+
     private func setupView() {
-        iconView.imageScaling = .scaleProportionallyDown
         iconView.setContentHuggingPriority(.required, for: .horizontal)
         titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -120,7 +135,7 @@ private final class SettingsSidebarCellView: NSTableCellView {
             iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
             iconView.widthAnchor.constraint(equalToConstant: 22),
             iconView.heightAnchor.constraint(equalToConstant: 22),
-            textStack.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6),
+            textStack.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8),
             textStack.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -SettingsWindow.sidebarItemContentInset),
             textStack.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
@@ -131,37 +146,94 @@ private final class SettingsSidebarCellView: NSTableCellView {
         configure(title: section.title, subtitle: nil, icon: section.icon, isGroup: false)
     }
 
-    func configure(_ definition: SettingsSectionDefinition, icon: NSImage) {
+    func configure(_ definition: SettingsSectionDefinition, icon: SettingsPageIconDescriptor) {
         configure(title: definition.title, subtitle: nil, icon: icon, isGroup: false)
     }
 
-    func configureGroup(_ definition: SettingsSectionDefinition, icon: NSImage) {
+    func configureGroup(_ definition: SettingsSectionDefinition, icon: SettingsPageIconDescriptor) {
         configure(title: definition.title, subtitle: nil, icon: icon, isGroup: true)
     }
 
-    func configure(_ match: SettingsSearchDescriptorMatch, icon: NSImage) {
+    func configure(_ match: SettingsSearchDescriptorMatch, icon: SettingsPageIconDescriptor) {
         configure(title: match.descriptor.title, subtitle: match.descriptor.subtitle, icon: icon, isGroup: false)
     }
 
-    private func configure(title: String, subtitle: String?, icon: NSImage, isGroup: Bool) {
+    private func configure(title: String, subtitle: String?, icon: SettingsPageIconDescriptor, isGroup: Bool) {
         self.isGroup = isGroup
         titleLabel.stringValue = title
         subtitleLabel.stringValue = subtitle ?? ""
         subtitleLabel.isHidden = (subtitle ?? "").isEmpty
-        iconView.image = icon
-        iconView.image?.isTemplate = true
+        iconView.descriptor = icon
+        iconView.isHidden = isGroup
         refreshStyle()
     }
 
     private func refreshStyle() {
         let selected = backgroundStyle == .emphasized
-        titleLabel.font = NSFont.systemFont(ofSize: isGroup ? 11.5 : 13.5, weight: isGroup ? .semibold : .medium)
+        titleLabel.font = NSFont.systemFont(ofSize: isGroup ? 13 : 13, weight: isGroup ? .medium : .regular)
         subtitleLabel.font = NSFont.systemFont(ofSize: 11)
-        titleLabel.textColor = selected ? .white : (isGroup ? .secondaryLabelColor : .labelColor)
-        subtitleLabel.textColor = selected ? .white : .secondaryLabelColor
-        if #available(macOS 10.14, *) {
-            iconView.contentTintColor = selected ? .white : .secondaryLabelColor
-        }
+        titleLabel.textColor = isGroup ? .secondaryLabelColor : .labelColor
+        subtitleLabel.textColor = .secondaryLabelColor
+        alphaValue = selected || (window?.isKeyWindow ?? true) ? 1 : 0.5
+        textStack.isHidden = false
+    }
+}
+
+private final class SettingsSidebarRowView: NSTableRowView {
+    override var isEmphasized: Bool {
+        get { false }
+        set {}
+    }
+
+    override func drawSelection(in dirtyRect: NSRect) {
+        guard selectionHighlightStyle != .none else { return }
+        let rect = bounds.insetBy(dx: 0, dy: 1)
+        let path = NSBezierPath(roundedRect: rect, xRadius: DesignSystem.Metrics.sidebarSelectionRadius, yRadius: DesignSystem.Metrics.sidebarSelectionRadius)
+        DesignSystem.color(.surfaceSelected, appearance: effectiveAppearance).setFill()
+        path.fill()
+    }
+}
+
+private final class SettingsHeaderView: NSView {
+    private let iconView = SettingsPageIconView()
+    private let titleLabel = NSTextField(labelWithString: "")
+    private let stack = NSStackView()
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    func configure(title: String, icon: SettingsPageIconDescriptor) {
+        titleLabel.stringValue = title
+        iconView.descriptor = icon
+    }
+
+    private func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.font = NSFont.systemFont(ofSize: 17, weight: .medium)
+        titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        stack.orientation = .horizontal
+        stack.alignment = .centerY
+        stack.spacing = 8
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.addArrangedSubview(iconView)
+        stack.addArrangedSubview(titleLabel)
+        addSubview(stack)
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: 50),
+            iconView.widthAnchor.constraint(equalToConstant: 22),
+            iconView.heightAnchor.constraint(equalToConstant: 22),
+            stack.centerXAnchor.constraint(equalTo: centerXAnchor),
+            stack.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stack.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 12),
+            stack.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -12),
+        ])
     }
 }
 
@@ -205,29 +277,29 @@ class SettingsWindow: NSWindow {
         button.bezelStyle = .rounded
         return button.fittingSize.height
     }()
-    private static let sidebarWidth = CGFloat(175)
+    private static let sidebarWidth = CGFloat(230)
     /// Outer left pad between the splitview divider and the TableGroupView background. Kept
     /// symmetric with `contentTrailingPadding` so the visible TGV "shoulders" match on both sides.
-    private static let contentHorizontalPadding = CGFloat(5)
+    private static let contentHorizontalPadding = CGFloat(12)
     /// Trailing pad between the TableGroupView and the window edge. The visible gap from the
     /// right-most control to the window edge is `contentTrailingPadding + TableGroupView.padding`
     /// (= 5 + 10 = 15pt), since `TableGroupView` adds ~10pt of internal padding on the right of
     /// each row's content.
-    private static let contentTrailingPadding = CGFloat(5)
+    private static let contentTrailingPadding = CGFloat(12)
     private static let contentTopPadding = CGFloat(0)
-    private static let topSectionTitlePadding = CGFloat(20)
-    private static let contentBottomPadding = CGFloat(20)
-    static let sectionTitleSpacing = CGFloat(10)
-    private static let sectionInterSectionSpacing = CGFloat(15)
-    private static let sectionBottomSpacing = CGFloat(30) - sectionInterSectionSpacing
+    private static let topSectionTitlePadding = CGFloat(12)
+    private static let contentBottomPadding = CGFloat(12)
+    static let sectionTitleSpacing = CGFloat(4)
+    private static let sectionInterSectionSpacing = DesignSystem.Metrics.sectionGap
+    private static let sectionBottomSpacing = CGFloat(0)
     private static let sectionScrollTopPadding = CGFloat(20)
     private static let sectionSelectionTriggerRatioWhenScrollingDown = CGFloat(0.4)
     private static let sectionSelectionTriggerRatioWhenScrollingUp = CGFloat(0.6)
     private static let sectionSelectionDirectionDeltaThreshold = CGFloat(0.25)
-    private static let minWindowHeight = CGFloat(400)
-    private static let defaultWindowHeight = CGFloat(570)
-    private static let sidebarTopInset = CGFloat(40)
-    private static let sidebarHorizontalPadding = CGFloat(10)
+    private static let minWindowHeight = CGFloat(520)
+    private static let defaultWindowHeight = CGFloat(620)
+    private static let sidebarTopInset = CGFloat(50)
+    private static let sidebarHorizontalPadding = CGFloat(12)
     /// Padding inside the row's cell view between the cell's leading edge and the icon.
     /// `NSTableView.style = .sourceList` already inserts the cell content into its rounded
     /// highlight pill, so we only add a small visual breathing-room here.
@@ -245,6 +317,8 @@ class SettingsWindow: NSWindow {
     private let splitViewController = NSSplitViewController()
     private let sidebarContainer = NSView()
     private let contentContainer = NSView()
+    private let contentHeaderView = SettingsHeaderView()
+    private let headerDividerView = DesignSystemDividerView()
     private let searchField = SidebarSearchField(frame: .zero)
     private let sidebarScrollView = NSScrollView()
     private let sidebarTableView = SidebarTableView()
@@ -346,6 +420,7 @@ class SettingsWindow: NSWindow {
     }
 
     private func setupSidebar() {
+        installMaterial(in: sidebarContainer)
         setupSearchField(sidebarContainer)
         setupSidebarTable(sidebarContainer)
         // Match macOS System Settings: Tab cycles between the search field and the sidebar
@@ -357,6 +432,8 @@ class SettingsWindow: NSWindow {
     }
 
     private func setupContentPane() {
+        installMaterial(in: contentContainer)
+        setupContentHeader()
         rightScrollView.drawsBackground = false
         rightScrollView.hasVerticalScroller = true
         rightScrollView.hasHorizontalScroller = false
@@ -378,7 +455,7 @@ class SettingsWindow: NSWindow {
         NSLayoutConstraint.activate([
             rightScrollView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
             rightScrollView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
-            rightScrollView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
+            rightScrollView.topAnchor.constraint(equalTo: headerDividerView.bottomAnchor),
             rightScrollView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor),
             sectionsStack.topAnchor.constraint(equalTo: sectionsDocumentView.topAnchor, constant: Self.contentTopPadding),
             sectionsStack.leadingAnchor.constraint(equalTo: sectionsDocumentView.leadingAnchor, constant: Self.contentHorizontalPadding),
@@ -387,6 +464,32 @@ class SettingsWindow: NSWindow {
         ])
         sectionsStackBottomConstraint = sectionsStack.bottomAnchor.constraint(equalTo: sectionsDocumentView.bottomAnchor, constant: -Self.contentBottomPadding)
         sectionsStackBottomConstraint.isActive = true
+    }
+
+    private func installMaterial(in parent: NSView) {
+        let material = DesignSystemMaterialView()
+        material.translatesAutoresizingMaskIntoConstraints = false
+        parent.addSubview(material, positioned: .below, relativeTo: nil)
+        NSLayoutConstraint.activate([
+            material.topAnchor.constraint(equalTo: parent.topAnchor),
+            material.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
+            material.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
+            material.bottomAnchor.constraint(equalTo: parent.bottomAnchor),
+        ])
+    }
+
+    private func setupContentHeader() {
+        contentContainer.addSubview(contentHeaderView)
+        contentContainer.addSubview(headerDividerView)
+        NSLayoutConstraint.activate([
+            contentHeaderView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
+            contentHeaderView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
+            contentHeaderView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
+            headerDividerView.topAnchor.constraint(equalTo: contentHeaderView.bottomAnchor),
+            headerDividerView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
+            headerDividerView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
+            headerDividerView.heightAnchor.constraint(equalToConstant: 1),
+        ])
     }
 
     private func installContentScrollObserver() {
@@ -422,14 +525,11 @@ class SettingsWindow: NSWindow {
         sidebarScrollView.scrollerStyle = .overlay
         sidebarTableView.headerView = nil
         sidebarTableView.intercellSpacing = NSSize(width: 0, height: 2)
-        sidebarTableView.rowHeight = 30
-        sidebarTableView.selectionHighlightStyle = .sourceList
+        sidebarTableView.rowHeight = 32
+        sidebarTableView.selectionHighlightStyle = .regular
         sidebarTableView.backgroundColor = .clear
         sidebarTableView.focusRingType = .none
         sidebarTableView.usesAlternatingRowBackgroundColors = false
-        if #available(macOS 11.0, *) {
-            sidebarTableView.style = .sourceList
-        }
         sidebarTableView.delegate = self
         sidebarTableView.dataSource = self
         let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "SettingsSidebarColumn"))
@@ -445,9 +545,9 @@ class SettingsWindow: NSWindow {
             // aligned with the search field (which itself is inset by `sidebarHorizontalPadding`
             // = 10pt). Insetting the scroll view here would compound that and push the highlight
             // too far in.
-            sidebarScrollView.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
-            sidebarScrollView.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
-            sidebarScrollView.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -10),
+            sidebarScrollView.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: Self.sidebarHorizontalPadding),
+            sidebarScrollView.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -Self.sidebarHorizontalPadding),
+            sidebarScrollView.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -12),
         ])
     }
 
@@ -567,8 +667,9 @@ class SettingsWindow: NSWindow {
         }
     }
 
-    private func sidebarImage(_ definition: SettingsSectionDefinition) -> NSImage {
-        return NSImage.fromSymbol(definition.symbol, pointSize: 18)
+    private func sidebarImage(_ definition: SettingsSectionDefinition) -> SettingsPageIconDescriptor {
+        guard let page = definition.route.page else { return SettingsPageIconDescriptor(symbolValue: definition.symbol.rawValue, baseColor: .secondaryLabelColor) }
+        return SettingsPageIconDescriptor.descriptor(for: page)
     }
 
     private func definition(for page: SettingsTopLevelPage) -> SettingsSectionDefinition? {
@@ -607,28 +708,16 @@ class SettingsWindow: NSWindow {
         let sectionView = sectionTitleBox.view
         let container = NSView()
         let spacer = NSView()
-        container.addSubview(sectionTitle)
         container.addSubview(sectionView)
         container.addSubview(spacer)
-        sectionTitle.translatesAutoresizingMaskIntoConstraints = false
         sectionView.translatesAutoresizingMaskIntoConstraints = false
         spacer.translatesAutoresizingMaskIntoConstraints = false
         container.translatesAutoresizingMaskIntoConstraints = false
-        let titleTopConstraint = sectionTitle.topAnchor.constraint(equalTo: container.topAnchor)
+        let titleTopConstraint = sectionView.topAnchor.constraint(equalTo: container.topAnchor)
         let interSectionSpacingConstraint = spacer.topAnchor.constraint(equalTo: sectionView.bottomAnchor, constant: Self.sectionInterSectionSpacing)
         let spacerHeightConstraint = spacer.heightAnchor.constraint(equalToConstant: Self.sectionBottomSpacing)
         NSLayoutConstraint.activate([
             titleTopConstraint,
-            // Section title sits at the section content's left margin + the TableGroupView's
-            // internal padding — i.e., the same x as the row content text inside the TGV below
-            // it. The TGV itself is inset by `sectionContentHorizontalMargin`; the title needs
-            // to also account for the TGV's internal `TableGroupView.padding` so they line up.
-            sectionTitle.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: Self.sectionContentHorizontalMargin + TableGroupView.padding),
-            sectionTitle.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            sectionView.topAnchor.constraint(equalTo: sectionTitle.bottomAnchor, constant: Self.sectionTitleSpacing),
-            // 15pt horizontal margin between the section's left/right and the TGV's rounded
-            // background, so the gray-bg block floats inside the section instead of touching
-            // the splitview divider / window edge.
             sectionView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: Self.sectionContentHorizontalMargin),
             sectionView.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -Self.sectionContentHorizontalMargin),
             interSectionSpacingConstraint,
@@ -654,7 +743,7 @@ class SettingsWindow: NSWindow {
                                       definition.title,
                                       sidebarImage(definition),
                                       container,
-                                      sectionTitle,
+                                      sectionView,
                                       search,
                                       definition.registerDynamicSearchContent,
                                       interSectionSpacingConstraint,
@@ -1149,6 +1238,7 @@ class SettingsWindow: NSWindow {
         if page == .about { AboutTab.refreshSettingsUsageStats() }
         sections.forEach { $0.container.isHidden = $0.id != definition.id }
         selectedSectionId = definition.id
+        contentHeaderView.configure(title: definition.title, icon: sidebarImage(definition))
         updateVisibleSectionsSpacing()
         sectionsDocumentView.layoutSubtreeIfNeeded()
         restoreScrollPosition(for: definition.id)
@@ -1335,10 +1425,14 @@ extension SettingsWindow: NSTableViewDataSource, NSTableViewDelegate {
         case .group:
             return 26
         case .result(let match):
-            return (match.descriptor.subtitle ?? "").isEmpty ? 30 : 42
+            return (match.descriptor.subtitle ?? "").isEmpty ? 32 : 44
         case .page:
-            return 30
+            return 32
         }
+    }
+
+    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+        SettingsSidebarRowView()
     }
 
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
