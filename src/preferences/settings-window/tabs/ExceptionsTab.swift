@@ -122,8 +122,8 @@ class ExceptionsTab {
             scrollView.leadingAnchor.constraint(equalTo: section.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: section.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: section.bottomAnchor),
-            buttons.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: sidebarHorizontalPadding),
-            buttons.trailingAnchor.constraint(lessThanOrEqualTo: listContainer.trailingAnchor, constant: -sidebarHorizontalPadding),
+            buttons.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: TableGroupView.sidebarToolRowHorizontalPadding),
+            buttons.trailingAnchor.constraint(lessThanOrEqualTo: listContainer.trailingAnchor, constant: -TableGroupView.sidebarToolRowHorizontalPadding),
             buttons.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor, constant: -TableGroupView.padding),
         ])
         return sidebar
@@ -153,10 +153,8 @@ class ExceptionsTab {
         segments.setWidth(28, forSegment: 0)
         segments.setWidth(28, forSegment: 1)
         countButtons = segments
-        let row = NSStackView(views: [segments])
-        row.orientation = .horizontal
+        let row = StackView([segments], .horizontal, false)
         row.alignment = .leading
-        row.translatesAutoresizingMaskIntoConstraints = false
         return row
     }
 

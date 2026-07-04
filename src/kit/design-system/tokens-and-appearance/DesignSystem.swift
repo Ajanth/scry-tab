@@ -14,12 +14,15 @@ enum DesignSystem {
         static let rowHorizontalPadding = CGFloat(8)
         static let rowVerticalPadding = CGFloat(4)
         static let standardControlMinHeight = CGFloat(32)
-        static let controlRadius = CGFloat(6)
+        static let controlRadius = CGFloat(8)
+        static let controlTextInset = CGFloat(10)
+        static let searchGlyphInset = CGFloat(8)
+        static let searchTextInset = CGFloat(4)
     }
 
     enum ColorRole {
         case windowAccentTint, surfacePlateau, surfaceFlat, surfaceHover, surfacePressed, surfaceSelected
-        case borderSubtle, borderSelected, textPrimary, textSecondary, textDisabled
+        case borderSubtle, borderSelected, focusAccent, textPrimary, textSecondary, textDisabled
         case statusSuccess, statusWarning, statusDestructive, searchMatch, accentPrimary, accentSecondary
     }
 
@@ -41,12 +44,13 @@ enum DesignSystem {
         case .windowAccentTint, .accentPrimary: return .systemAccentColor
         case .accentSecondary: return .secondaryLabelColor
         case .surfacePlateau: return dark ? NSColor(white: 1.0, alpha: 0.08) : NSColor(white: 1.0, alpha: 0.70)
-        case .surfaceFlat: return dark ? NSColor(white: 1.0, alpha: 0.06) : NSColor(white: 1.0, alpha: 0.42)
-        case .surfaceHover: return dark ? NSColor(white: 1.0, alpha: 0.10) : NSColor(white: 1.0, alpha: 0.56)
-        case .surfacePressed: return dark ? NSColor(white: 1.0, alpha: 0.14) : NSColor(white: 0.0, alpha: 0.06)
-        case .surfaceSelected: return dark ? NSColor(white: 1.0, alpha: 0.12) : NSColor.quaternaryLabelColor.withAlphaComponent(0.70)
-        case .borderSubtle: return dark ? NSColor(white: 1.0, alpha: 0.13) : NSColor(white: 0.0, alpha: 0.11)
-        case .borderSelected: return .systemAccentColor.withAlphaComponent(0.55)
+        case .surfaceFlat: return dark ? NSColor(white: 1.0, alpha: 0.11) : NSColor(white: 1.0, alpha: 0.48)
+        case .surfaceHover: return dark ? NSColor(white: 1.0, alpha: 0.14) : NSColor(white: 1.0, alpha: 0.60)
+        case .surfacePressed: return dark ? NSColor(white: 1.0, alpha: 0.18) : NSColor(white: 0.0, alpha: 0.08)
+        case .surfaceSelected: return dark ? NSColor(white: 1.0, alpha: 0.17) : NSColor(white: 0.0, alpha: 0.10)
+        case .borderSubtle: return dark ? NSColor(white: 1.0, alpha: 0.16) : NSColor(white: 0.0, alpha: 0.13)
+        case .borderSelected: return .systemAccentColor.withAlphaComponent(dark ? 0.34 : 0.28)
+        case .focusAccent: return .systemAccentColor.withAlphaComponent(dark ? 0.58 : 0.46)
         case .textPrimary: return .labelColor
         case .textSecondary: return .secondaryLabelColor
         case .textDisabled: return .disabledControlTextColor

@@ -350,10 +350,8 @@ class ControlsTab {
         countButtons.setWidth(28, forSegment: 0)
         countButtons.setWidth(28, forSegment: 1)
         shortcutCountButtons = countButtons
-        let buttonsRow = NSStackView(views: [countButtons])
-        buttonsRow.orientation = .horizontal
+        let buttonsRow = StackView([countButtons], .horizontal, false)
         buttonsRow.alignment = .leading
-        buttonsRow.translatesAutoresizingMaskIntoConstraints = false
         sidebar.addSubview(listContainer)
         listContainer.addSubview(buttonsRow)
         NSLayoutConstraint.activate([
@@ -399,8 +397,8 @@ class ControlsTab {
             navigationPointerRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
             navigationPointerRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
             navigationPointerRow.bottomAnchor.constraint(equalTo: shortcutsSection.bottomAnchor),
-            buttonsRow.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: sidebarHorizontalPadding),
-            buttonsRow.trailingAnchor.constraint(lessThanOrEqualTo: listContainer.trailingAnchor, constant: -sidebarHorizontalPadding),
+            buttonsRow.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: TableGroupView.sidebarToolRowHorizontalPadding),
+            buttonsRow.trailingAnchor.constraint(lessThanOrEqualTo: listContainer.trailingAnchor, constant: -TableGroupView.sidebarToolRowHorizontalPadding),
             buttonsRow.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor, constant: -TableGroupView.padding),
         ])
         refreshGestureRow()
@@ -414,8 +412,7 @@ class ControlsTab {
     /// permanently to `Preferences.gestureIndex`. Built once, never rebinds.
     private static func makeGestureEditor() -> NSView {
         let message = NSLocalizedString("You may need to disable some conflicting system gestures", comment: "")
-        let openTrackpad = NSButton(title: NSLocalizedString("Open Trackpad Settings…", comment: ""), target: self, action: #selector(openSystemGestures(_:)))
-        DesignSystemControlStyler.styleButton(openTrackpad)
+        let openTrackpad = DesignSystemControlStyler.makeButton(NSLocalizedString("Open Trackpad Settings…", comment: ""), target: self, action: #selector(openSystemGestures(_:)))
         let infoBtn = LabelAndControl.makeInfoButton(searchableTooltipTexts: [message], onMouseEntered: { event, view in
             Popover.shared.show(event: event, positioningView: view, message: message, extraView: openTrackpad)
         })

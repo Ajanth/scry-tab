@@ -28,7 +28,52 @@ final class DesignSystemTests: XCTestCase {
 
     func testControlGeometryTokensMatchMigrationPlan() {
         XCTAssertEqual(DesignSystem.Metrics.standardControlMinHeight, 32)
-        XCTAssertEqual(DesignSystem.Metrics.controlRadius, 6)
+        XCTAssertEqual(DesignSystem.Metrics.controlRadius, 8)
+        XCTAssertEqual(DesignSystem.Metrics.controlTextInset, 10)
+    }
+
+    func testFlatButtonUsesAppOwnedSurfaceAndDestructiveAccent() {
+        let button = DesignSystemControlStyler.makeButton("Reset settings and restart…", destructive: true)
+        XCTAssertTrue(button.drawsAppOwnedSurface)
+        XCTAssertFalse(button.isBordered)
+        XCTAssertEqual(button.focusRingType, .none)
+        XCTAssertTrue(button.usesDestructiveAccent)
+    }
+
+    func testPopupButtonUsesAppOwnedSurface() {
+        let button = PopupButtonLikeSystemSettings()
+        button.addItems(withTitles: ["One", "Two"])
+        XCTAssertTrue(button.drawsAppOwnedSurface)
+        XCTAssertFalse(button.isBordered)
+        XCTAssertEqual(button.focusRingType, NSFocusRingType.none)
+    }
+
+    func testTextFieldUsesFlatSurfaceAndHorizontalPadding() {
+        let field = NSTextField()
+        field.frame = NSRect(x: 0, y: 0, width: 200, height: 32)
+        DesignSystemControlStyler.styleTextField(field)
+        XCTAssertFalse(field.isBezeled)
+        XCTAssertFalse(field.drawsBackground)
+        XCTAssertEqual(field.layer?.cornerRadius, DesignSystem.Metrics.controlRadius)
+        XCTAssertEqual(field.layer?.borderWidth, 1)
+        XCTAssertGreaterThanOrEqual(field.cell?.drawingRect(forBounds: field.bounds).minX ?? 0, DesignSystem.Metrics.controlTextInset)
+    }
+
+    func testSearchFieldUsesFlatSurfaceWithoutStockBezel() {
+        let field = NSSearchField()
+        field.frame = NSRect(x: 0, y: 0, width: 200, height: 32)
+        DesignSystemControlStyler.styleSearchField(field)
+        XCTAssertFalse(field.isBezeled)
+        XCTAssertFalse(field.drawsBackground)
+        XCTAssertEqual(field.focusRingType, .none)
+        XCTAssertEqual(field.layer?.cornerRadius, DesignSystem.Metrics.controlRadius)
+        XCTAssertEqual(field.layer?.borderWidth, 1)
+        if let cell = field.cell as? NSSearchFieldCell {
+            XCTAssertGreaterThanOrEqual(cell.searchButtonRect(forBounds: field.bounds).minX, DesignSystem.Metrics.searchGlyphInset)
+            XCTAssertGreaterThan(cell.searchTextRect(forBounds: field.bounds).minX, DesignSystem.Metrics.controlTextInset)
+        } else {
+            XCTFail("Expected styled search field to keep an NSSearchFieldCell")
+        }
     }
 
     func testSegmentedControlUsesAppOwnedSurface() {
@@ -36,6 +81,15 @@ final class DesignSystemTests: XCTestCase {
         let appKitControl: NSSegmentedControl = control
         XCTAssertEqual(appKitControl.segmentCount, 2)
         XCTAssertTrue(control.drawsAppOwnedSurface)
+    }
+
+    func testSelectionAndFocusColorsUseSeparateEmphasisLevels() {
+        guard #available(macOS 10.14, *) else { return }
+        let darkAppearance = NSAppearance(named: .darkAqua)
+        XCTAssertGreaterThan(DesignSystem.color(.surfaceSelected, appearance: darkAppearance).alphaComponent,
+                             DesignSystem.color(.surfaceFlat, appearance: darkAppearance).alphaComponent)
+        XCTAssertLessThan(DesignSystem.color(.borderSelected, appearance: darkAppearance).alphaComponent,
+                          DesignSystem.color(.focusAccent, appearance: darkAppearance).alphaComponent)
     }
 
     func testWindowContentViewLayersMaterialBehindInsetContent() {

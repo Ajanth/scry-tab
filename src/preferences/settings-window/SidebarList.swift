@@ -249,8 +249,6 @@ class SidebarListRow: ClickHoverStackView {
     /// cells in source-list style.
     private func textColor(for role: LabelRole) -> NSColor {
         if isSelectedRow {
-            // Key: white text on the accent-colored row. Non-key: revert to label color so the
-            // text stays readable against the gray unemphasized selection background.
             return .labelColor
         }
         switch role {
@@ -269,10 +267,7 @@ class SidebarListRow: ClickHoverStackView {
             backgroundColor = .clear
         }
         titleLabel.font = NSFont.systemFont(ofSize: 13, weight: .regular)
-        let previousAppearance = NSAppearance.current
-        NSAppearance.current = effectiveAppearance
-        layer?.backgroundColor = backgroundColor.cgColor
-        NSAppearance.current = previousAppearance
+        layer?.backgroundColor = DesignSystem.resolvedCGColor(backgroundColor, in: self)
         titleLabel.needsDisplay = true
         summaryLabel.needsDisplay = true
         chevronLabel.needsDisplay = true

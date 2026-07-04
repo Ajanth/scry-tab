@@ -44,14 +44,15 @@ final class SettingsPageIconView: NSView {
     private func drawTile(in rect: NSRect) {
         let path = NSBezierPath(roundedRect: rect, xRadius: DesignSystem.Metrics.sidebarIconRadius, yRadius: DesignSystem.Metrics.sidebarIconRadius)
         let base = descriptor.baseColor
-        let top = base.blended(withFraction: 0.18, of: .white) ?? base
-        let bottom = base.blended(withFraction: 0.12, of: .black) ?? base
+        let top = base.blended(withFraction: 0.12, of: .white) ?? base
+        let bottom = base.blended(withFraction: 0.08, of: .black) ?? base
         NSGradient(starting: top, ending: bottom)?.draw(in: path, angle: 90)
-        if DesignSystem.isDark(effectiveAppearance) {
-            NSColor.white.withAlphaComponent(0.16).setStroke()
-            path.lineWidth = 1
-            path.stroke()
-        }
+        let strokeColor = DesignSystem.isDark(effectiveAppearance)
+            ? NSColor.white.withAlphaComponent(0.14)
+            : NSColor.black.withAlphaComponent(0.08)
+        strokeColor.setStroke()
+        path.lineWidth = 1
+        path.stroke()
     }
 
     private func drawSymbol(in rect: NSRect) {

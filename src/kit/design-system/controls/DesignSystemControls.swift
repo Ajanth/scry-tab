@@ -1,5 +1,284 @@
 import Cocoa
 
+private final class DesignSystemInsetTextFieldCell: NSTextFieldCell {
+    override func drawingRect(forBounds rect: NSRect) -> NSRect {
+        textRect(forBounds: rect)
+    }
+
+    override func titleRect(forBounds rect: NSRect) -> NSRect {
+        textRect(forBounds: rect)
+    }
+
+    override func edit(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, event: NSEvent?) {
+        super.edit(withFrame: textRect(forBounds: rect), in: controlView, editor: textObj, delegate: delegate, event: event)
+    }
+
+    override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
+        super.select(withFrame: textRect(forBounds: rect), in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
+    }
+
+    private func textRect(forBounds rect: NSRect) -> NSRect {
+        let base = super.drawingRect(forBounds: rect)
+        return base.insetBy(dx: DesignSystem.Metrics.controlTextInset, dy: 0)
+    }
+}
+
+private final class DesignSystemInsetSearchFieldCell: NSSearchFieldCell {
+    override func drawingRect(forBounds rect: NSRect) -> NSRect {
+        searchTextRect(forBounds: rect)
+    }
+
+    override func titleRect(forBounds rect: NSRect) -> NSRect {
+        searchTextRect(forBounds: rect)
+    }
+
+    override func edit(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, event: NSEvent?) {
+        super.edit(withFrame: searchTextRect(forBounds: rect), in: controlView, editor: textObj, delegate: delegate, event: event)
+    }
+
+    override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
+        super.select(withFrame: searchTextRect(forBounds: rect), in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
+    }
+
+    override func searchButtonRect(forBounds rect: NSRect) -> NSRect {
+        let buttonRect = super.searchButtonRect(forBounds: rect)
+        return buttonRect.offsetBy(dx: DesignSystem.Metrics.searchGlyphInset, dy: 0)
+    }
+
+    override func cancelButtonRect(forBounds rect: NSRect) -> NSRect {
+        let buttonRect = super.cancelButtonRect(forBounds: rect)
+        return buttonRect.offsetBy(dx: -DesignSystem.Metrics.searchGlyphInset / 2, dy: 0)
+    }
+
+    override func searchTextRect(forBounds rect: NSRect) -> NSRect {
+        let base = super.searchTextRect(forBounds: rect)
+        let adjusted = base.offsetBy(dx: DesignSystem.Metrics.searchTextInset, dy: 0)
+        return NSRect(x: adjusted.minX,
+                      y: adjusted.minY,
+                      width: max(adjusted.width - DesignSystem.Metrics.searchTextInset, 0),
+                      height: adjusted.height)
+    }
+}
+
+private func copyTextCellState(from source: NSTextFieldCell, to destination: NSTextFieldCell) {
+    destination.alignment = source.alignment
+    destination.allowsEditingTextAttributes = source.allowsEditingTextAttributes
+    destination.backgroundColor = source.backgroundColor
+    destination.baseWritingDirection = source.baseWritingDirection
+    destination.font = source.font
+    destination.formatter = source.formatter
+    destination.isBezeled = source.isBezeled
+    destination.isBordered = source.isBordered
+    destination.isEditable = source.isEditable
+    destination.isScrollable = source.isScrollable
+    destination.isSelectable = source.isSelectable
+    destination.lineBreakMode = source.lineBreakMode
+    destination.placeholderAttributedString = source.placeholderAttributedString
+    destination.placeholderString = source.placeholderString
+    destination.usesSingleLineMode = source.usesSingleLineMode
+    destination.wraps = source.wraps
+}
+
+final class DesignSystemFlatButton: NSButton {
+    var drawsAppOwnedSurface: Bool { true }
+    var usesDestructiveAccent = false {
+        didSet {
+            if #available(macOS 11.0, *) { hasDestructiveAction = usesDestructiveAccent }
+            refreshTitle()
+            needsDisplay = true
+        }
+    }
+
+    private var hovered = false
+    private var pressed = false
+    private var trackingArea: NSTrackingArea?
+    private var windowObservers = [NSObjectProtocol]()
+    private var accessibilityObserver: NSObjectProtocol?
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        setup()
+    }
+
+    convenience init(title: String, target: Any?, action: Selector?) {
+        self.init(frame: .zero)
+        self.title = title
+        self.target = target as AnyObject?
+        self.action = action
+        refreshTitle()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    deinit {
+        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+    }
+
+    override var isEnabled: Bool {
+        didSet {
+            refreshTitle()
+            needsDisplay = true
+        }
+    }
+
+    override var title: String {
+        didSet { refreshTitle() }
+    }
+
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        if let trackingArea { removeTrackingArea(trackingArea) }
+        let area = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect], owner: self, userInfo: nil)
+        addTrackingArea(area)
+        trackingArea = area
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        hovered = true
+        needsDisplay = true
+        super.mouseEntered(with: event)
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        hovered = false
+        pressed = false
+        needsDisplay = true
+        super.mouseExited(with: event)
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        pressed = true
+        needsDisplay = true
+        super.mouseDown(with: event)
+        pressed = false
+        needsDisplay = true
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
+        windowObservers.removeAll()
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+        if let window {
+            for name in [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification] {
+                windowObservers.append(NotificationCenter.default.addObserver(forName: name, object: window, queue: .main) { [weak self] _ in
+                    self?.needsDisplay = true
+                })
+            }
+        }
+        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.needsDisplay = true
+        }
+        needsDisplay = true
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshTitle()
+        needsDisplay = true
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        let became = super.becomeFirstResponder()
+        if became { needsDisplay = true }
+        return became
+    }
+
+    override func resignFirstResponder() -> Bool {
+        let resigned = super.resignFirstResponder()
+        if resigned { needsDisplay = true }
+        return resigned
+    }
+
+    override func draw(_ dirtyRect: NSRect) {
+        drawSurface()
+        super.draw(dirtyRect)
+    }
+
+    private func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        isBordered = false
+        bezelStyle = .rounded
+        focusRingType = .none
+        font = NSFont.systemFont(ofSize: 13)
+        imagePosition = .imageLeading
+        setButtonType(.momentaryPushIn)
+        cell?.lineBreakMode = .byTruncatingTail
+        refreshTitle()
+    }
+
+    private func refreshTitle() {
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        let color = titleColor()
+        attributedTitle = NSAttributedString(string: title, attributes: [
+            .font: font ?? NSFont.systemFont(ofSize: 13),
+            .foregroundColor: color,
+            .paragraphStyle: paragraph,
+        ])
+        attributedAlternateTitle = attributedTitle
+        if #available(macOS 10.14, *) {
+            contentTintColor = color
+        }
+    }
+
+    private func drawSurface() {
+        let lineWidth = isFocused ? CGFloat(1.5) : CGFloat(1)
+        let inset = lineWidth / 2
+        let rect = bounds.insetBy(dx: inset, dy: inset)
+        let path = NSBezierPath(roundedRect: rect, xRadius: DesignSystem.Metrics.controlRadius, yRadius: DesignSystem.Metrics.controlRadius)
+        surfaceFillColor().setFill()
+        path.fill()
+        borderColor().setStroke()
+        path.lineWidth = lineWidth
+        path.stroke()
+    }
+
+    private func surfaceFillColor() -> NSColor {
+        let base: NSColor
+        if !isEnabled {
+            base = DesignSystem.color(.surfaceFlat, appearance: effectiveAppearance).withAlphaComponent(0.5)
+        } else if pressed {
+            base = DesignSystem.color(.surfacePressed, appearance: effectiveAppearance)
+        } else if hovered {
+            base = DesignSystem.color(.surfaceHover, appearance: effectiveAppearance)
+        } else {
+            base = DesignSystem.color(.surfaceFlat, appearance: effectiveAppearance)
+        }
+        if usesDestructiveAccent && isEnabled && (hovered || pressed) {
+            let destructive = DesignSystem.color(.statusDestructive, appearance: effectiveAppearance)
+            return destructive.withAlphaComponent(pressed ? 0.14 : 0.08).blended(withFraction: 0.7, of: base) ?? base
+        }
+        return base
+    }
+
+    private func borderColor() -> NSColor {
+        if usesDestructiveAccent {
+            let alpha = isEnabled ? 0.32 : 0.18
+            return DesignSystem.color(.statusDestructive, appearance: effectiveAppearance).withAlphaComponent(alpha)
+        }
+        if isFocused {
+            return DesignSystem.color(.focusAccent, appearance: effectiveAppearance)
+        }
+        return DesignSystem.color(.borderSubtle, appearance: effectiveAppearance)
+    }
+
+    private func titleColor() -> NSColor {
+        guard isEnabled else { return DesignSystem.color(.textDisabled, appearance: effectiveAppearance) }
+        return usesDestructiveAccent ? DesignSystem.color(.statusDestructive, appearance: effectiveAppearance) : DesignSystem.color(.textPrimary, appearance: effectiveAppearance)
+    }
+
+    private var isFocused: Bool { window?.firstResponder == self && NSApp.isActive }
+}
+
 final class DesignSystemSegmentedControl: NSSegmentedControl {
     var drawsAppOwnedSurface: Bool { true }
     private var hoveredSegment = -1
@@ -50,7 +329,6 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     override func draw(_ dirtyRect: NSRect) {
         drawPlateau()
         drawSegments()
-        drawFocusRingIfNeeded()
     }
 
     private func setup() {
@@ -72,12 +350,14 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     }
 
     private func drawPlateau() {
-        let rect = bounds.insetBy(dx: 0.5, dy: 0.5)
+        let lineWidth = isFocused ? CGFloat(1.5) : CGFloat(1)
+        let inset = lineWidth / 2
+        let rect = bounds.insetBy(dx: inset, dy: inset)
         let path = NSBezierPath(roundedRect: rect, xRadius: DesignSystem.Metrics.controlRadius, yRadius: DesignSystem.Metrics.controlRadius)
         DesignSystem.color(.surfaceFlat, appearance: effectiveAppearance).setFill()
         path.fill()
-        DesignSystem.color(.borderSubtle, appearance: effectiveAppearance).setStroke()
-        path.lineWidth = 1
+        borderColor().setStroke()
+        path.lineWidth = lineWidth
         path.stroke()
     }
 
@@ -175,12 +455,8 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
         }
     }
 
-    private func drawFocusRingIfNeeded() {
-        guard window?.firstResponder == self, NSApp.isActive else { return }
-        let path = NSBezierPath(roundedRect: bounds.insetBy(dx: 1.5, dy: 1.5), xRadius: DesignSystem.Metrics.controlRadius + 1, yRadius: DesignSystem.Metrics.controlRadius + 1)
-        DesignSystem.color(.borderSelected, appearance: effectiveAppearance).setStroke()
-        path.lineWidth = 2
-        path.stroke()
+    private func borderColor() -> NSColor {
+        isFocused ? DesignSystem.color(.focusAccent, appearance: effectiveAppearance) : DesignSystem.color(.borderSubtle, appearance: effectiveAppearance)
     }
 
     private func segmentRects() -> [CGRect] {
@@ -198,18 +474,30 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
             return CGRect(x: currentX, y: bounds.minY, width: segmentWidth, height: bounds.height)
         }
     }
+
+    private var isFocused: Bool { window?.firstResponder == self && NSApp.isActive }
 }
 
 enum DesignSystemControlStyler {
+    static func makeButton(_ title: String, destructive: Bool = false, target: Any? = nil, action: Selector? = nil) -> DesignSystemFlatButton {
+        let button = DesignSystemFlatButton(title: title, target: target, action: action)
+        styleButton(button, destructive: destructive)
+        return button
+    }
+
     static func styleButton(_ button: NSButton, destructive: Bool = false) {
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.bezelStyle = .rounded
-        button.controlSize = .regular
         button.font = NSFont.systemFont(ofSize: 13)
-        ensureMinimumHeight(button)
-        if destructive, #available(macOS 11.0, *) {
-            button.hasDestructiveAction = true
+        if let button = button as? DesignSystemFlatButton {
+            button.usesDestructiveAccent = destructive
+        } else {
+            button.bezelStyle = .rounded
+            button.controlSize = .regular
+            if destructive, #available(macOS 11.0, *) {
+                button.hasDestructiveAction = true
+            }
         }
+        ensureMinimumHeight(button)
     }
 
     static func styleIconButton(_ button: NSButton, size: CGFloat = 24) {
@@ -222,9 +510,14 @@ enum DesignSystemControlStyler {
 
     static func stylePopupButton(_ button: NSPopUpButton) {
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.bezelStyle = .rounded
         button.controlSize = .regular
         button.font = NSFont.systemFont(ofSize: 13)
+        if button is PopupButtonLikeSystemSettings {
+            button.isBordered = false
+            button.focusRingType = .none
+        } else {
+            button.bezelStyle = .rounded
+        }
         ensureMinimumHeight(button)
     }
 
@@ -245,15 +538,53 @@ enum DesignSystemControlStyler {
         field.focusRingType = .exterior
         field.font = NSFont.systemFont(ofSize: 13)
         if let cell = field.cell as? NSTextFieldCell {
-            cell.isBordered = false
-            cell.isBezeled = false
-            cell.backgroundColor = .clear
+            let paddedCell: NSTextFieldCell
+            if let existing = cell as? DesignSystemInsetTextFieldCell {
+                paddedCell = existing
+            } else {
+                let replacement = DesignSystemInsetTextFieldCell(textCell: field.stringValue)
+                copyTextCellState(from: cell, to: replacement)
+                field.cell = replacement
+                paddedCell = replacement
+            }
+            paddedCell.isBordered = false
+            paddedCell.isBezeled = false
+            paddedCell.backgroundColor = .clear
         }
         field.wantsLayer = true
         field.layer?.cornerRadius = DesignSystem.Metrics.controlRadius
         field.layer?.borderWidth = 1
         field.layer?.backgroundColor = DesignSystem.semanticCGColor(.surfaceFlat, in: field)
         field.layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: field)
+        ensureMinimumHeight(field)
+    }
+
+    static func styleSearchField(_ field: NSSearchField) {
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.isBezeled = false
+        field.drawsBackground = false
+        field.focusRingType = .none
+        field.font = NSFont.systemFont(ofSize: 13)
+        field.controlSize = .regular
+        if let cell = field.cell as? NSSearchFieldCell {
+            let paddedCell: NSSearchFieldCell
+            if let existing = cell as? DesignSystemInsetSearchFieldCell {
+                paddedCell = existing
+            } else {
+                let replacement = DesignSystemInsetSearchFieldCell(textCell: field.stringValue)
+                copyTextCellState(from: cell, to: replacement)
+                field.cell = replacement
+                paddedCell = replacement
+            }
+            paddedCell.isBordered = false
+            paddedCell.isBezeled = false
+            paddedCell.backgroundColor = .clear
+            paddedCell.focusRingType = .none
+        }
+        field.wantsLayer = true
+        field.layer?.cornerRadius = DesignSystem.Metrics.controlRadius
+        field.layer?.borderWidth = 1
+        refreshSearchField(field)
         ensureMinimumHeight(field)
     }
 
@@ -273,6 +604,18 @@ enum DesignSystemControlStyler {
     static func refreshFlatField(_ field: NSTextField) {
         field.layer?.backgroundColor = DesignSystem.semanticCGColor(.surfaceFlat, in: field)
         field.layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: field)
+    }
+
+    static func refreshSearchField(_ field: NSSearchField) {
+        let isFocused: Bool
+        if let window = field.window {
+            isFocused = window.firstResponder == field.currentEditor() || window.firstResponder == field
+        } else {
+            isFocused = false
+        }
+        field.layer?.backgroundColor = DesignSystem.semanticCGColor(.surfaceFlat, in: field)
+        field.layer?.borderColor = DesignSystem.semanticCGColor(isFocused ? .focusAccent : .borderSubtle, in: field)
+        field.layer?.borderWidth = isFocused ? 1.5 : 1
     }
 
     static func refreshEditableFields(in view: NSView) {
