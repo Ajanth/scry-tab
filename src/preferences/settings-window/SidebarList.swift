@@ -46,7 +46,7 @@ class SidebarListContainer: NSView {
         super.init(frame: frameRect)
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        layer?.cornerRadius = TableGroupView.cornerRadius
+        layer?.cornerRadius = DesignSystem.Metrics.sectionRadius
         layer?.borderWidth = TableGroupView.borderWidth
         layer?.masksToBounds = true
         refreshColors()
@@ -76,8 +76,8 @@ class SidebarListContainer: NSView {
     }
 
     private func refreshColors() {
-        layer?.backgroundColor = NSColor.tableBackgroundColor.cgColor
-        layer?.borderColor = NSColor.tableBorderColor.cgColor
+        layer?.backgroundColor = DesignSystem.semanticCGColor(.surfacePlateau, in: self)
+        layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: self)
     }
 }
 
@@ -101,7 +101,7 @@ class SidebarListRow: ClickHoverStackView {
         spacing = 8
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        layer?.cornerRadius = TableGroupView.cornerRadius
+        layer?.cornerRadius = DesignSystem.Metrics.sidebarSelectionRadius
         iconView.translatesAutoresizingMaskIntoConstraints = false
         iconView.imageScaling = .scaleProportionallyUpOrDown
         iconView.isHidden = true
@@ -254,7 +254,7 @@ class SidebarListRow: ClickHoverStackView {
         if isSelectedRow {
             // Key: white text on the accent-colored row. Non-key: revert to label color so the
             // text stays readable against the gray unemphasized selection background.
-            return isWindowKey ? .alternateSelectedControlTextColor : .labelColor
+            return .labelColor
         }
         switch role {
             case .title: return .labelColor
@@ -263,27 +263,15 @@ class SidebarListRow: ClickHoverStackView {
     }
 
     private func updateStyle() {
-        let isKey = isWindowKey
-        let selectedBackground: NSColor
-        if #available(macOS 10.14, *) {
-            // `controlAccentColor` matches the blue NSSegmentedControl uses for its selected
-            // segment, so the shortcut sidebar selection visually lines up with the
-            // Filtering / Appearance tabs and the segmented buttons above.
-            // `unemphasizedSelectedContentBackgroundColor` is what AppKit table cells fall back
-            // to when the window isn't key.
-            selectedBackground = isKey ? .controlAccentColor : .unemphasizedSelectedContentBackgroundColor
-        } else {
-            selectedBackground = isKey ? .systemAccentColor : .lightGray
-        }
         let backgroundColor: NSColor
         if isSelectedRow {
-            backgroundColor = selectedBackground
+            backgroundColor = DesignSystem.color(.surfaceSelected, appearance: effectiveAppearance)
         } else if isHoveredRow {
-            backgroundColor = selectedBackground.withAlphaComponent(0.14)
+            backgroundColor = DesignSystem.color(.surfaceHover, appearance: effectiveAppearance)
         } else {
             backgroundColor = .clear
         }
-        titleLabel.font = NSFont.systemFont(ofSize: 13, weight: isSelectedRow ? .semibold : .regular)
+        titleLabel.font = NSFont.systemFont(ofSize: 13, weight: .regular)
         let previousAppearance = NSAppearance.current
         NSAppearance.current = effectiveAppearance
         layer?.backgroundColor = backgroundColor.cgColor

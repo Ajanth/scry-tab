@@ -53,39 +53,19 @@ extension NSColor {
     }
 
     class var tableBorderColor: NSColor {
-        // #4b4b4b
-        if NSAppearance.current.getThemeName() == .dark {
-            return NSColor(srgbRed: 75 / 255, green: 75 / 255, blue: 75 / 255, alpha: 0.8)
-        }
-        // #e5e5e5
-        return NSColor(srgbRed: 229 / 255, green: 229 / 255, blue: 229 / 255, alpha: 0.8)
+        DesignSystem.color(.borderSubtle)
     }
 
     class var tableBackgroundColor: NSColor {
-        // #2b2b2b
-        if NSAppearance.current.getThemeName() == .dark {
-            return NSColor(srgbRed: 43 / 255, green: 43 / 255, blue: 43 / 255, alpha: 0.8)
-        }
-        // #f2f2f2
-        return NSColor(srgbRed: 242 / 255, green: 242 / 255, blue: 242 / 255, alpha: 0.8)
+        DesignSystem.color(.surfacePlateau)
     }
 
     class var tableSeparatorColor: NSColor {
-        // #353535
-        if NSAppearance.current.getThemeName() == .dark {
-            return NSColor(srgbRed: 53 / 255, green: 53 / 255, blue: 53 / 255, alpha: 0.8)
-        }
-        // #e7e7e7
-        return NSColor(srgbRed: 231 / 255, green: 231 / 255, blue: 231 / 255, alpha: 0.8)
+        DesignSystem.color(.borderSubtle)
     }
 
     class var tableHoverColor: NSColor {
-        // #363636
-        if NSAppearance.current.getThemeName() == .dark {
-            return NSColor(srgbRed: 54 / 255, green: 54 / 255, blue: 54 / 255, alpha: 0.8)
-        }
-        // #ebebeb
-        return NSColor(srgbRed: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 0.8)
+        DesignSystem.color(.surfaceHover)
     }
 }
 
