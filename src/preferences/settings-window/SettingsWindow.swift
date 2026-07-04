@@ -187,7 +187,7 @@ private final class SettingsSidebarRowView: NSTableRowView {
 
     override func drawSelection(in dirtyRect: NSRect) {
         guard selectionHighlightStyle != .none else { return }
-        let rect = bounds.insetBy(dx: 0, dy: 1)
+        let rect = bounds.insetBy(dx: 1, dy: 1)
         let path = NSBezierPath(roundedRect: rect, xRadius: DesignSystem.Metrics.sidebarSelectionRadius, yRadius: DesignSystem.Metrics.sidebarSelectionRadius)
         DesignSystem.color(.surfaceSelected, appearance: effectiveAppearance).setFill()
         path.fill()
@@ -259,9 +259,81 @@ private final class SidebarTableView: NSTableView {
 
 private final class SidebarSearchField: NSSearchField {
     weak var tabPeer: NSView?
+    private var windowObservers = [NSObjectProtocol]()
+    private var accessibilityObserver: NSObjectProtocol?
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        DesignSystemControlStyler.styleSearchField(self)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    deinit {
+        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+    }
 
     override var nextValidKeyView: NSView? { tabPeer }
     override var previousValidKeyView: NSView? { tabPeer }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
+        windowObservers.removeAll()
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+        if let window {
+            for name in [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification] {
+                windowObservers.append(NotificationCenter.default.addObserver(forName: name, object: window, queue: .main) { [weak self] _ in
+                    self?.refreshStyle()
+                })
+            }
+        }
+        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.refreshStyle()
+        }
+        refreshStyle()
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshStyle()
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        let became = super.becomeFirstResponder()
+        if became { refreshStyle() }
+        return became
+    }
+
+    override func resignFirstResponder() -> Bool {
+        let resigned = super.resignFirstResponder()
+        if resigned { refreshStyle() }
+        return resigned
+    }
+
+    override func textDidBeginEditing(_ notification: Notification) {
+        super.textDidBeginEditing(notification)
+        refreshStyle()
+    }
+
+    override func textDidEndEditing(_ notification: Notification) {
+        super.textDidEndEditing(notification)
+        refreshStyle()
+    }
+
+    private func refreshStyle() {
+        DesignSystemControlStyler.refreshSearchField(self)
+        let isFocused = window?.firstResponder == currentEditor() || window?.firstResponder == self
+        alphaValue = isFocused || (window?.isKeyWindow ?? true) ? 1 : 0.65
+    }
 }
 
 class SettingsWindow: NSWindow {
@@ -272,11 +344,6 @@ class SettingsWindow: NSWindow {
     /// rather than extend edge-to-edge. The window width includes 2× this on top of the regular
     /// `contentWidth`, so TGVs keep their natural width and gain a visible gutter on each side.
     static let sectionContentHorizontalMargin = CGFloat(15)
-    static let sidebarActionButtonHeight: CGFloat = {
-        let button = NSButton(title: " ", target: nil, action: nil)
-        button.bezelStyle = .rounded
-        return button.fittingSize.height
-    }()
     private static let sidebarWidth = CGFloat(230)
     /// Outer left pad between the splitview divider and the TableGroupView background. Kept
     /// symmetric with `contentTrailingPadding` so the visible TGV "shoulders" match on both sides.
@@ -325,7 +392,6 @@ class SettingsWindow: NSWindow {
     private let rightScrollView = NSScrollView()
     private let sectionsDocumentView = SettingsFlippedView(frame: .zero)
     private let sectionsStack = NSStackView()
-    private let quitButton = NSButton(title: String(format: NSLocalizedString("Quit %@", comment: "%@ is ScryTab"), App.name), target: nil, action: #selector(NSApplication.terminate(_:)))
     private let navigationController = SettingsNavigationController()
     private lazy var definitions = sectionDefinitions()
     private var sections = [SettingsSection]()
@@ -503,12 +569,6 @@ class SettingsWindow: NSWindow {
         searchField.placeholderString = NSLocalizedString("Search", comment: "")
         searchField.sendsSearchStringImmediately = true
         searchField.sendsWholeSearchString = true
-        searchField.bezelStyle = .roundedBezel
-        if #available(macOS 26.0, *) {
-            searchField.controlSize = .extraLarge
-        } else if #available(macOS 13.0, *) {
-            searchField.controlSize = .large
-        }
         searchField.translatesAutoresizingMaskIntoConstraints = false
         parent.addSubview(searchField)
         NSLayoutConstraint.activate([
@@ -548,18 +608,6 @@ class SettingsWindow: NSWindow {
             sidebarScrollView.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: Self.sidebarHorizontalPadding),
             sidebarScrollView.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -Self.sidebarHorizontalPadding),
             sidebarScrollView.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -12),
-        ])
-    }
-
-    private func setupQuitButton(_ parent: NSView) {
-        quitButton.toolTip = quitButton.title
-        quitButton.bezelStyle = .rounded
-        quitButton.translatesAutoresizingMaskIntoConstraints = false
-        parent.addSubview(quitButton)
-        NSLayoutConstraint.activate([
-            quitButton.centerXAnchor.constraint(equalTo: parent.centerXAnchor),
-            quitButton.bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -10),
-            quitButton.widthAnchor.constraint(lessThanOrEqualTo: parent.widthAnchor, constant: -Self.sidebarHorizontalPadding * 2),
         ])
     }
 

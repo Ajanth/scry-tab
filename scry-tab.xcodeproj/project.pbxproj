@@ -117,6 +117,7 @@
 		BF0C82E9AB495AAAA182764A /* CursorEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C81DD40D5AAD9B7C09028 /* CursorEvents.swift */; };
 		BF0C832C5BF4C8E9C95F7767 /* MissionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C82E4DE5A28800F1DA6E6 /* MissionControl.swift */; };
 		BF0C83578F7292F307E30751 /* PopupButtonLikeSystemSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C8A479D2B7FB80531F037 /* PopupButtonLikeSystemSettings.swift */; };
+		BF0C83578F7292F307E30752 /* PopupButtonLikeSystemSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C8A479D2B7FB80531F037 /* PopupButtonLikeSystemSettings.swift */; };
 		BF0C83AB0186CC48FADF66A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF0C847B2D68EACFAC1B06D1 /* Localizable.strings */; };
 		BF0C84E5AC1D423625ABF3E6 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C829EAA93A4C4ADB42CF8 /* Mocks.swift */; };
 		BF0C8521DA3078516615C414 /* HelperExtensionsTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C810FA0F6BC70E5886E11 /* HelperExtensionsTestable.swift */; };
@@ -260,6 +261,7 @@
 		D04BAE2200000000ED005001 /* SettingsSectionSearchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED005002 /* SettingsSectionSearchContent.swift */; };
 		D04BAE2200000000ED005003 /* SettingsSectionSearchContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED005002 /* SettingsSectionSearchContent.swift */; };
 		D04BAE2200000000ED005T11 /* SettingsSectionSearchContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED005T12 /* SettingsSectionSearchContentTests.swift */; };
+		D04BAE2200000000ED007T11 /* TableGroupViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED007T12 /* TableGroupViewTests.swift */; };
 		D04BAE2200000000ED006T11 /* SidebarListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE2200000000ED006T12 /* SidebarListTests.swift */; };
 		D04BAE8B16A06A10E2FA94DE /* AccessibilityEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA8FDCF137D892114F5F3 /* AccessibilityEvents.swift */; };
 		D04BAF12DF5D15B9D7D316A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BA61693F710CD7BD054D7 /* InfoPlist.strings */; };
@@ -597,6 +599,8 @@
 		D04BAE2200000000ED004T12 /* SettingsSearchHighlightTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSearchHighlightTests.swift; sourceTree = "<group>"; };
 		D04BAE2200000000ED005002 /* SettingsSectionSearchContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSectionSearchContent.swift; sourceTree = "<group>"; };
 		D04BAE2200000000ED005T12 /* SettingsSectionSearchContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSectionSearchContentTests.swift; sourceTree = "<group>"; };
+		D04BAE2200000000ED007S12 /* TableGroupViewSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TableGroupViewSpecs.md; sourceTree = "<group>"; };
+		D04BAE2200000000ED007T12 /* TableGroupViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGroupViewTests.swift; sourceTree = "<group>"; };
 		D04BAE2200000000ED006T12 /* SidebarListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarListTests.swift; sourceTree = "<group>"; };
 		D04BAE2BF28F187307C29FDE /* ru */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ru; path = Localizable.strings; sourceTree = "<group>"; };
 		D04BAE333F7170E87C5AC0EF /* CustomRecorderControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomRecorderControl.swift; sourceTree = "<group>"; };
@@ -1447,6 +1451,8 @@
 				D04BAE2200000000ED006T12 /* SidebarListTests.swift */,
 				D04BAFF80A98CF287F85DA23 /* SidebarList.swift */,
 				1C961FB3DCF4906FEEF4A23D /* TableGroupView.swift */,
+				D04BAE2200000000ED007S12 /* TableGroupViewSpecs.md */,
+				D04BAE2200000000ED007T12 /* TableGroupViewTests.swift */,
 			);
 			path = "settings-window";
 			sourceTree = "<group>";
@@ -1733,7 +1739,9 @@
 				5F58D00000000000000D0015 /* DesignSystemSurfaces.swift in Sources */,
 				5F58D00000000000000D0017 /* SettingsPageIconView.swift in Sources */,
 				5F58D00000000000000D0020 /* DesignSystemControls.swift in Sources */,
+				BF0C83578F7292F307E30752 /* PopupButtonLikeSystemSettings.swift in Sources */,
 				D04BAE2200000000ED004T01 /* TableGroupView.swift in Sources */,
+				D04BAE2200000000ED007T11 /* TableGroupViewTests.swift in Sources */,
 				D04BAE2200000000ED004T03 /* SettingsSearch.swift in Sources */,
 				5F9A10000000000000000003 /* SettingsRoute.swift in Sources */,
 				5F9A10000000000000000006 /* SettingsRouteTests.swift in Sources */,

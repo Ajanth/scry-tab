@@ -189,22 +189,20 @@ class ExceptionEditorView: NSView {
     private func makePatternsRow() -> NSView {
         patternsListStack.orientation = .vertical
         patternsListStack.alignment = .leading
-        patternsListStack.spacing = 4
+        patternsListStack.spacing = TableGroupView.rowVerticalPadding
         patternsListStack.translatesAutoresizingMaskIntoConstraints = false
 
-        let addButton = NSButton(title: NSLocalizedString("Add a pattern", comment: ""), target: self, action: #selector(addPatternTapped))
-        addButton.translatesAutoresizingMaskIntoConstraints = false
+        let addButton = DesignSystemControlStyler.makeButton(NSLocalizedString("Add a pattern", comment: ""), target: self, action: #selector(addPatternTapped))
         addButton.image = NSImage.fromSymbol(.plus, pointSize: 11)
         addButton.imagePosition = .imageLeading
-        DesignSystemControlStyler.styleButton(addButton)
 
         let column = NSStackView(views: [patternsListStack, addButton])
         column.orientation = .vertical
         column.alignment = .leading
-        column.spacing = 8
+        column.spacing = TableGroupView.rowVerticalPadding
         column.translatesAutoresizingMaskIntoConstraints = false
         // Indent under "Hide windows" to signify the hierarchy.
-        column.edgeInsets = NSEdgeInsets(top: 4, left: TableGroupView.padding + 24, bottom: 12, right: TableGroupView.padding)
+        column.edgeInsets = NSEdgeInsets(top: TableGroupView.rowIntraSpacing, left: TableGroupView.nestedContentIndent, bottom: TableGroupView.rowHorizontalPadding, right: TableGroupView.rowHorizontalPadding)
         return column
     }
 
@@ -242,7 +240,7 @@ class ExceptionEditorView: NSView {
         let row = NSStackView(views: [field, removeButton])
         row.orientation = .horizontal
         row.alignment = .centerY
-        row.spacing = 6
+        row.spacing = TableGroupView.spacing
         row.translatesAutoresizingMaskIntoConstraints = false
         return row
     }
@@ -255,11 +253,11 @@ class ExceptionEditorView: NSView {
         let row = NSStackView(views: [label, spacer, control])
         row.orientation = .horizontal
         row.alignment = .centerY
-        row.spacing = 14
+        row.spacing = TableGroupView.rowHorizontalPadding
         row.distribution = .fill
         row.translatesAutoresizingMaskIntoConstraints = false
-        row.edgeInsets = NSEdgeInsets(top: DesignSystem.Metrics.rowVerticalPadding, left: DesignSystem.Metrics.rowHorizontalPadding, bottom: DesignSystem.Metrics.rowVerticalPadding, right: DesignSystem.Metrics.rowHorizontalPadding)
-        row.heightAnchor.constraint(greaterThanOrEqualToConstant: DesignSystem.Metrics.standardControlMinHeight).isActive = true
+        row.edgeInsets = NSEdgeInsets(top: TableGroupView.rowVerticalPadding, left: TableGroupView.rowHorizontalPadding, bottom: TableGroupView.rowVerticalPadding, right: TableGroupView.rowHorizontalPadding)
+        row.heightAnchor.constraint(greaterThanOrEqualToConstant: TableGroupView.minimumRowHeight).isActive = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         control.setContentHuggingPriority(.required, for: .horizontal)

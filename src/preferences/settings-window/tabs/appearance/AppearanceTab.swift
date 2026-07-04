@@ -381,8 +381,7 @@ class AppearanceTab: NSObject {
     private static var overrideInfoIcons = [String: NSButton]()
 
     static func initTab() -> NSView {
-        customizeStyleButton = NSButton(title: getCustomizeStyleButtonTitle(), target: self, action: #selector(showCustomizeStyleSheet))
-        DesignSystemControlStyler.styleButton(customizeStyleButton)
+        customizeStyleButton = DesignSystemControlStyler.makeButton(getCustomizeStyleButtonTitle(), target: self, action: #selector(showCustomizeStyleSheet))
         // The customize sheet is constructed lazily on first show. Animation controls were moved
         // inline for routed Settings, so search can target them without opening a sheet.
         return makeView()
@@ -423,6 +422,7 @@ class AppearanceTab: NSObject {
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
         }, buttonSpacing: 10)
+        configureStyleButtons(styleButtons)
         // For the style row, the control is a horizontal stack of style cards centered in the row.
         // Wrap [styleButtons, overrideIcon] in another HStack so the icon trails the cards — same
         // pattern the per-shortcut Appearance section uses for its style + unlink pair.
@@ -430,8 +430,9 @@ class AppearanceTab: NSObject {
         let styleRow = NSStackView(views: [styleButtons, styleOverrideIcon])
         styleRow.orientation = .horizontal
         styleRow.alignment = .centerY
-        styleRow.spacing = TableGroupView.padding
-        table.addRow(secondaryViews: [styleRow], secondaryViewsAlignment: .centerX)
+        styleRow.spacing = 12
+        styleRow.translatesAutoresizingMaskIntoConstraints = false
+        table.addRow(secondaryViews: [styleRow], secondaryViewsAlignment: .centerX, secondaryViewsTopGap: 6)
         let sizeControl = LabelAndControl.makeSegmentedControl("appearanceSize", AppearanceSizePreference.allCases, segmentWidth: 105, extraAction: { control in
             ControlsTab.syncOverrideControlsToGlobal()
             refreshAllOverrideInfoLabels()
@@ -447,6 +448,17 @@ class AppearanceTab: NSObject {
         table.addRow(rightViews: customizeStyleButton)
         refreshAllOverrideInfoLabels()
         return table
+    }
+
+    private static func configureStyleButtons(_ styleButtons: NSStackView) {
+        styleButtons.spacing = 12
+        styleButtons.alignment = .top
+        styleButtons.setContentCompressionResistancePriority(.required, for: .horizontal)
+        styleButtons.arrangedSubviews.compactMap {
+            $0 as? ImageTextButtonView
+        }.forEach {
+            $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        }
     }
 
     /// Build the override-indicator icon button parked at the trailing edge of each global row.

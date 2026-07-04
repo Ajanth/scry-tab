@@ -12,7 +12,7 @@ class GeneralTab {
         let language = TableGroupView.Row(leftTitle: NSLocalizedString("Language", comment: ""),
             rightViews: [LabelAndControl.makeDropdown("language", LanguagePreference.allCases, extraAction: setLanguageCallback)])
         updatesPolicyDropdown = LabelAndControl.makeDropdown("updatePolicy", UpdatePolicyPreference.allCases)
-        let checkForUpdates = NSButton(title: NSLocalizedString("Check for updates now…", comment: ""), target: nil, action: nil)
+        let checkForUpdates = DesignSystemControlStyler.makeButton(NSLocalizedString("Check for updates now…", comment: ""))
         checkForUpdates.onAction = { control in checkForUpdatesNow(control) }
         crashPolicyDropdown = LabelAndControl.makeDropdown("crashPolicy", CrashPolicyPreference.allCases)
         let crashPolicy = TableGroupView.Row(leftTitle: NSLocalizedString("Crash reports policy", comment: ""),
@@ -28,15 +28,16 @@ class GeneralTab {
             secondaryViewsAlignment: .right,
             secondaryViewsTopGap: 8)
         table.addRow(crashPolicy)
-        let exportButton = NSButton(title: NSLocalizedString("Export settings…", comment: ""), target: nil, action: nil)
+        let exportButton = DesignSystemControlStyler.makeButton(NSLocalizedString("Export settings…", comment: ""))
         exportButton.onAction = { _ in exportSettings() }
-        let importButton = NSButton(title: NSLocalizedString("Import settings…", comment: ""), target: nil, action: nil)
+        let importButton = DesignSystemControlStyler.makeButton(NSLocalizedString("Import settings…", comment: ""))
         importButton.onAction = { _ in importSettings() }
-        let resetButton = NSButton(title: NSLocalizedString("Reset settings and restart…", comment: ""), target: nil, action: nil)
-        resetButton.bezelStyle = .rounded
-        if #available(macOS 11.0, *) { resetButton.hasDestructiveAction = true }
+        let resetButton = DesignSystemControlStyler.makeButton(NSLocalizedString("Reset settings and restart…", comment: ""), destructive: true)
         resetButton.onAction = { _ in resetPreferences() }
-        let tools = StackView([exportButton, importButton, resetButton], .horizontal)
+        let tools = StackView([exportButton, importButton, resetButton], .horizontal, true,
+            right: TableGroupView.toolRowHorizontalPadding,
+            left: TableGroupView.toolRowHorizontalPadding,
+            spacing: TableGroupView.toolRowSpacing)
         let view = TableGroupSetView(originalViews: [table, tools], padding: 0, bottomPadding: 0)
         return view
     }
