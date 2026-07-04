@@ -1,10 +1,7 @@
 import Cocoa
 
-func sidebarSeparatorView() -> NSBox {
-    let separator = NSBox()
-    separator.boxType = .separator
-    separator.translatesAutoresizingMaskIntoConstraints = false
-    return separator
+func sidebarSeparatorView() -> NSView {
+    return DesignSystemDividerView()
 }
 
 /// Builds the [sidebar | 1px separator | editor] horizontal chassis shared by ExceptionsTab and

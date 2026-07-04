@@ -125,6 +125,7 @@ class LabelAndControl: NSObject {
 
     static func makeSwitch(_ rawName: String, extraAction: ActionClosure? = nil) -> Switch {
         let button = Switch(CachedUserDefaults.bool(rawName))
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: DesignSystem.Metrics.standardControlMinHeight).isActive = true
         _ = setupControl(button, rawName, extraAction: extraAction)
         return button
     }
@@ -212,6 +213,7 @@ class LabelAndControl: NSObject {
 
     static func makeDropdown(_ rawName: String, _ macroPreferences: [MacroPreference], extraAction: ActionClosure? = nil) -> NSPopUpButton {
         let dropdown = dropdown_(rawName, macroPreferences)
+        DesignSystemControlStyler.stylePopupButton(dropdown)
         SettingsSearchIndex.registerStrings(macroPreferences.map { $0.localizedString })
         SettingsSearchIndex.registerTarget(SettingsWindow.highlightTarget(dropdown))
         return setupControl(dropdown, rawName, extraAction: extraAction) as! NSPopUpButton
@@ -247,7 +249,7 @@ class LabelAndControl: NSObject {
     }
 
     static func makeSegmentedControl(_ rawName: String, _ macroPreferences: [MacroPreference], segmentWidth: CGFloat = -1, extraAction: ActionClosure? = nil) -> NSSegmentedControl {
-        let button = NSSegmentedControl(labels: macroPreferences.map {
+        let button = DesignSystemSegmentedControl(labels: macroPreferences.map {
             $0.localizedString
         }, trackingMode: .selectOne, target: nil, action: nil)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -288,11 +290,7 @@ class LabelAndControl: NSObject {
     }
 
     static func applySystemSelectedSegmentStyle(_ control: NSSegmentedControl) {
-        if #available(macOS 10.14, *) {
-            control.segmentStyle = .automatic
-        } else {
-            control.segmentStyle = .texturedRounded
-        }
+        DesignSystemControlStyler.styleSegmentedControl(control)
     }
 
     static func makeLabelWithSlider(_ labelText: String, _ rawName: String, _ minValue: Double, _ maxValue: Double,

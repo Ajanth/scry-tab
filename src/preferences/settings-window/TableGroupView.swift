@@ -200,6 +200,7 @@ class TableGroupView: ClickHoverStackView {
     var tableStackViews = [NSStackView]()
 
     private var rowInfoTables = [[RowInfo]]()
+    private var accessibilityObserver: NSObjectProtocol?
 
     struct Row {
         let leftTitle: String
@@ -220,6 +221,7 @@ class TableGroupView: ClickHoverStackView {
 
         var leftViews: [NSView]?
         var rightViews: [NSView]?
+        var isHovered = false
 
         init(view: NSView, previousSeparator: NSView? = nil, nextSeparator: NSView? = nil) {
             self.view = view
@@ -234,26 +236,30 @@ class TableGroupView: ClickHoverStackView {
         self.subTitle = subTitle
         super.init(frame: .zero)
         setupView(hasHeader: hasHeader)
+        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.refreshLayerState()
+        }
     }
 
     required init?(coder: NSCoder) {
         fatalError("Class only supports programmatic initialization")
     }
 
+    deinit {
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
-        // Reset table colors
-        tableStackViews.forEach { table in
-            table.layer?.backgroundColor = DesignSystem.semanticCGColor(.surfacePlateau, in: table)
-            table.layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: table)
-        }
-        rowInfoTables.forEach { table in
-            table.forEach { row in
-                row.view.layer?.backgroundColor = NSColor.clear.cgColor
-                row.previousSeparator?.layer?.backgroundColor = DesignSystem.semanticCGColor(.borderSubtle, in: row.previousSeparator)
-                row.nextSeparator?.layer?.backgroundColor = DesignSystem.semanticCGColor(.borderSubtle, in: row.nextSeparator)
-            }
-        }
+        refreshLayerState()
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshLayerState()
     }
 
     private func setupView(hasHeader: Bool) {
@@ -341,16 +347,7 @@ class TableGroupView: ClickHoverStackView {
         tableStackView.orientation = .vertical
         tableStackView.spacing = 0
         tableStackView.wantsLayer = true
-        tableStackView.layer!.backgroundColor = DesignSystem.semanticCGColor(.surfacePlateau, in: tableStackView)
-        tableStackView.layer!.cornerRadius = TableGroupView.cornerRadius
-        tableStackView.layer!.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: tableStackView)
-        tableStackView.layer!.borderWidth = TableGroupView.borderWidth
-        if !DesignSystem.isDark(effectiveAppearance) {
-            tableStackView.layer?.shadowColor = NSColor.black.cgColor
-            tableStackView.layer?.shadowOpacity = 0.10
-            tableStackView.layer?.shadowRadius = 0.5
-            tableStackView.layer?.shadowOffset = CGSize(width: 0, height: -0.5)
-        }
+        refreshTableLayer(tableStackView)
         addArrangedSubview(tableStackView)
         tableStackViews.append(tableStackView)
         rowInfoTables.append([RowInfo]())
@@ -555,7 +552,7 @@ class TableGroupView: ClickHoverStackView {
         let separator = NSView()
         separator.translatesAutoresizingMaskIntoConstraints = false
         separator.wantsLayer = true
-        separator.layer?.backgroundColor = DesignSystem.semanticCGColor(.borderSubtle, in: separator)
+        refreshSeparatorLayer(separator)
         tableStackView.addArrangedSubview(separator)
         separator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth).isActive = true
         separator.centerXAnchor.constraint(equalTo: tableStackView.centerXAnchor).isActive = true
@@ -596,15 +593,59 @@ class TableGroupView: ClickHoverStackView {
     }
 
     private func addMouseEnteredEffects(_ rowInfo: RowInfo) {
-        rowInfo.view.layer?.backgroundColor = DesignSystem.semanticCGColor(.surfaceHover, in: rowInfo.view)
+        rowInfo.isHovered = true
+        refreshRowLayer(rowInfo)
         adjustSeparatorWidth(separator: rowInfo.previousSeparator, isMouseInside: true)
         adjustSeparatorWidth(separator: rowInfo.nextSeparator, isMouseInside: true)
     }
 
     private func addMouseExitedEffects(_ rowInfo: RowInfo) {
-        rowInfo.view.layer?.backgroundColor = NSColor.clear.cgColor
+        rowInfo.isHovered = false
+        refreshRowLayer(rowInfo)
         adjustSeparatorWidth(separator: rowInfo.previousSeparator, isMouseInside: false)
         adjustSeparatorWidth(separator: rowInfo.nextSeparator, isMouseInside: false)
+    }
+
+    private func refreshLayerState() {
+        tableStackViews.forEach(refreshTableLayer)
+        rowInfoTables.forEach { table in
+            table.forEach { row in
+                refreshRowLayer(row)
+                refreshSeparatorLayer(row.previousSeparator)
+                refreshSeparatorLayer(row.nextSeparator)
+            }
+        }
+    }
+
+    private func refreshTableLayer(_ table: NSView) {
+        table.layer?.backgroundColor = DesignSystem.semanticCGColor(.surfacePlateau, in: table)
+        table.layer?.cornerRadius = TableGroupView.cornerRadius
+        table.layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: table)
+        table.layer?.borderWidth = TableGroupView.borderWidth
+        refreshTableShadow(table)
+    }
+
+    private func refreshTableShadow(_ table: NSView) {
+        let shouldShowShadow = !DesignSystem.isDark(table.effectiveAppearance) && !NSWorkspace.shared.accessibilityDisplayShouldReduceTransparency
+        guard shouldShowShadow else {
+            table.layer?.shadowOpacity = 0
+            table.layer?.shadowColor = nil
+            table.layer?.shadowRadius = 0
+            table.layer?.shadowOffset = .zero
+            return
+        }
+        table.layer?.shadowColor = NSColor.black.cgColor
+        table.layer?.shadowOpacity = 0.10
+        table.layer?.shadowRadius = 0.5
+        table.layer?.shadowOffset = CGSize(width: 0, height: -0.5)
+    }
+
+    private func refreshRowLayer(_ row: RowInfo) {
+        row.view.layer?.backgroundColor = row.isHovered ? DesignSystem.semanticCGColor(.surfaceHover, in: row.view) : NSColor.clear.cgColor
+    }
+
+    private func refreshSeparatorLayer(_ separator: NSView?) {
+        separator?.layer?.backgroundColor = DesignSystem.semanticCGColor(.borderSubtle, in: separator)
     }
 
     private func adjustSeparatorWidth(separator: NSView?, isMouseInside: Bool) {

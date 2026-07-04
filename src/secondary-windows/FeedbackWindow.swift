@@ -141,7 +141,7 @@ class FeedbackWindow: NSWindow {
             [discussionsLink],
         ])
         view.cell(atColumnIndex: 0, rowIndex: 2).xPlacement = .center
-        contentView = view.wrappedWithTitlebarPadding()
+        contentView = DesignSystemWindowContentView(content: view, topPadding: 10)
         setContentSize(contentView!.fittingSize)
     }
 
@@ -269,8 +269,8 @@ class FeedbackWindow: NSWindow {
         headerLeft.alignment = .centerY
 
         let goBack = NSButton(title: "← " + NSLocalizedString("Go back", comment: ""), target: self, action: #selector(goBackToPicker))
-        goBack.bezelStyle = .recessed
         goBack.setButtonType(.momentaryPushIn)
+        DesignSystemControlStyler.styleButton(goBack)
 
         let header = NSStackView()
         header.translatesAutoresizingMaskIntoConstraints = false
@@ -285,11 +285,14 @@ class FeedbackWindow: NSWindow {
         // light or Escape — also preserves the draft for the next open).
         sendButton = NSButton(title: NSLocalizedString("Create GitHub issue", comment: ""), target: nil, action: #selector(sendCallback))
         sendButton.keyEquivalent = "\r"
+        DesignSystemControlStyler.styleButton(sendButton)
         let buttons = StackView([sendButton])
         buttons.spacing = GridView.interPadding
 
         issueTitle = TextArea(80, 1, titlePlaceholder(), checkEmptyFields, Self.titleMaxLength)
         body = TextArea(80, 12, bodyPlaceholder(), checkEmptyFields, Self.bodyMaxLength)
+        DesignSystemControlStyler.styleTextField(issueTitle)
+        DesignSystemControlStyler.styleTextField(body)
         // Restore any unsent draft for this kind so the user picks up exactly where they left off.
         if let draft = drafts[kind] {
             issueTitle.stringValue = draft.title
@@ -305,7 +308,7 @@ class FeedbackWindow: NSWindow {
         ])
         view.cell(atColumnIndex: 0, rowIndex: 0).xPlacement = .fill
         view.cell(atColumnIndex: 0, rowIndex: 4).xPlacement = .trailing
-        contentView = view.wrappedWithTitlebarPadding()
+        contentView = DesignSystemWindowContentView(content: view, topPadding: 10)
         setContentSize(contentView!.fittingSize)
         checkEmptyFields()
         // Explicit Tab chain: title → body → Create → Go back → title.
@@ -473,6 +476,13 @@ class FeedbackKindCard: NSButton {
     private let spinner: NSProgressIndicator
     private let titleLabel: NSTextField
     private let normalTitle: String
+    private var isHovered = false
+    private var isPressed = false
+    private var hoverTrackingArea: NSTrackingArea?
+
+    override var isEnabled: Bool {
+        didSet { refreshStyle() }
+    }
 
     init(symbol: Symbols, iconTint: NSColor, title: String, target: AnyObject?, action: Selector) {
         iconView = Self.makeIcon(symbol: symbol, tint: iconTint)
@@ -494,10 +504,12 @@ class FeedbackKindCard: NSButton {
         translatesAutoresizingMaskIntoConstraints = false
         self.target = target
         self.action = action
-        bezelStyle = .regularSquare
-        isBordered = true
+        wantsLayer = true
+        isBordered = false
         imagePosition = .noImage
         self.title = ""
+        layer?.cornerRadius = DesignSystem.Metrics.sectionRadius
+        layer?.borderWidth = 1
 
         // Fixed-size slot lets the icon and spinner overlap without making the card geometry
         // jump when state changes. 36×36 matches the icon's intrinsic size from makeIcon.
@@ -528,8 +540,45 @@ class FeedbackKindCard: NSButton {
             widthAnchor.constraint(equalToConstant: 220),
             heightAnchor.constraint(equalToConstant: 130),
         ])
+        refreshStyle()
     }
     required init?(coder: NSCoder) { fatalError() }
+
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        if let hoverTrackingArea {
+            removeTrackingArea(hoverTrackingArea)
+        }
+        let area = NSTrackingArea(rect: bounds, options: [.activeInActiveApp, .mouseEnteredAndExited], owner: self)
+        addTrackingArea(area)
+        hoverTrackingArea = area
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        isHovered = true
+        refreshStyle()
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        isHovered = false
+        isPressed = false
+        refreshStyle()
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        guard isEnabled else { return }
+        isPressed = true
+        refreshStyle()
+        super.mouseDown(with: event)
+        isPressed = false
+        refreshStyle()
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshStyle()
+    }
 
     func setLoading(_ text: String) {
         iconView.isHidden = true
@@ -552,6 +601,19 @@ class FeedbackKindCard: NSButton {
             return self
         }
         return nil
+    }
+
+    private func refreshStyle() {
+        alphaValue = isEnabled ? 1.0 : 0.55
+        layer?.backgroundColor = DesignSystem.semanticCGColor(surfaceRole(), in: self)
+        layer?.borderColor = DesignSystem.semanticCGColor(isHovered ? .borderSelected : .borderSubtle, in: self)
+    }
+
+    private func surfaceRole() -> DesignSystem.ColorRole {
+        if !isEnabled { return .surfaceFlat }
+        if isPressed { return .surfacePressed }
+        if isHovered { return .surfaceHover }
+        return .surfacePlateau
     }
 
     // Rendered from the bundled SF Pro Text subset. Template tinting is applied at runtime
