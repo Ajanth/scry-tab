@@ -148,9 +148,8 @@ class ExceptionsTab {
     private static func makeAddRemoveButtons() -> NSView {
         let plus = NSImage.fromSymbol(.plus, pointSize: 11)
         let minus = NSImage.fromSymbol(.minus, pointSize: 11)
-        let segments = NSSegmentedControl(images: [plus, minus], trackingMode: .momentary, target: self, action: #selector(countButtonClicked(_:)))
-        segments.translatesAutoresizingMaskIntoConstraints = false
-        segments.segmentStyle = .rounded
+        let segments = DesignSystemSegmentedControl(images: [plus, minus], trackingMode: .momentary, target: self, action: #selector(countButtonClicked(_:)))
+        DesignSystemControlStyler.styleSegmentedControl(segments)
         segments.setWidth(28, forSegment: 0)
         segments.setWidth(28, forSegment: 1)
         countButtons = segments

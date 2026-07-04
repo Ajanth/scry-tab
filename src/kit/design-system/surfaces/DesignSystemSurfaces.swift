@@ -92,3 +92,66 @@ final class DesignSystemDividerView: NSView {
         layer?.backgroundColor = DesignSystem.semanticCGColor(.borderSubtle, in: self)
     }
 }
+
+final class DesignSystemWindowContentView: NSView {
+    private let materialView = DesignSystemMaterialView()
+    private let content: NSView
+    private let topPadding: CGFloat
+    private var accessibilityObserver: NSObjectProtocol?
+
+    init(content: NSView, topPadding: CGFloat = 0) {
+        self.content = content
+        self.topPadding = topPadding
+        super.init(frame: .zero)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    deinit {
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.refreshLayerBackedControls()
+        }
+        refreshLayerBackedControls()
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshLayerBackedControls()
+    }
+
+    private func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        materialView.translatesAutoresizingMaskIntoConstraints = false
+        content.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(materialView)
+        addSubview(content)
+        NSLayoutConstraint.activate([
+            materialView.topAnchor.constraint(equalTo: topAnchor),
+            materialView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            materialView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            materialView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            content.topAnchor.constraint(equalTo: topAnchor, constant: topPadding),
+            content.leadingAnchor.constraint(equalTo: leadingAnchor),
+            content.trailingAnchor.constraint(equalTo: trailingAnchor),
+            content.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+    }
+
+    private func refreshLayerBackedControls() {
+        DesignSystemControlStyler.refreshEditableFields(in: content)
+    }
+}

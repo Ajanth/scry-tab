@@ -345,9 +345,8 @@ class ControlsTab {
         shortcutsSection.addSubview(navigationPointerRow)
         let plus = NSImage.fromSymbol(.plus, pointSize: 11)
         let minus = NSImage.fromSymbol(.minus, pointSize: 11)
-        let countButtons = NSSegmentedControl(images: [plus, minus], trackingMode: .momentary, target: self, action: #selector(updateShortcutCount(_:)))
-        countButtons.translatesAutoresizingMaskIntoConstraints = false
-        countButtons.segmentStyle = .rounded
+        let countButtons = DesignSystemSegmentedControl(images: [plus, minus], trackingMode: .momentary, target: self, action: #selector(updateShortcutCount(_:)))
+        DesignSystemControlStyler.styleSegmentedControl(countButtons)
         countButtons.setWidth(28, forSegment: 0)
         countButtons.setWidth(28, forSegment: 1)
         shortcutCountButtons = countButtons
@@ -416,6 +415,7 @@ class ControlsTab {
     private static func makeGestureEditor() -> NSView {
         let message = NSLocalizedString("You may need to disable some conflicting system gestures", comment: "")
         let openTrackpad = NSButton(title: NSLocalizedString("Open Trackpad Settings…", comment: ""), target: self, action: #selector(openSystemGestures(_:)))
+        DesignSystemControlStyler.styleButton(openTrackpad)
         let infoBtn = LabelAndControl.makeInfoButton(searchableTooltipTexts: [message], onMouseEntered: { event, view in
             Popover.shared.show(event: event, positioningView: view, message: message, extraView: openTrackpad)
         })
@@ -444,7 +444,7 @@ class ControlsTab {
             ShortcutEditor.tabLabelAppearance,
             ShortcutEditor.tabLabelOrdering,
         ]
-        let tabControl = NSSegmentedControl(labels: labels, trackingMode: .selectOne, target: nil, action: nil)
+        let tabControl = DesignSystemSegmentedControl(labels: labels, trackingMode: .selectOne, target: nil, action: nil)
         tabControl.selectedSegment = ShortcutEditor.selectedTabSegment
         LabelAndControl.applySystemSelectedSegmentStyle(tabControl)
         tabControl.widthAnchor.constraint(equalToConstant: width).isActive = true

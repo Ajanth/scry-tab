@@ -25,7 +25,7 @@ class PopupButtonLikeSystemSettings: NSPopUpButton {
 
     convenience init() {
         self.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
+        DesignSystemControlStyler.stylePopupButton(self)
     }
 
     override var intrinsicContentSize: NSSize {

@@ -71,6 +71,8 @@
 		5F58D00000000000000D0016 /* SettingsPageIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58D00000000000000D0006 /* SettingsPageIconView.swift */; };
 		5F58D00000000000000D0017 /* SettingsPageIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58D00000000000000D0006 /* SettingsPageIconView.swift */; };
 		5F58D00000000000000D0018 /* DesignSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58D00000000000000D0003 /* DesignSystemTests.swift */; };
+		5F58D00000000000000D0019 /* DesignSystemControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58D00000000000000D0005 /* DesignSystemControls.swift */; };
+		5F58D00000000000000D0020 /* DesignSystemControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F58D00000000000000D0005 /* DesignSystemControls.swift */; };
 		5F791E4B2F1C65E100B6419C /* ApplicationDiscriminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F791E4A2F1C65E100B6419C /* ApplicationDiscriminator.swift */; };
 		5F7B6AFC2F3BAB98003E25E8 /* StatusIconsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7B6AFB2F3BAB98003E25E8 /* StatusIconsView.swift */; };
 		5F882F382EC3C63400110A9F /* CustomRecorderControlTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C8DC2A355E29516DD2FAF /* CustomRecorderControlTestable.swift */; };
@@ -356,6 +358,7 @@
 		5F58D00000000000000D0002 /* DesignSystemSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DesignSystemSpecs.md; sourceTree = "<group>"; };
 		5F58D00000000000000D0003 /* DesignSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemTests.swift; sourceTree = "<group>"; };
 		5F58D00000000000000D0004 /* DesignSystemSurfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemSurfaces.swift; sourceTree = "<group>"; };
+		5F58D00000000000000D0005 /* DesignSystemControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemControls.swift; sourceTree = "<group>"; };
 		5F58D00000000000000D0006 /* SettingsPageIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageIconView.swift; sourceTree = "<group>"; };
 		5F3C6CCF2F8CE7120021CEDF /* extract_latest_changelog.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = extract_latest_changelog.sh; sourceTree = "<group>"; };
 		5F791E4A2F1C65E100B6419C /* ApplicationDiscriminator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDiscriminator.swift; sourceTree = "<group>"; };
@@ -1111,6 +1114,7 @@
 			children = (
 				5F58D00000000000000D0008 /* tokens-and-appearance */,
 				5F58D00000000000000D0009 /* surfaces */,
+				5F58D00000000000000D0011 /* controls */,
 				5F58D00000000000000D0010 /* presentation */,
 			);
 			path = "design-system";
@@ -1132,6 +1136,14 @@
 				5F58D00000000000000D0004 /* DesignSystemSurfaces.swift */,
 			);
 			path = surfaces;
+			sourceTree = "<group>";
+		};
+		5F58D00000000000000D0011 /* controls */ = {
+			isa = PBXGroup;
+			children = (
+				5F58D00000000000000D0005 /* DesignSystemControls.swift */,
+			);
+			path = controls;
 			sourceTree = "<group>";
 		};
 		5F58D00000000000000D0010 /* presentation */ = {
@@ -1720,6 +1732,7 @@
 				5F58D00000000000000D0013 /* DesignSystem.swift in Sources */,
 				5F58D00000000000000D0015 /* DesignSystemSurfaces.swift in Sources */,
 				5F58D00000000000000D0017 /* SettingsPageIconView.swift in Sources */,
+				5F58D00000000000000D0020 /* DesignSystemControls.swift in Sources */,
 				D04BAE2200000000ED004T01 /* TableGroupView.swift in Sources */,
 				D04BAE2200000000ED004T03 /* SettingsSearch.swift in Sources */,
 				5F9A10000000000000000003 /* SettingsRoute.swift in Sources */,
@@ -1751,6 +1764,7 @@
 				5F58D00000000000000D0012 /* DesignSystem.swift in Sources */,
 				5F58D00000000000000D0014 /* DesignSystemSurfaces.swift in Sources */,
 				5F58D00000000000000D0016 /* SettingsPageIconView.swift in Sources */,
+				5F58D00000000000000D0019 /* DesignSystemControls.swift in Sources */,
 				D04BABED81800E18732912CC /* CGWindowID.swift in Sources */,
 				D04BA26A691D56031FCCF00C /* Sysctl.swift in Sources */,
 				5F21C9E22C6E94410091F72F /* AdditionalControlsSheet.swift in Sources */,

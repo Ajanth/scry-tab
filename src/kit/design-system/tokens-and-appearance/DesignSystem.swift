@@ -14,6 +14,7 @@ enum DesignSystem {
         static let rowHorizontalPadding = CGFloat(8)
         static let rowVerticalPadding = CGFloat(4)
         static let standardControlMinHeight = CGFloat(32)
+        static let controlRadius = CGFloat(6)
     }
 
     enum ColorRole {

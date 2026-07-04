@@ -43,8 +43,8 @@ class ImageTextButtonView: NSStackView {
     }
 
     static let spacing = CGFloat(5)
-    static let cornerRadius = CGFloat(7)
-    static let borderWidth = CGFloat(3)
+    static let cornerRadius = DesignSystem.Metrics.joinedOuterRowRadius
+    static let borderWidth = CGFloat(1)
     static let padding = CGFloat(0)
 
     var onClick: ActionClosure?
@@ -161,6 +161,9 @@ class ImageTextButtonView: NSStackView {
                 self?.updateStyle()
             })
         }
+        windowObservers.append(NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.updateStyle()
+        })
     }
 
     override func draw(_ dirtyRect: NSRect) {
@@ -168,22 +171,24 @@ class ImageTextButtonView: NSStackView {
         updateStyle()
     }
 
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        updateStyle()
+    }
+
     func updateStyle() {
         let isSelected = button.state == .on
         let isKey = window?.isKeyWindow ?? false
-        let selectedColor: NSColor
-        if #available(macOS 10.14, *) {
-            selectedColor = isKey ? NSColor.systemAccentColor : NSColor.unemphasizedSelectedContentBackgroundColor
-        } else {
-            selectedColor = isKey ? NSColor.systemAccentColor : NSColor.lightGray
-        }
         let previousAppearance = NSAppearance.current
         NSAppearance.current = effectiveAppearance
-        let borderColor: NSColor = isSelected ? selectedColor : NSColor.lightGray.withAlphaComponent(0.3)
+        let fillColor = isSelected ? DesignSystem.color(.surfaceSelected, appearance: effectiveAppearance) : DesignSystem.color(.surfaceFlat, appearance: effectiveAppearance)
+        let borderColor = isSelected ? DesignSystem.color(.borderSelected, appearance: effectiveAppearance) : DesignSystem.color(.borderSubtle, appearance: effectiveAppearance)
+        button.layer?.backgroundColor = fillColor.cgColor
         button.layer?.borderColor = borderColor.cgColor
         NSAppearance.current = previousAppearance
         button.layer?.borderWidth = ImageTextButtonView.borderWidth
-        label.font = isSelected ? NSFont.boldSystemFont(ofSize: 12) : NSFont.systemFont(ofSize: 12)
-        alphaValue = isPressed ? 0.7 : 1.0
+        label.font = NSFont.systemFont(ofSize: 12, weight: isSelected ? .medium : .regular)
+        alphaValue = isPressed ? 0.7 : (isKey ? 1.0 : 0.94)
     }
 }

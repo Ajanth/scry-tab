@@ -86,8 +86,9 @@ class IllustratedImageThemeView: ClickHoverImageView {
 
     private func setBorder() {
         layer?.cornerRadius = TableGroupView.cornerRadius + 3
-        layer?.borderColor = isFocused ? NSColor.systemAccentColor.cgColor : NSColor.lightGray.cgColor
-        layer?.borderWidth = 3
+        let color = DesignSystem.color(isFocused ? .borderSelected : .borderSubtle, appearance: effectiveAppearance)
+        layer?.borderColor = DesignSystem.resolvedCGColor(color, in: self)
+        layer?.borderWidth = isFocused ? 2 : 1
     }
 
     private func setFocused(_ focused: Bool) {
@@ -381,6 +382,7 @@ class AppearanceTab: NSObject {
 
     static func initTab() -> NSView {
         customizeStyleButton = NSButton(title: getCustomizeStyleButtonTitle(), target: self, action: #selector(showCustomizeStyleSheet))
+        DesignSystemControlStyler.styleButton(customizeStyleButton)
         // The customize sheet is constructed lazily on first show. Animation controls were moved
         // inline for routed Settings, so search can target them without opening a sheet.
         return makeView()
@@ -457,14 +459,10 @@ class AppearanceTab: NSObject {
         let image = NSImage.fromSymbol(.arrowTriangleBranch, pointSize: 14, rotated180: true)
         let button = NSButton(image: image, target: self, action: #selector(overrideInfoClicked(_:)))
         button.identifier = NSUserInterfaceItemIdentifier(overrideBaseName)
-        button.bezelStyle = .regularSquare
-        button.isBordered = false
+        DesignSystemControlStyler.styleIconButton(button, size: 20)
         if #available(macOS 10.14, *) {
             button.contentTintColor = .controlAccentColor
         }
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 20).isActive = true
         button.isHidden = true
         overrideInfoIcons[overrideBaseName] = button
         return button

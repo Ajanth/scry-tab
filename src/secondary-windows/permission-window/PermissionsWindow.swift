@@ -64,7 +64,7 @@ class PermissionsWindow: NSWindow {
         rows.forEach { $0[0]!.fit(widestRowWidth, $0[0]!.fittingSize.height) }
         let view = GridView(rows as! [[NSView]])
         view.fit()
-        contentView = view.wrappedWithTitlebarPadding()
+        contentView = DesignSystemWindowContentView(content: view, topPadding: 10)
         setContentSize(contentView!.fittingSize)
     }
 

@@ -1,10 +1,6 @@
 import Cocoa
 
 class PermissionView: StackView {
-    static let greenColor = NSColor(srgbRed: 0.38, green: 0.75, blue: 0.33, alpha: 0.2)
-    static let redColor = NSColor(srgbRed: 0.90, green: 0.35, blue: 0.32, alpha: 0.2)
-    static let yellowColor = NSColor(srgbRed: 0.83, green: 0.66, blue: 0.07, alpha: 0.2)
-
     var status: NSTextField!
     var permissionStatus = PermissionStatus.notGranted
 
@@ -27,6 +23,7 @@ class PermissionView: StackView {
         justification.preferredMaxLayoutWidth = 500
         justification.addOrUpdateConstraint(justification.widthAnchor, justification.fittingSize.width + 5)
         let button = Button(buttonText) { _ in NSWorkspace.shared.open(URL(string: buttonUrl)!) }
+        DesignSystemControlStyler.styleButton(button)
         let status = NSTextField(wrappingLabelWithString: "")
         status.translatesAutoresizingMaskIntoConstraints = false
         let buttonStack = NSStackView(views: [button, status])
@@ -36,27 +33,37 @@ class PermissionView: StackView {
         self.init(views, .vertical, top: GridView.interPadding, right: GridView.interPadding, bottom: GridView.interPadding, left: GridView.interPadding)
         self.status = status
         wantsLayer = true
-        layer!.cornerRadius = GridView.interPadding / 2
+        layer?.cornerRadius = DesignSystem.Metrics.sectionRadius
+        layer?.borderWidth = 1
         setContentHuggingPriority(.required, for: .horizontal)
         setContentCompressionResistancePriority(.required, for: .horizontal)
+        refreshStyle()
     }
 
     func updatePermissionStatus(_ permissionStatus: PermissionStatus) {
         guard status.stringValue.isEmpty || permissionStatus != self.permissionStatus else { return }
         self.permissionStatus = permissionStatus
-        var color: NSColor
-        var label: String
-        switch permissionStatus {
-            case .granted:
-                color = PermissionView.greenColor
-                label = NSLocalizedString("Allowed", comment: "")
-            case .notGranted:
-                color = PermissionView.redColor
-                label = NSLocalizedString("Not allowed", comment: "")
-        }
+        let label = permissionStatus == .granted ? NSLocalizedString("Allowed", comment: "") : NSLocalizedString("Not allowed", comment: "")
         status.stringValue = "● " + label
-        status.textColor = color.withAlphaComponent(1)
-        layer!.backgroundColor = color.cgColor
+        refreshStyle()
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshStyle()
+    }
+
+    private func refreshStyle() {
+        let role: DesignSystem.ColorRole = permissionStatus == .granted ? .statusSuccess : .statusDestructive
+        let statusColor = DesignSystem.color(role, appearance: effectiveAppearance)
+        status.textColor = statusColor
+        layer?.backgroundColor = DesignSystem.resolvedCGColor(statusColor.withAlphaComponent(statusFillAlpha()), in: self)
+        layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: self)
+    }
+
+    private func statusFillAlpha() -> CGFloat {
+        return DesignSystem.isDark(effectiveAppearance) ? 0.20 : 0.12
     }
 }
 

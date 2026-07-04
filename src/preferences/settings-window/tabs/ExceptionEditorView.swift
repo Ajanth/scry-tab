@@ -17,15 +17,41 @@ class ExceptionEditorView: NSView {
     private var patternsRow: NSView?
     private var patternsListStack = NSStackView()
     private var behaviorGroup: NSStackView!
+    private var accessibilityObserver: NSObjectProtocol?
 
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         setupLayout()
+        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.refreshDesignSystemLayers()
+        }
     }
 
     required init?(coder: NSCoder) {
         fatalError("Class only supports programmatic initialization")
+    }
+
+    deinit {
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+    }
+
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+        refreshDesignSystemLayers()
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshDesignSystemLayers()
+    }
+
+    private func refreshDesignSystemLayers() {
+        DesignSystemControlStyler.refreshSurface(behaviorGroup)
+        DesignSystemControlStyler.refreshEditableFields(in: self)
     }
 
     func bind(to entry: ExceptionEntry, onChange: @escaping (ExceptionEntry) -> Void) {
@@ -86,12 +112,8 @@ class ExceptionEditorView: NSView {
         group.alignment = .leading
         group.spacing = 0
         group.distribution = .fill
-        group.wantsLayer = true
-        group.layer?.cornerRadius = 8
-        group.layer?.borderWidth = 1
-        group.layer?.borderColor = NSColor.tableSeparatorColor.cgColor
-        group.layer?.backgroundColor = NSColor.tableBackgroundColor.cgColor
         group.translatesAutoresizingMaskIntoConstraints = false
+        DesignSystemControlStyler.styleSurface(group)
         behaviorGroup = group
 
         let bundleRow = makeBundleIdRow()
@@ -122,10 +144,7 @@ class ExceptionEditorView: NSView {
     }
 
     private func makeSeparator() -> NSView {
-        let sep = NSView()
-        sep.translatesAutoresizingMaskIntoConstraints = false
-        sep.wantsLayer = true
-        sep.layer?.backgroundColor = NSColor.tableSeparatorColor.cgColor
+        let sep = DesignSystemDividerView()
         sep.heightAnchor.constraint(equalToConstant: 1).isActive = true
         return sep
     }
@@ -139,6 +158,7 @@ class ExceptionEditorView: NSView {
         bundleIdField.action = #selector(bundleIdChanged(_:))
         bundleIdField.lineBreakMode = .byTruncatingHead
         bundleIdField.usesSingleLineMode = true
+        DesignSystemControlStyler.styleTextField(bundleIdField)
         return makeRow(label: label, control: bundleIdField, controlMinWidth: 200)
     }
 
@@ -173,10 +193,10 @@ class ExceptionEditorView: NSView {
         patternsListStack.translatesAutoresizingMaskIntoConstraints = false
 
         let addButton = NSButton(title: NSLocalizedString("Add a pattern", comment: ""), target: self, action: #selector(addPatternTapped))
-        addButton.bezelStyle = .recessed
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.image = NSImage.fromSymbol(.plus, pointSize: 11)
         addButton.imagePosition = .imageLeading
+        DesignSystemControlStyler.styleButton(addButton)
 
         let column = NSStackView(views: [patternsListStack, addButton])
         column.orientation = .vertical
@@ -207,18 +227,17 @@ class ExceptionEditorView: NSView {
         field.delegate = self
         field.usesSingleLineMode = true
         field.widthAnchor.constraint(greaterThanOrEqualToConstant: 220).isActive = true
+        DesignSystemControlStyler.styleTextField(field)
 
         let removeButton = NSButton()
         removeButton.translatesAutoresizingMaskIntoConstraints = false
-        removeButton.bezelStyle = .circular
         removeButton.isBordered = false
         removeButton.image = NSImage.fromSymbol(.minusCircleFill, pointSize: 14)
         if #available(macOS 10.14, *) { removeButton.contentTintColor = .tertiaryLabelColor }
         removeButton.imagePosition = .imageOnly
         removeButton.target = self
         removeButton.action = #selector(removePatternTapped(_:))
-        removeButton.widthAnchor.constraint(equalToConstant: 18).isActive = true
-        removeButton.heightAnchor.constraint(equalToConstant: 18).isActive = true
+        DesignSystemControlStyler.styleIconButton(removeButton, size: 18)
 
         let row = NSStackView(views: [field, removeButton])
         row.orientation = .horizontal
@@ -239,7 +258,8 @@ class ExceptionEditorView: NSView {
         row.spacing = 14
         row.distribution = .fill
         row.translatesAutoresizingMaskIntoConstraints = false
-        row.edgeInsets = NSEdgeInsets(top: 11, left: TableGroupView.padding, bottom: 11, right: TableGroupView.padding)
+        row.edgeInsets = NSEdgeInsets(top: DesignSystem.Metrics.rowVerticalPadding, left: DesignSystem.Metrics.rowHorizontalPadding, bottom: DesignSystem.Metrics.rowVerticalPadding, right: DesignSystem.Metrics.rowHorizontalPadding)
+        row.heightAnchor.constraint(greaterThanOrEqualToConstant: DesignSystem.Metrics.standardControlMinHeight).isActive = true
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         control.setContentHuggingPriority(.required, for: .horizontal)

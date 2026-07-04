@@ -43,11 +43,11 @@ final class ShortcutEditor {
     /// (the tallest of the three tabs) so switching to a short tab like Ordering doesn't make
     /// the surrounding rounded section visibly snap up. The bottom just gets whitespace instead.
     private static let contentMinHeight: CGFloat = 400
-    /// Fixed height for the Trigger row content (recorder + labels). Pinned rather than derived
+    /// Shared design-system height for the Trigger row content (recorder + labels). Pinned rather than derived
     /// from `mainRow.fittingSize.height` because `RecorderControl`'s intrinsic height isn't
     /// guaranteed to be set when `TableGroupView.setMainRow` snapshots it, which previously
     /// produced inconsistent Trigger row heights across shortcuts.
-    static let triggerRowContentHeight: CGFloat = 22
+    static let triggerRowContentHeight = DesignSystem.Metrics.standardControlMinHeight
 
     /// Localized labels shared between the recycled shortcut editor and the fixed-bind gesture
     /// editor in `ControlsTab.makeGestureEditor`. Both build the same Trigger row + tab control
@@ -79,7 +79,7 @@ final class ShortcutEditor {
             ShortcutEditor.tabLabelAppearance,
             ShortcutEditor.tabLabelOrdering,
         ]
-        tabControl = NSSegmentedControl(labels: labels, trackingMode: .selectOne, target: nil, action: nil)
+        tabControl = DesignSystemSegmentedControl(labels: labels, trackingMode: .selectOne, target: nil, action: nil)
         tabControl.selectedSegment = ShortcutEditor.selectedTabSegment
         LabelAndControl.applySystemSelectedSegmentStyle(tabControl)
         tabControl.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -683,15 +683,11 @@ extension ShortcutEditor {
     static func makeUnlinkButton() -> NSButton {
         let image = NSImage.fromSymbol(.link, pointSize: 14)
         let button = NSButton(image: image, target: nil, action: nil)
-        button.bezelStyle = .regularSquare
-        button.isBordered = false
+        DesignSystemControlStyler.styleIconButton(button, size: 20)
         if #available(macOS 10.14, *) {
             button.contentTintColor = .controlAccentColor
         }
         button.toolTip = NSLocalizedString("Sync with global value", comment: "")
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 20).isActive = true
         button.isHidden = true
         return button
     }
