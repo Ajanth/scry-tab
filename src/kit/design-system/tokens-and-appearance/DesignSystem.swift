@@ -21,6 +21,7 @@ enum DesignSystem {
         static let buttonHorizontalPadding = CGFloat(14)
         static let buttonVerticalPadding = CGFloat(7)
         static let splitDividerThickness = CGFloat(1)
+        static let settingsEditorSidebarHeight = CGFloat(470)
     }
 
     enum ColorRole {

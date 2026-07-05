@@ -1,5 +1,37 @@
 import Cocoa
 
+#if UNIT_TESTS
+enum Symbols: String {
+    case paintpalette = "􀝥"
+    case command = "􀆔"
+    case gearshape = "􀣋"
+    case handRaised = "􀉻"
+    case circledInfo = "􀅴"
+}
+
+extension NSImage {
+    static func fromSymbol(_ symbol: Symbols, pointSize: CGFloat) -> NSImage {
+        let font = NSFont.systemFont(ofSize: pointSize)
+        let attributedString = NSAttributedString(string: symbol.rawValue, attributes: [.font: font, .foregroundColor: NSColor.black])
+        let image = NSImage(size: attributedString.size())
+        image.lockFocus()
+        attributedString.draw(at: .zero)
+        image.unlockFocus()
+        image.isTemplate = true
+        return image
+    }
+
+    func tinted(_ color: NSColor) -> NSImage {
+        NSImage(size: size, flipped: false) { rect in
+            color.set()
+            rect.fill()
+            self.draw(in: rect, from: NSRect(origin: .zero, size: self.size), operation: .destinationIn, fraction: 1)
+            return true
+        }
+    }
+}
+#endif
+
 // allow using a closure for NSControl action, instead of selector
 class SelectorWrapper<T> {
     let selector: Selector

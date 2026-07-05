@@ -413,9 +413,9 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     }
 
     private func drawImage(_ image: NSImage, centeredIn rect: CGRect, enabled: Bool) {
-        let side = min(16, rect.width, rect.height)
-        let imageRect = CGRect(x: rect.midX - side / 2, y: rect.midY - side / 2, width: side, height: side)
-        image.draw(in: imageRect, from: .zero, operation: .sourceOver, fraction: enabled ? 1 : 0.45)
+        let imageRect = fittedImageRect(image.size, centeredIn: rect, maximumDimension: 16)
+        let drawableImage = image.isTemplate ? image.tinted(imageTintColor(enabled: enabled)) : image
+        drawableImage.draw(in: imageRect, from: .zero, operation: .sourceOver, fraction: image.isTemplate || enabled ? 1 : 0.45)
     }
 
     private func drawTitle(_ title: String, image: NSImage?, in rect: CGRect, enabled: Bool) {
@@ -427,7 +427,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
         var x = rect.midX - totalWidth / 2
         if let image {
             let imageRect = CGRect(x: x, y: rect.midY - imageSide / 2, width: imageSide, height: imageSide)
-            image.draw(in: imageRect, from: .zero, operation: .sourceOver, fraction: enabled ? 1 : 0.45)
+            drawImage(image, centeredIn: imageRect, enabled: enabled)
             x += imageSide + gap
         }
         let textRect = CGRect(x: x, y: rect.midY - textSize.height / 2, width: min(textSize.width, max(rect.maxX - x, 0)), height: textSize.height)
@@ -442,6 +442,21 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
             .foregroundColor: enabled ? DesignSystem.color(.textPrimary, appearance: effectiveAppearance) : DesignSystem.color(.textDisabled, appearance: effectiveAppearance),
             .paragraphStyle: paragraph,
         ]
+    }
+
+    func fittedImageRect(_ imageSize: CGSize, centeredIn rect: CGRect, maximumDimension: CGFloat) -> CGRect {
+        guard imageSize.width > 0, imageSize.height > 0 else { return .zero }
+        let availableDimension = min(maximumDimension, rect.width, rect.height)
+        let scale = min(availableDimension / imageSize.width, availableDimension / imageSize.height)
+        let fittedSize = CGSize(width: imageSize.width * scale, height: imageSize.height * scale)
+        return CGRect(x: rect.midX - fittedSize.width / 2,
+                      y: rect.midY - fittedSize.height / 2,
+                      width: fittedSize.width,
+                      height: fittedSize.height)
+    }
+
+    func imageTintColor(enabled: Bool) -> NSColor {
+        DesignSystem.color(enabled ? .textPrimary : .textDisabled, appearance: effectiveAppearance)
     }
 
     private enum SegmentState {

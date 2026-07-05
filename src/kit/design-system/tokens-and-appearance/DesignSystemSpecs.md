@@ -15,6 +15,7 @@ Owns shared AppKit visual tokens used by production surfaces.
 - Shared Settings search fields use the flat bordered sidebar surface, app-owned padding, and app-owned focus chrome instead of the stock rounded bezel and exterior ring.
 - Dark-mode Settings surfaces use opaque matte grays instead of translucent white overlays so cards and controls stay dense against the window background.
 - Selection and focus emphasize different states: selection stays neutral while focus uses the stronger accent treatment.
+- Template images in segmented controls use semantic text colors and retain their source aspect ratio.
 
 ## Test scenarios
 
@@ -30,5 +31,7 @@ Mirrors `DesignSystemTests.swift` 1:1.
 - **testPopupButtonUsesAppOwnedSurface** — Settings popup buttons keep native menu behavior while drawing through the app-owned flat surface.
 - **testSearchFieldUsesFlatSurfaceWithoutStockBezel** — sidebar search styling strips the stock rounded bezel and exterior focus ring, then replaces them with the shared flat field treatment and padded layout.
 - **testSegmentedControlUsesAppOwnedSurface** — segmented choices keep `NSSegmentedControl` behavior while drawing through the app-owned design-system surface.
+- **testSegmentedControlImageContentPreservesAspectRatio** — narrow symbols such as minus remain narrow instead of stretching into a square.
+- **testSegmentedControlImageContentUsesSemanticTint** — enabled and disabled template images use the matching semantic text role.
 - **testDarkModeSurfacesUseOpaqueMattePalette** — dark-mode Settings surfaces are fully opaque and step upward in brightness from plateau to flat to selected.
 - **testWindowContentViewLayersMaterialBehindInsetContent** — secondary window content keeps the design-system material behind titlebar-inset content.

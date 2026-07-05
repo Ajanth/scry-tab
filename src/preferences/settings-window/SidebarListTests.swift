@@ -51,4 +51,24 @@ final class SidebarListTests: XCTestCase {
                                     secondAttribute: .bottom,
                                     constant: -SidebarListRow.highlightVerticalInset))
     }
+
+    func testFixedSidebarHeightDoesNotFollowEditorHeight() {
+        let sidebar = NSView()
+        let editor = NSView()
+        sidebar.translatesAutoresizingMaskIntoConstraints = false
+        editor.translatesAutoresizingMaskIntoConstraints = false
+        sidebar.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        editor.widthAnchor.constraint(equalToConstant: SettingsWindow.contentWidth - 201).isActive = true
+        _ = makeSidebarEditorContainer(sidebar: sidebar, editor: editor, fixedSidebarHeight: 470, chrome: .plain)
+        XCTAssertTrue(sidebar.constraints.contains {
+            $0.firstAnchor == sidebar.heightAnchor
+                && $0.secondAnchor == nil
+                && $0.relation == .equal
+                && $0.constant == 470
+        })
+        XCTAssertFalse(sidebar.constraints.contains {
+            $0.firstAnchor == sidebar.heightAnchor
+                && $0.secondAnchor == editor.heightAnchor
+        })
+    }
 }

@@ -42,7 +42,7 @@ class ControlsTab {
 
     private static let shortcutSidebarWidth = CGFloat(208)
     private static let sidebarRowHeight = CGFloat(60)
-    private static let sidebarHorizontalPadding = TableGroupView.padding
+    private static let sidebarTrailingPadding = TableGroupView.padding
     private static let shortcutSidebarSectionInset = CGFloat(8)
     private static let shortcutSidebarSectionGap = CGFloat(8)
     private static let shortcutSidebarRowInset = CGFloat(8)
@@ -263,7 +263,10 @@ class ControlsTab {
     // MARK: - Sidebar + container view
 
     private static func makeShortcutsView() -> NSView {
-        return makeSidebarEditorContainer(sidebar: makeShortcutSidebar(), editor: makeEditorPane(), chrome: .plain)
+        return makeSidebarEditorContainer(sidebar: makeShortcutSidebar(),
+                                          editor: makeEditorPane(),
+                                          fixedSidebarHeight: DesignSystem.Metrics.settingsEditorSidebarHeight,
+                                          chrome: .plain)
     }
 
     private static func makeEditorPane() -> NSView {
@@ -363,8 +366,8 @@ class ControlsTab {
             rows.trailingAnchor.constraint(equalTo: documentView.trailingAnchor),
             rows.bottomAnchor.constraint(lessThanOrEqualTo: documentView.bottomAnchor),
             shortcutsSection.topAnchor.constraint(equalTo: listContainer.topAnchor, constant: TableGroupView.padding),
-            shortcutsSection.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: sidebarHorizontalPadding),
-            shortcutsSection.trailingAnchor.constraint(equalTo: listContainer.trailingAnchor, constant: -sidebarHorizontalPadding),
+            shortcutsSection.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor),
+            shortcutsSection.trailingAnchor.constraint(equalTo: listContainer.trailingAnchor, constant: -sidebarTrailingPadding),
             shortcutsSection.bottomAnchor.constraint(equalTo: buttonsRow.topAnchor, constant: -TableGroupView.padding),
             rowsScrollView.topAnchor.constraint(equalTo: shortcutsSection.topAnchor, constant: shortcutSidebarSectionInset),
             rowsScrollView.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: shortcutSidebarRowInset),
@@ -382,7 +385,7 @@ class ControlsTab {
             navigationPointerRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -shortcutSidebarRowInset),
             navigationPointerRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
             navigationPointerRow.bottomAnchor.constraint(equalTo: shortcutsSection.bottomAnchor, constant: -shortcutSidebarSectionInset),
-            buttonsRow.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: TableGroupView.sidebarToolRowHorizontalPadding),
+            buttonsRow.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: DesignSystem.Metrics.headerFooterGap),
             buttonsRow.trailingAnchor.constraint(lessThanOrEqualTo: listContainer.trailingAnchor, constant: -TableGroupView.sidebarToolRowHorizontalPadding),
             buttonsRow.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor, constant: -TableGroupView.padding),
         ])
