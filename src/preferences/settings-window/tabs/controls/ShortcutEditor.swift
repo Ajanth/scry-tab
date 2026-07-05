@@ -219,10 +219,10 @@ final class TriggerBinding {
     let view: NSView
     private let holdRecorder: CustomRecorderControl
     private let nextRecorder: CustomRecorderControl
-    private let holdLabel = NSTextField(labelWithString: "")
-    private let andPressLabel: NSTextField
     private static let holdLabelText = NSLocalizedString("Hold", comment: "")
     private static let andPressText = NSLocalizedString("and press", comment: "")
+    private static let inlineControlSpacing = CGFloat(12)
+    private static let labelToControlSpacing = CGFloat(8)
     // The next-window recorder's human-readable name, stored alongside it in `shortcutControls`.
     private static let selectNextText = NSLocalizedString("Select next window", comment: "")
     private var currentIndex: Int = -1
@@ -232,13 +232,19 @@ final class TriggerBinding {
         holdRecorder = CustomRecorderControl(nil, false, "holdShortcut0")
         nextRecorder = CustomRecorderControl(nil, true, "nextWindowShortcut0")
 
-        let holdLabelField = LabelAndControl.makeLabel(TriggerBinding.holdLabelText)
-        andPressLabel = LabelAndControl.makeLabel(TriggerBinding.andPressText)
-
-        let stack = NSStackView(views: [holdLabelField, holdRecorder, andPressLabel, nextRecorder])
+        let stack = NSStackView()
         stack.orientation = .horizontal
         stack.alignment = .centerY
-        stack.spacing = TableGroupView.spacing
+        stack.spacing = TriggerBinding.inlineControlSpacing
+        stack.setContentHuggingPriority(.required, for: .horizontal)
+        stack.setContentCompressionResistancePriority(.required, for: .horizontal)
+        stack.addArrangedSubview(Self.makeInlineLabel(TriggerBinding.holdLabelText))
+        stack.setCustomSpacing(TriggerBinding.labelToControlSpacing, after: stack.arrangedSubviews.last!)
+        stack.addArrangedSubview(holdRecorder)
+        stack.setCustomSpacing(TriggerBinding.inlineControlSpacing, after: holdRecorder)
+        stack.addArrangedSubview(Self.makeInlineLabel(TriggerBinding.andPressText))
+        stack.setCustomSpacing(TriggerBinding.labelToControlSpacing, after: stack.arrangedSubviews.last!)
+        stack.addArrangedSubview(nextRecorder)
         stack.heightAnchor.constraint(equalToConstant: ShortcutEditor.triggerRowContentHeight).isActive = true
         view = stack
 
@@ -263,6 +269,23 @@ final class TriggerBinding {
             ControlsTab.shortcutChangedCallback(self.nextRecorder)
             ControlsTab.refreshShortcutRowContent(forIndex: self.currentIndex)
         }
+    }
+
+    private static func makeInlineLabel(_ text: String) -> NSView {
+        let wrapper = NSView()
+        wrapper.translatesAutoresizingMaskIntoConstraints = false
+        wrapper.heightAnchor.constraint(equalToConstant: ShortcutEditor.triggerRowContentHeight).isActive = true
+        let label = LabelAndControl.makeLabel(text)
+        label.alignment = .left
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        wrapper.addSubview(label)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: wrapper.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: wrapper.trailingAnchor),
+            label.centerYAnchor.constraint(equalTo: wrapper.centerYAnchor),
+        ])
+        return wrapper
     }
 
     func bind(toShortcut index: Int) {
@@ -449,16 +472,37 @@ final class AppearancePane {
             segmentWidth: 100,
             onChange: onChange)
 
-        let table = TableGroupView(width: width)
-        let styleRow = NSStackView(views: [style.stack, style.unlink])
+        let styleTable = TableGroupView(width: width)
+        let styleRow = NSStackView()
         styleRow.orientation = .horizontal
         styleRow.alignment = .centerY
         styleRow.spacing = TableGroupView.padding
-        table.addRow(secondaryViews: [styleRow], secondaryViewsAlignment: .centerX)
-        table.addRow(leftText: AppearanceTab.labelSize, rightViews: [size.segmented, size.unlink])
-        table.addRow(leftText: AppearanceTab.labelTheme, rightViews: [theme.segmented, theme.unlink])
-        table.addRow(leftText: AppearanceTab.labelShortcutStyle, rightViews: [shortcutStyle.segmented, shortcutStyle.unlink])
-        view = table
+        let leadingStyleSpacer = NSView()
+        let trailingStyleSpacer = NSView()
+        [leadingStyleSpacer, trailingStyleSpacer].forEach {
+            $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        }
+        style.stack.setContentHuggingPriority(.required, for: .horizontal)
+        style.stack.setContentCompressionResistancePriority(.required, for: .horizontal)
+        styleRow.addArrangedSubview(leadingStyleSpacer)
+        styleRow.addArrangedSubview(style.stack)
+        styleRow.addArrangedSubview(trailingStyleSpacer)
+        styleRow.addArrangedSubview(style.unlink)
+        leadingStyleSpacer.widthAnchor.constraint(equalTo: trailingStyleSpacer.widthAnchor).isActive = true
+        styleTable.addRow(secondaryViews: [styleRow], secondaryViewsAlignment: .centerX)
+
+        let overridesTable = TableGroupView(width: width)
+        overridesTable.addRow(leftText: AppearanceTab.labelSize, rightViews: [size.segmented, size.unlink])
+        overridesTable.addRow(leftText: AppearanceTab.labelTheme, rightViews: [theme.segmented, theme.unlink])
+        overridesTable.addRow(leftText: AppearanceTab.labelShortcutStyle, rightViews: [shortcutStyle.segmented, shortcutStyle.unlink])
+
+        let container = NSStackView(views: [styleTable, overridesTable])
+        container.orientation = .vertical
+        container.alignment = .leading
+        container.spacing = TableGroupSetView.tableGroupSpacing
+        container.translatesAutoresizingMaskIntoConstraints = false
+        view = container
     }
 
     func bind(toShortcut index: Int) {
@@ -605,7 +649,9 @@ final class ShortcutOverrideRadios {
             Preferences.indexToName(baseName, 0),
             cases as! [ImageMacroPreference],
             extraAction: nil,
-            buttonSpacing: 10)
+            buttonSpacing: 18)
+        stack.setContentHuggingPriority(.required, for: .horizontal)
+        stack.setContentCompressionResistancePriority(.required, for: .horizontal)
         unlink = ShortcutEditor.makeUnlinkButton()
 
         let weakSelf = WeakRef(self)

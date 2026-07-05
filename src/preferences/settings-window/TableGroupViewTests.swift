@@ -38,6 +38,15 @@ final class TableGroupViewTests: XCTestCase {
         XCTAssertFalse(hasStandaloneConstraint(mainRow, attribute: .height, relation: .equal))
     }
 
+    func testSecondaryOnlyRowsSkipPlaceholderMainRow() throws {
+        let table = TableGroupView(width: 320)
+        let secondary = NSView()
+        let rowInfo = table.addRow(secondaryViews: [secondary], secondaryViewsAlignment: .centerX)
+        let rowView = try XCTUnwrap(rowInfo.view as? NSStackView)
+        XCTAssertTrue(rowView.arrangedSubviews.isEmpty)
+        XCTAssertEqual(rowView.subviews.filter { $0 is NSStackView }.count, 1)
+    }
+
     private func hasConstraint(_ view: NSView,
                                first: NSView,
                                firstAttribute: NSLayoutConstraint.Attribute,

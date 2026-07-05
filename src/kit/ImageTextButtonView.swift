@@ -52,9 +52,9 @@ class ImageTextButtonView: NSStackView {
     static let tileCornerRadius = DesignSystem.Metrics.sectionRadius
     static let borderWidth = CGFloat(1)
     static let selectedBorderWidth = CGFloat(2)
-    static let outerPadding = CGFloat(4)
-    static let previewInset = CGFloat(3)
-    static let labelTopSpacing = CGFloat(8)
+    static let outerPadding = CGFloat(6)
+    static let previewInset = CGFloat(5)
+    static let labelTopSpacing = CGFloat(10)
 
     var onClick: ActionClosure?
     var button: NSButton!
@@ -216,14 +216,12 @@ class ImageTextButtonView: NSStackView {
         let surfaceSelected = DesignSystem.color(.surfaceSelected, appearance: effectiveAppearance)
         let fillColor = isSelected ? mixedColor(surfaceSelected, accent.withAlphaComponent(isDark ? 0.82 : 0.68), fraction: isDark ? 0.32 : 0.18) : surfaceFlat
         let borderColor = isSelected ? mixedColor(DesignSystem.color(.borderSelected, appearance: effectiveAppearance), accent, fraction: 0.28) : DesignSystem.color(.borderSubtle, appearance: effectiveAppearance)
-        let tileFillColor = isSelected ? accent.withAlphaComponent(isDark ? 0.13 : 0.08) : .clear
-        let tileBorderColor = isSelected ? accent.withAlphaComponent(isDark ? 0.42 : 0.24) : .clear
-        layer?.backgroundColor = DesignSystem.resolvedCGColor(tileFillColor, in: self)
-        layer?.borderColor = DesignSystem.resolvedCGColor(tileBorderColor, in: self)
-        layer?.borderWidth = isSelected ? 1 : 0
-        layer?.shadowColor = DesignSystem.resolvedCGColor(accent.withAlphaComponent(isDark ? 0.28 : 0.18), in: self)
-        layer?.shadowOpacity = isSelected ? 1 : 0
-        layer?.shadowRadius = isSelected ? (isPressed ? 6 : 10) : 0
+        layer?.backgroundColor = NSColor.clear.cgColor
+        layer?.borderColor = NSColor.clear.cgColor
+        layer?.borderWidth = 0
+        layer?.shadowColor = nil
+        layer?.shadowOpacity = 0
+        layer?.shadowRadius = 0
         layer?.shadowOffset = .zero
         button.layer?.cornerRadius = buttonCornerRadius
         button.layer?.backgroundColor = DesignSystem.resolvedCGColor(fillColor, in: self)

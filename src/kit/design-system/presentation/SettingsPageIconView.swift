@@ -16,14 +16,19 @@ struct SettingsPageIconDescriptor: Equatable {
 }
 
 final class SettingsPageIconView: NSView {
+    private static var symbolImages = [String: NSImage]()
+    private let imageView = NSImageView()
+
     var descriptor: SettingsPageIconDescriptor {
-        didSet { needsDisplay = true }
+        didSet { refreshContent() }
     }
 
     init(descriptor: SettingsPageIconDescriptor = SettingsPageIconDescriptor.descriptor(for: .appearance)) {
         self.descriptor = descriptor
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        setupView()
+        refreshContent()
     }
 
     required init?(coder: NSCoder) {
@@ -34,35 +39,56 @@ final class SettingsPageIconView: NSView {
         NSSize(width: 22, height: 22)
     }
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-        let rect = bounds.insetBy(dx: 0.5, dy: 0.5)
-        drawTile(in: rect)
-        drawSymbol(in: rect)
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshColors()
     }
 
-    private func drawTile(in rect: NSRect) {
-        let path = NSBezierPath(roundedRect: rect, xRadius: DesignSystem.Metrics.sidebarIconRadius, yRadius: DesignSystem.Metrics.sidebarIconRadius)
-        let base = descriptor.baseColor
-        let top = base.blended(withFraction: 0.12, of: .white) ?? base
-        let bottom = base.blended(withFraction: 0.08, of: .black) ?? base
-        NSGradient(starting: top, ending: bottom)?.draw(in: path, angle: 90)
+    private func setupView() {
+        wantsLayer = true
+        layer?.cornerRadius = DesignSystem.Metrics.sidebarIconRadius
+        layer?.borderWidth = 1
+        layer?.masksToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.imageScaling = .scaleProportionallyDown
+        addSubview(imageView)
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 12),
+            imageView.heightAnchor.constraint(equalToConstant: 12),
+        ])
+    }
+
+    private func refreshContent() {
+        let image = Self.symbolImage(for: descriptor.symbolValue)
+        if #available(macOS 10.14, *) {
+            imageView.image = image
+            imageView.contentTintColor = .white
+        } else {
+            imageView.image = image?.tinted(.white)
+        }
+        refreshColors()
+    }
+
+    private func refreshColors() {
+        layer?.backgroundColor = DesignSystem.resolvedCGColor(descriptor.baseColor, in: self)
         let strokeColor = DesignSystem.isDark(effectiveAppearance)
             ? NSColor.white.withAlphaComponent(0.14)
             : NSColor.black.withAlphaComponent(0.08)
-        strokeColor.setStroke()
-        path.lineWidth = 1
-        path.stroke()
+        layer?.borderColor = DesignSystem.resolvedCGColor(strokeColor, in: self)
     }
 
-    private func drawSymbol(in rect: NSRect) {
-        let font = NSFont(name: "SF Pro Text", size: 12) ?? NSFont.systemFont(ofSize: 12, weight: .medium)
-        let paragraph = NSMutableParagraphStyle()
-        paragraph.alignment = .center
-        let attrs: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: NSColor.white, .paragraphStyle: paragraph]
-        let string = NSString(string: descriptor.symbolValue)
-        let size = string.size(withAttributes: attrs)
-        let symbolRect = NSRect(x: rect.midX - size.width / 2, y: rect.midY - size.height / 2 - 0.5, width: size.width, height: size.height)
-        string.draw(in: symbolRect, withAttributes: attrs)
+    private static func symbolImage(for symbolValue: String) -> NSImage? {
+        if let image = symbolImages[symbolValue] {
+            return image
+        }
+        guard let symbol = Symbols(rawValue: symbolValue) else {
+            return nil
+        }
+        let image = NSImage.fromSymbol(symbol, pointSize: 12)
+        symbolImages[symbolValue] = image
+        return image
     }
 }
