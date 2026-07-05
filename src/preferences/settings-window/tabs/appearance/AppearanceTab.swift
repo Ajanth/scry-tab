@@ -493,8 +493,7 @@ class AppearanceTab: NSObject {
     }
 
     private static func makeAppearanceControlsView(_ previewPane: AppearanceStylePreviewPane) -> TableGroupView {
-        let table = TableGroupView(subTitle: NSLocalizedString("Switch between 2 different styles. You can customize them.", comment: ""),
-            width: appearanceControlsWidth)
+        let table = TableGroupView(width: appearanceControlsWidth)
         let styleControl = makeStyleSegmentedControl(previewPane)
         table.addRow(leftText: NSLocalizedString("Style", comment: ""), rightViews: [styleControl])
         let sizeControl = makeGlobalSegmentedControl("appearanceSize", overrideBaseName: "appearanceSizeOverride",
