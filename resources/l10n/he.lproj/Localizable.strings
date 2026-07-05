@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "החלקה אנכית ב-4 אצבעות";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "פרופיל איתור באגים (גרסאות, הגדרות, חומרה) מצורף כדי לסייע באבחון הבעיה.";
 "A new version of ScryTab is available" = "גרסה חדשה של ScryTab זמינה";
+"About" = "אודות";
 "About %@" = "אודות %@";
 "Accessibility" = "נגישות";
+"Acknowledgments" = "תודות";
 "Active app" = "יישום פעיל";
 "Active screen" = "מסך פעיל";
 "Add a pattern" = "הוסף תבנית";
 "Add a running app" = "הוסף יישום פעיל";
 "Add an app from disk" = "הוסף יישום מהדיסק";
 "Additional controls" = "פקדים נוספים";
-"Additional controls…" = "פקדים נוספים…";
 "After keys are released" = "לאחר שחרור המקשים";
 "All apps" = "כל היישומים";
 "All screens" = "כל המסכים";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "אני חושב שהיישום יכול להשתפר עם…";
 "Ignore shortcuts" = "התעלם מקיצורי דרך";
 "Import settings…" = "ייבא הגדרות…";
+"Keyboard, mouse, and trackpad" = "מקלדת, עכבר ומשטח עקיבה";
 "Language" = "שפה";
 "Language Change" = "שינוי שפה";
 "Large" = "גדול";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "העבר לתיקיית היישומים";
 "Move to Applications folder?" = "להעביר לתיקיית היישומים?";
 "Multiple screens" = "מסכים מרובים";
+"Navigation & pointer" = "ניווט ומצביע";
 "Never" = "אף פעם";
 "Never send crash reports" = "אל תשלח דיווחי קריסה אף פעם";
 "No Window" = "אין חלון";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "פתח הגדרות נגישות…";
 "Open Trackpad Settings…" = "פתח הגדרות משטח מגע…";
 "Order windows by" = "מיין חלונות לפי";
+"Ordering" = "סדר";
 "Ordering & Grouping" = "מיון וקיבוץ";
+"Pause preview animation" = "השהה את הנפשת התצוגה המקדימה";
 "Please drag ScryTab into the Applications folder manually." = "גרור את ScryTab לתיקיית היישומים באופן ידני.";
 "Please fill in the form" = "מלא את הטופס";
+"Preview of the selected appearance style" = "תצוגה מקדימה של סגנון המראה שנבחר";
 "Quit %@" = "צא מ-%@";
 "Quit app" = "צא מהיישום";
 "Recently Created First" = "האחרונים שנוצרו תחילה";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "אפס הגדרות והפעל מחדש";
 "Reset settings and restart…" = "אפס הגדרות והפעל מחדש…";
 "Restart Now" = "הפעל מחדש כעת";
+"Resume preview animation" = "המשך את הנפשת התצוגה המקדימה";
 "Screen including menu bar" = "מסך הכולל את שורת התפריטים";
 "Screen including mouse" = "מסך הכולל את העכבר";
 "Screen showing ScryTab" = "מסך המציג את ScryTab";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab קרס בפעם האחרונה שהשתמשת בו. שליחת דיווח קריסה תסייע לתקן את הבעיה";
+"ScryTab needs accessibility permission" = "ScryTab זקוק להרשאת נגישות";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab יציג באמצעות סמל מצב אם החלון ממוזער או במסך מלא.";
 "Search" = "חיפוש";
 "Select next window" = "בחר בחלון הבא";
@@ -147,7 +155,7 @@
 "Shortcut" = "קיצור דרך";
 "Shortcut already assigned to: %@" = "קיצור הדרך כבר משויך: %@";
 "Shortcuts When Active" = "קיצורי דרך כאשר פעיל";
-"Shortcuts when active…" = "קיצורי דרך כאשר פעיל…";
+"Shortcuts while ScryTab is active" = "קיצורי דרך בזמן ש-ScryTab פעיל";
 "Show" = "הצג";
 "Show all windows" = "הצג את כל החלונות";
 "Show apps with no open window" = "הצג יישומים ללא חלון פתוח";
@@ -170,6 +178,7 @@
 "Space Order" = "סדר המרחבים";
 "Start" = "התחלה";
 "Start at login" = "הפעל בעת ההתחברות";
+"Style" = "סגנון";
 "Suggest a change" = "הצע שינוי";
 "System" = "מערכת";
 "System Default" = "ברירת המחדל של המערכת";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "היישום צריך להיפתח מחדש כדי להחיל את שינוי השפה.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "השרת לא קיבל את ההגשה. בדוק את חיבור האינטרנט ונסה שוב — הטיוטה שלך נשמרת.";
 "Theme" = "ערכת נושא";
-"This permission is needed to focus windows after you release the shortcut" = "הרשאה זו נחוצה כדי למקד חלונות לאחר שחרור קיצור הדרך";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "הרשאה זו נדרשת כדי להתמקד בחלונות לאחר שחרור קיצור הדרך. הפעל את “%@” ב'הגדרות המערכת' > פרטיות ואבטחה > נגישות. רשומת “ScryTab” מופעלת עבור בנייה אחרת אינה נחשבת.";
 "This will keep your Downloads folder uncluttered." = "כך תיקיית ההורדות שלך תישאר מסודרת.";
 "Title truncation" = "קיצור כותרת";
 "Titles" = "כותרות";
+"Trackpad" = "משטח עקיבה";
 "Trackpad haptic feedback" = "משוב הפטי של משטח מגע";
 "Trigger" = "טריגר";
 "Unassign existing shortcut and continue" = "בטל שיוך של קיצור דרך קיים והמשך";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "מה ציפית? מה קרה? שלבים לשחזור…";
 "When fullscreen" = "כאשר במסך מלא";
 "When no open window" = "כאשר אין חלון פתוח";
+"Window actions" = "פעולות חלון";
 "Window is fullscreen" = "חלון במסך מלא";
 "Window is minimized" = "חלון ממוזער";
 "Window is on every Space" = "חלון נמצא בכל מרחב";

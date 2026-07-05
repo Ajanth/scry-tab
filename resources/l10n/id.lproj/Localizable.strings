@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "Gesek Vertikal 4 Jari";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Profil debug (versi, pengaturan, perangkat keras) dilampirkan untuk membantu mendiagnosis masalah.";
 "A new version of ScryTab is available" = "Versi baru ScryTab tersedia";
+"About" = "Tentang";
 "About %@" = "Tentang %@";
 "Accessibility" = "Aksesibilitas";
+"Acknowledgments" = "Ucapan terima kasih";
 "Active app" = "Aplikasi aktif";
 "Active screen" = "Layar aktif";
 "Add a pattern" = "Tambah pola";
 "Add a running app" = "Tambah aplikasi yang sedang berjalan";
 "Add an app from disk" = "Tambah aplikasi dari disk";
 "Additional controls" = "Kontrol tambahan";
-"Additional controls…" = "Kontrol tambahan…";
 "After keys are released" = "Setelah tombol dilepas";
 "All apps" = "Semua aplikasi";
 "All screens" = "Semua layar";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "Menurut saya aplikasi dapat ditingkatkan dengan…";
 "Ignore shortcuts" = "Abaikan pintasan";
 "Import settings…" = "Impor pengaturan…";
+"Keyboard, mouse, and trackpad" = "Papan ketik, mouse, dan trackpad";
 "Language" = "Bahasa";
 "Language Change" = "Perubahan Bahasa";
 "Large" = "Besar";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "Pindahkan ke Folder Aplikasi";
 "Move to Applications folder?" = "Pindahkan ke folder Aplikasi?";
 "Multiple screens" = "Beberapa layar";
+"Navigation & pointer" = "Navigasi & penunjuk";
 "Never" = "Tidak Pernah";
 "Never send crash reports" = "Jangan pernah kirim laporan kerusakan";
 "No Window" = "Tanpa Jendela";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "Buka Pengaturan Aksesibilitas…";
 "Open Trackpad Settings…" = "Buka Pengaturan Trackpad…";
 "Order windows by" = "Urutkan jendela berdasarkan";
+"Ordering" = "Pengurutan";
 "Ordering & Grouping" = "Pengurutan & Pengelompokan";
+"Pause preview animation" = "Jeda animasi pratinjau";
 "Please drag ScryTab into the Applications folder manually." = "Seret ScryTab ke folder Aplikasi secara manual.";
 "Please fill in the form" = "Isi formulir";
+"Preview of the selected appearance style" = "Pratinjau gaya tampilan yang dipilih";
 "Quit %@" = "Keluar dari %@";
 "Quit app" = "Keluar dari aplikasi";
 "Recently Created First" = "Terbaru Dibuat Dulu";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "Setel ulang pengaturan dan mulai ulang";
 "Reset settings and restart…" = "Setel ulang pengaturan dan mulai ulang…";
 "Restart Now" = "Mulai Ulang Sekarang";
+"Resume preview animation" = "Lanjutkan animasi pratinjau";
 "Screen including menu bar" = "Layar termasuk bilah menu";
 "Screen including mouse" = "Layar termasuk tetikus";
 "Screen showing ScryTab" = "Layar yang menampilkan ScryTab";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab mengalami kerusakan saat terakhir kali Anda menggunakannya. Mengirim laporan kerusakan akan membantu memperbaiki masalah";
+"ScryTab needs accessibility permission" = "ScryTab memerlukan izin aksesibilitas";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab akan menampilkan ikon status jika jendela saat ini diminimalkan atau dalam layar penuh.";
 "Search" = "Cari";
 "Select next window" = "Pilih jendela berikutnya";
@@ -147,7 +155,7 @@
 "Shortcut" = "Pintasan";
 "Shortcut already assigned to: %@" = "Pintasan sudah ditetapkan untuk: %@";
 "Shortcuts When Active" = "Pintasan Saat Aktif";
-"Shortcuts when active…" = "Pintasan saat aktif…";
+"Shortcuts while ScryTab is active" = "Pintasan saat ScryTab aktif";
 "Show" = "Tampilkan";
 "Show all windows" = "Tampilkan semua jendela";
 "Show apps with no open window" = "Tampilkan aplikasi tanpa jendela terbuka";
@@ -170,6 +178,7 @@
 "Space Order" = "Urutan Ruang";
 "Start" = "Mulai";
 "Start at login" = "Jalankan saat masuk";
+"Style" = "Gaya";
 "Suggest a change" = "Sarankan perubahan";
 "System" = "Sistem";
 "System Default" = "Bawaan Sistem";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "Aplikasi perlu dimulai ulang untuk menerapkan perubahan bahasa.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Server tidak menerima kiriman. Periksa koneksi internet Anda dan coba lagi — draf Anda tetap tersimpan.";
 "Theme" = "Tema";
-"This permission is needed to focus windows after you release the shortcut" = "Izin ini diperlukan untuk memfokuskan jendela setelah Anda melepas pintasan";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Izin ini diperlukan untuk memfokuskan jendela setelah Anda melepas pintasan. Aktifkan “%@” di Pengaturan Sistem > Privasi & Keamanan > Aksesibilitas. Entri “ScryTab” yang diaktifkan untuk build lain tidak dihitung.";
 "This will keep your Downloads folder uncluttered." = "Ini akan menjaga folder Unduhan Anda tetap rapi.";
 "Title truncation" = "Pemotongan judul";
 "Titles" = "Judul";
+"Trackpad" = "Trackpad";
 "Trackpad haptic feedback" = "Umpan balik haptik Trackpad";
 "Trigger" = "Pemicu";
 "Unassign existing shortcut and continue" = "Hapus penetapan pintasan yang ada dan lanjutkan";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Apa yang Anda harapkan? Apa yang terjadi? Langkah-langkah untuk mereproduksi…";
 "When fullscreen" = "Saat layar penuh";
 "When no open window" = "Saat tidak ada jendela terbuka";
+"Window actions" = "Tindakan jendela";
 "Window is fullscreen" = "Jendela dalam layar penuh";
 "Window is minimized" = "Jendela diminimalkan";
 "Window is on every Space" = "Jendela ada di setiap Ruang";

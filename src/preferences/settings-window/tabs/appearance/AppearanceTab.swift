@@ -263,8 +263,8 @@ class ShowHideIllustratedView {
 private final class AppearanceStylePreviewPane: NSView {
     static let width = CGFloat(268)
     static let splitSpacing = CGFloat(12)
-    private static let imageInset = CGFloat(16)
-    private let imageView = NSImageView()
+    private static let contentInset = CGFloat(16)
+    private let livePreviewView = AppearanceLivePreviewView()
     private var accessibilityObserver: NSObjectProtocol?
 
     override init(frame frameRect: NSRect) {
@@ -288,7 +288,9 @@ private final class AppearanceStylePreviewPane: NSView {
         if let accessibilityObserver {
             NotificationCenter.default.removeObserver(accessibilityObserver)
         }
-        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+        accessibilityObserver = NotificationCenter.default.addObserver(
+            forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main
+        ) { [weak self] _ in
             self?.refreshSurface()
         }
         refreshSurface()
@@ -301,26 +303,22 @@ private final class AppearanceStylePreviewPane: NSView {
     }
 
     func updateStyle(_ style: AppearanceStylePreference) {
-        imageView.image = IllustratedImageThemeView.loadIllustration(IllustratedImageThemeView.getConcatenatedImageName(style, "light"))
+        livePreviewView.updateStyle(style)
     }
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         DesignSystemControlStyler.styleSurface(self)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.imageScaling = .scaleProportionallyUpOrDown
-        imageView.wantsLayer = true
-        imageView.layer?.masksToBounds = true
-        imageView.layer?.cornerRadius = TableGroupView.cornerRadius
-        addSubview(imageView)
+        addSubview(livePreviewView)
+        // Fills the whole card instead of a vertically-centered aspect-ratio box, so the
+        // pause button (pinned to livePreviewView's own top-trailing corner) lands in this
+        // card's actual corner rather than floating close to the centered demo tiles.
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: Self.width),
-            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Self.imageInset),
-            imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Self.imageInset),
-            imageView.widthAnchor.constraint(equalTo: widthAnchor, constant: -2 * Self.imageInset),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1 / 1.6),
+            livePreviewView.topAnchor.constraint(equalTo: topAnchor, constant: Self.contentInset),
+            livePreviewView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.contentInset),
+            livePreviewView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.contentInset),
+            livePreviewView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Self.contentInset),
         ])
     }
 

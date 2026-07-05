@@ -1,8 +1,8 @@
 import Cocoa
 
 // To add an SF Symbol: open SF Symbols.app, search for the symbol, press Cmd-C to copy
-// its character, paste the rawValue below, then add the same character to the --text=
-// argument of scripts/assets/subset_font.sh so it ships in the bundled font subset.
+// its character, paste the rawValue below, then add the same code point to
+// scripts/assets/subset_font.sh so it ships in the bundled font subset.
 enum Symbols: String {
     // Switcher status icons
     case circledPlusSign = "􀁌"       // plus.circle

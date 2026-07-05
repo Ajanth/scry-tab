@@ -16,11 +16,17 @@
 /* No comment provided by engineer. */
 "A new version of ScryTab is available" = "A new version of ScryTab is available";
 
+/* No comment provided by engineer. */
+"About" = "About";
+
 /* Menubar option. %@ is ScryTab */
 "About %@" = "About %@";
 
 /* No comment provided by engineer. */
 "Accessibility" = "Accessibility";
+
+/* No comment provided by engineer. */
+"Acknowledgments" = "Acknowledgments";
 
 /* No comment provided by engineer. */
 "Active app" = "Active app";
@@ -39,9 +45,6 @@
 
 /* No comment provided by engineer. */
 "Additional controls" = "Additional controls";
-
-/* No comment provided by engineer. */
-"Additional controls…" = "Additional controls…";
 
 /* No comment provided by engineer. */
 "After keys are released" = "After keys are released";
@@ -269,6 +272,9 @@
 "Import settings…" = "Import settings…";
 
 /* No comment provided by engineer. */
+"Keyboard, mouse, and trackpad" = "Keyboard, mouse, and trackpad";
+
+/* No comment provided by engineer. */
 "Language" = "Language";
 
 /* No comment provided by engineer. */
@@ -293,8 +299,6 @@
 "Medium" = "Medium";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "Middle" = "Middle";
 
 /* No comment provided by engineer. */
@@ -311,6 +315,9 @@
 
 /* No comment provided by engineer. */
 "Multiple screens" = "Multiple screens";
+
+/* No comment provided by engineer. */
+"Navigation & pointer" = "Navigation & pointer";
 
 /* No comment provided by engineer. */
 "Never" = "Never";
@@ -346,13 +353,22 @@
 "Order windows by" = "Order windows by";
 
 /* No comment provided by engineer. */
+"Ordering" = "Ordering";
+
+/* No comment provided by engineer. */
 "Ordering & Grouping" = "Ordering & Grouping";
+
+/* No comment provided by engineer. */
+"Pause preview animation" = "Pause preview animation";
 
 /* LetsMove replacement alert */
 "Please drag ScryTab into the Applications folder manually." = "Please drag ScryTab into the Applications folder manually.";
 
 /* No comment provided by engineer. */
 "Please fill in the form" = "Please fill in the form";
+
+/* No comment provided by engineer. */
+"Preview of the selected appearance style" = "Preview of the selected appearance style";
 
 /* %@ is ScryTab */
 "Quit %@" = "Quit %@";
@@ -383,6 +399,9 @@
 
 /* No comment provided by engineer. */
 "Restart Now" = "Restart Now";
+
+/* No comment provided by engineer. */
+"Resume preview animation" = "Resume preview animation";
 
 /* No comment provided by engineer. */
 "Screen including menu bar" = "Screen including menu bar";
@@ -451,7 +470,7 @@
 "Shortcuts When Active" = "Shortcuts When Active";
 
 /* No comment provided by engineer. */
-"Shortcuts when active…" = "Shortcuts when active…";
+"Shortcuts while ScryTab is active" = "Shortcuts while ScryTab is active";
 
 /* Menubar option */
 "Show" = "Show";
@@ -520,8 +539,10 @@
 "Start at login" = "Start at login";
 
 /* No comment provided by engineer. */
-"Suggest a change" = "Suggest a change";
+"Style" = "Style";
 
+/* No comment provided by engineer. */
+"Suggest a change" = "Suggest a change";
 
 /* No comment provided by engineer. */
 "System" = "System";
@@ -542,7 +563,7 @@
 "Theme" = "Theme";
 
 /* No comment provided by engineer. */
-"This permission is needed to focus windows after you release the shortcut" = "This permission is needed to focus windows after you release the shortcut";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count.";
 
 /* LetsMove replacement alert */
 "This will keep your Downloads folder uncluttered." = "This will keep your Downloads folder uncluttered.";
@@ -552,6 +573,9 @@
 
 /* No comment provided by engineer. */
 "Titles" = "Titles";
+
+/* No comment provided by engineer. */
+"Trackpad" = "Trackpad";
 
 /* No comment provided by engineer. */
 "Trackpad haptic feedback" = "Trackpad haptic feedback";
@@ -597,6 +621,9 @@
 
 /* No comment provided by engineer. */
 "When no open window" = "When no open window";
+
+/* No comment provided by engineer. */
+"Window actions" = "Window actions";
 
 /* No comment provided by engineer. */
 "Window is fullscreen" = "Window is fullscreen";

@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "4 parmakla dikey kaydırma";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Sorunun tanılanmasına yardımcı olmak için bir hata ayıklama profili (sürümler, ayarlar, donanım) eklendi.";
 "A new version of ScryTab is available" = "ScryTab’ın yeni bir sürümü mevcut";
+"About" = "Hakkında";
 "About %@" = "%@ hakkında";
 "Accessibility" = "Erişilebilirlik";
+"Acknowledgments" = "Teşekkürler";
 "Active app" = "Etkin uygulama";
 "Active screen" = "Etkin ekran";
 "Add a pattern" = "Desen ekle";
 "Add a running app" = "Çalışan bir uygulama ekle";
 "Add an app from disk" = "Diskten bir uygulama ekle";
 "Additional controls" = "Ek denetimler";
-"Additional controls…" = "Ek denetimler…";
 "After keys are released" = "Tuşlar bırakıldıktan sonra";
 "All apps" = "Tüm uygulamalar";
 "All screens" = "Tüm ekranlar";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "Bence uygulama şu eklenerek geliştirilebilir…";
 "Ignore shortcuts" = "Kısayolları yoksay";
 "Import settings…" = "Ayarları içe aktar…";
+"Keyboard, mouse, and trackpad" = "Klavye, fare ve izleme dörtgeni";
 "Language" = "Dil";
 "Language Change" = "Dil değişikliği";
 "Large" = "Büyük";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "Uygulamalar Klasörüne Taşı";
 "Move to Applications folder?" = "Uygulamalar klasörüne taşınsın mı?";
 "Multiple screens" = "Birden çok ekran";
+"Navigation & pointer" = "Gezinme ve imleç";
 "Never" = "Asla";
 "Never send crash reports" = "Çökme raporlarını asla gönderme";
 "No Window" = "Pencere Yok";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "Erişilebilirlik ayarlarını aç…";
 "Open Trackpad Settings…" = "Trackpad ayarlarını aç…";
 "Order windows by" = "Pencereleri sıralama ölçütü";
+"Ordering" = "Sıralama";
 "Ordering & Grouping" = "Sıralama ve Gruplama";
+"Pause preview animation" = "Önizleme animasyonunu duraklat";
 "Please drag ScryTab into the Applications folder manually." = "Lütfen ScryTab’ı el ile Uygulamalar klasörüne sürükleyin.";
 "Please fill in the form" = "Lütfen formu doldurun";
+"Preview of the selected appearance style" = "Seçili görünüm stilinin önizlemesi";
 "Quit %@" = "%@ uygulamasından çık";
 "Quit app" = "Uygulamadan çık";
 "Recently Created First" = "Önce Yeni Oluşturulanlar";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "Ayarları sıfırla ve yeniden başlat";
 "Reset settings and restart…" = "Ayarları sıfırla ve yeniden başlat…";
 "Restart Now" = "Şimdi Yeniden Başlat";
+"Resume preview animation" = "Önizleme animasyonunu sürdür";
 "Screen including menu bar" = "Menü çubuğunu içeren ekran";
 "Screen including mouse" = "Fareyi içeren ekran";
 "Screen showing ScryTab" = "ScryTab’ı gösteren ekran";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab en son kullandığınızda çöktü. Bir çökme raporu göndermek sorunun düzeltilmesine yardımcı olacaktır";
+"ScryTab needs accessibility permission" = "ScryTab erişilebilirlik iznine ihtiyaç duyar";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab, pencerenin şu anda küçültülmüş veya tam ekran olduğunu bir durum simgesiyle gösterir.";
 "Search" = "Ara";
 "Select next window" = "Sonraki pencereyi seç";
@@ -147,7 +155,7 @@
 "Shortcut" = "Kısayol";
 "Shortcut already assigned to: %@" = "Kısayol zaten şuna atanmış: %@";
 "Shortcuts When Active" = "Etkinken Kullanılan Kısayollar";
-"Shortcuts when active…" = "Etkinken kullanılan kısayollar…";
+"Shortcuts while ScryTab is active" = "ScryTab etkinken kestirmeler";
 "Show" = "Göster";
 "Show all windows" = "Tüm pencereleri göster";
 "Show apps with no open window" = "Açık penceresi olmayan uygulamaları göster";
@@ -170,6 +178,7 @@
 "Space Order" = "Alan sırası";
 "Start" = "Başlat";
 "Start at login" = "Oturum açıldığında başlat";
+"Style" = "Stil";
 "Suggest a change" = "Değişiklik öner";
 "System" = "Sistem";
 "System Default" = "Sistem Varsayılanı";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "Dil değişikliğini uygulamak için uygulamanın yeniden başlatılması gerekiyor.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Sunucu gönderimi kabul etmedi. İnternet bağlantınızı denetleyip yeniden deneyin — taslağınız korunuyor.";
 "Theme" = "Tema";
-"This permission is needed to focus windows after you release the shortcut" = "Bu izin, kısayolu bıraktıktan sonra pencerelere odaklanmak için gerekli";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Kestirmeyi bıraktıktan sonra pencerelere odaklanmak için bu izin gerekir. Sistem Ayarları > Gizlilik ve Güvenlik > Erişilebilirlik bölümünde “%@” öğesini etkinleştirin. Başka bir derleme için etkinleştirilmiş bir “ScryTab” girişi geçerli sayılmaz.";
 "This will keep your Downloads folder uncluttered." = "Bu, İndirilenler klasörünüzün düzenli kalmasını sağlar.";
 "Title truncation" = "Başlık kısaltma";
 "Titles" = "Başlıklar";
+"Trackpad" = "İzleme dörtgeni";
 "Trackpad haptic feedback" = "Trackpad dokunsal geri bildirimi";
 "Trigger" = "Tetikleyici";
 "Unassign existing shortcut and continue" = "Mevcut kısayolun atamasını kaldır ve devam et";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Ne bekliyordunuz? Ne oldu? Yeniden oluşturma adımları…";
 "When fullscreen" = "Tam ekrandayken";
 "When no open window" = "Açık pencere olmadığında";
+"Window actions" = "Pencere eylemleri";
 "Window is fullscreen" = "Pencere tam ekran";
 "Window is minimized" = "Pencere küçültülmüş";
 "Window is on every Space" = "Pencere her Alanda";

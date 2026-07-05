@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "Vertikalt svep med 4 fingrar";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "En felsökningsprofil (versioner, inställningar, hårdvara) bifogas för att hjälpa till att diagnostisera problemet.";
 "A new version of ScryTab is available" = "En ny version av ScryTab är tillgänglig";
+"About" = "Om";
 "About %@" = "Om %@";
 "Accessibility" = "Hjälpmedel";
+"Acknowledgments" = "Tack";
 "Active app" = "Aktiv app";
 "Active screen" = "Aktiv skärm";
 "Add a pattern" = "Lägg till ett mönster";
 "Add a running app" = "Lägg till en app som körs";
 "Add an app from disk" = "Lägg till en app från disk";
 "Additional controls" = "Ytterligare kontroller";
-"Additional controls…" = "Ytterligare kontroller…";
 "After keys are released" = "Efter att tangenterna släppts";
 "All apps" = "Alla appar";
 "All screens" = "Alla skärmar";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "Jag tycker appen skulle kunna förbättras med…";
 "Ignore shortcuts" = "Ignorera kortkommandon";
 "Import settings…" = "Importera inställningar…";
+"Keyboard, mouse, and trackpad" = "Tangentbord, mus och styrplatta";
 "Language" = "Språk";
 "Language Change" = "Språkändring";
 "Large" = "Stor";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "Flytta till mappen Program";
 "Move to Applications folder?" = "Flytta till mappen Program?";
 "Multiple screens" = "Flera skärmar";
+"Navigation & pointer" = "Navigering och pekare";
 "Never" = "Aldrig";
 "Never send crash reports" = "Skicka aldrig kraschrapporter";
 "No Window" = "Inget fönster";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "Öppna inställningar för Hjälpmedel…";
 "Open Trackpad Settings…" = "Öppna inställningar för Styrplatta…";
 "Order windows by" = "Sortera fönster efter";
+"Ordering" = "Sortering";
 "Ordering & Grouping" = "Sortering och gruppering";
+"Pause preview animation" = "Pausa förhandsvisningsanimation";
 "Please drag ScryTab into the Applications folder manually." = "Dra ScryTab till mappen Program manuellt.";
 "Please fill in the form" = "Fyll i formuläret";
+"Preview of the selected appearance style" = "Förhandsvisning av vald utseendestil";
 "Quit %@" = "Avsluta %@";
 "Quit app" = "Avsluta app";
 "Recently Created First" = "Senast skapade först";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "Återställ inställningar och starta om";
 "Reset settings and restart…" = "Återställ inställningar och starta om…";
 "Restart Now" = "Starta om nu";
+"Resume preview animation" = "Återuppta förhandsvisningsanimation";
 "Screen including menu bar" = "Skärm som innehåller menyraden";
 "Screen including mouse" = "Skärm som innehåller musen";
 "Screen showing ScryTab" = "Skärm som visar ScryTab";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab kraschade förra gången du använde den. Att skicka en kraschrapport hjälper till att åtgärda problemet";
+"ScryTab needs accessibility permission" = "ScryTab behöver hjälpmedelsbehörighet";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab visar med en statusikon om fönstret är minimerat eller i helskärm.";
 "Search" = "Sök";
 "Select next window" = "Välj nästa fönster";
@@ -147,7 +155,7 @@
 "Shortcut" = "Kortkommando";
 "Shortcut already assigned to: %@" = "Kortkommandot är redan tilldelat: %@";
 "Shortcuts When Active" = "Kortkommandon när aktiv";
-"Shortcuts when active…" = "Kortkommandon när aktiv…";
+"Shortcuts while ScryTab is active" = "Kortkommandon när ScryTab är aktivt";
 "Show" = "Visa";
 "Show all windows" = "Visa alla fönster";
 "Show apps with no open window" = "Visa appar utan öppet fönster";
@@ -170,6 +178,7 @@
 "Space Order" = "Skrivbordsordning";
 "Start" = "Start";
 "Start at login" = "Starta vid inloggning";
+"Style" = "Stil";
 "Suggest a change" = "Föreslå en ändring";
 "System" = "System";
 "System Default" = "Systemstandard";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "Programmet måste startas om för att tillämpa språkändringen.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Servern accepterade inte inlämningen. Kontrollera din internetanslutning och försök igen — ditt utkast har sparats.";
 "Theme" = "Tema";
-"This permission is needed to focus windows after you release the shortcut" = "Den här behörigheten behövs för att fokusera fönster efter att du släppt kortkommandot";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Den här behörigheten behövs för att fokusera fönster efter att du släpper kortkommandot. Aktivera “%@” i Systeminställningar > Integritet och säkerhet > Hjälpmedel. En aktiverad “ScryTab”-post för en annan build räknas inte.";
 "This will keep your Downloads folder uncluttered." = "Det gör att din Hämtningar-mapp hålls i ordning.";
 "Title truncation" = "Trunkering av titel";
 "Titles" = "Titlar";
+"Trackpad" = "Styrplatta";
 "Trackpad haptic feedback" = "Haptisk återkoppling på styrplatta";
 "Trigger" = "Utlösare";
 "Unassign existing shortcut and continue" = "Ta bort befintligt kortkommando och fortsätt";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Vad förväntade du dig? Vad hände? Steg för att återskapa…";
 "When fullscreen" = "När i helskärm";
 "When no open window" = "När inget öppet fönster";
+"Window actions" = "Fönsteråtgärder";
 "Window is fullscreen" = "Fönster i helskärm";
 "Window is minimized" = "Fönster minimerat";
 "Window is on every Space" = "Fönster på varje skrivbord";
