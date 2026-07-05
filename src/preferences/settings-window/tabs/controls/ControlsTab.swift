@@ -40,13 +40,16 @@ class ControlsTab {
 
     // MARK: - Layout constants (unchanged from the old monolithic editor)
 
-    private static let shortcutSidebarWidth = CGFloat(180)
-    private static let sidebarRowHeight = CGFloat(52)
+    private static let shortcutSidebarWidth = CGFloat(208)
+    private static let sidebarRowHeight = CGFloat(60)
     private static let sidebarHorizontalPadding = TableGroupView.padding
-    private static let shortcutEditorTopBottomPadding = TableGroupView.padding
-    private static let shortcutEditorRightPadding = TableGroupView.padding
+    private static let shortcutSidebarSectionInset = CGFloat(8)
+    private static let shortcutSidebarSectionGap = CGFloat(8)
+    private static let shortcutSidebarRowInset = CGFloat(8)
+    private static let shortcutEditorTopBottomPadding = CGFloat(10)
+    private static let shortcutEditorHorizontalPadding = CGFloat(14)
     private static var shortcutEditorWidth: CGFloat { SettingsWindow.contentWidth - shortcutSidebarWidth - 1 }
-    static var shortcutEditorContentWidth: CGFloat { shortcutEditorWidth - shortcutEditorRightPadding }
+    static var shortcutEditorContentWidth: CGFloat { shortcutEditorWidth - 2 * shortcutEditorHorizontalPadding }
     private static let gestureSelectionIndex = -1
     private static let activeShortcutsSelectionIndex = -2
     private static let navigationPointerSelectionIndex = -3
@@ -260,7 +263,7 @@ class ControlsTab {
     // MARK: - Sidebar + container view
 
     private static func makeShortcutsView() -> NSView {
-        return makeSidebarEditorContainer(sidebar: makeShortcutSidebar(), editor: makeEditorPane())
+        return makeSidebarEditorContainer(sidebar: makeShortcutSidebar(), editor: makeEditorPane(), chrome: .plain)
     }
 
     private static func makeEditorPane() -> NSView {
@@ -279,8 +282,8 @@ class ControlsTab {
         pane.addSubview(editorsStack)
         NSLayoutConstraint.activate([
             editorsStack.topAnchor.constraint(equalTo: pane.topAnchor, constant: shortcutEditorTopBottomPadding),
-            editorsStack.leadingAnchor.constraint(equalTo: pane.leadingAnchor),
-            editorsStack.trailingAnchor.constraint(equalTo: pane.trailingAnchor, constant: -shortcutEditorRightPadding),
+            editorsStack.leadingAnchor.constraint(equalTo: pane.leadingAnchor, constant: shortcutEditorHorizontalPadding),
+            editorsStack.trailingAnchor.constraint(equalTo: pane.trailingAnchor, constant: -shortcutEditorHorizontalPadding),
             editorsStack.bottomAnchor.constraint(equalTo: pane.bottomAnchor, constant: -shortcutEditorTopBottomPadding),
         ])
         return pane
@@ -369,34 +372,34 @@ class ControlsTab {
             shortcutsSection.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: sidebarHorizontalPadding),
             shortcutsSection.trailingAnchor.constraint(equalTo: listContainer.trailingAnchor, constant: -sidebarHorizontalPadding),
             shortcutsSection.bottomAnchor.constraint(equalTo: buttonsRow.topAnchor, constant: -TableGroupView.padding),
-            rowsScrollView.topAnchor.constraint(equalTo: shortcutsSection.topAnchor),
-            rowsScrollView.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
-            rowsScrollView.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
-            rowsScrollView.bottomAnchor.constraint(equalTo: gestureSeparator.topAnchor),
-            gestureSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
-            gestureSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            rowsScrollView.topAnchor.constraint(equalTo: shortcutsSection.topAnchor, constant: shortcutSidebarSectionInset),
+            rowsScrollView.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: shortcutSidebarRowInset),
+            rowsScrollView.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -shortcutSidebarRowInset),
+            rowsScrollView.bottomAnchor.constraint(equalTo: gestureSeparator.topAnchor, constant: -shortcutSidebarSectionGap),
+            gestureSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: TableGroupView.padding),
+            gestureSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -TableGroupView.padding),
             gestureSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
             gestureSeparator.bottomAnchor.constraint(equalTo: gestureRow.topAnchor),
-            gestureRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
-            gestureRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            gestureRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: shortcutSidebarRowInset),
+            gestureRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -shortcutSidebarRowInset),
             gestureRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
             gestureRow.bottomAnchor.constraint(equalTo: activeShortcutsSeparator.topAnchor),
-            activeShortcutsSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
-            activeShortcutsSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            activeShortcutsSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: TableGroupView.padding),
+            activeShortcutsSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -TableGroupView.padding),
             activeShortcutsSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
             activeShortcutsSeparator.bottomAnchor.constraint(equalTo: activeShortcutsRow.topAnchor),
-            activeShortcutsRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
-            activeShortcutsRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            activeShortcutsRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: shortcutSidebarRowInset),
+            activeShortcutsRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -shortcutSidebarRowInset),
             activeShortcutsRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
             activeShortcutsRow.bottomAnchor.constraint(equalTo: navigationPointerSeparator.topAnchor),
-            navigationPointerSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
-            navigationPointerSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            navigationPointerSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: TableGroupView.padding),
+            navigationPointerSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -TableGroupView.padding),
             navigationPointerSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
             navigationPointerSeparator.bottomAnchor.constraint(equalTo: navigationPointerRow.topAnchor),
-            navigationPointerRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor),
-            navigationPointerRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor),
+            navigationPointerRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: shortcutSidebarRowInset),
+            navigationPointerRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -shortcutSidebarRowInset),
             navigationPointerRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
-            navigationPointerRow.bottomAnchor.constraint(equalTo: shortcutsSection.bottomAnchor),
+            navigationPointerRow.bottomAnchor.constraint(equalTo: shortcutsSection.bottomAnchor, constant: -shortcutSidebarSectionInset),
             buttonsRow.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor, constant: TableGroupView.sidebarToolRowHorizontalPadding),
             buttonsRow.trailingAnchor.constraint(lessThanOrEqualTo: listContainer.trailingAnchor, constant: -TableGroupView.sidebarToolRowHorizontalPadding),
             buttonsRow.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor, constant: -TableGroupView.padding),

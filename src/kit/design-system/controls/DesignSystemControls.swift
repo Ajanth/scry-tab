@@ -127,7 +127,22 @@ final class DesignSystemFlatButton: NSButton {
     }
 
     override var title: String {
-        didSet { refreshTitle() }
+        didSet {
+            refreshTitle()
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    override var image: NSImage? {
+        didSet { invalidateIntrinsicContentSize() }
+    }
+
+    override var intrinsicContentSize: NSSize {
+        let base = super.intrinsicContentSize
+        let width = max(base.width, 0) + 2 * DesignSystem.Metrics.buttonHorizontalPadding
+        let height = max(max(base.height, 0) + 2 * DesignSystem.Metrics.buttonVerticalPadding,
+                         DesignSystem.Metrics.standardControlMinHeight)
+        return NSSize(width: ceil(width), height: ceil(height))
     }
 
     override func updateTrackingAreas() {
@@ -376,11 +391,6 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
             let path = NSBezierPath(roundedRect: selectedRect, xRadius: DesignSystem.Metrics.controlRadius - 1, yRadius: DesignSystem.Metrics.controlRadius - 1)
             fill.setFill()
             path.fill()
-            if state == .selected {
-                DesignSystem.color(.borderSelected, appearance: effectiveAppearance).setStroke()
-                path.lineWidth = 1
-                path.stroke()
-            }
         }
         drawSegmentContent(index, rect.insetBy(dx: 8, dy: 4), enabled: state != .disabled)
     }

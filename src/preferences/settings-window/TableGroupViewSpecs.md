@@ -14,6 +14,7 @@ group label treatment and the split between section-container geometry and indiv
   inflate row height.
 - Row content keeps a flexible minimum-height constraint instead of freezing the main row to its
   initial fitting size.
+- Secondary-only rows do not insert an empty primary-row spacer before their content.
 
 ## Test scenarios
 
@@ -23,3 +24,4 @@ Mirrors `TableGroupViewTests.swift` 1:1.
 - **testTitledGroupsUseSecondaryHeaderStyleAndInset** — titled groups pin their header color to the secondary label role and use the compact header inset.
 - **testRowsUseSeparateHorizontalAndVerticalInsets** — rows pin their main content with wider horizontal padding while keeping the original vertical inset.
 - **testRowsUseFlexibleMainRowHeightInsteadOfFrozenFittingHeight** — the main row keeps a minimum-height guard without locking itself to the first fitting pass.
+- **testSecondaryOnlyRowsSkipPlaceholderMainRow** — rows that only render secondary content skip the empty primary-row placeholder.

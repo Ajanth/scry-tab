@@ -195,6 +195,7 @@ private final class SettingsSidebarRowView: NSTableRowView {
 }
 
 private final class SettingsHeaderView: NSView {
+    static let height = CGFloat(50)
     private let iconView = SettingsPageIconView()
     private let titleLabel = NSTextField(labelWithString: "")
     private let stack = NSStackView()
@@ -226,7 +227,7 @@ private final class SettingsHeaderView: NSView {
         stack.addArrangedSubview(titleLabel)
         addSubview(stack)
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 50),
+            heightAnchor.constraint(equalToConstant: Self.height),
             iconView.widthAnchor.constraint(equalToConstant: 22),
             iconView.heightAnchor.constraint(equalToConstant: 22),
             stack.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -259,81 +260,9 @@ private final class SidebarTableView: NSTableView {
 
 private final class SidebarSearchField: NSSearchField {
     weak var tabPeer: NSView?
-    private var windowObservers = [NSObjectProtocol]()
-    private var accessibilityObserver: NSObjectProtocol?
-
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
-        DesignSystemControlStyler.styleSearchField(self)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("Class only supports programmatic initialization")
-    }
-
-    deinit {
-        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
-        if let accessibilityObserver {
-            NotificationCenter.default.removeObserver(accessibilityObserver)
-        }
-    }
 
     override var nextValidKeyView: NSView? { tabPeer }
     override var previousValidKeyView: NSView? { tabPeer }
-
-    override func viewDidMoveToWindow() {
-        super.viewDidMoveToWindow()
-        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
-        windowObservers.removeAll()
-        if let accessibilityObserver {
-            NotificationCenter.default.removeObserver(accessibilityObserver)
-        }
-        if let window {
-            for name in [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification] {
-                windowObservers.append(NotificationCenter.default.addObserver(forName: name, object: window, queue: .main) { [weak self] _ in
-                    self?.refreshStyle()
-                })
-            }
-        }
-        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
-            self?.refreshStyle()
-        }
-        refreshStyle()
-    }
-
-    @available(macOS 10.14, *)
-    override func viewDidChangeEffectiveAppearance() {
-        super.viewDidChangeEffectiveAppearance()
-        refreshStyle()
-    }
-
-    override func becomeFirstResponder() -> Bool {
-        let became = super.becomeFirstResponder()
-        if became { refreshStyle() }
-        return became
-    }
-
-    override func resignFirstResponder() -> Bool {
-        let resigned = super.resignFirstResponder()
-        if resigned { refreshStyle() }
-        return resigned
-    }
-
-    override func textDidBeginEditing(_ notification: Notification) {
-        super.textDidBeginEditing(notification)
-        refreshStyle()
-    }
-
-    override func textDidEndEditing(_ notification: Notification) {
-        super.textDidEndEditing(notification)
-        refreshStyle()
-    }
-
-    private func refreshStyle() {
-        DesignSystemControlStyler.refreshSearchField(self)
-        let isFocused = window?.firstResponder == currentEditor() || window?.firstResponder == self
-        alphaValue = isFocused || (window?.isKeyWindow ?? true) ? 1 : 0.65
-    }
 }
 
 class SettingsWindow: NSWindow {
@@ -365,7 +294,7 @@ class SettingsWindow: NSWindow {
     private static let sectionSelectionDirectionDeltaThreshold = CGFloat(0.25)
     private static let minWindowHeight = CGFloat(520)
     private static let defaultWindowHeight = CGFloat(620)
-    private static let sidebarTopInset = CGFloat(50)
+    private static let sidebarTopInset = SettingsHeaderView.height
     private static let sidebarHorizontalPadding = CGFloat(12)
     /// Padding inside the row's cell view between the cell's leading edge and the icon.
     /// `NSTableView.style = .sourceList` already inserts the cell content into its rounded
@@ -385,7 +314,6 @@ class SettingsWindow: NSWindow {
     private let sidebarContainer = NSView()
     private let contentContainer = NSView()
     private let contentHeaderView = SettingsHeaderView()
-    private let headerDividerView = DesignSystemDividerView()
     private let searchField = SidebarSearchField(frame: .zero)
     private let sidebarScrollView = NSScrollView()
     private let sidebarTableView = SidebarTableView()
@@ -445,6 +373,7 @@ class SettingsWindow: NSWindow {
         titleVisibility = .hidden
         titlebarAppearsTransparent = true
         isMovableByWindowBackground = true
+        backgroundColor = .windowBackgroundColor
         let toolbar = NSToolbar(identifier: "SettingsToolbar")
         toolbar.showsBaselineSeparator = false
         self.toolbar = toolbar
@@ -486,7 +415,6 @@ class SettingsWindow: NSWindow {
     }
 
     private func setupSidebar() {
-        installMaterial(in: sidebarContainer)
         setupSearchField(sidebarContainer)
         setupSidebarTable(sidebarContainer)
         // Match macOS System Settings: Tab cycles between the search field and the sidebar
@@ -498,7 +426,6 @@ class SettingsWindow: NSWindow {
     }
 
     private func setupContentPane() {
-        installMaterial(in: contentContainer)
         setupContentHeader()
         rightScrollView.drawsBackground = false
         rightScrollView.hasVerticalScroller = true
@@ -521,7 +448,7 @@ class SettingsWindow: NSWindow {
         NSLayoutConstraint.activate([
             rightScrollView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
             rightScrollView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
-            rightScrollView.topAnchor.constraint(equalTo: headerDividerView.bottomAnchor),
+            rightScrollView.topAnchor.constraint(equalTo: contentHeaderView.bottomAnchor),
             rightScrollView.bottomAnchor.constraint(equalTo: contentContainer.bottomAnchor),
             sectionsStack.topAnchor.constraint(equalTo: sectionsDocumentView.topAnchor, constant: Self.contentTopPadding),
             sectionsStack.leadingAnchor.constraint(equalTo: sectionsDocumentView.leadingAnchor, constant: Self.contentHorizontalPadding),
@@ -532,29 +459,12 @@ class SettingsWindow: NSWindow {
         sectionsStackBottomConstraint.isActive = true
     }
 
-    private func installMaterial(in parent: NSView) {
-        let material = DesignSystemMaterialView()
-        material.translatesAutoresizingMaskIntoConstraints = false
-        parent.addSubview(material, positioned: .below, relativeTo: nil)
-        NSLayoutConstraint.activate([
-            material.topAnchor.constraint(equalTo: parent.topAnchor),
-            material.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
-            material.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
-            material.bottomAnchor.constraint(equalTo: parent.bottomAnchor),
-        ])
-    }
-
     private func setupContentHeader() {
         contentContainer.addSubview(contentHeaderView)
-        contentContainer.addSubview(headerDividerView)
         NSLayoutConstraint.activate([
             contentHeaderView.topAnchor.constraint(equalTo: contentContainer.topAnchor),
             contentHeaderView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
             contentHeaderView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
-            headerDividerView.topAnchor.constraint(equalTo: contentHeaderView.bottomAnchor),
-            headerDividerView.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
-            headerDividerView.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
-            headerDividerView.heightAnchor.constraint(equalToConstant: 1),
         ])
     }
 
@@ -569,6 +479,12 @@ class SettingsWindow: NSWindow {
         searchField.placeholderString = NSLocalizedString("Search", comment: "")
         searchField.sendsSearchStringImmediately = true
         searchField.sendsWholeSearchString = true
+        searchField.bezelStyle = .roundedBezel
+        if #available(macOS 26.0, *) {
+            searchField.controlSize = .extraLarge
+        } else if #available(macOS 13.0, *) {
+            searchField.controlSize = .large
+        }
         searchField.translatesAutoresizingMaskIntoConstraints = false
         parent.addSubview(searchField)
         NSLayoutConstraint.activate([

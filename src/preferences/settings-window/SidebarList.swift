@@ -4,11 +4,19 @@ func sidebarSeparatorView() -> NSView {
     return DesignSystemDividerView()
 }
 
+enum SidebarEditorContainerChrome {
+    case framed
+    case plain
+}
+
 /// Builds the [sidebar | 1px separator | editor] horizontal chassis shared by ExceptionsTab and
 /// ControlsTab. Callers are responsible for pinning a fixed width on `sidebar` and `editor`.
 /// Sidebar and editor heights are tied (`sidebar.height == editor.height`), and the content is
-/// pinned to all four edges of the returned `SidebarListContainer`.
-func makeSidebarEditorContainer(sidebar: NSView, editor: NSView, minHeight: CGFloat? = nil) -> SidebarListContainer {
+/// pinned to all four edges of the returned wrapper view.
+func makeSidebarEditorContainer(sidebar: NSView,
+                                editor: NSView,
+                                minHeight: CGFloat? = nil,
+                                chrome: SidebarEditorContainerChrome = .framed) -> NSView {
     let separator = sidebarSeparatorView()
     separator.widthAnchor.constraint(equalToConstant: 1).isActive = true
     let content = NSStackView(views: [sidebar, separator, editor])
@@ -17,7 +25,14 @@ func makeSidebarEditorContainer(sidebar: NSView, editor: NSView, minHeight: CGFl
     content.spacing = 0
     content.translatesAutoresizingMaskIntoConstraints = false
     sidebar.heightAnchor.constraint(equalTo: editor.heightAnchor).isActive = true
-    let container = SidebarListContainer()
+    let container: NSView
+    switch chrome {
+    case .framed: container = SidebarListContainer()
+    case .plain:
+        let view = NSView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        container = view
+    }
     container.widthAnchor.constraint(equalToConstant: SettingsWindow.contentWidth).isActive = true
     if let minHeight {
         container.heightAnchor.constraint(greaterThanOrEqualToConstant: minHeight).isActive = true

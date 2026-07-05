@@ -30,6 +30,8 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(DesignSystem.Metrics.standardControlMinHeight, 32)
         XCTAssertEqual(DesignSystem.Metrics.controlRadius, 8)
         XCTAssertEqual(DesignSystem.Metrics.controlTextInset, 10)
+        XCTAssertEqual(DesignSystem.Metrics.buttonHorizontalPadding, 14)
+        XCTAssertEqual(DesignSystem.Metrics.buttonVerticalPadding, 7)
     }
 
     func testFlatButtonUsesAppOwnedSurfaceAndDestructiveAccent() {
@@ -38,6 +40,15 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertFalse(button.isBordered)
         XCTAssertEqual(button.focusRingType, .none)
         XCTAssertTrue(button.usesDestructiveAccent)
+    }
+
+    func testFlatButtonIntrinsicContentIncludesHorizontalPadding() {
+        let title = "Customize more…"
+        let button = DesignSystemControlStyler.makeButton(title)
+        let font = button.font ?? NSFont.systemFont(ofSize: 13)
+        let titleWidth = (title as NSString).size(withAttributes: [.font: font]).width
+        XCTAssertGreaterThanOrEqual(button.intrinsicContentSize.width, ceil(titleWidth) + 2 * DesignSystem.Metrics.buttonHorizontalPadding)
+        XCTAssertGreaterThanOrEqual(button.intrinsicContentSize.height, DesignSystem.Metrics.standardControlMinHeight)
     }
 
     func testPopupButtonUsesAppOwnedSurface() {
@@ -83,11 +94,17 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertTrue(control.drawsAppOwnedSurface)
     }
 
-    func testSelectionAndFocusColorsUseSeparateEmphasisLevels() {
+    func testDarkModeSurfacesUseOpaqueMattePalette() {
         guard #available(macOS 10.14, *) else { return }
         let darkAppearance = NSAppearance(named: .darkAqua)
-        XCTAssertGreaterThan(DesignSystem.color(.surfaceSelected, appearance: darkAppearance).alphaComponent,
-                             DesignSystem.color(.surfaceFlat, appearance: darkAppearance).alphaComponent)
+        let plateau = try! XCTUnwrap(DesignSystem.color(.surfacePlateau, appearance: darkAppearance).usingColorSpace(.extendedSRGB))
+        let flat = try! XCTUnwrap(DesignSystem.color(.surfaceFlat, appearance: darkAppearance).usingColorSpace(.extendedSRGB))
+        let selected = try! XCTUnwrap(DesignSystem.color(.surfaceSelected, appearance: darkAppearance).usingColorSpace(.extendedSRGB))
+        XCTAssertEqual(plateau.alphaComponent, 1)
+        XCTAssertEqual(flat.alphaComponent, 1)
+        XCTAssertEqual(selected.alphaComponent, 1)
+        XCTAssertGreaterThan(flat.redComponent, plateau.redComponent)
+        XCTAssertGreaterThan(selected.redComponent, flat.redComponent)
         XCTAssertLessThan(DesignSystem.color(.borderSelected, appearance: darkAppearance).alphaComponent,
                           DesignSystem.color(.focusAccent, appearance: darkAppearance).alphaComponent)
     }

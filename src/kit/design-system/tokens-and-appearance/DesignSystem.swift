@@ -18,6 +18,9 @@ enum DesignSystem {
         static let controlTextInset = CGFloat(10)
         static let searchGlyphInset = CGFloat(8)
         static let searchTextInset = CGFloat(4)
+        static let buttonHorizontalPadding = CGFloat(14)
+        static let buttonVerticalPadding = CGFloat(7)
+        static let splitDividerThickness = CGFloat(1)
     }
 
     enum ColorRole {
@@ -43,12 +46,30 @@ enum DesignSystem {
         switch role {
         case .windowAccentTint, .accentPrimary: return .systemAccentColor
         case .accentSecondary: return .secondaryLabelColor
-        case .surfacePlateau: return dark ? NSColor(white: 1.0, alpha: 0.08) : NSColor(white: 1.0, alpha: 0.70)
-        case .surfaceFlat: return dark ? NSColor(white: 1.0, alpha: 0.11) : NSColor(white: 1.0, alpha: 0.48)
-        case .surfaceHover: return dark ? NSColor(white: 1.0, alpha: 0.14) : NSColor(white: 1.0, alpha: 0.60)
-        case .surfacePressed: return dark ? NSColor(white: 1.0, alpha: 0.18) : NSColor(white: 0.0, alpha: 0.08)
-        case .surfaceSelected: return dark ? NSColor(white: 1.0, alpha: 0.17) : NSColor(white: 0.0, alpha: 0.10)
-        case .borderSubtle: return dark ? NSColor(white: 1.0, alpha: 0.16) : NSColor(white: 0.0, alpha: 0.13)
+        case .surfacePlateau:
+            return dark
+                ? NSColor(srgbRed: 0.18, green: 0.18, blue: 0.17, alpha: 1.0)
+                : NSColor(white: 1.0, alpha: 0.70)
+        case .surfaceFlat:
+            return dark
+                ? NSColor(srgbRed: 0.24, green: 0.24, blue: 0.23, alpha: 1.0)
+                : NSColor(white: 1.0, alpha: 0.48)
+        case .surfaceHover:
+            return dark
+                ? NSColor(srgbRed: 0.27, green: 0.27, blue: 0.26, alpha: 1.0)
+                : NSColor(white: 1.0, alpha: 0.60)
+        case .surfacePressed:
+            return dark
+                ? NSColor(srgbRed: 0.30, green: 0.30, blue: 0.29, alpha: 1.0)
+                : NSColor(white: 0.0, alpha: 0.08)
+        case .surfaceSelected:
+            return dark
+                ? NSColor(srgbRed: 0.33, green: 0.33, blue: 0.32, alpha: 1.0)
+                : NSColor(white: 0.0, alpha: 0.10)
+        case .borderSubtle:
+            return dark
+                ? NSColor(srgbRed: 0.31, green: 0.31, blue: 0.30, alpha: 1.0)
+                : NSColor(white: 0.0, alpha: 0.13)
         case .borderSelected: return .systemAccentColor.withAlphaComponent(dark ? 0.34 : 0.28)
         case .focusAccent: return .systemAccentColor.withAlphaComponent(dark ? 0.58 : 0.46)
         case .textPrimary: return .labelColor
