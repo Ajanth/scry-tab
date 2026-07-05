@@ -22,12 +22,9 @@
 "Always" = "Selalu";
 "Always send crash reports" = "Selalu kirim laporan kerusakan";
 "and press" = "lalu tekan";
-"Animations" = "Animasi";
-"Animations…" = "Animasi…";
 "App Icons" = "Ikon Aplikasi";
 "App is hidden" = "Aplikasi disembunyikan";
 "App is running but has no open window" = "Aplikasi berjalan tetapi tidak memiliki jendela terbuka";
-"Apparition delay of Switcher" = "Penundaan kemunculan Pengalih";
 "Appearance" = "Tampilan";
 "Application Name" = "Nama Aplikasi";
 "Application Name - Window Title" = "Nama Aplikasi - Judul Jendela";
@@ -70,7 +67,6 @@
 "End" = "Akhir";
 "Exceptions" = "Pengecualian";
 "Export settings…" = "Ekspor pengaturan…";
-"Fade out animation of Switcher" = "Animasi memudar Pengalih";
 "Failed to import settings" = "Gagal mengimpor pengaturan";
 "Filtering" = "Penyaringan";
 "Focus" = "Fokus";

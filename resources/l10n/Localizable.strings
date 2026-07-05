@@ -71,12 +71,6 @@
 "and press" = "and press";
 
 /* No comment provided by engineer. */
-"Animations" = "Animations";
-
-/* No comment provided by engineer. */
-"Animations…" = "Animations…";
-
-/* No comment provided by engineer. */
 "App Icons" = "App Icons";
 
 /* No comment provided by engineer. */
@@ -84,9 +78,6 @@
 
 /* No comment provided by engineer. */
 "App is running but has no open window" = "App is running but has no open window";
-
-/* No comment provided by engineer. */
-"Apparition delay of Switcher" = "Apparition delay of Switcher";
 
 /* No comment provided by engineer. */
 "Appearance" = "Appearance";
@@ -213,9 +204,6 @@
 
 /* No comment provided by engineer. */
 "Export settings…" = "Export settings…";
-
-/* No comment provided by engineer. */
-"Fade out animation of Switcher" = "Fade out animation of Switcher";
 
 /* No comment provided by engineer. */
 "Failed to import settings" = "Failed to import settings";

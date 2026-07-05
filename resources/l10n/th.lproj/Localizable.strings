@@ -22,12 +22,9 @@
 "Always" = "เสมอ";
 "Always send crash reports" = "ส่งรายงานการขัดข้องเสมอ";
 "and press" = "แล้วกด";
-"Animations" = "แอนิเมชัน";
-"Animations…" = "แอนิเมชัน…";
 "App Icons" = "ไอคอนแอป";
 "App is hidden" = "แอปถูกซ่อน";
 "App is running but has no open window" = "แอปกำลังทำงานแต่ไม่มีหน้าต่างที่เปิดอยู่";
-"Apparition delay of Switcher" = "ความล่าช้าในการปรากฏของตัวสลับ";
 "Appearance" = "ลักษณะ";
 "Application Name" = "ชื่อแอปพลิเคชัน";
 "Application Name - Window Title" = "ชื่อแอปพลิเคชัน - ชื่อหน้าต่าง";
@@ -70,7 +67,6 @@
 "End" = "สิ้นสุด";
 "Exceptions" = "ข้อยกเว้น";
 "Export settings…" = "ส่งออกการตั้งค่า…";
-"Fade out animation of Switcher" = "แอนิเมชันค่อยๆ จางหายของตัวสลับ";
 "Failed to import settings" = "นำเข้าการตั้งค่าไม่สำเร็จ";
 "Filtering" = "การกรอง";
 "Focus" = "โฟกัส";

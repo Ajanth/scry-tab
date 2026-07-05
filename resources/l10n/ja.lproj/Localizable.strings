@@ -22,12 +22,9 @@
 "Always" = "常に";
 "Always send crash reports" = "常にクラッシュレポートを送信";
 "and press" = "を押す";
-"Animations" = "アニメーション";
-"Animations…" = "アニメーション…";
 "App Icons" = "App アイコン";
 "App is hidden" = "App は非表示";
 "App is running but has no open window" = "App は実行中ですが開いているウインドウはありません";
-"Apparition delay of Switcher" = "スイッチャーの表示遅延";
 "Appearance" = "外観";
 "Application Name" = "アプリケーション名";
 "Application Name - Window Title" = "アプリケーション名 - ウインドウタイトル";
@@ -70,7 +67,6 @@
 "End" = "末尾";
 "Exceptions" = "例外";
 "Export settings…" = "設定を書き出す…";
-"Fade out animation of Switcher" = "スイッチャーのフェードアウトアニメーション";
 "Failed to import settings" = "設定の読み込みに失敗しました";
 "Filtering" = "フィルタリング";
 "Focus" = "フォーカス";

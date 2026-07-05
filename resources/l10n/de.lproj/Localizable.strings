@@ -22,12 +22,9 @@
 "Always" = "Immer";
 "Always send crash reports" = "Absturzberichte immer senden";
 "and press" = "und drücken";
-"Animations" = "Animationen";
-"Animations…" = "Animationen…";
 "App Icons" = "App-Symbole";
 "App is hidden" = "App ausgeblendet";
 "App is running but has no open window" = "App läuft, hat aber kein geöffnetes Fenster";
-"Apparition delay of Switcher" = "Anzeigeverzögerung des Umschalters";
 "Appearance" = "Darstellung";
 "Application Name" = "Anwendungsname";
 "Application Name - Window Title" = "Anwendungsname - Fenstertitel";
@@ -70,7 +67,6 @@
 "End" = "Ende";
 "Exceptions" = "Ausnahmen";
 "Export settings…" = "Einstellungen exportieren…";
-"Fade out animation of Switcher" = "Ausblendanimation des Umschalters";
 "Failed to import settings" = "Import der Einstellungen fehlgeschlagen";
 "Filtering" = "Filtern";
 "Focus" = "Fokus";

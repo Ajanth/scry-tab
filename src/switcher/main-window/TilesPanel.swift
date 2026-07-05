@@ -70,16 +70,9 @@ class TilesPanel: NSPanel {
 
     override func orderOut(_ sender: Any?) {
         TilesView.clearNeedsLayout()
-        if Preferences.fadeOutAnimation {
-            NSAnimationContext.runAnimationGroup(
-                { _ in animator().alphaValue = 0 },
-                completionHandler: { super.orderOut(sender) }
-            )
-        } else {
-            // orderOut requires WindowServer. Let's hide before calling it, in case it lags
-            alphaValue = 0
-            super.orderOut(sender)
-        }
+        // orderOut requires WindowServer. Let's hide before calling it, in case it lags
+        alphaValue = 0
+        super.orderOut(sender)
     }
 
     func show() {

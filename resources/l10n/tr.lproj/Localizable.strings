@@ -22,12 +22,9 @@
 "Always" = "Her zaman";
 "Always send crash reports" = "Çökme raporlarını her zaman gönder";
 "and press" = "ve basın";
-"Animations" = "Animasyonlar";
-"Animations…" = "Animasyonlar…";
 "App Icons" = "Uygulama simgeleri";
 "App is hidden" = "Uygulama gizli";
 "App is running but has no open window" = "Uygulama çalışıyor ancak açık penceresi yok";
-"Apparition delay of Switcher" = "Değiştiricinin görünme gecikmesi";
 "Appearance" = "Görünüm";
 "Application Name" = "Uygulama Adı";
 "Application Name - Window Title" = "Uygulama Adı - Pencere Başlığı";
@@ -70,7 +67,6 @@
 "End" = "Son";
 "Exceptions" = "İstisnalar";
 "Export settings…" = "Ayarları dışa aktar…";
-"Fade out animation of Switcher" = "Değiştiricinin yumuşak geçişle kapanma animasyonu";
 "Failed to import settings" = "Ayarlar içe aktarılamadı";
 "Filtering" = "Filtreleme";
 "Focus" = "Odak";

@@ -561,7 +561,7 @@ class SettingsWindow: NSWindow {
               + AppearanceThemePreference.allCases.map(\.localizedString)
               + ShortcutStylePreference.allCases.map(\.localizedString)
               + ShowOnScreenPreference.allCases.map(\.localizedString)
-              + AnimationsSheet.searchableStrings + CustomizeStyleSheet.searchableStrings),
+              + CustomizeStyleSheet.searchableStrings),
             SettingsSearchDescriptor(id: "controls-gesture", route: .controls(.gesture), sectionID: "controls", title: NSLocalizedString("Gesture", comment: ""), keywords: [
                 NSLocalizedString("Trackpad", comment: ""),
                 NSLocalizedString("Filtering", comment: ""),
@@ -1041,7 +1041,6 @@ class SettingsWindow: NSWindow {
     private static func sheet(forSearchButton button: NSButton) -> SheetWindow? {
         guard let action = button.action else { return nil }
         if action == #selector(AppearanceTab.showCustomizeStyleSheet) { return AppearanceTab.customizeStyleSheet }
-        if action == #selector(AppearanceTab.showAnimationsSheet) { return AppearanceTab.animationsSheet }
         if action == #selector(ControlsTab.showShortcutsSettings) { return ControlsTab.shortcutsWhenActiveSheet }
         if action == #selector(ControlsTab.showAdditionalControlsSettings) { return ControlsTab.additionalControlsSheet }
         return nil

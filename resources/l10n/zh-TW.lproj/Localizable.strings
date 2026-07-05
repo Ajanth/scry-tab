@@ -22,12 +22,9 @@
 "Always" = "永遠";
 "Always send crash reports" = "永遠傳送當機報告";
 "and press" = "並按下";
-"Animations" = "動畫";
-"Animations…" = "動畫…";
 "App Icons" = "App 圖像";
 "App is hidden" = "App 已隱藏";
 "App is running but has no open window" = "App 正在執行，但沒有開啟的視窗";
-"Apparition delay of Switcher" = "切換器的顯示延遲";
 "Appearance" = "外觀";
 "Application Name" = "應用程式名稱";
 "Application Name - Window Title" = "應用程式名稱 - 視窗標題";
@@ -70,7 +67,6 @@
 "End" = "結尾";
 "Exceptions" = "例外";
 "Export settings…" = "輸出設定…";
-"Fade out animation of Switcher" = "切換器的淡出動畫";
 "Failed to import settings" = "輸入設定失敗";
 "Filtering" = "篩選";
 "Focus" = "聚焦";

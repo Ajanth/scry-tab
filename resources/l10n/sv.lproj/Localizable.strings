@@ -22,12 +22,9 @@
 "Always" = "Alltid";
 "Always send crash reports" = "Skicka alltid kraschrapporter";
 "and press" = "och tryck";
-"Animations" = "Animationer";
-"Animations…" = "Animationer…";
 "App Icons" = "Appikoner";
 "App is hidden" = "App är dold";
 "App is running but has no open window" = "App körs men har inget öppet fönster";
-"Apparition delay of Switcher" = "Fördröjning innan växlaren visas";
 "Appearance" = "Utseende";
 "Application Name" = "Programnamn";
 "Application Name - Window Title" = "Programnamn - Fönstertitel";
@@ -70,7 +67,6 @@
 "End" = "Slut";
 "Exceptions" = "Undantag";
 "Export settings…" = "Exportera inställningar…";
-"Fade out animation of Switcher" = "Uttoningsanimering för växlaren";
 "Failed to import settings" = "Kunde inte importera inställningar";
 "Filtering" = "Filtrering";
 "Focus" = "Fokus";

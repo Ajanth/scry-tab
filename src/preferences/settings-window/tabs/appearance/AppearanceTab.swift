@@ -370,14 +370,11 @@ class AppearanceTab: NSObject {
     static let labelShortcutStyle = NSLocalizedString("After keys are released", comment: "")
 
     static var customizeStyleButton: NSButton!
-    static var animationsButton: NSButton!
     static var customizeStyleSheet: CustomizeStyleSheet!
-    static var animationsSheet: AnimationsSheet!
 
     static func initTab() -> NSView {
         customizeStyleButton = DesignSystemControlStyler.makeButton(getCustomizeStyleButtonTitle(), target: self, action: #selector(showCustomizeStyleSheet))
-        // The customize sheet is constructed lazily on first show. Animation controls were moved
-        // inline for routed Settings, so search can target them without opening a sheet.
+        // The customize sheet is constructed lazily on first show.
         return makeView()
     }
 
@@ -386,22 +383,19 @@ class AppearanceTab: NSObject {
         // badly with our manual nil-out and causes double-release. ARC reclaims the sheet
         // when the static ref is nilled.
         customizeStyleButton = nil
-        animationsButton = nil
         customizeStyleSheet = nil
-        animationsSheet = nil
     }
 
     private static func makeView() -> NSStackView {
         let appearanceView = makeAppearanceView()
         let multipleScreensView = makeMultipleScreensView()
-        let motionView = AnimationsSheet.makeContentView(width: SettingsWindow.contentWidth)
         // `padding: 0` — `TableGroupSetView` adds 20pt of horizontal inset by default before its
         // inner content stack. The enclosing section (from `SettingsWindow.addSection`) already
         // provides the section's left margin via `contentHorizontalPadding`, so adding another
         // 20pt here pushes the TGV content to `container.leading + 20`, while the section title
         // sits at `container.leading + TableGroupView.padding(10)` — a 10pt visible misalignment
         // between the title and the row content below it.
-        let view = TableGroupSetView(originalViews: [appearanceView, multipleScreensView, motionView], titleTableGroupSpacing: 15, padding: 0, bottomPadding: 0)
+        let view = TableGroupSetView(originalViews: [appearanceView, multipleScreensView], titleTableGroupSpacing: 15, padding: 0, bottomPadding: 0)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.widthAnchor.constraint(equalToConstant: view.fittingSize.width).isActive = true
         return view
@@ -527,11 +521,6 @@ class AppearanceTab: NSObject {
     @objc static func showCustomizeStyleSheet() {
         if customizeStyleSheet == nil { customizeStyleSheet = CustomizeStyleSheet() }
         SettingsWindow.shared.beginSheetWithSearchHighlight(customizeStyleSheet)
-    }
-
-    @objc static func showAnimationsSheet() {
-        if animationsSheet == nil { animationsSheet = AnimationsSheet() }
-        SettingsWindow.shared.beginSheetWithSearchHighlight(animationsSheet)
     }
 
 }
