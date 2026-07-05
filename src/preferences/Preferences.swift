@@ -38,6 +38,8 @@ class Preferences {
             "hideStatusIcons": "false",
             "trackpadHapticFeedbackEnabled": "true",
             "settingsWindowShownOnFirstLaunch": "false",
+            "appearanceOverrideResetChoiceRemembered": "false",
+            "appearanceOverrideResetRemovesOverrides": "false",
         ]
         (0..<maxShortcutCount).forEach { index in
             values[indexToName("shortcutIdentifier", index)] = ""
@@ -271,6 +273,18 @@ class Preferences {
     private static func appearanceOverrideKeys(_ baseName: String) -> [String] {
         guard appearanceOverrideBaseNames.contains(baseName) else { return [] }
         return (0...maxShortcutCount).map { indexToName(baseName, $0) }
+    }
+
+    /// Set once the user checks "do not ask again" on the override-reset confirmation dialog. `nil`
+    /// means keep asking; otherwise the stored choice (remove vs. keep overrides) is replayed as-is.
+    static var appearanceOverrideResetChoice: Bool? {
+        guard CachedUserDefaults.bool("appearanceOverrideResetChoiceRemembered") else { return nil }
+        return CachedUserDefaults.bool("appearanceOverrideResetRemovesOverrides")
+    }
+
+    static func rememberAppearanceOverrideResetChoice(removesOverrides: Bool) {
+        set("appearanceOverrideResetChoiceRemembered", "true", false)
+        set("appearanceOverrideResetRemovesOverrides", removesOverrides ? "true" : "false", false)
     }
 
     static func effectiveAppearanceStyle(_ index: Int) -> AppearanceStylePreference {
