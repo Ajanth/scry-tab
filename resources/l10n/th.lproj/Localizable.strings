@@ -32,6 +32,8 @@
 "Application Name" = "ชื่อแอปพลิเคชัน";
 "Application Name - Window Title" = "ชื่อแอปพลิเคชัน - ชื่อหน้าต่าง";
 "Applies in other Appearances" = "ใช้ในลักษณะอื่น";
+"Apply this change to all shortcuts?" = "ใช้การเปลี่ยนแปลงนี้กับปุ่มลัดทั้งหมดหรือไม่";
+"Apply to All Shortcuts" = "ใช้กับปุ่มลัดทั้งหมด";
 "Arrow keys" = "ปุ่มลูกศร";
 "Arrow keys already assigned to other actions:\n%@" = "ปุ่มลูกศรถูกกำหนดให้กับการกระทำอื่นแล้ว:\n%@";
 "Ask whether to send crash reports" = "ถามว่าจะส่งรายงานการขัดข้องหรือไม่";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "คำอธิบายโดยย่อของการเปลี่ยนแปลง";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "ยกเลิก";
+"Change Global Only" = "เปลี่ยนเฉพาะค่าส่วนกลาง";
 "Check for updates now…" = "ตรวจหาอัปเดตทันที…";
 "Check for updates periodically" = "ตรวจหาอัปเดตเป็นระยะ";
 "Check for updates…" = "ตรวจหาอัปเดต…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "เปิดการตั้งค่าแทร็คแพด…";
 "Order windows by" = "เรียงหน้าต่างตาม";
 "Ordering & Grouping" = "การเรียงและการจัดกลุ่ม";
-"Overridden in Shortcut:" = "ถูกแทนที่ในทางลัด:";
 "Please drag ScryTab into the Applications folder manually." = "โปรดลาก ScryTab ไปยังโฟลเดอร์ Applications ด้วยตนเอง";
 "Please fill in the form" = "โปรดกรอกแบบฟอร์ม";
 "Quit %@" = "ออกจาก %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "แสดงหน้าต่างจากพื้นที่ทำงาน";
 "Size" = "ขนาด";
 "Small" = "เล็ก";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "ปุ่มลัดบางรายการแทนที่การตั้งค่านี้ นำค่าที่แทนที่ออกเพื่อใช้ค่าส่วนกลางใหม่กับปุ่มลัดทั้งหมด หรือเก็บค่าที่แทนที่ไว้";
 "Source code" = "ซอร์สโค้ด";
 "Space Order" = "ลำดับพื้นที่ทำงาน";
 "Start" = "เริ่มต้น";
 "Start at login" = "เริ่มต้นเมื่อเข้าสู่ระบบ";
 "Suggest a change" = "แนะนำการเปลี่ยนแปลง";
-"Sync with global value" = "ซิงค์กับค่าส่วนกลาง";
 "System" = "ระบบ";
 "System Default" = "ค่าเริ่มต้นของระบบ";
 "The application needs to restart to apply the imported settings." = "แอปพลิเคชันต้องรีสตาร์ทเพื่อนำการตั้งค่าที่นำเข้ามาใช้";

@@ -201,15 +201,10 @@ class ControlsTab {
             refreshShortcutRows()
         case let k where staticManagedShortcutPreferences.contains(k):
             applyShortcutPreference(k)
-        case let k where Preferences.overrideToGlobalKey.values.contains(k):
-            // A global appearance setting changed; resnap non-overridden controls in the editor
-            // and refresh AppearanceTab's "Overridden in Shortcut:" labels.
-            editor?.refreshFromCurrentBind()
-            AppearanceTab.refreshAllOverrideInfoLabels()
+        case "appearanceStyle", "appearanceSize", "appearanceTheme", "shortcutStyle":
+            refreshAppearanceControls()
         case let k where isOverrideKey(k):
-            // An override key changed (e.g. user picked a different value, or remembered-restore wrote).
-            editor?.refreshFromCurrentBind()
-            AppearanceTab.refreshAllOverrideInfoLabels()
+            refreshAppearanceControls()
         case "arrowKeysEnabled" where arrowKeysCheckbox == nil:
             applyArrowKeysPreferenceWithoutDialogs()
         case "vimKeysEnabled" where vimKeysCheckbox == nil:
@@ -219,22 +214,14 @@ class ControlsTab {
         }
     }
 
+    private static func refreshAppearanceControls() {
+        editor?.refreshFromCurrentBind()
+        gestureAppearancePane?.bind(toShortcut: Preferences.gestureIndex)
+    }
+
     static func inputSourceChanged() {
         refreshShortcutRows()
         refreshShortcutControlsDisplay()
-    }
-
-    /// Called by AppearanceTab when a global appearance pref changes.
-    /// In the new design this is equivalent to a no-arg refresh of the current editor binding.
-    static func syncOverrideControlsToGlobal() {
-        editor?.refreshFromCurrentBind()
-    }
-
-    /// Deep-link from AppearanceTab's "Overridden in Shortcut: N" button — select the shortcut and
-    /// switch the editor to the Appearance segment.
-    static func selectShortcutAndShowAppearance(_ index: Int) {
-        selectShortcut(index)
-        editor?.showAppearanceSegment()
     }
 
     // MARK: - Editor swap based on sidebar selection

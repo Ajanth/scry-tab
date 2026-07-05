@@ -101,6 +101,12 @@
 "Applies in other Appearances" = "Applies in other Appearances";
 
 /* No comment provided by engineer. */
+"Apply this change to all shortcuts?" = "Apply this change to all shortcuts?";
+
+/* No comment provided by engineer. */
+"Apply to All Shortcuts" = "Apply to All Shortcuts";
+
+/* No comment provided by engineer. */
 "Arrow keys" = "Arrow keys";
 
 /* No comment provided by engineer. */
@@ -126,6 +132,9 @@
 
 /* No comment provided by engineer. */
 "Cancel" = "Cancel";
+
+/* No comment provided by engineer. */
+"Change Global Only" = "Change Global Only";
 
 /* No comment provided by engineer. */
 "Check for updates now…" = "Check for updates now…";
@@ -351,9 +360,6 @@
 /* No comment provided by engineer. */
 "Ordering & Grouping" = "Ordering & Grouping";
 
-/* No comment provided by engineer. */
-"Overridden in Shortcut:" = "Overridden in Shortcut:";
-
 /* LetsMove replacement alert */
 "Please drag ScryTab into the Applications folder manually." = "Please drag ScryTab into the Applications folder manually.";
 
@@ -511,6 +517,9 @@
 "Small" = "Small";
 
 /* No comment provided by engineer. */
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
+
+/* No comment provided by engineer. */
 "Source code" = "Source code";
 
 /* No comment provided by engineer. */
@@ -527,9 +536,6 @@
 
 /* No comment provided by engineer. */
 "Switch between 2 different styles. You can customize them." = "Switch between 2 different styles. You can customize them.";
-
-/* No comment provided by engineer. */
-"Sync with global value" = "Sync with global value";
 
 /* No comment provided by engineer. */
 "System" = "System";

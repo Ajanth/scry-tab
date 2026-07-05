@@ -1245,23 +1245,6 @@ class SettingsWindow: NSWindow {
         sections.first { $0.id == selectedSectionId }?.highlightMatches(searchField.stringValue)
     }
 
-    /// Run `changes` while preserving the user's scroll position. If the change in document height
-    /// pushes the scroll origin, we compensate so the visible region stays put. Used by
-    /// `AppearanceTab.refreshAllOverrideInfoLabels` when toggling override-info rows so the user's
-    /// view doesn't jump.
-    func preserveScrollPosition(during changes: () -> Void) {
-        sectionsDocumentView.layoutSubtreeIfNeeded()
-        let oldHeight = sectionsDocumentView.frame.height
-        let oldY = rightScrollView.contentView.bounds.origin.y
-        changes()
-        sectionsDocumentView.layoutSubtreeIfNeeded()
-        let delta = sectionsDocumentView.frame.height - oldHeight
-        if oldY > 0 && delta != 0 {
-            rightScrollView.contentView.scroll(to: NSPoint(x: 0, y: max(oldY + delta, 0)))
-            rightScrollView.reflectScrolledClipView(rightScrollView.contentView)
-        }
-    }
-
     private func selectSection(_ section: SettingsSection, scroll: Bool, selectInSidebar: Bool = true) {
         selectedSectionId = section.id
         let visibleSections = sections.filter { !$0.container.isHidden }

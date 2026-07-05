@@ -32,6 +32,8 @@
 "Application Name" = "اسم التطبيق";
 "Application Name - Window Title" = "اسم التطبيق - عنوان النافذة";
 "Applies in other Appearances" = "يُطبَّق في المظاهر الأخرى";
+"Apply this change to all shortcuts?" = "هل تريد تطبيق هذا التغيير على جميع الاختصارات؟";
+"Apply to All Shortcuts" = "تطبيق على جميع الاختصارات";
 "Arrow keys" = "مفاتيح الأسهم";
 "Arrow keys already assigned to other actions:\n%@" = "مفاتيح الأسهم معيّنة بالفعل لإجراءات أخرى:\n%@";
 "Ask whether to send crash reports" = "السؤال عن إرسال تقارير الأعطال";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "وصف موجز للتغيير";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "إلغاء";
+"Change Global Only" = "تغيير القيمة العامة فقط";
 "Check for updates now…" = "البحث عن التحديثات الآن…";
 "Check for updates periodically" = "البحث عن التحديثات بشكل دوري";
 "Check for updates…" = "البحث عن التحديثات…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "فتح إعدادات لوحة التعقب…";
 "Order windows by" = "ترتيب النوافذ حسب";
 "Ordering & Grouping" = "الترتيب والتجميع";
-"Overridden in Shortcut:" = "تم تجاوزه في اختصار:";
 "Please drag ScryTab into the Applications folder manually." = "يرجى سحب ScryTab إلى مجلد التطبيقات يدويًا.";
 "Please fill in the form" = "يرجى ملء النموذج";
 "Quit %@" = "إنهاء %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "إظهار النوافذ من المساحات";
 "Size" = "الحجم";
 "Small" = "صغير";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "تتجاوز بعض الاختصارات هذا الإعداد. طبّق القيمة العامة الجديدة على جميع الاختصارات بإزالة تلك التجاوزات، أو احتفظ بها.";
 "Source code" = "الكود المصدري";
 "Space Order" = "ترتيب المساحات";
 "Start" = "البداية";
 "Start at login" = "البدء عند تسجيل الدخول";
 "Suggest a change" = "اقتراح تغيير";
-"Sync with global value" = "المزامنة مع القيمة العامة";
 "System" = "النظام";
 "System Default" = "افتراضي النظام";
 "The application needs to restart to apply the imported settings." = "يحتاج التطبيق إلى إعادة التشغيل لتطبيق الإعدادات المستوردة.";

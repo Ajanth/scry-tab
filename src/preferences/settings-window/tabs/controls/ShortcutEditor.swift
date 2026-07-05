@@ -143,12 +143,6 @@ final class ShortcutEditor {
         bind(toShortcut: currentIndex)
     }
 
-    /// Programmatically switch to the Appearance segment. Used by AppearanceTab's "Overridden in
-    /// Shortcut: N" link to deep-link into the right tab.
-    func showAppearanceSegment() {
-        applySelectedSegment(1)
-    }
-
     /// Externally-driven tab swap — used by ControlsTab to keep the gesture editor's tab in sync
     /// with the shortcut editor when the user changes it on the other one.
     func applySelectedSegment(_ segment: Int, notifySelectionChange: Bool = true) {
@@ -441,61 +435,38 @@ final class AppearancePane {
     private let shortcutStyle: ShortcutOverrideSegmented
 
     init(width: CGFloat) {
-        let onChange: () -> Void = {
-            AppearanceTab.refreshAllOverrideInfoLabels()
-        }
-
         style = ShortcutOverrideRadios(
             baseName: "appearanceStyleOverride",
             cases: AppearanceStylePreference.allCases,
-            globalIndex: { Preferences.appearanceStyle.index },
-            onChange: onChange)
+            globalIndex: { Preferences.appearanceStyle.index })
 
         size = ShortcutOverrideSegmented(
             baseName: "appearanceSizeOverride",
             cases: AppearanceSizePreference.allCases,
             globalIndex: { Preferences.appearanceSize.index },
-            segmentWidth: 100,
-            onChange: onChange)
+            segmentWidth: 100)
 
         theme = ShortcutOverrideSegmented(
             baseName: "appearanceThemeOverride",
             cases: AppearanceThemePreference.allCases,
             globalIndex: { Preferences.appearanceTheme.index },
-            segmentWidth: 100,
-            onChange: onChange)
+            segmentWidth: 100)
 
         shortcutStyle = ShortcutOverrideSegmented(
             baseName: "shortcutStyleOverride",
             cases: ShortcutStylePreference.allCases,
             globalIndex: { Preferences.shortcutStyle.index },
-            segmentWidth: 100,
-            onChange: onChange)
+            segmentWidth: 100)
 
         let styleTable = TableGroupView(width: width)
-        let styleRow = NSStackView()
-        styleRow.orientation = .horizontal
-        styleRow.alignment = .centerY
-        styleRow.spacing = TableGroupView.padding
-        let leadingStyleSpacer = NSView()
-        let trailingStyleSpacer = NSView()
-        [leadingStyleSpacer, trailingStyleSpacer].forEach {
-            $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
-            $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        }
         style.stack.setContentHuggingPriority(.required, for: .horizontal)
         style.stack.setContentCompressionResistancePriority(.required, for: .horizontal)
-        styleRow.addArrangedSubview(leadingStyleSpacer)
-        styleRow.addArrangedSubview(style.stack)
-        styleRow.addArrangedSubview(trailingStyleSpacer)
-        styleRow.addArrangedSubview(style.unlink)
-        leadingStyleSpacer.widthAnchor.constraint(equalTo: trailingStyleSpacer.widthAnchor).isActive = true
-        styleTable.addRow(secondaryViews: [styleRow], secondaryViewsAlignment: .centerX)
+        styleTable.addRow(secondaryViews: [style.stack], secondaryViewsAlignment: .centerX)
 
         let overridesTable = TableGroupView(width: width)
-        overridesTable.addRow(leftText: AppearanceTab.labelSize, rightViews: [size.segmented, size.unlink])
-        overridesTable.addRow(leftText: AppearanceTab.labelTheme, rightViews: [theme.segmented, theme.unlink])
-        overridesTable.addRow(leftText: AppearanceTab.labelShortcutStyle, rightViews: [shortcutStyle.segmented, shortcutStyle.unlink])
+        overridesTable.addRow(leftText: AppearanceTab.labelSize, rightViews: [size.segmented])
+        overridesTable.addRow(leftText: AppearanceTab.labelTheme, rightViews: [theme.segmented])
+        overridesTable.addRow(leftText: AppearanceTab.labelShortcutStyle, rightViews: [shortcutStyle.segmented])
 
         let container = NSStackView(views: [styleTable, overridesTable])
         container.orientation = .vertical
@@ -549,38 +520,29 @@ final class ShortcutBoundDropdown: PopupButtonLikeSystemSettings {
 // MARK: - Bindings: override controls
 
 /// A segmented control wired to a per-shortcut "override" preference (e.g. `appearanceSizeOverride2`).
-/// Displays the override value when one is set, otherwise the global. Owns its own unlink button
-/// and its own unlink button.
+/// Displays the override value when one is set, otherwise the global.
 final class ShortcutOverrideSegmented {
     let segmented: NSSegmentedControl
-    let unlink: NSButton
 
     private let baseName: String
     private let cases: [MacroPreference]
     private let globalIndex: () -> Int
-    private let onChange: (() -> Void)?
     private var currentShortcutIndex: Int = 0
 
     init(baseName: String,
          cases: [MacroPreference],
          globalIndex: @escaping () -> Int,
-         segmentWidth: CGFloat,
-         onChange: (() -> Void)?) {
+         segmentWidth: CGFloat) {
         self.baseName = baseName
         self.cases = cases
         self.globalIndex = globalIndex
-        self.onChange = onChange
 
         segmented = LabelAndControl.makeSegmentedControl(
             Preferences.indexToName(baseName, 0), cases, segmentWidth: segmentWidth, extraAction: nil)
-        unlink = ShortcutEditor.makeUnlinkButton()
 
         let weakSelf = WeakRef(self)
         segmented.onAction = { control in
             weakSelf.value?.handleClick(control as! NSSegmentedControl)
-        }
-        unlink.onAction = { _ in
-            weakSelf.value?.unlinkOverride()
         }
     }
 
@@ -596,7 +558,6 @@ final class ShortcutOverrideSegmented {
         }
         let clamped = max(0, min(displayedIndex, cases.count - 1))
         segmented.selectedSegment = clamped
-        unlink.isHidden = !Preferences.hasOverride(baseName, index)
     }
 
     private func handleClick(_ control: NSSegmentedControl) {
@@ -608,19 +569,14 @@ final class ShortcutOverrideSegmented {
             storedOverrideValue: UserDefaults.standard.string(forKey: key),
             globalIndex: globalIndex(),
             valueAtIndex: { String($0) })
-        if case .write(let value) = decision {
+        switch decision {
+        case .skip:
+            break
+        case .remove:
+            Preferences.removeOverride(baseName, currentShortcutIndex)
+        case .write(let value):
             Preferences.set(key, value)
-            unlink.isHidden = false
-            onChange?()
         }
-    }
-
-    private func unlinkOverride() {
-        Preferences.removeOverride(baseName, currentShortcutIndex)
-        // Resnap to global.
-        segmented.selectedSegment = max(0, min(globalIndex(), cases.count - 1))
-        unlink.isHidden = true
-        onChange?()
     }
 }
 
@@ -628,22 +584,18 @@ final class ShortcutOverrideSegmented {
 /// override preference. Used for the Appearance Style picker.
 final class ShortcutOverrideRadios {
     let stack: NSStackView
-    let unlink: NSButton
 
     private let baseName: String
     private let cases: [MacroPreference]
     private let globalIndex: () -> Int
-    private let onChange: (() -> Void)?
     private var currentShortcutIndex: Int = 0
 
     init(baseName: String,
          cases: [MacroPreference],
-         globalIndex: @escaping () -> Int,
-         onChange: (() -> Void)?) {
+         globalIndex: @escaping () -> Int) {
         self.baseName = baseName
         self.cases = cases
         self.globalIndex = globalIndex
-        self.onChange = onChange
 
         stack = LabelAndControl.makeImageRadioButtons(
             Preferences.indexToName(baseName, 0),
@@ -652,7 +604,6 @@ final class ShortcutOverrideRadios {
             buttonSpacing: 18)
         stack.setContentHuggingPriority(.required, for: .horizontal)
         stack.setContentCompressionResistancePriority(.required, for: .horizontal)
-        unlink = ShortcutEditor.makeUnlinkButton()
 
         let weakSelf = WeakRef(self)
         let buttonViews = stack.arrangedSubviews.compactMap { $0 as? ImageTextButtonView }
@@ -661,9 +612,6 @@ final class ShortcutOverrideRadios {
                 guard let _ = stack else { return }
                 weakSelf.value?.handleClick(buttonIndex: i)
             }
-        }
-        unlink.onAction = { _ in
-            weakSelf.value?.unlinkOverride()
         }
     }
 
@@ -682,7 +630,6 @@ final class ShortcutOverrideRadios {
         for (i, b) in buttonViews.enumerated() {
             b.state = (i == displayedIndex) ? .on : .off
         }
-        unlink.isHidden = !Preferences.hasOverride(baseName, index)
     }
 
     private func handleClick(buttonIndex i: Int) {
@@ -700,42 +647,14 @@ final class ShortcutOverrideRadios {
             onIndex = Preferences.hasOverride(baseName, currentShortcutIndex)
                 ? (Int(UserDefaults.standard.string(forKey: key) ?? "") ?? -1)
                 : globalIndex()
+        case .remove:
+            Preferences.removeOverride(baseName, currentShortcutIndex)
+            onIndex = globalIndex()
         case .write(let value):
             Preferences.set(key, value)
             onIndex = i
         }
         for (j, b) in buttonViews.enumerated() { b.state = (j == onIndex) ? .on : .off }
-        if case .write = decision {
-            unlink.isHidden = false
-            onChange?()
-        }
-    }
-
-    private func unlinkOverride() {
-        Preferences.removeOverride(baseName, currentShortcutIndex)
-        let buttonViews = stack.arrangedSubviews.compactMap { $0 as? ImageTextButtonView }
-        let gi = globalIndex()
-        for (j, b) in buttonViews.enumerated() { b.state = (j == gi) ? .on : .off }
-        unlink.isHidden = true
-        onChange?()
-    }
-}
-
-// MARK: - Shared helpers
-
-extension ShortcutEditor {
-    /// Builds an unlink button used by all override bindings. Visibility is managed by each
-    /// binding's `bind()` based on `Preferences.hasOverride`.
-    static func makeUnlinkButton() -> NSButton {
-        let image = NSImage.fromSymbol(.link, pointSize: 14)
-        let button = NSButton(image: image, target: nil, action: nil)
-        DesignSystemControlStyler.styleIconButton(button, size: 20)
-        if #available(macOS 10.14, *) {
-            button.contentTintColor = .controlAccentColor
-        }
-        button.toolTip = NSLocalizedString("Sync with global value", comment: "")
-        button.isHidden = true
-        return button
     }
 }
 

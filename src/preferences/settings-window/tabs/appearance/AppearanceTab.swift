@@ -374,12 +374,6 @@ class AppearanceTab: NSObject {
     static var customizeStyleSheet: CustomizeStyleSheet!
     static var animationsSheet: AnimationsSheet!
 
-    /// One icon button per overridable preference, parked at the trailing edge of each row (same
-    /// position as the "unlink" icon in the per-shortcut Appearance section in `ControlsTab`).
-    /// Hidden when no shortcut overrides the global. Tooltip on hover lists the overriding
-    /// shortcut numbers; click navigates to the first one's Appearance pane in `ControlsTab`.
-    private static var overrideInfoIcons = [String: NSButton]()
-
     static func initTab() -> NSView {
         customizeStyleButton = DesignSystemControlStyler.makeButton(getCustomizeStyleButtonTitle(), target: self, action: #selector(showCustomizeStyleSheet))
         // The customize sheet is constructed lazily on first show. Animation controls were moved
@@ -395,7 +389,6 @@ class AppearanceTab: NSObject {
         animationsButton = nil
         customizeStyleSheet = nil
         animationsSheet = nil
-        overrideInfoIcons.removeAll()
     }
 
     private static func makeView() -> NSStackView {
@@ -417,37 +410,42 @@ class AppearanceTab: NSObject {
     private static func makeAppearanceView() -> NSView {
         let table = TableGroupView(subTitle: NSLocalizedString("Switch between 2 different styles. You can customize them.", comment: ""),
             width: SettingsWindow.contentWidth)
-        let styleButtons = LabelAndControl.makeImageRadioButtons("appearanceStyle", AppearanceStylePreference.allCases, extraAction: { _ in
-            toggleCustomizeStyleButton()
-            ControlsTab.syncOverrideControlsToGlobal()
-            refreshAllOverrideInfoLabels()
-        }, buttonSpacing: 10)
+        let styleButtons = LabelAndControl.makeImageRadioButtons(
+            "appearanceStyle", AppearanceStylePreference.allCases, buttonSpacing: 10)
+        configureGlobalStyleActions(styleButtons)
         configureStyleButtons(styleButtons)
-        // For the style row, the control is a horizontal stack of style cards centered in the row.
-        // Wrap [styleButtons, overrideIcon] in another HStack so the icon trails the cards — same
-        // pattern the per-shortcut Appearance section uses for its style + unlink pair.
-        let styleOverrideIcon = makeOverrideIcon("appearanceStyleOverride")
-        let styleRow = NSStackView(views: [styleButtons, styleOverrideIcon])
-        styleRow.orientation = .horizontal
-        styleRow.alignment = .centerY
-        styleRow.spacing = 12
-        styleRow.translatesAutoresizingMaskIntoConstraints = false
-        table.addRow(secondaryViews: [styleRow], secondaryViewsAlignment: .centerX, secondaryViewsTopGap: 6)
-        let sizeControl = LabelAndControl.makeSegmentedControl("appearanceSize", AppearanceSizePreference.allCases, segmentWidth: 105, extraAction: { control in
-            ControlsTab.syncOverrideControlsToGlobal()
-            refreshAllOverrideInfoLabels()
-        })
+        table.addRow(secondaryViews: [styleButtons], secondaryViewsAlignment: .centerX, secondaryViewsTopGap: 6)
+        let sizeControl = makeGlobalSegmentedControl("appearanceSize", overrideBaseName: "appearanceSizeOverride",
+            cases: AppearanceSizePreference.allCases, segmentWidth: 105)
         table.addRow(leftText: AppearanceTab.labelSize,
-            rightViews: [sizeControl, makeOverrideIcon("appearanceSizeOverride")])
+            rightViews: [sizeControl])
         table.addRow(leftText: AppearanceTab.labelTheme,
-            rightViews: [LabelAndControl.makeSegmentedControl("appearanceTheme", AppearanceThemePreference.allCases, segmentWidth: 105, extraAction: { _ in
-                ControlsTab.syncOverrideControlsToGlobal()
-                refreshAllOverrideInfoLabels()
-            }), makeOverrideIcon("appearanceThemeOverride")])
+            rightViews: [makeGlobalSegmentedControl("appearanceTheme", overrideBaseName: "appearanceThemeOverride",
+                cases: AppearanceThemePreference.allCases, segmentWidth: 105)])
         addAfterKeysReleasedRow(table)
         table.addRow(rightViews: customizeStyleButton)
-        refreshAllOverrideInfoLabels()
         return table
+    }
+
+    private static func configureGlobalStyleActions(_ styleButtons: NSStackView) {
+        let buttonViews = styleButtons.arrangedSubviews.compactMap { $0 as? ImageTextButtonView }
+        buttonViews.enumerated().forEach { index, buttonView in
+            buttonView.onClick = { [weak buttonView] _ in
+                guard let buttonView else { return }
+                let previousValue = UserDefaults.standard.string(forKey: "appearanceStyle")
+                let siblings = (buttonView.superview as? NSStackView)?.arrangedSubviews.compactMap {
+                    $0 as? ImageTextButtonView
+                } ?? []
+                siblings.forEach { $0.state = $0 === buttonView ? .on : .off }
+                LabelAndControl.controlWasChanged(buttonView.button, String(index))
+                let newValue = String(index)
+                let decision = resolveGlobalChange(previousValue: previousValue, newValue: newValue,
+                    overrideBaseName: "appearanceStyleOverride")
+                guard decision != .skip else { return }
+                toggleCustomizeStyleButton()
+                confirmOverrideResetIfNeeded(decision, overrideBaseName: "appearanceStyleOverride")
+            }
+        }
     }
 
     private static func configureStyleButtons(_ styleButtons: NSStackView) {
@@ -461,70 +459,52 @@ class AppearanceTab: NSObject {
         }
     }
 
-    /// Build the override-indicator icon button parked at the trailing edge of each global row.
-    /// Visible iff at least one shortcut overrides this global. Tooltip lists the overriding
-    /// shortcut numbers; click navigates to the first overriding shortcut's Appearance pane in
-    /// `ControlsTab` (same behaviour the previous text-link version had).
-    private static func makeOverrideIcon(_ overrideBaseName: String) -> NSButton {
-        // `arrow.triangle.branch` rotated 180° — reads as "this value has branches going
-        // downward to other shortcuts". Visually distinct from the chain-link unlink button.
-        let image = NSImage.fromSymbol(.arrowTriangleBranch, pointSize: 14, rotated180: true)
-        let button = NSButton(image: image, target: self, action: #selector(overrideInfoClicked(_:)))
-        button.identifier = NSUserInterfaceItemIdentifier(overrideBaseName)
-        DesignSystemControlStyler.styleIconButton(button, size: 20)
-        if #available(macOS 10.14, *) {
-            button.contentTintColor = .controlAccentColor
-        }
-        button.isHidden = true
-        overrideInfoIcons[overrideBaseName] = button
-        return button
-    }
-
-    private static func refreshOverrideInfoIcon(_ overrideBaseName: String, _ globalKey: String) {
-        guard let icon = overrideInfoIcons[overrideBaseName] else { return }
-        let indices = Preferences.shortcutIndicesWithDifferentValue(overrideBaseName, globalKey: globalKey)
-        if indices.isEmpty {
-            icon.isHidden = true
-            icon.toolTip = nil
-        } else {
-            let numbers = indices.map { String($0 + 1) }.joined(separator: ", ")
-            icon.toolTip = NSLocalizedString("Overridden in Shortcut:", comment: "") + " " + numbers
-            icon.tag = indices[0]
-            icon.isHidden = false
-        }
-    }
-
-    /// Refresh every override-indicator icon's visibility + tooltip. Wrapped in
-    /// `preserveScrollPosition` since toggling icon visibility can change the row's measured
-    /// width and otherwise nudge the user's scroll position. During the initial build the window
-    /// singleton isn't assigned yet (`init` sets `SettingsWindow.shared` only after `setupView`
-    /// returns), so we still run the refresh — just without scroll preservation, which isn't
-    /// needed before the window is on-screen anyway.
-    static func refreshAllOverrideInfoLabels() {
-        let refresh = {
-            for (overrideBaseName, globalKey) in Preferences.overrideToGlobalKey {
-                refreshOverrideInfoIcon(overrideBaseName, globalKey)
-            }
-        }
-        if let window = SettingsWindow.shared {
-            window.preserveScrollPosition(during: refresh)
-        } else {
-            refresh()
-        }
-    }
-
-    @objc static func overrideInfoClicked(_ sender: NSButton) {
-        let id = Preferences.shortcutIdentifier(at: sender.tag)
-        SettingsWindow.shared?.navigate(to: .controls(.shortcut(id: id, pane: .appearance)))
-    }
-
     private static func addAfterKeysReleasedRow(_ table: TableGroupView) {
-        let control = LabelAndControl.makeSegmentedControl("shortcutStyle", ShortcutStylePreference.allCases, segmentWidth: 105, extraAction: { control in
-            ControlsTab.syncOverrideControlsToGlobal()
-            refreshAllOverrideInfoLabels()
-        })
+        let control = makeGlobalSegmentedControl("shortcutStyle", overrideBaseName: "shortcutStyleOverride",
+            cases: ShortcutStylePreference.allCases, segmentWidth: 105)
         table.addRow(leftText: AppearanceTab.labelShortcutStyle,
-            rightViews: [control, makeOverrideIcon("shortcutStyleOverride")])
+            rightViews: [control])
+    }
+
+    private static func makeGlobalSegmentedControl(_ rawName: String,
+                                                   overrideBaseName: String,
+                                                   cases: [MacroPreference],
+                                                   segmentWidth: CGFloat) -> NSSegmentedControl {
+        let control = LabelAndControl.makeSegmentedControl(rawName, cases, segmentWidth: segmentWidth)
+        control.onAction = { control in
+            let previousValue = UserDefaults.standard.string(forKey: rawName)
+            let newValue = LabelAndControl.getControlValue(control, nil)
+            LabelAndControl.controlWasChanged(control, nil)
+            let decision = resolveGlobalChange(previousValue: previousValue, newValue: newValue,
+                overrideBaseName: overrideBaseName)
+            confirmOverrideResetIfNeeded(decision, overrideBaseName: overrideBaseName)
+        }
+        return control
+    }
+
+    private static func resolveGlobalChange(previousValue: String?,
+                                            newValue: String?,
+                                            overrideBaseName: String) -> GlobalAppearanceChangeDecision {
+        GlobalAppearanceChangeResolver.decide(
+            previousValue: previousValue,
+            newValue: newValue,
+            hasExplicitOverrides: Preferences.hasAnyOverride(overrideBaseName))
+    }
+
+    private static func confirmOverrideResetIfNeeded(_ decision: GlobalAppearanceChangeDecision,
+                                                     overrideBaseName: String) {
+        guard decision == .confirmOverrideReset else { return }
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = NSLocalizedString("Apply this change to all shortcuts?", comment: "")
+        alert.informativeText = NSLocalizedString("Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.", comment: "")
+        let globalOnlyButton = alert.addButton(withTitle: NSLocalizedString("Change Global Only", comment: ""))
+        globalOnlyButton.setAccessibilityFocused(true)
+        globalOnlyButton.keyEquivalent = "\u{1b}"
+        let applyAllButton = alert.addButton(withTitle: NSLocalizedString("Apply to All Shortcuts", comment: ""))
+        if #available(macOS 11.0, *) { applyAllButton.hasDestructiveAction = true }
+        guard alert.runModal() == .alertSecondButtonReturn else { return }
+        Preferences.removeAllOverrides(overrideBaseName)
     }
 
     private static func makeMultipleScreensView() -> NSView {

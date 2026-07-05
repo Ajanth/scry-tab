@@ -18,9 +18,6 @@ enum Symbols: String {
     case command = "􀆔"               // command
     case gearshape = "􀣋"             // gearshape
     case handRaised = "􀉻"            // hand.raised
-    // Inline button icons
-    case link = "􀉣"                  // link
-    case arrowTriangleBranch = "􀙠"  // arrow.triangle.branch
     // Permission window icons
     case accessibility = "􀕾"         // accessibility
     case display = "􀢹"               // display

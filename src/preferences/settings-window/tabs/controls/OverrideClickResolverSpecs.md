@@ -8,12 +8,12 @@ In Settings, each shortcut can **override** the global Appearance values (style 
 shortcut-style). A segmented control shows either the global value (no override) or the override value.
 `OverrideClickResolver.decide` is the pure kernel for "what should a click on that segment do": given the
 clicked index, whether an override is currently set, the stored override value, the current global index,
-and a `valueAtIndex` encoder, it returns `.skip` (no change) or `.write(value:)` (set/update the override).
+and a `valueAtIndex` encoder, it returns `.skip` (no change), `.remove` (resume following the global), or
+`.write(value:)` (set/update the override).
 
-The key invariant it encodes (the rules the user stated): an override's **set/unset state** and its
-**value** are independent. Clicking the currently-displayed value never changes state; clicking a
-different value writes/updates the override; and the *only* way to unset an override is the link button
-(never modeled as a click here).
+The key invariant is that the global choice represents inheritance. Selecting it removes an existing
+override; selecting a different value writes or updates the override; clicking an already-displayed
+non-global override is a no-op.
 
 ## Behavior & edge cases
 
@@ -23,7 +23,7 @@ different value writes/updates the override; and the *only* way to unset an over
 - A `.write` re-encodes the new index via `valueAtIndex` (the persisted string isn't assumed to equal the
   index).
 - A malformed stored override (non-Int string) is treated as "displayed = -1", so a click still writes
-  (corrupt defaults don't silently turn every click into a no-op).
+  unless the global value was selected, which safely removes the corrupt override.
 - `nil` stored value with no override falls back to the global as the displayed value.
 
 ## Test scenarios
@@ -33,17 +33,19 @@ Mirrors `OverrideClickResolverTests.swift` 1:1.
 ### Rule 1 — clicking the displayed value is a no-op
 - **testNoOpWhenClickingDisplayedGlobal** — override unset, click the displayed global → `.skip`.
 - **testNoOpWhenClickingDisplayedOverride** — override set, click the displayed override value → `.skip`.
-- **testOverrideStaysSetWhenItsValueMatchesGlobal** — override set to a value that *coincides* with the global; clicking it stays `.skip` (set-state survives; only the link button unsets).
 - **testNoOpWhenRegisteredDefaultDiffersFromGlobal** — displayed = global even when the registered default differs → `.skip` (regression: don't compare against `UserDefaults`).
 
 ### Rule 2 — clicking a different value writes the override
 - **testWriteOverrideOnClickAwayFromGlobal** — override unset, click a different value → `.write`.
 - **testWriteOverrideOnClickAwayFromExistingOverride** — override set, click a different value → `.write` (still set, new value).
 - **testWritesOverrideWhenClickValueEqualsRegisteredDefault** — new value equals the registered default but differs from global → `.write` (regression: previously skipped).
-- **testWriteOverrideEvenWhenNewValueMatchesGlobal** — new value coincidentally equals the global but differs from the current override → `.write` (stays set).
+
+### Rule 3 — selecting the global value removes the override
+- **testClickingGlobalClearsMatchingOverride** — override value coincides with the global; clicking it → `.remove`.
+- **testClickingGlobalClearsDifferentOverride** — override differs from global; selecting global → `.remove`.
 
 ### Encoding & defensive handling
 - **testValueAtIndexEncoderIsHonored** — the persisted string comes from `valueAtIndex`, not the raw index.
 - **testStoredOverrideMalformedFallsThroughToWrite** — corrupt stored value (non-Int) → treated as displayed -1 → `.write`.
 - **testNilStoredOverrideWithMatchingGlobalIsSkip** — nil stored value, override unset, click the global → `.skip`.
-- **testHasOverrideTrueWithNilStoredFallsThroughToWrite** — inconsistent state (override marked SET but stored value is nil) → treated as displayed -1 → `.write` (defensive: don't silently no-op).
+- **testHasOverrideTrueWithNilStoredClearsWhenGlobalClicked** — inconsistent state with a nil stored value; clicking global → `.remove`.

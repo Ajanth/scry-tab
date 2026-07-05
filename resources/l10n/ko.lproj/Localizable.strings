@@ -32,6 +32,8 @@
 "Application Name" = "응용 프로그램 이름";
 "Application Name - Window Title" = "응용 프로그램 이름 - 윈도우 제목";
 "Applies in other Appearances" = "다른 모양에도 적용됨";
+"Apply this change to all shortcuts?" = "이 변경 사항을 모든 단축키에 적용할까요?";
+"Apply to All Shortcuts" = "모든 단축키에 적용";
 "Arrow keys" = "화살표 키";
 "Arrow keys already assigned to other actions:\n%@" = "화살표 키가 이미 다른 동작에 할당되어 있습니다:\n%@";
 "Ask whether to send crash reports" = "충돌 보고서 전송 여부 물어보기";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "변경 사항에 대한 간단한 설명";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "취소";
+"Change Global Only" = "전역 설정만 변경";
 "Check for updates now…" = "지금 업데이트 확인…";
 "Check for updates periodically" = "주기적으로 업데이트 확인";
 "Check for updates…" = "업데이트 확인…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "트랙패드 설정 열기…";
 "Order windows by" = "윈도우 정렬 기준";
 "Ordering & Grouping" = "정렬 및 그룹화";
-"Overridden in Shortcut:" = "단축키에서 재정의됨:";
 "Please drag ScryTab into the Applications folder manually." = "ScryTab을 응용 프로그램 폴더로 직접 드래그해 주세요.";
 "Please fill in the form" = "양식을 작성해 주세요";
 "Quit %@" = "%@ 종료";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "다음 Space의 윈도우 보이기";
 "Size" = "크기";
 "Small" = "작게";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "일부 단축키가 이 설정을 재정의합니다. 해당 재정의를 제거하여 새 전역 값을 모든 단축키에 적용하거나 재정의를 유지하십시오.";
 "Source code" = "소스 코드";
 "Space Order" = "Space 순서";
 "Start" = "시작";
 "Start at login" = "로그인 시 시작";
 "Suggest a change" = "변경 제안";
-"Sync with global value" = "전역 값과 동기화";
 "System" = "시스템";
 "System Default" = "시스템 기본값";
 "The application needs to restart to apply the imported settings." = "가져온 설정을 적용하려면 앱을 재시작해야 합니다.";

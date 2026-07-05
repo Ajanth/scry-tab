@@ -279,6 +279,9 @@
 		DC06402457ECCE6C902FEAE4 /* OverrideClickResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A2E38AF41E866D3CDE71BF /* OverrideClickResolver.swift */; };
 		DC8CF4F01C999497352736F1 /* OverrideClickResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4409E4B3D98C491503CE5D /* OverrideClickResolverTests.swift */; };
 		DD6771EE8ACE714C2599FEB7 /* OverrideClickResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A2E38AF41E866D3CDE71BF /* OverrideClickResolver.swift */; };
+		6A7000000000000000000011 /* GlobalAppearanceChangeResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7000000000000000000001 /* GlobalAppearanceChangeResolver.swift */; };
+		6A7000000000000000000012 /* GlobalAppearanceChangeResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7000000000000000000001 /* GlobalAppearanceChangeResolver.swift */; };
+		6A7000000000000000000013 /* GlobalAppearanceChangeResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7000000000000000000002 /* GlobalAppearanceChangeResolverTests.swift */; };
 		E70C8A2200000000000SP002 /* SparkleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70C8A1100000000000SP001 /* SparkleDelegate.swift */; };
 		F00DCAFE0000000000001002 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DCAFE0000000000000002 /* Search.swift */; };
 		F00DCAFE0000000000001003 /* SearchTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DCAFE0000000000000003 /* SearchTestable.swift */; };
@@ -385,6 +388,8 @@
 		5FC5980000000000000C0001 /* CGSSymbolicHotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSSymbolicHotKey.swift; sourceTree = "<group>"; };
 		5FCEFA110000000000000020 /* PreferencesMigrationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesMigrationsTests.swift; sourceTree = "<group>"; };
 		5FE2AF752EAE849F004A4AC5 /* xcbeautify */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = xcbeautify; sourceTree = "<group>"; };
+		6A7000000000000000000001 /* GlobalAppearanceChangeResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAppearanceChangeResolver.swift; sourceTree = "<group>"; };
+		6A7000000000000000000002 /* GlobalAppearanceChangeResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAppearanceChangeResolverTests.swift; sourceTree = "<group>"; };
 		69A2E38AF41E866D3CDE71BF /* OverrideClickResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverrideClickResolver.swift; sourceTree = "<group>"; };
 		AA0C8A000000000000000001 /* AXCallScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AXCallScheduler.swift; sourceTree = "<group>"; };
 		AA0C8A0000000000000000B1 /* CGSCallScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSCallScheduler.swift; sourceTree = "<group>"; };
@@ -753,6 +758,8 @@
 			isa = PBXGroup;
 			children = (
 				D04BA64F1F344007EA13BA05 /* AppearanceTab.swift */,
+				6A7000000000000000000001 /* GlobalAppearanceChangeResolver.swift */,
+				6A7000000000000000000002 /* GlobalAppearanceChangeResolverTests.swift */,
 				5F21C9E32C6E94700091F72F /* CustomizeStyleSheet.swift */,
 				5F21C9E52C6E94920091F72F /* AnimationsSheet.swift */,
 			);
@@ -1712,6 +1719,8 @@
 				BF0CEEEE0000000000001001 /* PersistedWindowFrameTests.swift in Sources */,
 				DC8CF4F01C999497352736F1 /* OverrideClickResolverTests.swift in Sources */,
 				DC06402457ECCE6C902FEAE4 /* OverrideClickResolver.swift in Sources */,
+				6A7000000000000000000012 /* GlobalAppearanceChangeResolver.swift in Sources */,
+				6A7000000000000000000013 /* GlobalAppearanceChangeResolverTests.swift in Sources */,
 				5FC5980000000000000A0003 /* NativeHotkeyResolver.swift in Sources */,
 				5FC5980000000000000A0102 /* NativeHotkeyResolverTests.swift in Sources */,
 				5E1EC110000000000000C003 /* SelectionResolver.swift in Sources */,
@@ -1806,6 +1815,7 @@
 				D04BA14D93726795A6937832 /* LabelAndControl.swift in Sources */,
 				5F791E4B2F1C65E100B6419C /* ApplicationDiscriminator.swift in Sources */,
 				D04BA7BE7F3DD24D58ACE942 /* AppearanceTab.swift in Sources */,
+				6A7000000000000000000011 /* GlobalAppearanceChangeResolver.swift in Sources */,
 				D04BAD1BE9DC22C48C53D195 /* AboutTab.swift in Sources */,
 				D04BA15A1B0C4871EA7CB899 /* GeneralTab.swift in Sources */,
 				D04BAD451966B43720120D2E /* Menubar.swift in Sources */,

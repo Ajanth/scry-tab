@@ -32,6 +32,8 @@
 "Application Name" = "Nama Aplikasi";
 "Application Name - Window Title" = "Nama Aplikasi - Judul Jendela";
 "Applies in other Appearances" = "Berlaku pada Tampilan lain";
+"Apply this change to all shortcuts?" = "Terapkan perubahan ini ke semua pintasan?";
+"Apply to All Shortcuts" = "Terapkan ke Semua Pintasan";
 "Arrow keys" = "Tombol panah";
 "Arrow keys already assigned to other actions:\n%@" = "Tombol panah sudah ditetapkan untuk tindakan lain:\n%@";
 "Ask whether to send crash reports" = "Tanya apakah akan mengirim laporan kerusakan";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Deskripsi singkat tentang perubahan";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Batal";
+"Change Global Only" = "Ubah Global Saja";
 "Check for updates now…" = "Periksa pembaruan sekarang…";
 "Check for updates periodically" = "Periksa pembaruan secara berkala";
 "Check for updates…" = "Periksa pembaruan…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Buka Pengaturan Trackpad…";
 "Order windows by" = "Urutkan jendela berdasarkan";
 "Ordering & Grouping" = "Pengurutan & Pengelompokan";
-"Overridden in Shortcut:" = "Diganti dalam Pintasan:";
 "Please drag ScryTab into the Applications folder manually." = "Seret ScryTab ke folder Aplikasi secara manual.";
 "Please fill in the form" = "Isi formulir";
 "Quit %@" = "Keluar dari %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Tampilkan jendela dari Ruang";
 "Size" = "Ukuran";
 "Small" = "Kecil";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Beberapa pintasan mengganti pengaturan ini. Terapkan nilai global baru ke semua pintasan dengan menghapus penggantian tersebut, atau pertahankan penggantiannya.";
 "Source code" = "Kode sumber";
 "Space Order" = "Urutan Ruang";
 "Start" = "Mulai";
 "Start at login" = "Jalankan saat masuk";
 "Suggest a change" = "Sarankan perubahan";
-"Sync with global value" = "Sinkronkan dengan nilai global";
 "System" = "Sistem";
 "System Default" = "Bawaan Sistem";
 "The application needs to restart to apply the imported settings." = "Aplikasi perlu dimulai ulang untuk menerapkan pengaturan yang diimpor.";

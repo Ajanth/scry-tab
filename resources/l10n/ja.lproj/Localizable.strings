@@ -32,6 +32,8 @@
 "Application Name" = "アプリケーション名";
 "Application Name - Window Title" = "アプリケーション名 - ウインドウタイトル";
 "Applies in other Appearances" = "他の外観にも適用されます";
+"Apply this change to all shortcuts?" = "この変更をすべてのショートカットに適用しますか？";
+"Apply to All Shortcuts" = "すべてのショートカットに適用";
 "Arrow keys" = "矢印キー";
 "Arrow keys already assigned to other actions:\n%@" = "矢印キーはすでに他のアクションに割り当てられています:\n%@";
 "Ask whether to send crash reports" = "クラッシュレポートの送信を毎回確認";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "変更の簡単な説明";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "キャンセル";
+"Change Global Only" = "全体設定のみ変更";
 "Check for updates now…" = "今すぐアップデートを確認…";
 "Check for updates periodically" = "アップデートを定期的に確認";
 "Check for updates…" = "アップデートを確認…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "トラックパッド設定を開く…";
 "Order windows by" = "ウインドウの並び順";
 "Ordering & Grouping" = "並び順とグループ化";
-"Overridden in Shortcut:" = "上書きされているショートカット:";
 "Please drag ScryTab into the Applications folder manually." = "ScryTab を手動でアプリケーションフォルダにドラッグしてください。";
 "Please fill in the form" = "フォームを入力してください";
 "Quit %@" = "%@ を終了";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "対象の Space";
 "Size" = "サイズ";
 "Small" = "小";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "一部のショートカットではこの設定が上書きされています。上書きを削除して新しい全体設定をすべてのショートカットに適用するか、上書きを維持してください。";
 "Source code" = "ソースコード";
 "Space Order" = "Space 順";
 "Start" = "先頭";
 "Start at login" = "ログイン時に起動";
 "Suggest a change" = "変更を提案";
-"Sync with global value" = "全体の値と同期";
 "System" = "システム";
 "System Default" = "システムのデフォルト";
 "The application needs to restart to apply the imported settings." = "読み込んだ設定を適用するには App を再起動する必要があります。";

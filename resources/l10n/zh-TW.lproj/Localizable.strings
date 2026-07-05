@@ -32,6 +32,8 @@
 "Application Name" = "應用程式名稱";
 "Application Name - Window Title" = "應用程式名稱 - 視窗標題";
 "Applies in other Appearances" = "套用至其他外觀";
+"Apply this change to all shortcuts?" = "要將此變更套用至所有快速鍵嗎？";
+"Apply to All Shortcuts" = "套用至所有快速鍵";
 "Arrow keys" = "方向鍵";
 "Arrow keys already assigned to other actions:\n%@" = "方向鍵已指派給其他動作：\n%@";
 "Ask whether to send crash reports" = "詢問是否傳送當機報告";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "變更的簡短描述";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "取消";
+"Change Global Only" = "只更改全域設定";
 "Check for updates now…" = "立即檢查更新…";
 "Check for updates periodically" = "定期檢查更新";
 "Check for updates…" = "檢查更新…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "打開「觸控板」設定…";
 "Order windows by" = "視窗排序方式";
 "Ordering & Grouping" = "排序與分組";
-"Overridden in Shortcut:" = "已在快速鍵中覆寫：";
 "Please drag ScryTab into the Applications folder manually." = "請手動將 ScryTab 拖移到「應用程式」資料夾。";
 "Please fill in the form" = "請填寫表單";
 "Quit %@" = "結束 %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "顯示來自 Spaces 的視窗";
 "Size" = "大小";
 "Small" = "小";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "部分快速鍵覆寫了此設定。移除這些覆寫以將新的全域值套用至所有快速鍵，或保留這些覆寫。";
 "Source code" = "原始碼";
 "Space Order" = "Space 順序";
 "Start" = "開頭";
 "Start at login" = "登入時啟動";
 "Suggest a change" = "建議變更";
-"Sync with global value" = "與全域值同步";
 "System" = "系統";
 "System Default" = "系統預設";
 "The application needs to restart to apply the imported settings." = "App 需要重新啟動才能套用輸入的設定。";
