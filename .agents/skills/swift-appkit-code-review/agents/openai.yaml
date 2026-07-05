@@ -1,0 +1,6 @@
+interface:
+  display_name: "Swift and AppKit Code Review"
+  short_description: "Review native AppKit changes rigorously"
+  default_prompt: "Use $swift-appkit-code-review to review these changes for production readiness."
+policy:
+  allow_implicit_invocation: true

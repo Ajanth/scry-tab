@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Batch-encode PNG/JPEG → HEIC at the chosen quality and longest-edge size.
 #
-# Defaults: longest edge 1000px, quality 50. q50 was chosen as the ScryTab baseline
+# Defaults: longest edge 1000px, quality 50. q50 was chosen as the project baseline
 # after side-by-side comparison at q20/q35/q50/q65/q80 — it's the lowest setting
 # where text in screenshot illustrations stayed legible and gradient backgrounds
 # didn't band, at roughly 50% of the bytes of q80.
