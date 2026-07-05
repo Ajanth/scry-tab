@@ -24,6 +24,7 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(DesignSystem.Metrics.sidebarSelectionRadius, 12)
         XCTAssertEqual(DesignSystem.Metrics.sidebarIconRadius, 6)
         XCTAssertEqual(DesignSystem.Metrics.standardControlMinHeight, 32)
+        XCTAssertEqual(DesignSystem.Metrics.settingsEditorSidebarHeight, 470)
     }
 
     func testControlGeometryTokensMatchMigrationPlan() {
@@ -92,6 +93,23 @@ final class DesignSystemTests: XCTestCase {
         let appKitControl: NSSegmentedControl = control
         XCTAssertEqual(appKitControl.segmentCount, 2)
         XCTAssertTrue(control.drawsAppOwnedSurface)
+    }
+
+    func testSegmentedControlImageContentPreservesAspectRatio() {
+        let control = DesignSystemSegmentedControl(labels: [""], trackingMode: .momentary, target: nil, action: nil)
+        let rect = control.fittedImageRect(CGSize(width: 9, height: 1),
+                                           centeredIn: CGRect(x: 0, y: 0, width: 16, height: 16),
+                                           maximumDimension: 16)
+        XCTAssertEqual(rect.width, 16, accuracy: 0.0001)
+        XCTAssertEqual(rect.height, 16 / 9, accuracy: 0.0001)
+        XCTAssertEqual(rect.midX, 8, accuracy: 0.0001)
+        XCTAssertEqual(rect.midY, 8, accuracy: 0.0001)
+    }
+
+    func testSegmentedControlImageContentUsesSemanticTint() {
+        let control = DesignSystemSegmentedControl(labels: [""], trackingMode: .momentary, target: nil, action: nil)
+        XCTAssertEqual(control.imageTintColor(enabled: true), DesignSystem.color(.textPrimary, appearance: control.effectiveAppearance))
+        XCTAssertEqual(control.imageTintColor(enabled: false), DesignSystem.color(.textDisabled, appearance: control.effectiveAppearance))
     }
 
     func testDarkModeSurfacesUseOpaqueMattePalette() {

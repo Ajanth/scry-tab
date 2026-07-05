@@ -4,7 +4,6 @@ class ExceptionsTab {
     private static let sidebarWidth = CGFloat(280)
     private static let rowHeight = CGFloat(56)
     private static let iconSize = CGFloat(40)
-    private static let minContainerHeight = CGFloat(470)
     private static let sidebarHorizontalPadding = TableGroupView.padding
     private static let editorTopBottomPadding = TableGroupView.padding
     private static let editorHorizontalPadding = TableGroupView.padding
@@ -48,7 +47,7 @@ class ExceptionsTab {
     }
 
     private static func makeContainer() -> NSView {
-        let container = makeSidebarEditorContainer(sidebar: makeSidebar(), editor: makeEditorPane(), minHeight: minContainerHeight)
+        let container = makeSidebarEditorContainer(sidebar: makeSidebar(), editor: makeEditorPane(), minHeight: DesignSystem.Metrics.settingsEditorSidebarHeight)
         return TableGroupSetView(originalViews: [container], padding: 0, bottomPadding: 0)
     }
 
