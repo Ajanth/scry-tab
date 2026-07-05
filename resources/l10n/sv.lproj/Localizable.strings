@@ -32,6 +32,8 @@
 "Application Name" = "Programnamn";
 "Application Name - Window Title" = "Programnamn - Fönstertitel";
 "Applies in other Appearances" = "Gäller i andra Utseenden";
+"Apply this change to all shortcuts?" = "Vill du tillämpa ändringen på alla kortkommandon?";
+"Apply to All Shortcuts" = "Tillämpa på alla kortkommandon";
 "Arrow keys" = "Piltangenter";
 "Arrow keys already assigned to other actions:\n%@" = "Piltangenter är redan tilldelade andra åtgärder:\n%@";
 "Ask whether to send crash reports" = "Fråga om kraschrapporter ska skickas";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Kort beskrivning av ändringen";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Avbryt";
+"Change Global Only" = "Ändra endast globalt";
 "Check for updates now…" = "Sök efter uppdateringar nu…";
 "Check for updates periodically" = "Sök efter uppdateringar regelbundet";
 "Check for updates…" = "Sök efter uppdateringar…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Öppna inställningar för Styrplatta…";
 "Order windows by" = "Sortera fönster efter";
 "Ordering & Grouping" = "Sortering och gruppering";
-"Overridden in Shortcut:" = "Åsidosatt i Kortkommando:";
 "Please drag ScryTab into the Applications folder manually." = "Dra ScryTab till mappen Program manuellt.";
 "Please fill in the form" = "Fyll i formuläret";
 "Quit %@" = "Avsluta %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Visa fönster från skrivbord";
 "Size" = "Storlek";
 "Small" = "Liten";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Vissa kortkommandon åsidosätter den här inställningen. Tillämpa det nya globala värdet på alla kortkommandon genom att ta bort åsidosättningarna, eller behåll dem.";
 "Source code" = "Källkod";
 "Space Order" = "Skrivbordsordning";
 "Start" = "Start";
 "Start at login" = "Starta vid inloggning";
 "Suggest a change" = "Föreslå en ändring";
-"Sync with global value" = "Synkronisera med globalt värde";
 "System" = "System";
 "System Default" = "Systemstandard";
 "The application needs to restart to apply the imported settings." = "Programmet måste startas om för att tillämpa de importerade inställningarna.";

@@ -32,6 +32,8 @@
 "Application Name" = "Название приложения";
 "Application Name - Window Title" = "Название приложения — Заголовок окна";
 "Applies in other Appearances" = "Применяется в других оформлениях";
+"Apply this change to all shortcuts?" = "Применить это изменение ко всем сочетаниям клавиш?";
+"Apply to All Shortcuts" = "Применить ко всем сочетаниям клавиш";
 "Arrow keys" = "Клавиши со стрелками";
 "Arrow keys already assigned to other actions:\n%@" = "Клавиши со стрелками уже назначены другим действиям:\n%@";
 "Ask whether to send crash reports" = "Спрашивать перед отправкой отчётов о сбоях";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Краткое описание изменения";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Отмена";
+"Change Global Only" = "Изменить только общее значение";
 "Check for updates now…" = "Проверить обновления сейчас…";
 "Check for updates periodically" = "Периодически проверять обновления";
 "Check for updates…" = "Проверить обновления…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Открыть настройки Трекпада…";
 "Order windows by" = "Сортировка окон";
 "Ordering & Grouping" = "Сортировка и группировка";
-"Overridden in Shortcut:" = "Переопределено в сочетании клавиш:";
 "Please drag ScryTab into the Applications folder manually." = "Перетащите ScryTab в папку «Программы» вручную.";
 "Please fill in the form" = "Заполните форму";
 "Quit %@" = "Завершить %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Показывать окна с пространств";
 "Size" = "Размер";
 "Small" = "Маленький";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Некоторые сочетания клавиш переопределяют этот параметр. Удалите эти переопределения, чтобы применить новое общее значение ко всем сочетаниям клавиш, или сохраните их.";
 "Source code" = "Исходный код";
 "Space Order" = "Порядок пространств";
 "Start" = "Начало";
 "Start at login" = "Запускать при входе в систему";
 "Suggest a change" = "Предложить изменение";
-"Sync with global value" = "Синхронизировать с общим значением";
 "System" = "Система";
 "System Default" = "По умолчанию";
 "The application needs to restart to apply the imported settings." = "Чтобы применить импортированные настройки, приложение нужно перезапустить.";

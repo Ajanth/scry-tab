@@ -32,6 +32,8 @@
 "Application Name" = "Uygulama Adı";
 "Application Name - Window Title" = "Uygulama Adı - Pencere Başlığı";
 "Applies in other Appearances" = "Diğer Görünümlerde uygulanır";
+"Apply this change to all shortcuts?" = "Bu değişiklik tüm kestirmelere uygulansın mı?";
+"Apply to All Shortcuts" = "Tüm kestirmelere uygula";
 "Arrow keys" = "Ok tuşları";
 "Arrow keys already assigned to other actions:\n%@" = "Ok tuşları zaten başka eylemlere atanmış:\n%@";
 "Ask whether to send crash reports" = "Çökme raporlarının gönderilip gönderilmeyeceğini sor";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Değişikliğin kısa açıklaması";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "İptal";
+"Change Global Only" = "Yalnızca genel değeri değiştir";
 "Check for updates now…" = "Şimdi güncellemeleri denetle…";
 "Check for updates periodically" = "Güncellemeleri düzenli olarak denetle";
 "Check for updates…" = "Güncellemeleri denetle…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Trackpad ayarlarını aç…";
 "Order windows by" = "Pencereleri sıralama ölçütü";
 "Ordering & Grouping" = "Sıralama ve Gruplama";
-"Overridden in Shortcut:" = "Şu Kısayolda geçersiz kılındı:";
 "Please drag ScryTab into the Applications folder manually." = "Lütfen ScryTab’ı el ile Uygulamalar klasörüne sürükleyin.";
 "Please fill in the form" = "Lütfen formu doldurun";
 "Quit %@" = "%@ uygulamasından çık";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Şu Alanlardan pencereleri göster";
 "Size" = "Boyut";
 "Small" = "Küçük";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Bazı kestirmeler bu ayarı geçersiz kılıyor. Bu geçersiz kılmaları kaldırarak yeni genel değeri tüm kestirmelere uygulayın veya geçersiz kılmaları koruyun.";
 "Source code" = "Kaynak kodu";
 "Space Order" = "Alan sırası";
 "Start" = "Başlat";
 "Start at login" = "Oturum açıldığında başlat";
 "Suggest a change" = "Değişiklik öner";
-"Sync with global value" = "Genel değerle eşitle";
 "System" = "Sistem";
 "System Default" = "Sistem Varsayılanı";
 "The application needs to restart to apply the imported settings." = "İçe aktarılan ayarları uygulamak için uygulamanın yeniden başlatılması gerekiyor.";

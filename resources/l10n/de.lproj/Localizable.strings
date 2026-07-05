@@ -32,6 +32,8 @@
 "Application Name" = "Anwendungsname";
 "Application Name - Window Title" = "Anwendungsname - Fenstertitel";
 "Applies in other Appearances" = "Gilt in anderen Darstellungen";
+"Apply this change to all shortcuts?" = "Änderung auf alle Tastenkürzel anwenden?";
+"Apply to All Shortcuts" = "Auf alle Tastenkürzel anwenden";
 "Arrow keys" = "Pfeiltasten";
 "Arrow keys already assigned to other actions:\n%@" = "Pfeiltasten sind bereits anderen Aktionen zugewiesen:\n%@";
 "Ask whether to send crash reports" = "Fragen, ob Absturzberichte gesendet werden sollen";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Kurze Beschreibung der Änderung";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Abbrechen";
+"Change Global Only" = "Nur global ändern";
 "Check for updates now…" = "Jetzt nach Updates suchen…";
 "Check for updates periodically" = "Regelmäßig nach Updates suchen";
 "Check for updates…" = "Nach Updates suchen…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Einstellungen für Trackpad öffnen…";
 "Order windows by" = "Fenster sortieren nach";
 "Ordering & Grouping" = "Sortierung & Gruppierung";
-"Overridden in Shortcut:" = "Überschrieben in Tastenkürzel:";
 "Please drag ScryTab into the Applications folder manually." = "Bitte ziehen Sie ScryTab manuell in den Programme-Ordner.";
 "Please fill in the form" = "Bitte füllen Sie das Formular aus";
 "Quit %@" = "%@ beenden";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Fenster von Spaces anzeigen";
 "Size" = "Größe";
 "Small" = "Klein";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Einige Tastenkürzel überschreiben diese Einstellung. Wenden Sie den neuen globalen Wert auf jedes Tastenkürzel an, indem Sie diese Überschreibungen entfernen, oder behalten Sie die Überschreibungen bei.";
 "Source code" = "Quellcode";
 "Space Order" = "Space-Reihenfolge";
 "Start" = "Anfang";
 "Start at login" = "Beim Anmelden starten";
 "Suggest a change" = "Änderung vorschlagen";
-"Sync with global value" = "Mit globalem Wert synchronisieren";
 "System" = "System";
 "System Default" = "Systemstandard";
 "The application needs to restart to apply the imported settings." = "Die App muss neu gestartet werden, um die importierten Einstellungen zu übernehmen.";

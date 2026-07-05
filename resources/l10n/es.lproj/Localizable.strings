@@ -32,6 +32,8 @@
 "Application Name" = "Nombre de la aplicación";
 "Application Name - Window Title" = "Nombre de la aplicación - Título de la ventana";
 "Applies in other Appearances" = "Se aplica en otras Apariencias";
+"Apply this change to all shortcuts?" = "¿Aplicar este cambio a todos los atajos?";
+"Apply to All Shortcuts" = "Aplicar a todos los atajos";
 "Arrow keys" = "Teclas de flecha";
 "Arrow keys already assigned to other actions:\n%@" = "Teclas de flecha ya asignadas a otras acciones:\n%@";
 "Ask whether to send crash reports" = "Preguntar si enviar los informes de problema";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Breve descripción del cambio";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Cancelar";
+"Change Global Only" = "Cambiar solo el valor global";
 "Check for updates now…" = "Buscar actualizaciones ahora…";
 "Check for updates periodically" = "Buscar actualizaciones periódicamente";
 "Check for updates…" = "Buscar actualizaciones…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Abrir Ajustes de Trackpad…";
 "Order windows by" = "Ordenar ventanas por";
 "Ordering & Grouping" = "Orden y agrupación";
-"Overridden in Shortcut:" = "Anulado en el atajo:";
 "Please drag ScryTab into the Applications folder manually." = "Arrastra ScryTab a la carpeta Aplicaciones manualmente.";
 "Please fill in the form" = "Rellena el formulario";
 "Quit %@" = "Salir de %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Mostrar ventanas de los Espacios";
 "Size" = "Tamaño";
 "Small" = "Pequeño";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Algunos atajos anulan este ajuste. Aplica el nuevo valor global a todos los atajos eliminando esas anulaciones, o consérvalas.";
 "Source code" = "Código fuente";
 "Space Order" = "Orden de los Espacios";
 "Start" = "Inicio";
 "Start at login" = "Abrir al iniciar sesión";
 "Suggest a change" = "Sugerir un cambio";
-"Sync with global value" = "Sincronizar con el valor global";
 "System" = "Sistema";
 "System Default" = "Predeterminado del sistema";
 "The application needs to restart to apply the imported settings." = "La aplicación debe reiniciarse para aplicar los ajustes importados.";

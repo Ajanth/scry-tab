@@ -14,9 +14,8 @@ class PreferencesEvents {
         "showOnScreen",
     ]
 
-    /// True if `key` is an indexed override of one of the 5 overridable appearance prefs
-    /// (e.g. `appearanceStyleOverride2`). Used to trigger a UI reset and override-label refresh
-    /// when an override changes, so the switcher and Settings UI both pick up the new value.
+    /// True if `key` is an indexed override of an overridable appearance preference
+    /// (e.g. `appearanceStyleOverride2`). Used to refresh the switcher and Settings controls.
     private static func isOverrideKey(_ key: String) -> Bool {
         for baseName in Preferences.appearanceOverrideBaseNames {
             for i in 0...Preferences.maxShortcutCount {

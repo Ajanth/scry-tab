@@ -32,6 +32,8 @@
 "Application Name" = "Application Name";
 "Application Name - Window Title" = "Application Name - Window Title";
 "Applies in other Appearances" = "Applies in other Appearances";
+"Apply this change to all shortcuts?" = "Apply this change to all shortcuts?";
+"Apply to All Shortcuts" = "Apply to All Shortcuts";
 "Arrow keys" = "Arrow keys";
 "Arrow keys already assigned to other actions:\n%@" = "Arrow keys already assigned to other actions:\n%@";
 "Ask whether to send crash reports" = "Ask whether to send crash reports";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Brief description of the change";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Cancel";
+"Change Global Only" = "Change Global Only";
 "Check for updates now…" = "Check for updates now…";
 "Check for updates periodically" = "Check for updates periodically";
 "Check for updates…" = "Check for updates…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
 "Order windows by" = "Order windows by";
 "Ordering & Grouping" = "Ordering & Grouping";
-"Overridden in Shortcut:" = "Overridden in Shortcut:";
 "Please drag ScryTab into the Applications folder manually." = "Please drag ScryTab into the Applications folder manually.";
 "Please fill in the form" = "Please fill in the form";
 "Quit %@" = "Quit %@";
@@ -168,13 +170,13 @@
 "Show windows from Spaces" = "Show windows from Spaces";
 "Size" = "Size";
 "Small" = "Small";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
 "Source code" = "Source code";
 "Space Order" = "Space Order";
 "Start" = "Start";
 "Start at login" = "Start at login";
 "Suggest a change" = "Suggest a change";
 "Switch between 2 different styles. You can customize them." = "Switch between 2 different styles. You can customize them.";
-"Sync with global value" = "Sync with global value";
 "System" = "System";
 "System Default" = "System Default";
 "The application needs to restart to apply the imported settings." = "The application needs to restart to apply the imported settings.";

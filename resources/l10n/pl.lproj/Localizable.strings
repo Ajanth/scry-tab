@@ -32,6 +32,8 @@
 "Application Name" = "Nazwa aplikacji";
 "Application Name - Window Title" = "Nazwa aplikacji - Tytuł okna";
 "Applies in other Appearances" = "Stosuje się w innych Wyglądach";
+"Apply this change to all shortcuts?" = "Zastosować tę zmianę do wszystkich skrótów?";
+"Apply to All Shortcuts" = "Zastosuj do wszystkich skrótów";
 "Arrow keys" = "Klawisze strzałek";
 "Arrow keys already assigned to other actions:\n%@" = "Klawisze strzałek są już przypisane do innych akcji:\n%@";
 "Ask whether to send crash reports" = "Pytaj o wysyłanie raportów awarii";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Krótki opis zmiany";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Anuluj";
+"Change Global Only" = "Zmień tylko wartość globalną";
 "Check for updates now…" = "Sprawdź uaktualnienia teraz…";
 "Check for updates periodically" = "Sprawdzaj uaktualnienia okresowo";
 "Check for updates…" = "Sprawdź uaktualnienia…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Otwórz ustawienia Gładzika…";
 "Order windows by" = "Sortuj okna według";
 "Ordering & Grouping" = "Sortowanie i grupowanie";
-"Overridden in Shortcut:" = "Zastąpione w skrócie:";
 "Please drag ScryTab into the Applications folder manually." = "Przeciągnij ScryTab do folderu Aplikacje ręcznie.";
 "Please fill in the form" = "Wypełnij formularz";
 "Quit %@" = "Zakończ %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Pokaż okna z Przestrzeni";
 "Size" = "Rozmiar";
 "Small" = "Mały";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Niektóre skróty zastępują to ustawienie. Zastosuj nową wartość globalną do wszystkich skrótów, usuwając te zastąpienia, albo je zachowaj.";
 "Source code" = "Kod źródłowy";
 "Space Order" = "Kolejność Przestrzeni";
 "Start" = "Początek";
 "Start at login" = "Uruchamiaj przy logowaniu";
 "Suggest a change" = "Zaproponuj zmianę";
-"Sync with global value" = "Synchronizuj z wartością globalną";
 "System" = "Systemowy";
 "System Default" = "Domyślne systemowe";
 "The application needs to restart to apply the imported settings." = "Aplikacja musi zostać uruchomiona ponownie, aby zastosować zaimportowane ustawienia.";

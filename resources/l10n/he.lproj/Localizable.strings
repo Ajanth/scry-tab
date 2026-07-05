@@ -32,6 +32,8 @@
 "Application Name" = "שם היישום";
 "Application Name - Window Title" = "שם היישום - כותרת החלון";
 "Applies in other Appearances" = "חל במראים אחרים";
+"Apply this change to all shortcuts?" = "להחיל את השינוי הזה על כל הקיצורים?";
+"Apply to All Shortcuts" = "החלה על כל הקיצורים";
 "Arrow keys" = "מקשי חצים";
 "Arrow keys already assigned to other actions:\n%@" = "מקשי חצים כבר משויכים לפעולות אחרות:\n%@";
 "Ask whether to send crash reports" = "שאל לפני שליחת דיווחי קריסה";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "תיאור קצר של השינוי";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "ביטול";
+"Change Global Only" = "שינוי הערך הכללי בלבד";
 "Check for updates now…" = "חפש עדכונים כעת…";
 "Check for updates periodically" = "חפש עדכונים מעת לעת";
 "Check for updates…" = "חפש עדכונים…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "פתח הגדרות משטח מגע…";
 "Order windows by" = "מיין חלונות לפי";
 "Ordering & Grouping" = "מיון וקיבוץ";
-"Overridden in Shortcut:" = "נדרס בקיצור דרך:";
 "Please drag ScryTab into the Applications folder manually." = "גרור את ScryTab לתיקיית היישומים באופן ידני.";
 "Please fill in the form" = "מלא את הטופס";
 "Quit %@" = "צא מ-%@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "הצג חלונות ממרחבים";
 "Size" = "גודל";
 "Small" = "קטן";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "חלק מהקיצורים דורסים הגדרה זו. אפשר להסיר את הדריסות ולהחיל את הערך הכללי החדש על כל הקיצורים, או להשאיר את הדריסות.";
 "Source code" = "קוד מקור";
 "Space Order" = "סדר המרחבים";
 "Start" = "התחלה";
 "Start at login" = "הפעל בעת ההתחברות";
 "Suggest a change" = "הצע שינוי";
-"Sync with global value" = "סנכרן עם הערך הגלובלי";
 "System" = "מערכת";
 "System Default" = "ברירת המחדל של המערכת";
 "The application needs to restart to apply the imported settings." = "היישום צריך להיפתח מחדש כדי להחיל את ההגדרות שיובאו.";

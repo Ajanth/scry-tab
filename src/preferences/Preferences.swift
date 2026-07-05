@@ -243,14 +243,6 @@ class Preferences {
         "shortcutStyleOverride",
     ]
 
-    /// Reverse lookup from an override base name to the global key it overrides.
-    static let overrideToGlobalKey: [String: String] = [
-        "appearanceStyleOverride": "appearanceStyle",
-        "appearanceSizeOverride": "appearanceSize",
-        "appearanceThemeOverride": "appearanceTheme",
-        "shortcutStyleOverride": "shortcutStyle",
-    ]
-
     /// True when the user has explicitly set an override for `baseName` on shortcut `index`.
     /// Reads from `persistentDomain` (`Preferences.all`) which excludes registered defaults, so
     /// an untouched override correctly reports `false` even though its key has a registered default.
@@ -258,19 +250,31 @@ class Preferences {
         all[indexToName(baseName, index)] != nil
     }
 
+    static func hasAnyOverride(_ baseName: String) -> Bool {
+        let persistedValues = all
+        return appearanceOverrideKeys(baseName).contains { persistedValues[$0] != nil }
+    }
+
     static func removeOverride(_ baseName: String, _ index: Int) {
         remove(indexToName(baseName, index))
     }
 
-    /// Indices (0..shortcutCount) whose stored override value differs from the current global.
-    /// Used to render "Overridden in Shortcut: 1, 3" labels in AppearanceTab.
-    static func shortcutIndicesWithDifferentValue(_ baseName: String, globalKey: String) -> [Int] {
-        let globalValue = UserDefaults.standard.string(forKey: globalKey)
-        return (0..<shortcutCount).filter { index in
-            let key = indexToName(baseName, index)
-            guard let overrideValue = all[key] as? String else { return false }
-            return overrideValue != globalValue
+    /// Remove every matching persisted override, then refresh runtime and controls once.
+    static func removeAllOverrides(_ baseName: String) {
+        let persistedValues = all
+        let keys = appearanceOverrideKeys(baseName).filter { persistedValues[$0] != nil }
+        guard let notificationKey = keys.first else { return }
+        keys.forEach {
+            UserDefaults.standard.removeObject(forKey: $0)
+            CachedUserDefaults.removeFromCache($0)
         }
+        invalidateAllCache()
+        PreferencesEvents.preferenceChanged(notificationKey)
+    }
+
+    private static func appearanceOverrideKeys(_ baseName: String) -> [String] {
+        guard appearanceOverrideBaseNames.contains(baseName) else { return [] }
+        return (0...maxShortcutCount).map { indexToName(baseName, $0) }
     }
 
     static func effectiveAppearanceStyle(_ index: Int) -> AppearanceStylePreference {

@@ -191,11 +191,7 @@ extension NSImage {
     /// font's typographic box. This makes `NSSegmentedControl` and similar containers center
     /// the glyph correctly — math symbols like `+`/`−` sit on the math axis, which doesn't
     /// match the typographic midline, so a typographic-box image renders visibly off-centre.
-    ///
-    /// `rotated180` flips the glyph 180° around the image centre — used e.g. for the override
-    /// indicator where the upright `arrow.triangle.branch` glyph reads better pointing
-    /// downward ("this value branches to other shortcuts").
-    static func fromSymbol(_ symbol: Symbols, pointSize: CGFloat, rotated180: Bool = false) -> NSImage {
+    static func fromSymbol(_ symbol: Symbols, pointSize: CGFloat) -> NSImage {
         let font = NSFont(name: "SF Pro Text", size: pointSize)!
         let attrs: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: NSColor.black]
         let attrStr = NSAttributedString(string: symbol.rawValue, attributes: attrs)
@@ -205,11 +201,6 @@ extension NSImage {
         let image = NSImage(size: imageSize)
         image.lockFocus()
         if let ctx = NSGraphicsContext.current?.cgContext {
-            if rotated180 {
-                ctx.translateBy(x: imageSize.width / 2, y: imageSize.height / 2)
-                ctx.rotate(by: .pi)
-                ctx.translateBy(x: -imageSize.width / 2, y: -imageSize.height / 2)
-            }
             ctx.translateBy(x: -inkBounds.origin.x, y: -inkBounds.origin.y)
             CTLineDraw(line, ctx)
         }

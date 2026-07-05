@@ -32,6 +32,8 @@
 "Application Name" = "Nom de l'application";
 "Application Name - Window Title" = "Nom de l'application - Titre de la fenêtre";
 "Applies in other Appearances" = "S'applique aux autres apparences";
+"Apply this change to all shortcuts?" = "Appliquer cette modification à tous les raccourcis ?";
+"Apply to All Shortcuts" = "Appliquer à tous les raccourcis";
 "Arrow keys" = "Touches fléchées";
 "Arrow keys already assigned to other actions:\n%@" = "Touches fléchées déjà affectées à d'autres actions :\n%@";
 "Ask whether to send crash reports" = "Demander avant d'envoyer un rapport de plantage";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Brève description du changement";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Annuler";
+"Change Global Only" = "Modifier uniquement la valeur globale";
 "Check for updates now…" = "Rechercher les mises à jour maintenant…";
 "Check for updates periodically" = "Rechercher les mises à jour automatiquement";
 "Check for updates…" = "Rechercher les mises à jour…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Ouvrir les réglages du Trackpad…";
 "Order windows by" = "Ordonner les fenêtres par";
 "Ordering & Grouping" = "Ordre et regroupement";
-"Overridden in Shortcut:" = "Remplacé dans le raccourci :";
 "Please drag ScryTab into the Applications folder manually." = "Veuillez glisser ScryTab manuellement dans le dossier Applications.";
 "Please fill in the form" = "Veuillez remplir le formulaire";
 "Quit %@" = "Quitter %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Afficher les fenêtres des Bureaux";
 "Size" = "Taille";
 "Small" = "Petit";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Certains raccourcis remplacent ce réglage. Appliquez la nouvelle valeur globale à tous les raccourcis en supprimant ces remplacements, ou conservez-les.";
 "Source code" = "Code source";
 "Space Order" = "Ordre des Bureaux";
 "Start" = "Début";
 "Start at login" = "Lancer à l'ouverture de session";
 "Suggest a change" = "Suggérer une modification";
-"Sync with global value" = "Synchroniser avec la valeur globale";
 "System" = "Système";
 "System Default" = "Réglage système";
 "The application needs to restart to apply the imported settings." = "L'application doit redémarrer pour appliquer les réglages importés.";

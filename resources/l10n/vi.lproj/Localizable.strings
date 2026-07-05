@@ -32,6 +32,8 @@
 "Application Name" = "Tên ứng dụng";
 "Application Name - Window Title" = "Tên ứng dụng - Tiêu đề cửa sổ";
 "Applies in other Appearances" = "Áp dụng trong các Giao diện khác";
+"Apply this change to all shortcuts?" = "Áp dụng thay đổi này cho tất cả phím tắt?";
+"Apply to All Shortcuts" = "Áp dụng cho tất cả phím tắt";
 "Arrow keys" = "Phím mũi tên";
 "Arrow keys already assigned to other actions:\n%@" = "Phím mũi tên đã được gán cho các hành động khác:\n%@";
 "Ask whether to send crash reports" = "Hỏi trước khi gửi báo cáo sự cố";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Mô tả ngắn gọn về thay đổi";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Hủy";
+"Change Global Only" = "Chỉ thay đổi giá trị chung";
 "Check for updates now…" = "Kiểm tra cập nhật ngay…";
 "Check for updates periodically" = "Kiểm tra cập nhật định kỳ";
 "Check for updates…" = "Kiểm tra cập nhật…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Mở Cài đặt Trackpad…";
 "Order windows by" = "Sắp xếp cửa sổ theo";
 "Ordering & Grouping" = "Sắp xếp & Nhóm";
-"Overridden in Shortcut:" = "Bị ghi đè trong Phím tắt:";
 "Please drag ScryTab into the Applications folder manually." = "Vui lòng kéo ScryTab vào thư mục Ứng dụng theo cách thủ công.";
 "Please fill in the form" = "Vui lòng điền vào biểu mẫu";
 "Quit %@" = "Thoát %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Hiển thị cửa sổ từ các Không gian";
 "Size" = "Kích cỡ";
 "Small" = "Nhỏ";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Một số phím tắt ghi đè cài đặt này. Hãy xóa các giá trị ghi đè để áp dụng giá trị chung mới cho mọi phím tắt, hoặc giữ nguyên các giá trị ghi đè.";
 "Source code" = "Mã nguồn";
 "Space Order" = "Thứ tự Không gian";
 "Start" = "Đầu";
 "Start at login" = "Khởi động khi đăng nhập";
 "Suggest a change" = "Đề xuất thay đổi";
-"Sync with global value" = "Đồng bộ với giá trị chung";
 "System" = "Hệ thống";
 "System Default" = "Mặc định hệ thống";
 "The application needs to restart to apply the imported settings." = "Ứng dụng cần khởi động lại để áp dụng cài đặt đã nhập.";

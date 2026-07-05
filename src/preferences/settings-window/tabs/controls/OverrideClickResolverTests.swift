@@ -1,17 +1,12 @@
 import XCTest
 
 /// Pins the override state-machine semantics that the per-shortcut Appearance section relies on.
-/// These tests cover the rules the user explicitly stated:
-///   1. Clicking the currently-displayed value in any segmented group is a NO-OP, in any case.
-///   2. Once a user has changed an Appearance value for a shortcut, that value is desync-d from
-///      the global. It stays desync-d even if the global or the shortcut value is updated to
-///      coincide with each other.
-///   3. The only way to re-sync (= unset the override) is the link button.
+/// Selecting the global value removes an override; selecting a non-global value writes one.
 ///
 /// `OverrideClickResolver.decide` is the pure decision kernel: given the click's new index,
 /// the override's set/unset state, the stored override value (if any), the current global
 /// index, and a function that maps an index to its persisted string value, it returns either
-/// `.skip` (no state change) or `.write(value:)` (set the override to `value`).
+/// `.skip`, `.remove`, or `.write(value:)`.
 final class OverrideClickResolverTests: XCTestCase {
 
     private let identity: (Int) -> String = { String($0) }
@@ -38,21 +33,6 @@ final class OverrideClickResolverTests: XCTestCase {
             globalIndex: 0,
             valueAtIndex: identity)
         XCTAssertEqual(decision, .skip)
-    }
-
-    /// Regression for the user-reported scenario: Override is SET to Medium AND global is also
-    /// Medium (they coincidentally match after the user changed the global). User clicks Medium.
-    /// The override must STAY set — only the link button can unset it.
-    func testOverrideStaysSetWhenItsValueMatchesGlobal() {
-        let decision = OverrideClickResolver.decide(
-            newIndex: 1,
-            hasOverride: true,
-            storedOverrideValue: "1",
-            globalIndex: 1,
-            valueAtIndex: identity)
-        XCTAssertEqual(decision, .skip,
-            "Override SET state and override VALUE are independent. " +
-            "Clicking the displayed value (even when it equals the global) must NOT unset the override.")
     }
 
     /// The registered default for an override key can differ from the global value. Clicking the
@@ -112,19 +92,28 @@ final class OverrideClickResolverTests: XCTestCase {
             "(both equal the registered default) and skipped the write, leaving the override unset.")
     }
 
-    /// Override is SET to value X. User clicks a value that EQUALS the global (but differs from
-    /// the current override X). The override is updated to the new value (still SET, just now
-    /// coincidentally equal to global).
-    func testWriteOverrideEvenWhenNewValueMatchesGlobal() {
+    // MARK: - Rule 3: selecting the global value removes the override
+
+    /// Override and global coincide. Clicking that value removes the redundant override.
+    func testClickingGlobalClearsMatchingOverride() {
         let decision = OverrideClickResolver.decide(
-            newIndex: 1,                    // user clicks Medium
+            newIndex: 1,
             hasOverride: true,
-            storedOverrideValue: "3",       // override is Auto (≠ Medium)
-            globalIndex: 1,                 // global is Medium (= new value)
+            storedOverrideValue: "1",
+            globalIndex: 1,
             valueAtIndex: identity)
-        XCTAssertEqual(decision, .write(value: "1"),
-            "Override must be updated to the new value. Whether the new value coincidentally " +
-            "matches the global is irrelevant — the override stays SET.")
+        XCTAssertEqual(decision, .remove)
+    }
+
+    /// Override differs from global. Selecting the global value resumes inheritance.
+    func testClickingGlobalClearsDifferentOverride() {
+        let decision = OverrideClickResolver.decide(
+            newIndex: 1,
+            hasOverride: true,
+            storedOverrideValue: "3",
+            globalIndex: 1,
+            valueAtIndex: identity)
+        XCTAssertEqual(decision, .remove)
     }
 
     // MARK: - Encoding & defensive handling
@@ -150,7 +139,7 @@ final class OverrideClickResolverTests: XCTestCase {
             newIndex: 0,
             hasOverride: true,
             storedOverrideValue: "not-a-number",
-            globalIndex: 0,
+            globalIndex: 1,
             valueAtIndex: identity)
         XCTAssertEqual(decision, .write(value: "0"))
     }
@@ -168,17 +157,14 @@ final class OverrideClickResolverTests: XCTestCase {
         XCTAssertEqual(decision, .skip)
     }
 
-    /// Defensive: the inconsistent state where the persisted "has override" flag is set but the
-    /// stored value is nil shouldn't crash and shouldn't silently treat a click on the global as a
-    /// no-op. Treat it like the malformed-string case: displayed = -1 → any click writes.
-    func testHasOverrideTrueWithNilStoredFallsThroughToWrite() {
+    /// A nil stored value with an existing override still clears safely when global is selected.
+    func testHasOverrideTrueWithNilStoredClearsWhenGlobalClicked() {
         let decision = OverrideClickResolver.decide(
             newIndex: 0,
             hasOverride: true,
             storedOverrideValue: nil,
             globalIndex: 0,
             valueAtIndex: identity)
-        XCTAssertEqual(decision, .write(value: "0"),
-            "An override marked SET with no stored value is treated as displayed -1, so the click writes.")
+        XCTAssertEqual(decision, .remove)
     }
 }

@@ -32,6 +32,8 @@
 "Application Name" = "Nome dell'applicazione";
 "Application Name - Window Title" = "Nome dell'applicazione - Titolo della finestra";
 "Applies in other Appearances" = "Si applica negli altri Aspetti";
+"Apply this change to all shortcuts?" = "Applicare questa modifica a tutte le scorciatoie?";
+"Apply to All Shortcuts" = "Applica a tutte le scorciatoie";
 "Arrow keys" = "Tasti freccia";
 "Arrow keys already assigned to other actions:\n%@" = "Tasti freccia già assegnati ad altre azioni:\n%@";
 "Ask whether to send crash reports" = "Chiedi se inviare i resoconti di arresti anomali";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "Breve descrizione della modifica";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Annulla";
+"Change Global Only" = "Modifica solo il valore globale";
 "Check for updates now…" = "Cerca aggiornamenti ora…";
 "Check for updates periodically" = "Cerca aggiornamenti periodicamente";
 "Check for updates…" = "Cerca aggiornamenti…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "Apri Impostazioni del Trackpad…";
 "Order windows by" = "Ordina finestre per";
 "Ordering & Grouping" = "Ordinamento e raggruppamento";
-"Overridden in Shortcut:" = "Sovrascritto nella scorciatoia:";
 "Please drag ScryTab into the Applications folder manually." = "Trascina ScryTab manualmente nella cartella Applicazioni.";
 "Please fill in the form" = "Compila il modulo";
 "Quit %@" = "Esci da %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "Mostra finestre dagli Spazi";
 "Size" = "Dimensione";
 "Small" = "Piccolo";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Alcune scorciatoie sostituiscono questa impostazione. Applica il nuovo valore globale a tutte le scorciatoie rimuovendo tali sostituzioni oppure mantienile.";
 "Source code" = "Codice sorgente";
 "Space Order" = "Ordine degli Spazi";
 "Start" = "Inizio";
 "Start at login" = "Avvia al login";
 "Suggest a change" = "Suggerisci una modifica";
-"Sync with global value" = "Sincronizza con il valore globale";
 "System" = "Sistema";
 "System Default" = "Predefinito di sistema";
 "The application needs to restart to apply the imported settings." = "L'applicazione deve essere riavviata per applicare le impostazioni importate.";

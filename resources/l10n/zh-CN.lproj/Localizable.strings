@@ -32,6 +32,8 @@
 "Application Name" = "应用名称";
 "Application Name - Window Title" = "应用名称 - 窗口标题";
 "Applies in other Appearances" = "适用于其他外观";
+"Apply this change to all shortcuts?" = "将此更改应用到所有快捷键吗？";
+"Apply to All Shortcuts" = "应用到所有快捷键";
 "Arrow keys" = "方向键";
 "Arrow keys already assigned to other actions:\n%@" = "方向键已分配给其他操作：\n%@";
 "Ask whether to send crash reports" = "询问是否发送崩溃报告";
@@ -41,6 +43,7 @@
 "Brief description of the change" = "简要描述改动";
 "Bundle ID" = "Bundle ID";
 "Cancel" = "取消";
+"Change Global Only" = "仅更改全局设置";
 "Check for updates now…" = "立即检查更新…";
 "Check for updates periodically" = "定期检查更新";
 "Check for updates…" = "检查更新…";
@@ -115,7 +118,6 @@
 "Open Trackpad Settings…" = "打开触控板设置…";
 "Order windows by" = "窗口排序方式";
 "Ordering & Grouping" = "排序与分组";
-"Overridden in Shortcut:" = "在快捷键中被覆盖：";
 "Please drag ScryTab into the Applications folder manually." = "请手动将 ScryTab 拖动到应用程序文件夹。";
 "Please fill in the form" = "请填写表单";
 "Quit %@" = "退出 %@";
@@ -167,12 +169,12 @@
 "Show windows from Spaces" = "显示来自桌面的窗口";
 "Size" = "大小";
 "Small" = "小";
+"Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "部分快捷键覆盖了此设置。移除这些覆盖以将新的全局值应用到所有快捷键，或保留这些覆盖。";
 "Source code" = "源代码";
 "Space Order" = "桌面顺序";
 "Start" = "起始";
 "Start at login" = "登录时启动";
 "Suggest a change" = "提出改动建议";
-"Sync with global value" = "与全局值同步";
 "System" = "系统";
 "System Default" = "系统默认";
 "The application needs to restart to apply the imported settings." = "应用需要重启以应用导入的设置。";
