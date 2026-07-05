@@ -1,29 +1,78 @@
 import Cocoa
 
-/// Sizing for the decorative demo tiles. Always renders at this single compact scale — it
-/// ignores the user's Size preference on purpose, since it depicts a handful of fixed demo apps
-/// rather than the user's actual windows.
 private enum PreviewMetrics {
-    static let appIconsTileWidth = CGFloat(44)
-    static let appIconsIconSize = CGFloat(36)
-    static let appIconsLabelGap = CGFloat(4)
-    static let appIconsLabelFontSize = CGFloat(9)
-    static let appIconsStackSpacing = CGFloat(3)
+    static let wallpaperAspectRatio = CGFloat(1.6)
+    static let wallpaperCornerRadius = CGFloat(18)
+    static let wallpaperBorderWidth = CGFloat(1)
 
-    static let titlesRowWidth = CGFloat(236)
-    static let titlesRowHeight = CGFloat(26)
-    static let titlesIconSize = CGFloat(18)
+    static let switcherCornerRadius = CGFloat(16)
+    static let switcherBorderWidth = CGFloat(1)
+
+    static let appIconsSwitcherWidth = CGFloat(200)
+    static let appIconsSwitcherHeight = CGFloat(72)
+    static let appIconsTileWidth = CGFloat(57)
+    static let appIconsTileHeight = CGFloat(57)
+    static let appIconsTileSpacing = CGFloat(8)
+    static let appIconsTileCornerRadius = CGFloat(11)
+    static let appIconsIconSize = CGFloat(39)
+    static let appIconsLabelFontSize = CGFloat(7.5)
+    static let appIconsLabelInset = CGFloat(7)
+
+    static let titlesSwitcherWidth = CGFloat(164)
+    static let titlesSwitcherHeight = CGFloat(92)
+    static let titlesRowWidth = CGFloat(146)
+    static let titlesRowHeight = CGFloat(24)
+    static let titlesRowSpacing = CGFloat(7)
+    static let titlesRowCornerRadius = CGFloat(10)
+    static let titlesIconSize = CGFloat(15)
+    static let titlesLabelFontSize = CGFloat(8.5)
+    static let titlesSideInset = CGFloat(8)
     static let titlesLabelGap = CGFloat(8)
-    static let titlesRowInset = CGFloat(6)
-    static let titlesStackSpacing = CGFloat(2)
+    static let titlesStatusGap = CGFloat(7)
+    static let titlesStatusSize = CGFloat(16)
 
     static let pauseButtonDiameter = CGFloat(22)
-    static let pauseButtonInset = CGFloat(8)
+    static let pauseButtonInset = CGFloat(10)
     static let pauseButtonGlyphSize = CGFloat(11)
 
     static let advanceInterval = TimeInterval(1.8)
-    static let slideAnimationDuration = 0.35
+    static let animationDuration = TimeInterval(0.35)
 }
+
+private enum PreviewPalette {
+    static let wallpaperTopLeft = NSColor(srgbRed: 0.87, green: 0.40, blue: 0.31, alpha: 1)
+    static let wallpaperTopRight = NSColor(srgbRed: 0.36, green: 0.44, blue: 0.95, alpha: 1)
+    static let wallpaperBottom = NSColor(srgbRed: 0.33, green: 0.54, blue: 0.16, alpha: 1)
+    static let wallpaperOrangeBlob = NSColor(srgbRed: 0.96, green: 0.43, blue: 0.26, alpha: 0.8)
+    static let wallpaperBlueBlob = NSColor(srgbRed: 0.45, green: 0.46, blue: 0.97, alpha: 0.72)
+    static let wallpaperGreenBlob = NSColor(srgbRed: 0.45, green: 0.64, blue: 0.05, alpha: 0.46)
+    static let wallpaperBorder = NSColor.white.withAlphaComponent(0.12)
+
+    static let switcherFill = NSColor.white.withAlphaComponent(0.33)
+    static let switcherBorder = NSColor.white.withAlphaComponent(0.2)
+    static let tileFill = NSColor(srgbRed: 0.26, green: 0.28, blue: 0.26, alpha: 0.76)
+    static let focusedFill = NSColor(srgbRed: 0.33, green: 0.29, blue: 0.30, alpha: 0.82)
+    static let titleColor = NSColor.white.withAlphaComponent(0.94)
+    static let titleStatusColor = NSColor.white.withAlphaComponent(0.94)
+    static let pauseFill = NSColor.black.withAlphaComponent(0.12)
+    static let pauseHoverFill = NSColor.black.withAlphaComponent(0.18)
+    static let pauseBorder = NSColor.white.withAlphaComponent(0.12)
+    static let pauseGlyph = NSColor.white.withAlphaComponent(0.86)
+}
+
+private struct PreviewDemoItem {
+    let bundleId: String
+    let statusSymbols: [String]
+}
+
+private let previewDemoItems = [
+    PreviewDemoItem(bundleId: "com.apple.Safari",
+                    statusSymbols: [Symbols.circledPlusSign.rawValue, StatusIconsView.symbolForSpace(2)]),
+    PreviewDemoItem(bundleId: "com.apple.finder",
+                    statusSymbols: [Symbols.circledPlusSign.rawValue, StatusIconsView.symbolForSpace(2)]),
+    PreviewDemoItem(bundleId: "com.apple.Notes",
+                    statusSymbols: [StatusIconsView.symbolForSpace(1)]),
+]
 
 private final class AppearanceLivePreviewPlaybackGlyphView: NSView {
     enum Symbol {
@@ -52,12 +101,12 @@ private final class AppearanceLivePreviewPlaybackGlyphView: NSView {
     }
 
     override func draw(_ dirtyRect: NSRect) {
-        NSColor.labelColor.setFill()
+        PreviewPalette.pauseGlyph.setFill()
         if symbol == .play {
             drawPlay()
-        } else {
-            drawPause()
+            return
         }
+        drawPause()
     }
 
     private func drawPlay() {
@@ -87,41 +136,181 @@ private final class AppearanceLivePreviewPlaybackGlyphView: NSView {
     }
 }
 
-/// Always-installed Apple apps used as stand-ins for the user's own windows. Resolved through
-/// `AppDisplayInfo`, the same bundle-id-to-(name, icon) lookup the Exceptions tab uses, so this
-/// never touches live window/Accessibility state.
-private let demoAppBundleIds = [
-    "com.apple.finder",
-    "com.apple.Safari",
-    "com.apple.mail",
-    "com.apple.iCal",
-    "com.apple.Notes",
-]
+private final class AppearanceLivePreviewWallpaperView: NSView {
+    override var isOpaque: Bool { true }
 
-/// A single decorative demo tile: an app icon plus its name, laid out either as a centered
-/// App-Icons-style card or a leading-aligned Titles-style row. Purely presentational — it never
-/// registers a click handler and isn't part of the key-view loop.
-private final class AppearanceLivePreviewTileView: NSView {
-    private let iconView = NSImageView()
-    private let nameLabel = NSTextField(labelWithString: "")
-
-    init(_ info: AppDisplayInfo, style: AppearanceStylePreference) {
-        super.init(frame: .zero)
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
         translatesAutoresizingMaskIntoConstraints = false
-        configureIconView(info.icon)
-        configureNameLabel(info.name)
-        if style == .appIcons {
-            layoutAsAppIconCard()
-        } else {
-            layoutAsTitleRow()
-        }
+        wantsLayer = true
     }
 
     required init?(coder: NSCoder) {
         fatalError("Class only supports programmatic initialization")
     }
 
-    private func configureIconView(_ icon: NSImage) {
+    override func draw(_ dirtyRect: NSRect) {
+        let clipPath = NSBezierPath(roundedRect: bounds,
+                                    xRadius: PreviewMetrics.wallpaperCornerRadius,
+                                    yRadius: PreviewMetrics.wallpaperCornerRadius)
+        clipPath.addClip()
+        drawBaseGradient()
+        drawBlob(NSRect(x: bounds.minX - bounds.width * 0.34,
+                        y: bounds.midY - bounds.height * 0.16,
+                        width: bounds.width * 1.18,
+                        height: bounds.height * 0.84),
+                 color: PreviewPalette.wallpaperOrangeBlob)
+        drawBlob(NSRect(x: bounds.midX - bounds.width * 0.05,
+                        y: bounds.minY - bounds.height * 0.08,
+                        width: bounds.width * 0.88,
+                        height: bounds.height * 0.9),
+                 color: PreviewPalette.wallpaperBlueBlob)
+        drawBlob(NSRect(x: bounds.minX - bounds.width * 0.1,
+                        y: bounds.minY - bounds.height * 0.4,
+                        width: bounds.width * 1.2,
+                        height: bounds.height * 0.9),
+                 color: PreviewPalette.wallpaperGreenBlob)
+        PreviewPalette.wallpaperBorder.setStroke()
+        clipPath.lineWidth = PreviewMetrics.wallpaperBorderWidth
+        clipPath.stroke()
+    }
+
+    private func drawBaseGradient() {
+        let gradient = NSGradient(colors: [
+            PreviewPalette.wallpaperTopLeft,
+            PreviewPalette.wallpaperTopRight,
+            PreviewPalette.wallpaperBottom,
+        ])!
+        gradient.draw(in: bounds, angle: -38)
+    }
+
+    private func drawBlob(_ rect: NSRect, color: NSColor) {
+        color.setFill()
+        NSBezierPath(ovalIn: rect).fill()
+    }
+}
+
+private class AppearanceLivePreviewItemView: NSView {
+    private let backgroundView = NSView()
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.wantsLayer = true
+        addSubview(backgroundView)
+        NSLayoutConstraint.activate([
+            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            backgroundView.topAnchor.constraint(equalTo: topAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+        backgroundView.layer?.backgroundColor = PreviewPalette.tileFill.cgColor
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    func setCornerRadius(_ radius: CGFloat) {
+        backgroundView.layer?.cornerRadius = radius
+    }
+
+    func setFocused(_ focused: Bool, animated: Bool) {}
+
+    func finishFocusAnimation(_ focused: Bool) {}
+}
+
+private final class AppearanceLivePreviewAppIconTileView: AppearanceLivePreviewItemView {
+    private let iconView = NSImageView()
+    private let titleLabel = NSTextField(labelWithString: "")
+    private var isFocusedState = false
+
+    init(_ info: AppDisplayInfo) {
+        super.init(frame: .zero)
+        setCornerRadius(PreviewMetrics.appIconsTileCornerRadius)
+        configureIcon(info.icon)
+        configureTitle(info.name)
+        activateConstraints()
+        setFocused(false, animated: false)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    override func setFocused(_ focused: Bool, animated: Bool) {
+        isFocusedState = focused
+        guard animated else {
+            titleLabel.isHidden = !focused
+            titleLabel.alphaValue = focused ? 1 : 0
+            return
+        }
+        if focused {
+            titleLabel.isHidden = false
+        }
+        titleLabel.animator().alphaValue = focused ? 1 : 0
+    }
+
+    override func finishFocusAnimation(_ focused: Bool) {
+        guard !focused, !isFocusedState else { return }
+        titleLabel.isHidden = true
+    }
+
+    private func configureIcon(_ icon: NSImage) {
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        iconView.image = icon
+        iconView.imageScaling = .scaleProportionallyUpOrDown
+        iconView.isEditable = false
+        iconView.shadow = TileView.makeAppIconShadow(NSColor.black.withAlphaComponent(0.45))
+        addSubview(iconView)
+    }
+
+    private func configureTitle(_ title: String) {
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.stringValue = title
+        titleLabel.font = NSFont.systemFont(ofSize: PreviewMetrics.appIconsLabelFontSize)
+        titleLabel.textColor = PreviewPalette.titleColor
+        titleLabel.alignment = .center
+        titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.usesSingleLineMode = true
+        addSubview(titleLabel)
+    }
+
+    private func activateConstraints() {
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalToConstant: PreviewMetrics.appIconsTileWidth),
+            heightAnchor.constraint(equalToConstant: PreviewMetrics.appIconsTileHeight),
+            iconView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            iconView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            iconView.widthAnchor.constraint(equalToConstant: PreviewMetrics.appIconsIconSize),
+            iconView.heightAnchor.constraint(equalToConstant: PreviewMetrics.appIconsIconSize),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -PreviewMetrics.appIconsLabelInset),
+        ])
+    }
+}
+
+private final class AppearanceLivePreviewTitlesRowView: AppearanceLivePreviewItemView {
+    private let iconView = NSImageView()
+    private let titleLabel = NSTextField(labelWithString: "")
+    private let statusStack = NSStackView()
+
+    init(_ info: AppDisplayInfo, statusSymbols: [String]) {
+        super.init(frame: .zero)
+        setCornerRadius(PreviewMetrics.titlesRowCornerRadius)
+        configureIcon(info.icon)
+        configureTitle(info.name)
+        configureStatusStack(statusSymbols)
+        activateConstraints()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    private func configureIcon(_ icon: NSImage) {
         iconView.translatesAutoresizingMaskIntoConstraints = false
         iconView.image = icon
         iconView.imageScaling = .scaleProportionallyUpOrDown
@@ -129,60 +318,60 @@ private final class AppearanceLivePreviewTileView: NSView {
         addSubview(iconView)
     }
 
-    private func configureNameLabel(_ name: String) {
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.stringValue = name
-        nameLabel.textColor = .secondaryLabelColor
-        nameLabel.lineBreakMode = .byTruncatingTail
-        nameLabel.usesSingleLineMode = true
-        addSubview(nameLabel)
+    private func configureTitle(_ title: String) {
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.stringValue = title
+        titleLabel.font = NSFont.systemFont(ofSize: PreviewMetrics.titlesLabelFontSize)
+        titleLabel.textColor = PreviewPalette.titleColor
+        titleLabel.lineBreakMode = .byTruncatingTail
+        titleLabel.usesSingleLineMode = true
+        addSubview(titleLabel)
     }
 
-    private func layoutAsAppIconCard() {
-        nameLabel.font = NSFont.systemFont(ofSize: PreviewMetrics.appIconsLabelFontSize)
-        nameLabel.alignment = .center
-        NSLayoutConstraint.activate([
-            widthAnchor.constraint(equalToConstant: PreviewMetrics.appIconsTileWidth),
-            iconView.widthAnchor.constraint(equalToConstant: PreviewMetrics.appIconsIconSize),
-            iconView.heightAnchor.constraint(equalToConstant: PreviewMetrics.appIconsIconSize),
-            iconView.topAnchor.constraint(equalTo: topAnchor),
-            iconView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            nameLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: PreviewMetrics.appIconsLabelGap),
-            nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-        ])
+    private func configureStatusStack(_ statusSymbols: [String]) {
+        statusStack.translatesAutoresizingMaskIntoConstraints = false
+        statusStack.orientation = .horizontal
+        statusStack.alignment = .centerY
+        statusStack.spacing = PreviewMetrics.titlesStatusGap
+        addSubview(statusStack)
+        statusSymbols.forEach { symbol in
+            let view = TileFontIconView(rendering: .symbol,
+                                        initialText: symbol,
+                                        size: PreviewMetrics.titlesStatusSize,
+                                        symbolColor: PreviewPalette.titleStatusColor,
+                                        badgeFillColor: .clear,
+                                        badgeTextColor: .clear)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            statusStack.addArrangedSubview(view)
+        }
     }
 
-    private func layoutAsTitleRow() {
-        nameLabel.font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
-        nameLabel.alignment = .natural
+    private func activateConstraints() {
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: PreviewMetrics.titlesRowWidth),
             heightAnchor.constraint(equalToConstant: PreviewMetrics.titlesRowHeight),
+            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: PreviewMetrics.titlesSideInset),
+            iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
             iconView.widthAnchor.constraint(equalToConstant: PreviewMetrics.titlesIconSize),
             iconView.heightAnchor.constraint(equalToConstant: PreviewMetrics.titlesIconSize),
-            iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: PreviewMetrics.titlesRowInset),
-            iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            nameLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: PreviewMetrics.titlesLabelGap),
-            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -PreviewMetrics.titlesRowInset),
-            nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            statusStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -PreviewMetrics.titlesSideInset),
+            statusStack.centerYAnchor.constraint(equalTo: centerYAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: PreviewMetrics.titlesLabelGap),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: statusStack.leadingAnchor, constant: -PreviewMetrics.titlesLabelGap),
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
 }
 
-/// A non-interactive, looping animation of demo app tiles for the Appearance tab's style
-/// preview. Visually echoes the real switcher's tile layout and selection highlight, but is a
-/// fully self-contained clone: its own demo tiles, its own timer, and read-only use of
-/// `DesignSystem` tokens. It never touches `TilesView`, `TilesPanel`, `SwitcherSession.current`,
-/// or the global `Appearance` singleton, so it can never collide with a live switcher session.
 final class AppearanceLivePreviewView: NSView {
     static let pauseAccessibilityLabel = NSLocalizedString("Pause preview animation", comment: "")
     static let resumeAccessibilityLabel = NSLocalizedString("Resume preview animation", comment: "")
     static let previewAccessibilityLabel = NSLocalizedString("Preview of the selected appearance style", comment: "")
 
+    private let wallpaperView = AppearanceLivePreviewWallpaperView()
+    private let switcherView = NSView()
     private let stack = NSStackView()
-    private let highlightView = NSView()
+    private let selectionView = NSView()
     private let pauseButton: ClickHoverImageView = {
         let glyph = AppearanceLivePreviewPlaybackGlyphView(symbol: .pause)
         glyph.translatesAutoresizingMaskIntoConstraints = false
@@ -191,9 +380,11 @@ final class AppearanceLivePreviewView: NSView {
         return button
     }()
 
-    private var tiles = [NSView]()
-    private var highlightConstraints = [NSLayoutConstraint]()
+    private var items = [AppearanceLivePreviewItemView]()
+    private var selectionConstraints = [NSLayoutConstraint]()
+    private var switcherSizeConstraints = [NSLayoutConstraint]()
     private var focusedIndex = 0
+    private var currentStyle = AppearanceStylePreference.appIcons
     private var isManuallyPaused = false
     private var isPauseButtonHovered = false
     private var timer: Timer?
@@ -233,38 +424,47 @@ final class AppearanceLivePreviewView: NSView {
     override func isAccessibilityElement() -> Bool { true }
 
     func updateStyle(_ style: AppearanceStylePreference) {
-        rebuildTiles(for: style)
+        currentStyle = style
+        rebuildItems(for: style)
+        refreshColors()
     }
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         setAccessibilityLabel(Self.previewAccessibilityLabel)
-        configureHighlightView()
-        configureStack()
+        configureWallpaper()
+        configureSwitcher()
         configurePauseButton()
-        activateChromeConstraints()
+        activateConstraints()
         refreshColors()
         scheduleTimer()
         accessibilityDisplayObserver = NotificationCenter.default.addObserver(
             forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main
         ) { [weak self] _ in
             self?.refreshPauseButtonState()
+            self?.refreshColors()
         }
     }
 
-    private func configureHighlightView() {
-        highlightView.translatesAutoresizingMaskIntoConstraints = false
-        highlightView.wantsLayer = true
-        highlightView.layer?.cornerRadius = DesignSystem.Metrics.sidebarSelectionRadius
-        // Unlike TileView/TileUnderLayer, this decorative preview is meant to visibly slide
-        // between tiles, so it deliberately keeps AppKit's default implicit layer animations
-        // instead of the NoAnimationDelegate the live switcher uses everywhere else.
-        addSubview(highlightView)
+    private func configureWallpaper() {
+        addSubview(wallpaperView)
+        wallpaperView.addSubview(switcherView)
+        wallpaperView.addSubview(pauseButton)
     }
 
-    private func configureStack() {
+    private func configureSwitcher() {
+        switcherView.translatesAutoresizingMaskIntoConstraints = false
+        switcherView.wantsLayer = true
+        selectionView.translatesAutoresizingMaskIntoConstraints = false
+        selectionView.wantsLayer = true
+        selectionView.isHidden = true
+        switcherView.addSubview(selectionView)
         stack.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stack)
+        switcherView.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.centerXAnchor.constraint(equalTo: switcherView.centerXAnchor),
+            stack.centerYAnchor.constraint(equalTo: switcherView.centerYAnchor),
+        ])
     }
 
     private func configurePauseButton() {
@@ -280,7 +480,6 @@ final class AppearanceLivePreviewView: NSView {
         }
         pauseButton.onMouseEntered = { [weak self] _, _ in self?.setPauseButtonHovered(true) }
         pauseButton.onMouseExited = { [weak self] _, _ in self?.setPauseButtonHovered(false) }
-        addSubview(pauseButton)
         guard let glyph = pauseButton.infoCircle else { return }
         NSLayoutConstraint.activate([
             glyph.centerXAnchor.constraint(equalTo: pauseButton.centerXAnchor),
@@ -288,51 +487,107 @@ final class AppearanceLivePreviewView: NSView {
         ])
     }
 
-    private func activateChromeConstraints() {
+    private func activateConstraints() {
         NSLayoutConstraint.activate([
-            stack.centerXAnchor.constraint(equalTo: centerXAnchor),
-            stack.centerYAnchor.constraint(equalTo: centerYAnchor),
-            pauseButton.topAnchor.constraint(equalTo: topAnchor, constant: PreviewMetrics.pauseButtonInset),
-            pauseButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -PreviewMetrics.pauseButtonInset),
+            wallpaperView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            wallpaperView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            wallpaperView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            wallpaperView.heightAnchor.constraint(equalTo: wallpaperView.widthAnchor,
+                                                  multiplier: 1 / PreviewMetrics.wallpaperAspectRatio),
+            wallpaperView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+            wallpaperView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+            switcherView.centerXAnchor.constraint(equalTo: wallpaperView.centerXAnchor),
+            switcherView.centerYAnchor.constraint(equalTo: wallpaperView.centerYAnchor),
+            pauseButton.topAnchor.constraint(equalTo: wallpaperView.topAnchor, constant: PreviewMetrics.pauseButtonInset),
+            pauseButton.trailingAnchor.constraint(equalTo: wallpaperView.trailingAnchor, constant: -PreviewMetrics.pauseButtonInset),
             pauseButton.widthAnchor.constraint(equalToConstant: PreviewMetrics.pauseButtonDiameter),
             pauseButton.heightAnchor.constraint(equalToConstant: PreviewMetrics.pauseButtonDiameter),
         ])
     }
 
-    private func rebuildTiles(for style: AppearanceStylePreference) {
+    private func rebuildItems(for style: AppearanceStylePreference) {
         stack.arrangedSubviews.forEach {
             stack.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
-        stack.orientation = style == .appIcons ? .horizontal : .vertical
-        stack.spacing = style == .appIcons ? PreviewMetrics.appIconsStackSpacing : PreviewMetrics.titlesStackSpacing
-        stack.alignment = style == .appIcons ? .top : .leading
-        tiles = demoAppBundleIds.map { AppearanceLivePreviewTileView(AppDisplayInfo.resolve(bundleId: $0), style: style) }
-        tiles.forEach { stack.addArrangedSubview($0) }
-        focusedIndex = tiles.indices.contains(focusedIndex) ? focusedIndex : 0
-        updateHighlight(animated: false)
+        items.removeAll(keepingCapacity: true)
+        configureStack(for: style)
+        configureSwitcherSize(for: style)
+        previewDemoItems.forEach { item in
+            let info = AppDisplayInfo.resolve(bundleId: item.bundleId)
+            let view: AppearanceLivePreviewItemView
+            if style == .appIcons {
+                view = AppearanceLivePreviewAppIconTileView(info)
+            } else {
+                view = AppearanceLivePreviewTitlesRowView(info, statusSymbols: item.statusSymbols)
+            }
+            items.append(view)
+            stack.addArrangedSubview(view)
+        }
+        focusedIndex = defaultFocusedIndex(for: style, count: items.count)
+        updateSelection(animated: false)
     }
 
-    private func updateHighlight(animated: Bool) {
-        guard tiles.indices.contains(focusedIndex) else { return }
-        let focusedTile = tiles[focusedIndex]
-        NSLayoutConstraint.deactivate(highlightConstraints)
-        highlightConstraints = [
-            highlightView.leadingAnchor.constraint(equalTo: focusedTile.leadingAnchor),
-            highlightView.trailingAnchor.constraint(equalTo: focusedTile.trailingAnchor),
-            highlightView.topAnchor.constraint(equalTo: focusedTile.topAnchor),
-            highlightView.bottomAnchor.constraint(equalTo: focusedTile.bottomAnchor),
+    private func configureStack(for style: AppearanceStylePreference) {
+        stack.orientation = style == .appIcons ? .horizontal : .vertical
+        stack.spacing = style == .appIcons ? PreviewMetrics.appIconsTileSpacing : PreviewMetrics.titlesRowSpacing
+        stack.alignment = style == .appIcons ? .centerY : .centerX
+    }
+
+    private func configureSwitcherSize(for style: AppearanceStylePreference) {
+        NSLayoutConstraint.deactivate(switcherSizeConstraints)
+        let width = style == .appIcons ? PreviewMetrics.appIconsSwitcherWidth : PreviewMetrics.titlesSwitcherWidth
+        let height = style == .appIcons ? PreviewMetrics.appIconsSwitcherHeight : PreviewMetrics.titlesSwitcherHeight
+        switcherSizeConstraints = [
+            switcherView.widthAnchor.constraint(equalToConstant: width),
+            switcherView.heightAnchor.constraint(equalToConstant: height),
         ]
-        NSLayoutConstraint.activate(highlightConstraints)
+        NSLayoutConstraint.activate(switcherSizeConstraints)
+    }
+
+    private func defaultFocusedIndex(for style: AppearanceStylePreference, count: Int) -> Int {
+        guard count > 0 else { return 0 }
+        if style == .appIcons {
+            return min(1, count - 1)
+        }
+        return 0
+    }
+
+    private func updateSelection(animated: Bool) {
+        guard items.indices.contains(focusedIndex) else {
+            selectionView.isHidden = true
+            return
+        }
+        selectionView.isHidden = false
+        NSLayoutConstraint.deactivate(selectionConstraints)
+        let focusedItem = items[focusedIndex]
+        selectionConstraints = [
+            selectionView.leadingAnchor.constraint(equalTo: focusedItem.leadingAnchor),
+            selectionView.trailingAnchor.constraint(equalTo: focusedItem.trailingAnchor),
+            selectionView.topAnchor.constraint(equalTo: focusedItem.topAnchor),
+            selectionView.bottomAnchor.constraint(equalTo: focusedItem.bottomAnchor),
+        ]
+        NSLayoutConstraint.activate(selectionConstraints)
+        let applyState = {
+            self.items.enumerated().forEach { index, item in
+                item.setFocused(index == self.focusedIndex, animated: animated)
+            }
+        }
         guard animated else {
+            applyState()
             layoutSubtreeIfNeeded()
             return
         }
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = PreviewMetrics.slideAnimationDuration
+            context.duration = PreviewMetrics.animationDuration
             context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             context.allowsImplicitAnimation = true
+            applyState()
             self.layoutSubtreeIfNeeded()
+        } completionHandler: {
+            self.items.enumerated().forEach { index, item in
+                item.finishFocusAnimation(index == self.focusedIndex)
+            }
         }
     }
 
@@ -348,8 +603,8 @@ final class AppearanceLivePreviewView: NSView {
     private func handleTimerTick() {
         refreshPauseButtonState()
         guard isRunning() else { return }
-        focusedIndex = AppearanceLivePreviewResolver.nextFocusedIndex(current: focusedIndex, count: tiles.count)
-        updateHighlight(animated: true)
+        focusedIndex = AppearanceLivePreviewResolver.nextFocusedIndex(current: focusedIndex, count: items.count)
+        updateSelection(animated: true)
     }
 
     private func toggleManualPause() {
@@ -378,11 +633,23 @@ final class AppearanceLivePreviewView: NSView {
     }
 
     private func refreshColors() {
-        highlightView.layer?.backgroundColor = DesignSystem.semanticCGColor(.surfaceSelected, in: self)
-        highlightView.layer?.borderColor = DesignSystem.semanticCGColor(.borderSelected, in: self)
-        highlightView.layer?.borderWidth = 1
-        let backgroundRole: DesignSystem.ColorRole = isPauseButtonHovered ? .surfaceHover : .surfaceFlat
-        pauseButton.layer?.backgroundColor = DesignSystem.semanticCGColor(backgroundRole, in: self)
-        pauseButton.layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: self)
+        let increaseContrast = NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast
+        switcherView.layer?.cornerRadius = PreviewMetrics.switcherCornerRadius
+        switcherView.layer?.backgroundColor = PreviewPalette.switcherFill.cgColor
+        switcherView.layer?.borderColor = PreviewPalette.switcherBorder
+            .withAlphaComponent(increaseContrast ? 0.34 : 0.2)
+            .cgColor
+        switcherView.layer?.borderWidth = PreviewMetrics.switcherBorderWidth
+        let selectionRadius = currentStyle == .appIcons
+            ? PreviewMetrics.appIconsTileCornerRadius
+            : PreviewMetrics.titlesRowCornerRadius
+        selectionView.layer?.cornerRadius = selectionRadius
+        selectionView.layer?.backgroundColor = PreviewPalette.focusedFill.cgColor
+        pauseButton.layer?.backgroundColor = (isPauseButtonHovered
+            ? PreviewPalette.pauseHoverFill
+            : PreviewPalette.pauseFill).cgColor
+        pauseButton.layer?.borderColor = PreviewPalette.pauseBorder
+            .withAlphaComponent(increaseContrast ? 0.28 : 0.12)
+            .cgColor
     }
 }
