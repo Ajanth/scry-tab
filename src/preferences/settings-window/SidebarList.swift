@@ -94,6 +94,9 @@ class SidebarListContainer: NSView {
 }
 
 class SidebarListRow: ClickHoverStackView {
+    static let highlightVerticalInset = CGFloat(4)
+
+    private let backgroundView = NSView()
     private let iconView = NSImageView()
     private var iconWidthConstraint: NSLayoutConstraint?
     private var iconHeightConstraint: NSLayoutConstraint?
@@ -113,7 +116,12 @@ class SidebarListRow: ClickHoverStackView {
         spacing = 8
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        layer?.cornerRadius = DesignSystem.Metrics.sidebarSelectionRadius
+        backgroundView.identifier = NSUserInterfaceItemIdentifier("sidebarRowBackground")
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.wantsLayer = true
+        backgroundView.layer?.cornerRadius = DesignSystem.Metrics.sidebarSelectionRadius
+        backgroundView.layer?.masksToBounds = true
+        addSubview(backgroundView)
         iconView.translatesAutoresizingMaskIntoConstraints = false
         iconView.imageScaling = .scaleProportionallyUpOrDown
         iconView.isHidden = true
@@ -148,6 +156,12 @@ class SidebarListRow: ClickHoverStackView {
         addArrangedSubview(textColumn)
         addArrangedSubview(spacer)
         addArrangedSubview(chevronLabel)
+        NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalTo: topAnchor, constant: Self.highlightVerticalInset),
+            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.highlightVerticalInset),
+        ])
         iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: TableGroupView.padding).isActive = true
         textColumn.leadingAnchor.constraint(greaterThanOrEqualTo: iconView.trailingAnchor, constant: 8).isActive = true
         textColumn.trailingAnchor.constraint(lessThanOrEqualTo: chevronLabel.leadingAnchor, constant: -8).isActive = true
@@ -282,7 +296,7 @@ class SidebarListRow: ClickHoverStackView {
             backgroundColor = .clear
         }
         titleLabel.font = NSFont.systemFont(ofSize: 13, weight: .regular)
-        layer?.backgroundColor = DesignSystem.resolvedCGColor(backgroundColor, in: self)
+        backgroundView.layer?.backgroundColor = DesignSystem.resolvedCGColor(backgroundColor, in: self)
         titleLabel.needsDisplay = true
         summaryLabel.needsDisplay = true
         chevronLabel.needsDisplay = true

@@ -320,19 +320,16 @@ class ControlsTab {
         documentView.addSubview(rows)
         shortcutRowsScrollView = rowsScrollView
         installShortcutSidebarHoverObserver(rowsScrollView)
-        let gestureSeparator = sidebarSeparatorView()
         let gestureRow = SidebarListRow()
         gestureRow.onClick = { _, _ in selectGesture() }
         gestureRow.onMouseEntered = { _, view in setHoveredShortcutRow(view as? SidebarListRow) }
         gestureRow.onMouseExited = { _, _ in setHoveredShortcutRow(nil) }
         gestureSidebarRow = gestureRow
-        let activeShortcutsSeparator = sidebarSeparatorView()
         let activeShortcutsRow = SidebarListRow()
         activeShortcutsRow.onClick = { _, _ in selectActiveShortcuts() }
         activeShortcutsRow.onMouseEntered = { _, view in setHoveredShortcutRow(view as? SidebarListRow) }
         activeShortcutsRow.onMouseExited = { _, _ in setHoveredShortcutRow(nil) }
         activeShortcutsSidebarRow = activeShortcutsRow
-        let navigationPointerSeparator = sidebarSeparatorView()
         let navigationPointerRow = SidebarListRow()
         navigationPointerRow.onClick = { _, _ in selectNavigationPointer() }
         navigationPointerRow.onMouseEntered = { _, view in setHoveredShortcutRow(view as? SidebarListRow) }
@@ -340,11 +337,8 @@ class ControlsTab {
         navigationPointerSidebarRow = navigationPointerRow
         listContainer.addSubview(shortcutsSection)
         shortcutsSection.addSubview(rowsScrollView)
-        shortcutsSection.addSubview(gestureSeparator)
         shortcutsSection.addSubview(gestureRow)
-        shortcutsSection.addSubview(activeShortcutsSeparator)
         shortcutsSection.addSubview(activeShortcutsRow)
-        shortcutsSection.addSubview(navigationPointerSeparator)
         shortcutsSection.addSubview(navigationPointerRow)
         let plus = NSImage.fromSymbol(.plus, pointSize: 11)
         let minus = NSImage.fromSymbol(.minus, pointSize: 11)
@@ -375,27 +369,15 @@ class ControlsTab {
             rowsScrollView.topAnchor.constraint(equalTo: shortcutsSection.topAnchor, constant: shortcutSidebarSectionInset),
             rowsScrollView.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: shortcutSidebarRowInset),
             rowsScrollView.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -shortcutSidebarRowInset),
-            rowsScrollView.bottomAnchor.constraint(equalTo: gestureSeparator.topAnchor, constant: -shortcutSidebarSectionGap),
-            gestureSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: TableGroupView.padding),
-            gestureSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -TableGroupView.padding),
-            gestureSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
-            gestureSeparator.bottomAnchor.constraint(equalTo: gestureRow.topAnchor),
+            rowsScrollView.bottomAnchor.constraint(equalTo: gestureRow.topAnchor, constant: -shortcutSidebarSectionGap),
             gestureRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: shortcutSidebarRowInset),
             gestureRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -shortcutSidebarRowInset),
             gestureRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
-            gestureRow.bottomAnchor.constraint(equalTo: activeShortcutsSeparator.topAnchor),
-            activeShortcutsSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: TableGroupView.padding),
-            activeShortcutsSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -TableGroupView.padding),
-            activeShortcutsSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
-            activeShortcutsSeparator.bottomAnchor.constraint(equalTo: activeShortcutsRow.topAnchor),
+            gestureRow.bottomAnchor.constraint(equalTo: activeShortcutsRow.topAnchor),
             activeShortcutsRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: shortcutSidebarRowInset),
             activeShortcutsRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -shortcutSidebarRowInset),
             activeShortcutsRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
-            activeShortcutsRow.bottomAnchor.constraint(equalTo: navigationPointerSeparator.topAnchor),
-            navigationPointerSeparator.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: TableGroupView.padding),
-            navigationPointerSeparator.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -TableGroupView.padding),
-            navigationPointerSeparator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth),
-            navigationPointerSeparator.bottomAnchor.constraint(equalTo: navigationPointerRow.topAnchor),
+            activeShortcutsRow.bottomAnchor.constraint(equalTo: navigationPointerRow.topAnchor),
             navigationPointerRow.leadingAnchor.constraint(equalTo: shortcutsSection.leadingAnchor, constant: shortcutSidebarRowInset),
             navigationPointerRow.trailingAnchor.constraint(equalTo: shortcutsSection.trailingAnchor, constant: -shortcutSidebarRowInset),
             navigationPointerRow.heightAnchor.constraint(equalToConstant: sidebarRowHeight),
@@ -557,13 +539,6 @@ class ControlsTab {
             // removed from the stack by `clearArrangedSubviews`. The row's height constraint is
             // row-internal, set once in `makeShortcutRow`, and survives the remove/re-add cycle.
             row.widthAnchor.constraint(equalTo: rows.widthAnchor).isActive = true
-            if index < count - 1 {
-                let separator = sidebarSeparatorView()
-                rows.addArrangedSubview(separator)
-                separator.leadingAnchor.constraint(equalTo: rows.leadingAnchor, constant: TableGroupView.padding).isActive = true
-                separator.trailingAnchor.constraint(equalTo: rows.trailingAnchor, constant: -TableGroupView.padding).isActive = true
-                separator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth).isActive = true
-            }
         }
         syncShortcutSidebarHoverState()
         // The rows were (re)built outside the section's build-time `indexed { }` scope, so their own
