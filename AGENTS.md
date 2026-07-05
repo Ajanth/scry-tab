@@ -6,9 +6,16 @@
 - Organize source files into folders. Folders should group files that change together, at the same pace (e.g. one feature)
 - When possible, follow the triad pattern: specs in *Specs.md, unit-tests in *Tests.swift, and *swift for the implementation. Document features and their edge-cases this way
 - Favor low latency and responsiveness. Reuse objects, avoid wasting memory or I/O. Use observer APIs; don't poll.
+- Treat the checked-in System Settings-style design system as mandatory for app chrome. Reuse its material views, grouped panels, controls, metrics, and `DesignSystem.ColorRole` surface palette; extend the shared design system before adding a new visual behavior. Do not create feature-local replacements for panel, surface, material, tint, shared geometry, or control chrome.
+
+# Required skills
+- Before implementing, modifying, refactoring, or debugging Swift/AppKit code, load and follow the `swift-appkit-development` skill in `.agents/skills/swift-appkit-development/SKILL.md`.
+- Before reviewing Swift/AppKit code, macOS UI changes, or changes that affect app behavior, load and follow the `swift-appkit-code-review` skill in `.agents/skills/swift-appkit-code-review/SKILL.md`.
+- These skills are mandatory project standards. Their `.agents/skills` location is the canonical shared source for Codex, OpenCode, and Cursor; do not maintain divergent vendor-specific copies.
 
 # Workflow
-- Copy commands from ai/build.sh and run them, to confirm compilation works after you're done with implementing a change
+- Copy the command sequence from `ai/build.sh` and run it to confirm compilation after implementing a code change. Resolve `$0` and other script-relative paths against `ai/build.sh` so copied commands preserve the script's behavior.
+- Never start, stop, restart, or manage servers, and never open or control browsers unless the user explicitly asks. Non-server tests, type checks, linting, and builds are allowed.
 
 # License / Keychain invariant
 - The app's Developer ID, TeamID, and bundle ID must remain stable across builds. Keychain items are tied to the code signature; changing any of these orphans every user's stored license key and forces mass re-activation. If a rotation is unavoidable, plan a migration first (e.g., a backup-restore handler, or `kSecAttrAccessGroup` with a stable group identifier).

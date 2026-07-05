@@ -152,7 +152,7 @@ def optimize(path):
     # something it could have kept vector. Usually the source is a stroked path (fix:
     # ⌘⇧O Outline Stroke) or a layer effect (drop shadow, blur, blend mode). Hidden
     # layers can still produce bitmaps when referenced by a clipping/masking group —
-    # delete them rather than just hiding. See .claude/skills/assets-optimization/SKILL.md.
+    # delete them rather than just hiding. See .agents/skills/assets-optimization/SKILL.md.
     bitmaps = count_images(path)
     if bitmaps:
         print(f"  ⚠ WARNING: {bitmaps} embedded bitmap(s) found — Figma source needs cleanup,"

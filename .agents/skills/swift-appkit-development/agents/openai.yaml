@@ -1,0 +1,6 @@
+interface:
+  display_name: "Swift and AppKit Development"
+  short_description: "Build strict native AppKit features"
+  default_prompt: "Use $swift-appkit-development to implement this change according to the project standards."
+policy:
+  allow_implicit_invocation: true
