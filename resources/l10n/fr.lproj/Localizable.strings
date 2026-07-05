@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "Balayage vertical à 4 doigts";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Un profil de débogage (versions, réglages, matériel) est joint pour aider à diagnostiquer le problème.";
 "A new version of ScryTab is available" = "Une nouvelle version d'ScryTab est disponible";
+"About" = "À propos";
 "About %@" = "À propos de %@";
 "Accessibility" = "Accessibilité";
+"Acknowledgments" = "Remerciements";
 "Active app" = "App active";
 "Active screen" = "Écran actif";
 "Add a pattern" = "Ajouter un motif";
 "Add a running app" = "Ajouter une app en cours d'exécution";
 "Add an app from disk" = "Ajouter une app depuis le disque";
 "Additional controls" = "Contrôles supplémentaires";
-"Additional controls…" = "Contrôles supplémentaires…";
 "After keys are released" = "Après le relâchement des touches";
 "All apps" = "Toutes les apps";
 "All screens" = "Tous les écrans";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "Je pense que l'app pourrait être améliorée avec…";
 "Ignore shortcuts" = "Ignorer les raccourcis";
 "Import settings…" = "Importer les réglages…";
+"Keyboard, mouse, and trackpad" = "Clavier, souris et trackpad";
 "Language" = "Langue";
 "Language Change" = "Changement de langue";
 "Large" = "Grand";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "Déplacer vers le dossier Applications";
 "Move to Applications folder?" = "Déplacer vers le dossier Applications ?";
 "Multiple screens" = "Plusieurs écrans";
+"Navigation & pointer" = "Navigation et pointeur";
 "Never" = "Jamais";
 "Never send crash reports" = "Ne jamais envoyer de rapport de plantage";
 "No Window" = "Aucune fenêtre";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "Ouvrir les réglages d'accessibilité…";
 "Open Trackpad Settings…" = "Ouvrir les réglages du Trackpad…";
 "Order windows by" = "Ordonner les fenêtres par";
+"Ordering" = "Ordre";
 "Ordering & Grouping" = "Ordre et regroupement";
+"Pause preview animation" = "Suspendre l’animation d’aperçu";
 "Please drag ScryTab into the Applications folder manually." = "Veuillez glisser ScryTab manuellement dans le dossier Applications.";
 "Please fill in the form" = "Veuillez remplir le formulaire";
+"Preview of the selected appearance style" = "Aperçu du style d’apparence sélectionné";
 "Quit %@" = "Quitter %@";
 "Quit app" = "Quitter l'app";
 "Recently Created First" = "Récemment créées d'abord";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "Réinitialiser les réglages et redémarrer";
 "Reset settings and restart…" = "Réinitialiser les réglages et redémarrer…";
 "Restart Now" = "Redémarrer maintenant";
+"Resume preview animation" = "Reprendre l’animation d’aperçu";
 "Screen including menu bar" = "Écran avec la barre des menus";
 "Screen including mouse" = "Écran avec la souris";
 "Screen showing ScryTab" = "Écran affichant ScryTab";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab a planté lors de votre dernière utilisation. Envoyer un rapport de plantage aidera à résoudre le problème";
+"ScryTab needs accessibility permission" = "ScryTab a besoin de l’autorisation Accessibilité";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab indique avec une icône d'état si la fenêtre est réduite ou en plein écran.";
 "Search" = "Recherche";
 "Select next window" = "Sélectionner la fenêtre suivante";
@@ -147,7 +155,7 @@
 "Shortcut" = "Raccourci";
 "Shortcut already assigned to: %@" = "Raccourci déjà affecté à : %@";
 "Shortcuts When Active" = "Raccourcis pendant l'utilisation";
-"Shortcuts when active…" = "Raccourcis pendant l'utilisation…";
+"Shortcuts while ScryTab is active" = "Raccourcis lorsque ScryTab est actif";
 "Show" = "Afficher";
 "Show all windows" = "Afficher toutes les fenêtres";
 "Show apps with no open window" = "Afficher les apps sans fenêtre ouverte";
@@ -170,6 +178,7 @@
 "Space Order" = "Ordre des Bureaux";
 "Start" = "Début";
 "Start at login" = "Lancer à l'ouverture de session";
+"Style" = "Style";
 "Suggest a change" = "Suggérer une modification";
 "System" = "Système";
 "System Default" = "Réglage système";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "L'application doit redémarrer pour appliquer le changement de langue.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Le serveur n'a pas accepté l'envoi. Vérifiez votre connexion Internet et réessayez — votre brouillon est conservé.";
 "Theme" = "Thème";
-"This permission is needed to focus windows after you release the shortcut" = "Cette autorisation est nécessaire pour sélectionner les fenêtres après le relâchement du raccourci";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Cette autorisation est nécessaire pour placer le focus sur les fenêtres après le relâchement du raccourci. Activez « %@ » dans Réglages Système > Confidentialité et sécurité > Accessibilité. Une entrée « ScryTab » activée pour une autre build ne compte pas.";
 "This will keep your Downloads folder uncluttered." = "Cela évitera d'encombrer votre dossier Téléchargements.";
 "Title truncation" = "Troncature du titre";
 "Titles" = "Titres";
+"Trackpad" = "Trackpad";
 "Trackpad haptic feedback" = "Retour haptique du Trackpad";
 "Trigger" = "Déclencheur";
 "Unassign existing shortcut and continue" = "Désaffecter le raccourci existant et continuer";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Qu'attendiez-vous ? Que s'est-il passé ? Étapes pour reproduire…";
 "When fullscreen" = "En plein écran";
 "When no open window" = "Sans fenêtre ouverte";
+"Window actions" = "Actions de fenêtre";
 "Window is fullscreen" = "Fenêtre en plein écran";
 "Window is minimized" = "Fenêtre réduite";
 "Window is on every Space" = "Fenêtre sur tous les Bureaux";

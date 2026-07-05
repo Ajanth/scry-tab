@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "네 손가락 세로 스와이프";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "문제 진단을 돕기 위해 디버그 프로파일(버전, 설정, 하드웨어)이 첨부됩니다.";
 "A new version of ScryTab is available" = "ScryTab의 새 버전이 출시되었습니다";
+"About" = "정보";
 "About %@" = "%@ 정보";
 "Accessibility" = "손쉬운 사용";
+"Acknowledgments" = "감사의 말";
 "Active app" = "활성화된 앱";
 "Active screen" = "활성화된 화면";
 "Add a pattern" = "패턴 추가";
 "Add a running app" = "실행 중인 앱 추가";
 "Add an app from disk" = "디스크에서 앱 추가";
 "Additional controls" = "추가 컨트롤";
-"Additional controls…" = "추가 컨트롤…";
 "After keys are released" = "키를 놓은 후";
 "All apps" = "모든 앱";
 "All screens" = "모든 화면";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "이 앱이 개선되었으면 하는 점…";
 "Ignore shortcuts" = "단축키 무시";
 "Import settings…" = "설정 가져오기…";
+"Keyboard, mouse, and trackpad" = "키보드, 마우스 및 트랙패드";
 "Language" = "언어";
 "Language Change" = "언어 변경";
 "Large" = "크게";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "응용 프로그램 폴더로 이동";
 "Move to Applications folder?" = "응용 프로그램 폴더로 이동하시겠습니까?";
 "Multiple screens" = "여러 화면";
+"Navigation & pointer" = "탐색 및 포인터";
 "Never" = "안 함";
 "Never send crash reports" = "충돌 보고서 보내지 않기";
 "No Window" = "윈도우 없음";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "손쉬운 사용 설정 열기…";
 "Open Trackpad Settings…" = "트랙패드 설정 열기…";
 "Order windows by" = "윈도우 정렬 기준";
+"Ordering" = "정렬";
 "Ordering & Grouping" = "정렬 및 그룹화";
+"Pause preview animation" = "미리보기 애니메이션 일시 정지";
 "Please drag ScryTab into the Applications folder manually." = "ScryTab을 응용 프로그램 폴더로 직접 드래그해 주세요.";
 "Please fill in the form" = "양식을 작성해 주세요";
+"Preview of the selected appearance style" = "선택한 모양 스타일 미리보기";
 "Quit %@" = "%@ 종료";
 "Quit app" = "앱 종료";
 "Recently Created First" = "최근 생성된 순";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "설정 초기화 및 재시작";
 "Reset settings and restart…" = "설정 초기화 및 재시작…";
 "Restart Now" = "지금 재시작";
+"Resume preview animation" = "미리보기 애니메이션 재개";
 "Screen including menu bar" = "메뉴 막대가 있는 화면";
 "Screen including mouse" = "마우스가 있는 화면";
 "Screen showing ScryTab" = "ScryTab이 표시되는 화면";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab이 마지막 사용 시 충돌했습니다. 충돌 보고서를 보내면 문제 해결에 도움이 됩니다";
+"ScryTab needs accessibility permission" = "ScryTab에 손쉬운 사용 권한이 필요합니다";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab이 윈도우의 최소화 또는 전체 화면 상태를 상태 아이콘으로 표시합니다.";
 "Search" = "검색";
 "Select next window" = "다음 윈도우 선택";
@@ -147,7 +155,7 @@
 "Shortcut" = "단축키";
 "Shortcut already assigned to: %@" = "단축키가 이미 할당되어 있습니다: %@";
 "Shortcuts When Active" = "활성 시 단축키";
-"Shortcuts when active…" = "활성 시 단축키…";
+"Shortcuts while ScryTab is active" = "ScryTab이 활성 상태일 때의 단축키";
 "Show" = "보이기";
 "Show all windows" = "모든 윈도우 보이기";
 "Show apps with no open window" = "열린 윈도우가 없는 앱 보이기";
@@ -170,6 +178,7 @@
 "Space Order" = "Space 순서";
 "Start" = "시작";
 "Start at login" = "로그인 시 시작";
+"Style" = "스타일";
 "Suggest a change" = "변경 제안";
 "System" = "시스템";
 "System Default" = "시스템 기본값";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "언어 변경을 적용하려면 앱을 재시작해야 합니다.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "서버에서 제출을 수락하지 않았습니다. 인터넷 연결을 확인하고 다시 시도해 주세요 — 초안은 보존됩니다.";
 "Theme" = "테마";
-"This permission is needed to focus windows after you release the shortcut" = "단축키를 놓은 후 윈도우에 포커스하려면 이 권한이 필요합니다";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "단축키를 놓은 후 윈도우에 초점을 맞추려면 이 권한이 필요합니다. 시스템 설정 > 개인정보 보호 및 보안 > 손쉬운 사용에서 “%@”을(를) 활성화하세요. 다른 빌드의 활성화된 “ScryTab” 항목은 해당되지 않습니다.";
 "This will keep your Downloads folder uncluttered." = "다운로드 폴더를 깔끔하게 유지할 수 있습니다.";
 "Title truncation" = "제목 자르기";
 "Titles" = "제목";
+"Trackpad" = "트랙패드";
 "Trackpad haptic feedback" = "트랙패드 햅틱 피드백";
 "Trigger" = "트리거";
 "Unassign existing shortcut and continue" = "기존 단축키 할당 해제 후 계속";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "예상했던 동작은? 실제로 일어난 일은? 재현 단계…";
 "When fullscreen" = "전체 화면일 때";
 "When no open window" = "열린 윈도우가 없을 때";
+"Window actions" = "윈도우 동작";
 "Window is fullscreen" = "윈도우 전체 화면";
 "Window is minimized" = "윈도우 최소화됨";
 "Window is on every Space" = "윈도우가 모든 Space에 있음";

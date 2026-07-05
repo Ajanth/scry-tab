@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "تمرير عمودي بأربعة أصابع";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "تم إرفاق ملف تصحيح (الإصدارات، الإعدادات، العتاد) للمساعدة في تشخيص المشكلة.";
 "A new version of ScryTab is available" = "يتوفر إصدار جديد من ScryTab";
+"About" = "حول";
 "About %@" = "حول %@";
 "Accessibility" = "إمكانية الوصول";
+"Acknowledgments" = "شكر وتقدير";
 "Active app" = "التطبيق النشط";
 "Active screen" = "الشاشة النشطة";
 "Add a pattern" = "إضافة نمط";
 "Add a running app" = "إضافة تطبيق قيد التشغيل";
 "Add an app from disk" = "إضافة تطبيق من القرص";
 "Additional controls" = "عناصر تحكم إضافية";
-"Additional controls…" = "عناصر تحكم إضافية…";
 "After keys are released" = "بعد تحرير المفاتيح";
 "All apps" = "جميع التطبيقات";
 "All screens" = "جميع الشاشات";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "أعتقد أن التطبيق يمكن تحسينه بـ…";
 "Ignore shortcuts" = "تجاهل الاختصارات";
 "Import settings…" = "استيراد الإعدادات…";
+"Keyboard, mouse, and trackpad" = "لوحة المفاتيح والماوس ولوحة التعقب";
 "Language" = "اللغة";
 "Language Change" = "تغيير اللغة";
 "Large" = "كبير";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "النقل إلى مجلد التطبيقات";
 "Move to Applications folder?" = "النقل إلى مجلد التطبيقات؟";
 "Multiple screens" = "شاشات متعددة";
+"Navigation & pointer" = "التنقل والمؤشر";
 "Never" = "أبدًا";
 "Never send crash reports" = "عدم إرسال تقارير الأعطال أبدًا";
 "No Window" = "لا توجد نافذة";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "فتح إعدادات إمكانية الوصول…";
 "Open Trackpad Settings…" = "فتح إعدادات لوحة التعقب…";
 "Order windows by" = "ترتيب النوافذ حسب";
+"Ordering" = "الترتيب";
 "Ordering & Grouping" = "الترتيب والتجميع";
+"Pause preview animation" = "إيقاف حركة المعاينة مؤقتًا";
 "Please drag ScryTab into the Applications folder manually." = "يرجى سحب ScryTab إلى مجلد التطبيقات يدويًا.";
 "Please fill in the form" = "يرجى ملء النموذج";
+"Preview of the selected appearance style" = "معاينة نمط المظهر المحدد";
 "Quit %@" = "إنهاء %@";
 "Quit app" = "إنهاء التطبيق";
 "Recently Created First" = "الأحدث إنشاءً أولاً";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "إعادة تعيين الإعدادات وإعادة التشغيل";
 "Reset settings and restart…" = "إعادة تعيين الإعدادات وإعادة التشغيل…";
 "Restart Now" = "إعادة التشغيل الآن";
+"Resume preview animation" = "استئناف حركة المعاينة";
 "Screen including menu bar" = "الشاشة التي تتضمن شريط القائمة";
 "Screen including mouse" = "الشاشة التي تتضمن الفأرة";
 "Screen showing ScryTab" = "الشاشة التي تعرض ScryTab";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "تعطّل ScryTab في آخر مرة استخدمته فيها. إرسال تقرير الأعطال سيساعد في إصلاح المشكلة";
+"ScryTab needs accessibility permission" = "يحتاج ScryTab إلى إذن تسهيلات الاستخدام";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "سيُظهر ScryTab ما إذا كانت النافذة مصغّرة أو بملء الشاشة حاليًا برمز حالة.";
 "Search" = "البحث";
 "Select next window" = "تحديد النافذة التالية";
@@ -147,7 +155,7 @@
 "Shortcut" = "اختصار";
 "Shortcut already assigned to: %@" = "الاختصار معيّن بالفعل: %@";
 "Shortcuts When Active" = "الاختصارات عند النشاط";
-"Shortcuts when active…" = "الاختصارات عند النشاط…";
+"Shortcuts while ScryTab is active" = "الاختصارات أثناء نشاط ScryTab";
 "Show" = "إظهار";
 "Show all windows" = "إظهار جميع النوافذ";
 "Show apps with no open window" = "إظهار التطبيقات التي ليس لديها نافذة مفتوحة";
@@ -170,6 +178,7 @@
 "Space Order" = "ترتيب المساحات";
 "Start" = "البداية";
 "Start at login" = "البدء عند تسجيل الدخول";
+"Style" = "النمط";
 "Suggest a change" = "اقتراح تغيير";
 "System" = "النظام";
 "System Default" = "افتراضي النظام";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "يحتاج التطبيق إلى إعادة التشغيل لتطبيق تغيير اللغة.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "لم يقبل الخادم الإرسال. تحقق من اتصالك بالإنترنت وحاول مرة أخرى — تم الاحتفاظ بمسودتك.";
 "Theme" = "السمة";
-"This permission is needed to focus windows after you release the shortcut" = "هذا الإذن مطلوب للتركيز على النوافذ بعد تحرير الاختصار";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "هذا الإذن مطلوب للتركيز على النوافذ بعد إفلات الاختصار. فعّل “%@” في إعدادات النظام > الخصوصية والأمان > تسهيلات الاستخدام. لا يُحتسب إدخال “ScryTab” مفعّل لبناء آخر.";
 "This will keep your Downloads folder uncluttered." = "سيُبقي ذلك مجلد التنزيلات مرتبًا.";
 "Title truncation" = "اقتطاع العنوان";
 "Titles" = "العناوين";
+"Trackpad" = "لوحة التعقب";
 "Trackpad haptic feedback" = "ردود الفعل اللمسية للوحة التعقب";
 "Trigger" = "المُشغّل";
 "Unassign existing shortcut and continue" = "إلغاء تعيين الاختصار الحالي والمتابعة";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "ماذا توقعت؟ ماذا حدث؟ خطوات إعادة الإنتاج…";
 "When fullscreen" = "عند ملء الشاشة";
 "When no open window" = "عند عدم وجود نافذة مفتوحة";
+"Window actions" = "إجراءات النوافذ";
 "Window is fullscreen" = "النافذة بملء الشاشة";
 "Window is minimized" = "النافذة مصغّرة";
 "Window is on every Space" = "النافذة في كل مساحة";

@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "Vertikales 4-Finger-Wischen";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Ein Debug-Profil (Versionen, Einstellungen, Hardware) ist angehängt, um das Problem zu diagnostizieren.";
 "A new version of ScryTab is available" = "Eine neue Version von ScryTab ist verfügbar";
+"About" = "Über";
 "About %@" = "Über %@";
 "Accessibility" = "Bedienungshilfen";
+"Acknowledgments" = "Danksagungen";
 "Active app" = "Aktive App";
 "Active screen" = "Aktiver Bildschirm";
 "Add a pattern" = "Muster hinzufügen";
 "Add a running app" = "Laufende App hinzufügen";
 "Add an app from disk" = "App vom Datenträger hinzufügen";
 "Additional controls" = "Zusätzliche Bedienelemente";
-"Additional controls…" = "Zusätzliche Bedienelemente…";
 "After keys are released" = "Nach Loslassen der Tasten";
 "All apps" = "Alle Apps";
 "All screens" = "Alle Bildschirme";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "Ich denke, die App könnte verbessert werden mit…";
 "Ignore shortcuts" = "Tastenkürzel ignorieren";
 "Import settings…" = "Einstellungen importieren…";
+"Keyboard, mouse, and trackpad" = "Tastatur, Maus und Trackpad";
 "Language" = "Sprache";
 "Language Change" = "Sprachänderung";
 "Large" = "Groß";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "In Programme-Ordner verschieben";
 "Move to Applications folder?" = "In Programme-Ordner verschieben?";
 "Multiple screens" = "Mehrere Bildschirme";
+"Navigation & pointer" = "Navigation & Zeiger";
 "Never" = "Nie";
 "Never send crash reports" = "Absturzberichte nie senden";
 "No Window" = "Kein Fenster";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "Einstellungen für Bedienungshilfen öffnen…";
 "Open Trackpad Settings…" = "Einstellungen für Trackpad öffnen…";
 "Order windows by" = "Fenster sortieren nach";
+"Ordering" = "Sortierung";
 "Ordering & Grouping" = "Sortierung & Gruppierung";
+"Pause preview animation" = "Vorschauanimation anhalten";
 "Please drag ScryTab into the Applications folder manually." = "Bitte ziehen Sie ScryTab manuell in den Programme-Ordner.";
 "Please fill in the form" = "Bitte füllen Sie das Formular aus";
+"Preview of the selected appearance style" = "Vorschau des ausgewählten Erscheinungsstils";
 "Quit %@" = "%@ beenden";
 "Quit app" = "App beenden";
 "Recently Created First" = "Zuletzt erstellte zuerst";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "Einstellungen zurücksetzen und neu starten";
 "Reset settings and restart…" = "Einstellungen zurücksetzen und neu starten…";
 "Restart Now" = "Jetzt neu starten";
+"Resume preview animation" = "Vorschauanimation fortsetzen";
 "Screen including menu bar" = "Bildschirm mit Menüleiste";
 "Screen including mouse" = "Bildschirm mit Mauszeiger";
 "Screen showing ScryTab" = "Bildschirm, der ScryTab anzeigt";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab ist bei der letzten Verwendung abgestürzt. Das Senden eines Absturzberichts hilft bei der Behebung des Problems";
+"ScryTab needs accessibility permission" = "ScryTab benötigt die Bedienungshilfen-Berechtigung";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab zeigt mit einem Statussymbol an, ob das Fenster derzeit minimiert oder im Vollbild ist.";
 "Search" = "Suche";
 "Select next window" = "Nächstes Fenster auswählen";
@@ -147,7 +155,7 @@
 "Shortcut" = "Tastenkürzel";
 "Shortcut already assigned to: %@" = "Tastenkürzel ist bereits zugewiesen: %@";
 "Shortcuts When Active" = "Tastenkürzel bei Aktivität";
-"Shortcuts when active…" = "Tastenkürzel bei Aktivität…";
+"Shortcuts while ScryTab is active" = "Kurzbefehle, während ScryTab aktiv ist";
 "Show" = "Anzeigen";
 "Show all windows" = "Alle Fenster anzeigen";
 "Show apps with no open window" = "Apps ohne geöffnetes Fenster anzeigen";
@@ -170,6 +178,7 @@
 "Space Order" = "Space-Reihenfolge";
 "Start" = "Anfang";
 "Start at login" = "Beim Anmelden starten";
+"Style" = "Stil";
 "Suggest a change" = "Änderung vorschlagen";
 "System" = "System";
 "System Default" = "Systemstandard";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "Die App muss neu gestartet werden, um die Sprachänderung zu übernehmen.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Der Server hat die Übermittlung nicht angenommen. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut — Ihr Entwurf bleibt erhalten.";
 "Theme" = "Erscheinungsbild";
-"This permission is needed to focus windows after you release the shortcut" = "Diese Berechtigung wird benötigt, um Fenster nach dem Loslassen des Tastenkürzels zu fokussieren";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Diese Berechtigung ist erforderlich, um Fenster nach dem Loslassen des Kurzbefehls zu fokussieren. Aktivieren Sie „%@“ in Systemeinstellungen > Datenschutz & Sicherheit > Bedienungshilfen. Ein aktivierter „ScryTab“-Eintrag für einen anderen Build zählt nicht.";
 "This will keep your Downloads folder uncluttered." = "So bleibt Ihr Downloads-Ordner aufgeräumt.";
 "Title truncation" = "Titelkürzung";
 "Titles" = "Titel";
+"Trackpad" = "Trackpad";
 "Trackpad haptic feedback" = "Haptisches Trackpad-Feedback";
 "Trigger" = "Auslöser";
 "Unassign existing shortcut and continue" = "Vorhandenes Tastenkürzel aufheben und fortfahren";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Was haben Sie erwartet? Was ist passiert? Schritte zum Reproduzieren…";
 "When fullscreen" = "Bei Vollbild";
 "When no open window" = "Wenn kein Fenster geöffnet ist";
+"Window actions" = "Fensteraktionen";
 "Window is fullscreen" = "Fenster im Vollbild";
 "Window is minimized" = "Fenster minimiert";
 "Window is on every Space" = "Fenster auf jedem Space";

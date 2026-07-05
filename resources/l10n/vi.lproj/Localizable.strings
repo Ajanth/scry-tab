@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "Vuốt dọc 4 ngón tay";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Hồ sơ gỡ lỗi (phiên bản, cài đặt, phần cứng) được đính kèm để giúp chẩn đoán sự cố.";
 "A new version of ScryTab is available" = "Đã có phiên bản mới của ScryTab";
+"About" = "Giới thiệu";
 "About %@" = "Giới thiệu về %@";
 "Accessibility" = "Trợ năng";
+"Acknowledgments" = "Lời cảm ơn";
 "Active app" = "Ứng dụng đang hoạt động";
 "Active screen" = "Màn hình đang hoạt động";
 "Add a pattern" = "Thêm một mẫu";
 "Add a running app" = "Thêm một ứng dụng đang chạy";
 "Add an app from disk" = "Thêm một ứng dụng từ ổ đĩa";
 "Additional controls" = "Điều khiển bổ sung";
-"Additional controls…" = "Điều khiển bổ sung…";
 "After keys are released" = "Sau khi nhả phím";
 "All apps" = "Tất cả ứng dụng";
 "All screens" = "Tất cả màn hình";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "Tôi nghĩ ứng dụng có thể được cải thiện với…";
 "Ignore shortcuts" = "Bỏ qua phím tắt";
 "Import settings…" = "Nhập cài đặt…";
+"Keyboard, mouse, and trackpad" = "Bàn phím, chuột và bàn di chuột";
 "Language" = "Ngôn ngữ";
 "Language Change" = "Thay đổi ngôn ngữ";
 "Large" = "Lớn";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "Di chuyển vào thư mục Ứng dụng";
 "Move to Applications folder?" = "Di chuyển vào thư mục Ứng dụng?";
 "Multiple screens" = "Nhiều màn hình";
+"Navigation & pointer" = "Điều hướng & con trỏ";
 "Never" = "Không bao giờ";
 "Never send crash reports" = "Không bao giờ gửi báo cáo sự cố";
 "No Window" = "Không có cửa sổ";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "Mở Cài đặt Trợ năng…";
 "Open Trackpad Settings…" = "Mở Cài đặt Trackpad…";
 "Order windows by" = "Sắp xếp cửa sổ theo";
+"Ordering" = "Sắp xếp";
 "Ordering & Grouping" = "Sắp xếp & Nhóm";
+"Pause preview animation" = "Tạm dừng hoạt ảnh xem trước";
 "Please drag ScryTab into the Applications folder manually." = "Vui lòng kéo ScryTab vào thư mục Ứng dụng theo cách thủ công.";
 "Please fill in the form" = "Vui lòng điền vào biểu mẫu";
+"Preview of the selected appearance style" = "Bản xem trước của kiểu giao diện đã chọn";
 "Quit %@" = "Thoát %@";
 "Quit app" = "Thoát ứng dụng";
 "Recently Created First" = "Mới tạo gần đây nhất trước";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "Đặt lại cài đặt và khởi động lại";
 "Reset settings and restart…" = "Đặt lại cài đặt và khởi động lại…";
 "Restart Now" = "Khởi động lại ngay";
+"Resume preview animation" = "Tiếp tục hoạt ảnh xem trước";
 "Screen including menu bar" = "Màn hình có thanh menu";
 "Screen including mouse" = "Màn hình có con trỏ chuột";
 "Screen showing ScryTab" = "Màn hình hiển thị ScryTab";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab đã gặp sự cố ở lần dùng trước. Gửi báo cáo sự cố sẽ giúp khắc phục vấn đề";
+"ScryTab needs accessibility permission" = "ScryTab cần quyền Trợ năng";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab sẽ hiển thị biểu tượng trạng thái nếu cửa sổ đang được thu nhỏ hoặc ở chế độ toàn màn hình.";
 "Search" = "Tìm kiếm";
 "Select next window" = "Chọn cửa sổ kế tiếp";
@@ -147,7 +155,7 @@
 "Shortcut" = "Phím tắt";
 "Shortcut already assigned to: %@" = "Phím tắt đã được gán cho: %@";
 "Shortcuts When Active" = "Phím tắt khi hoạt động";
-"Shortcuts when active…" = "Phím tắt khi hoạt động…";
+"Shortcuts while ScryTab is active" = "Phím tắt khi ScryTab đang hoạt động";
 "Show" = "Hiển thị";
 "Show all windows" = "Hiển thị tất cả cửa sổ";
 "Show apps with no open window" = "Hiển thị ứng dụng không có cửa sổ mở";
@@ -170,6 +178,7 @@
 "Space Order" = "Thứ tự Không gian";
 "Start" = "Đầu";
 "Start at login" = "Khởi động khi đăng nhập";
+"Style" = "Kiểu";
 "Suggest a change" = "Đề xuất thay đổi";
 "System" = "Hệ thống";
 "System Default" = "Mặc định hệ thống";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "Ứng dụng cần khởi động lại để áp dụng thay đổi ngôn ngữ.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Máy chủ không chấp nhận bản gửi. Vui lòng kiểm tra kết nối internet và thử lại — bản nháp của bạn được giữ lại.";
 "Theme" = "Chủ đề";
-"This permission is needed to focus windows after you release the shortcut" = "Quyền này cần thiết để đặt tiêu điểm cửa sổ sau khi bạn nhả phím tắt";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Cần có quyền này để tập trung cửa sổ sau khi bạn nhả phím tắt. Bật “%@” trong Cài đặt hệ thống > Quyền riêng tư & Bảo mật > Trợ năng. Mục “ScryTab” đã bật cho một bản dựng khác không được tính.";
 "This will keep your Downloads folder uncluttered." = "Điều này sẽ giúp thư mục Tải về của bạn gọn gàng.";
 "Title truncation" = "Cắt ngắn tiêu đề";
 "Titles" = "Tiêu đề";
+"Trackpad" = "Bàn di chuột";
 "Trackpad haptic feedback" = "Phản hồi xúc giác Trackpad";
 "Trigger" = "Kích hoạt";
 "Unassign existing shortcut and continue" = "Bỏ gán phím tắt hiện có và tiếp tục";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Bạn mong đợi điều gì? Đã xảy ra chuyện gì? Các bước tái hiện…";
 "When fullscreen" = "Khi toàn màn hình";
 "When no open window" = "Khi không có cửa sổ mở";
+"Window actions" = "Tác vụ cửa sổ";
 "Window is fullscreen" = "Cửa sổ ở chế độ toàn màn hình";
 "Window is minimized" = "Cửa sổ đang được thu nhỏ";
 "Window is on every Space" = "Cửa sổ ở trên mọi Không gian";

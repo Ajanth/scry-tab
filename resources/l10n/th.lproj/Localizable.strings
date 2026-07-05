@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "ปัด 4 นิ้วในแนวตั้ง";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "แนบโปรไฟล์การแก้ไขข้อบกพร่อง (เวอร์ชัน การตั้งค่า ฮาร์ดแวร์) เพื่อช่วยวินิจฉัยปัญหา";
 "A new version of ScryTab is available" = "มี ScryTab เวอร์ชันใหม่ให้ใช้งาน";
+"About" = "เกี่ยวกับ";
 "About %@" = "เกี่ยวกับ %@";
 "Accessibility" = "การช่วยการเข้าถึง";
+"Acknowledgments" = "กิตติกรรมประกาศ";
 "Active app" = "แอปที่ทำงานอยู่";
 "Active screen" = "หน้าจอที่ทำงานอยู่";
 "Add a pattern" = "เพิ่มรูปแบบ";
 "Add a running app" = "เพิ่มแอปที่กำลังทำงาน";
 "Add an app from disk" = "เพิ่มแอปจากดิสก์";
 "Additional controls" = "การควบคุมเพิ่มเติม";
-"Additional controls…" = "การควบคุมเพิ่มเติม…";
 "After keys are released" = "หลังจากปล่อยปุ่ม";
 "All apps" = "แอปทั้งหมด";
 "All screens" = "หน้าจอทั้งหมด";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "ฉันคิดว่าแอปนี้สามารถปรับปรุงได้ด้วย…";
 "Ignore shortcuts" = "เพิกเฉยต่อทางลัด";
 "Import settings…" = "นำเข้าการตั้งค่า…";
+"Keyboard, mouse, and trackpad" = "แป้นพิมพ์ เมาส์ และแทร็คแพด";
 "Language" = "ภาษา";
 "Language Change" = "การเปลี่ยนภาษา";
 "Large" = "ใหญ่";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "ย้ายไปยังโฟลเดอร์ Applications";
 "Move to Applications folder?" = "ย้ายไปยังโฟลเดอร์ Applications หรือไม่?";
 "Multiple screens" = "หลายหน้าจอ";
+"Navigation & pointer" = "การนำทางและตัวชี้";
 "Never" = "ไม่เคย";
 "Never send crash reports" = "ไม่ส่งรายงานการขัดข้อง";
 "No Window" = "ไม่มีหน้าต่าง";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "เปิดการตั้งค่าการช่วยการเข้าถึง…";
 "Open Trackpad Settings…" = "เปิดการตั้งค่าแทร็คแพด…";
 "Order windows by" = "เรียงหน้าต่างตาม";
+"Ordering" = "การเรียงลำดับ";
 "Ordering & Grouping" = "การเรียงและการจัดกลุ่ม";
+"Pause preview animation" = "หยุดภาพเคลื่อนไหวตัวอย่างชั่วคราว";
 "Please drag ScryTab into the Applications folder manually." = "โปรดลาก ScryTab ไปยังโฟลเดอร์ Applications ด้วยตนเอง";
 "Please fill in the form" = "โปรดกรอกแบบฟอร์ม";
+"Preview of the selected appearance style" = "ตัวอย่างสไตล์ลักษณะที่เลือก";
 "Quit %@" = "ออกจาก %@";
 "Quit app" = "ออกจากแอป";
 "Recently Created First" = "สร้างล่าสุดก่อน";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "รีเซ็ตการตั้งค่าและรีสตาร์ท";
 "Reset settings and restart…" = "รีเซ็ตการตั้งค่าและรีสตาร์ท…";
 "Restart Now" = "รีสตาร์ททันที";
+"Resume preview animation" = "เล่นภาพเคลื่อนไหวตัวอย่างต่อ";
 "Screen including menu bar" = "หน้าจอที่มีแถบเมนู";
 "Screen including mouse" = "หน้าจอที่มีเมาส์";
 "Screen showing ScryTab" = "หน้าจอที่แสดง ScryTab";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab ขัดข้องในการใช้งานครั้งล่าสุด การส่งรายงานการขัดข้องจะช่วยแก้ไขปัญหา";
+"ScryTab needs accessibility permission" = "ScryTab ต้องการสิทธิ์การช่วยการเข้าถึง";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab จะแสดงไอคอนสถานะหากหน้าต่างถูกย่อหรืออยู่ในโหมดเต็มหน้าจอ";
 "Search" = "ค้นหา";
 "Select next window" = "เลือกหน้าต่างถัดไป";
@@ -147,7 +155,7 @@
 "Shortcut" = "ทางลัด";
 "Shortcut already assigned to: %@" = "ทางลัดถูกกำหนดไว้แล้ว: %@";
 "Shortcuts When Active" = "ทางลัดเมื่อทำงานอยู่";
-"Shortcuts when active…" = "ทางลัดเมื่อทำงานอยู่…";
+"Shortcuts while ScryTab is active" = "ปุ่มลัดขณะ ScryTab ทำงานอยู่";
 "Show" = "แสดง";
 "Show all windows" = "แสดงหน้าต่างทั้งหมด";
 "Show apps with no open window" = "แสดงแอปที่ไม่มีหน้าต่างเปิดอยู่";
@@ -170,6 +178,7 @@
 "Space Order" = "ลำดับพื้นที่ทำงาน";
 "Start" = "เริ่มต้น";
 "Start at login" = "เริ่มต้นเมื่อเข้าสู่ระบบ";
+"Style" = "สไตล์";
 "Suggest a change" = "แนะนำการเปลี่ยนแปลง";
 "System" = "ระบบ";
 "System Default" = "ค่าเริ่มต้นของระบบ";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "แอปพลิเคชันต้องรีสตาร์ทเพื่อนำการเปลี่ยนแปลงภาษามาใช้";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "เซิร์ฟเวอร์ไม่ยอมรับการส่ง โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตและลองอีกครั้ง — ฉบับร่างของคุณยังคงอยู่";
 "Theme" = "ธีม";
-"This permission is needed to focus windows after you release the shortcut" = "ต้องการสิทธิ์นี้เพื่อโฟกัสหน้าต่างหลังจากคุณปล่อยทางลัด";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "จำเป็นต้องมีสิทธิ์นี้เพื่อโฟกัสหน้าต่างหลังจากคุณปล่อยปุ่มลัด เปิดใช้งาน “%@” ในการตั้งค่าระบบ > ความเป็นส่วนตัวและความปลอดภัย > การช่วยการเข้าถึง รายการ “ScryTab” ที่เปิดใช้งานสำหรับบิลด์อื่นจะไม่นับรวม";
 "This will keep your Downloads folder uncluttered." = "การทำเช่นนี้จะช่วยให้โฟลเดอร์ดาวน์โหลดของคุณไม่รก";
 "Title truncation" = "การตัดทอนชื่อ";
 "Titles" = "ชื่อ";
+"Trackpad" = "แทร็คแพด";
 "Trackpad haptic feedback" = "การตอบสนองแบบสัมผัสของแทร็คแพด";
 "Trigger" = "ทริกเกอร์";
 "Unassign existing shortcut and continue" = "ยกเลิกการกำหนดทางลัดที่มีอยู่และดำเนินการต่อ";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "คุณคาดหวังอะไร? เกิดอะไรขึ้น? ขั้นตอนการทำซ้ำ…";
 "When fullscreen" = "เมื่อเต็มหน้าจอ";
 "When no open window" = "เมื่อไม่มีหน้าต่างที่เปิดอยู่";
+"Window actions" = "การทำงานของหน้าต่าง";
 "Window is fullscreen" = "หน้าต่างเต็มหน้าจอ";
 "Window is minimized" = "หน้าต่างถูกย่อ";
 "Window is on every Space" = "หน้าต่างอยู่บนทุกพื้นที่ทำงาน";

@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "Verticale veegbeweging met 4 vingers";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Een debugprofiel (versies, instellingen, hardware) is bijgevoegd om het probleem te diagnosticeren.";
 "A new version of ScryTab is available" = "Er is een nieuwe versie van ScryTab beschikbaar";
+"About" = "Info";
 "About %@" = "Over %@";
 "Accessibility" = "Toegankelijkheid";
+"Acknowledgments" = "Dankbetuigingen";
 "Active app" = "Actieve app";
 "Active screen" = "Actief scherm";
 "Add a pattern" = "Patroon toevoegen";
 "Add a running app" = "Actieve app toevoegen";
 "Add an app from disk" = "App vanaf schijf toevoegen";
 "Additional controls" = "Extra bedieningselementen";
-"Additional controls…" = "Extra bedieningselementen…";
 "After keys are released" = "Nadat toetsen zijn losgelaten";
 "All apps" = "Alle apps";
 "All screens" = "Alle schermen";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "Ik denk dat de app verbeterd kan worden met…";
 "Ignore shortcuts" = "Sneltoetsen negeren";
 "Import settings…" = "Instellingen importeren…";
+"Keyboard, mouse, and trackpad" = "Toetsenbord, muis en trackpad";
 "Language" = "Taal";
 "Language Change" = "Taalwijziging";
 "Large" = "Groot";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "Verplaats naar map Programma's";
 "Move to Applications folder?" = "Naar map Programma's verplaatsen?";
 "Multiple screens" = "Meerdere schermen";
+"Navigation & pointer" = "Navigatie en aanwijzer";
 "Never" = "Nooit";
 "Never send crash reports" = "Nooit crashrapporten versturen";
 "No Window" = "Geen venster";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "Open Toegankelijkheid-instellingen…";
 "Open Trackpad Settings…" = "Open Trackpad-instellingen…";
 "Order windows by" = "Vensters rangschikken op";
+"Ordering" = "Sortering";
 "Ordering & Grouping" = "Volgorde en groepering";
+"Pause preview animation" = "Voorvertoningsanimatie pauzeren";
 "Please drag ScryTab into the Applications folder manually." = "Sleep ScryTab handmatig naar de map Programma's.";
 "Please fill in the form" = "Vul het formulier in";
+"Preview of the selected appearance style" = "Voorvertoning van de geselecteerde weergavestijl";
 "Quit %@" = "%@ stoppen";
 "Quit app" = "App stoppen";
 "Recently Created First" = "Recent aangemaakt eerst";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "Instellingen herstellen en herstarten";
 "Reset settings and restart…" = "Instellingen herstellen en herstarten…";
 "Restart Now" = "Herstart nu";
+"Resume preview animation" = "Voorvertoningsanimatie hervatten";
 "Screen including menu bar" = "Scherm met menubalk";
 "Screen including mouse" = "Scherm met muis";
 "Screen showing ScryTab" = "Scherm dat ScryTab toont";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab is de vorige keer gecrasht. Door een crashrapport te versturen help je het probleem op te lossen";
+"ScryTab needs accessibility permission" = "ScryTab heeft toegankelijkheidsbevoegdheid nodig";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab toont met een statussymbool of het venster momenteel geminimaliseerd of in volledig scherm is.";
 "Search" = "Zoeken";
 "Select next window" = "Selecteer volgend venster";
@@ -147,7 +155,7 @@
 "Shortcut" = "Sneltoets";
 "Shortcut already assigned to: %@" = "Sneltoets is al toegewezen aan: %@";
 "Shortcuts When Active" = "Sneltoetsen wanneer actief";
-"Shortcuts when active…" = "Sneltoetsen wanneer actief…";
+"Shortcuts while ScryTab is active" = "Sneltoetsen terwijl ScryTab actief is";
 "Show" = "Toon";
 "Show all windows" = "Toon alle vensters";
 "Show apps with no open window" = "Toon apps zonder open venster";
@@ -170,6 +178,7 @@
 "Space Order" = "Volgorde van Spaces";
 "Start" = "Start";
 "Start at login" = "Starten bij inloggen";
+"Style" = "Stijl";
 "Suggest a change" = "Een wijziging voorstellen";
 "System" = "Systeem";
 "System Default" = "Systeemstandaard";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "De app moet opnieuw worden gestart om de taalwijziging toe te passen.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "De server heeft de inzending niet geaccepteerd. Controleer je internetverbinding en probeer opnieuw — je concept blijft bewaard.";
 "Theme" = "Thema";
-"This permission is needed to focus windows after you release the shortcut" = "Deze toegang is nodig om vensters te focussen nadat je de sneltoets loslaat";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Deze bevoegdheid is nodig om vensters te focussen nadat je de sneltoets loslaat. Schakel “%@” in via Systeeminstellingen > Privacy en beveiliging > Toegankelijkheid. Een ingeschakelde “ScryTab”-vermelding voor een andere build telt niet mee.";
 "This will keep your Downloads folder uncluttered." = "Zo blijft je map Downloads opgeruimd.";
 "Title truncation" = "Titel afkappen";
 "Titles" = "Titels";
+"Trackpad" = "Trackpad";
 "Trackpad haptic feedback" = "Tactiele feedback van Trackpad";
 "Trigger" = "Activering";
 "Unassign existing shortcut and continue" = "Bestaande sneltoets vrijmaken en doorgaan";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Wat verwachtte je? Wat gebeurde er? Stappen om te reproduceren…";
 "When fullscreen" = "In volledig scherm";
 "When no open window" = "Bij geen open venster";
+"Window actions" = "Vensteracties";
 "Window is fullscreen" = "Venster in volledig scherm";
 "Window is minimized" = "Venster is geminimaliseerd";
 "Window is on every Space" = "Venster op elke Space";

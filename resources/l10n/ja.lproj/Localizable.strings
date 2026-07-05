@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "4 本指の垂直スワイプ";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "問題の診断に役立てるため、デバッグ情報(バージョン、設定、ハードウェア)を添付しています。";
 "A new version of ScryTab is available" = "ScryTab の新しいバージョンが利用可能です";
+"About" = "情報";
 "About %@" = "%@ について";
 "Accessibility" = "アクセシビリティ";
+"Acknowledgments" = "謝辞";
 "Active app" = "アクティブな App";
 "Active screen" = "アクティブな画面";
 "Add a pattern" = "パターンを追加";
 "Add a running app" = "実行中の App を追加";
 "Add an app from disk" = "ディスクから App を追加";
 "Additional controls" = "追加のコントロール";
-"Additional controls…" = "追加のコントロール…";
 "After keys are released" = "キーを離した後";
 "All apps" = "すべての App";
 "All screens" = "すべての画面";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "App の改善案…";
 "Ignore shortcuts" = "ショートカットを無視";
 "Import settings…" = "設定を読み込む…";
+"Keyboard, mouse, and trackpad" = "キーボード、マウス、トラックパッド";
 "Language" = "言語";
 "Language Change" = "言語の変更";
 "Large" = "大";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "アプリケーションフォルダに移動";
 "Move to Applications folder?" = "アプリケーションフォルダに移動しますか?";
 "Multiple screens" = "複数の画面";
+"Navigation & pointer" = "ナビゲーションとポインタ";
 "Never" = "しない";
 "Never send crash reports" = "クラッシュレポートを送信しない";
 "No Window" = "ウインドウなし";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "アクセシビリティ設定を開く…";
 "Open Trackpad Settings…" = "トラックパッド設定を開く…";
 "Order windows by" = "ウインドウの並び順";
+"Ordering" = "並べ替え";
 "Ordering & Grouping" = "並び順とグループ化";
+"Pause preview animation" = "プレビューアニメーションを一時停止";
 "Please drag ScryTab into the Applications folder manually." = "ScryTab を手動でアプリケーションフォルダにドラッグしてください。";
 "Please fill in the form" = "フォームを入力してください";
+"Preview of the selected appearance style" = "選択した外観スタイルのプレビュー";
 "Quit %@" = "%@ を終了";
 "Quit app" = "App を終了";
 "Recently Created First" = "作成日順(新しい順)";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "設定をリセットして再起動";
 "Reset settings and restart…" = "設定をリセットして再起動…";
 "Restart Now" = "今すぐ再起動";
+"Resume preview animation" = "プレビューアニメーションを再開";
 "Screen including menu bar" = "メニューバーを含む画面";
 "Screen including mouse" = "マウスのある画面";
 "Screen showing ScryTab" = "ScryTab を表示する画面";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "前回の使用時に ScryTab がクラッシュしました。クラッシュレポートを送信すると問題の修正に役立ちます";
+"ScryTab needs accessibility permission" = "ScryTabにはアクセシビリティ権限が必要です";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ウインドウが現在最小化またはフルスクリーンの場合、ScryTab はステータスアイコンで表示します。";
 "Search" = "検索";
 "Select next window" = "次のウインドウを選択";
@@ -147,7 +155,7 @@
 "Shortcut" = "ショートカット";
 "Shortcut already assigned to: %@" = "ショートカットはすでに割り当てられています: %@";
 "Shortcuts When Active" = "アクティブ時のショートカット";
-"Shortcuts when active…" = "アクティブ時のショートカット…";
+"Shortcuts while ScryTab is active" = "ScryTabがアクティブなときのショートカット";
 "Show" = "表示";
 "Show all windows" = "すべてのウインドウを表示";
 "Show apps with no open window" = "開いているウインドウのない App を表示";
@@ -170,6 +178,7 @@
 "Space Order" = "Space 順";
 "Start" = "先頭";
 "Start at login" = "ログイン時に起動";
+"Style" = "スタイル";
 "Suggest a change" = "変更を提案";
 "System" = "システム";
 "System Default" = "システムのデフォルト";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "言語の変更を適用するには App を再起動する必要があります。";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "サーバーが送信を受け付けませんでした。インターネット接続を確認して再度お試しください — 下書きは保存されています。";
 "Theme" = "テーマ";
-"This permission is needed to focus windows after you release the shortcut" = "ショートカットを離した後にウインドウへフォーカスするために必要な権限です";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "ショートカットを離した後にウインドウへフォーカスするには、この権限が必要です。システム設定 > プライバシーとセキュリティ > アクセシビリティで「%@」を有効にしてください。別のビルドの有効な「ScryTab」項目は対象になりません。";
 "This will keep your Downloads folder uncluttered." = "ダウンロードフォルダを散らからないようにできます。";
 "Title truncation" = "タイトルの省略";
 "Titles" = "タイトル";
+"Trackpad" = "トラックパッド";
 "Trackpad haptic feedback" = "トラックパッドの触覚フィードバック";
 "Trigger" = "トリガー";
 "Unassign existing shortcut and continue" = "既存のショートカットを解除して続行";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "期待した動作、実際に起きたこと、再現手順…";
 "When fullscreen" = "フルスクリーン時";
 "When no open window" = "開いているウインドウがないとき";
+"Window actions" = "ウインドウ操作";
 "Window is fullscreen" = "フルスクリーンのウインドウ";
 "Window is minimized" = "最小化されたウインドウ";
 "Window is on every Space" = "すべての Space にあるウインドウ";

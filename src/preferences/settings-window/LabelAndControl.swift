@@ -34,6 +34,7 @@ class MouseHoverView: NSView {
 class ClickHoverImageView: MouseHoverView {
     var infoCircle: NSView!
     var onClick: EventClosure?
+    var onAccessibilityPress: (() -> Bool)?
     var searchableStrings = [String]()
 
     init(infoCircle: NSView) {
@@ -57,6 +58,10 @@ class ClickHoverImageView: MouseHoverView {
 
     override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
         return true
+    }
+
+    override func accessibilityPerformPress() -> Bool {
+        onAccessibilityPress?() ?? false
     }
 }
 

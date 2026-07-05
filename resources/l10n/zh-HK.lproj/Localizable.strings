@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "四指垂直滑動";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "已附上除錯資料(版本、設定、硬件)以協助診斷問題。";
 "A new version of ScryTab is available" = "ScryTab 有新版本可用";
+"About" = "關於";
 "About %@" = "關於 %@";
 "Accessibility" = "輔助使用";
+"Acknowledgments" = "鳴謝";
 "Active app" = "使用中的 App";
 "Active screen" = "使用中的螢幕";
 "Add a pattern" = "加入規則";
 "Add a running app" = "加入執行中的 App";
 "Add an app from disk" = "從磁碟加入 App";
 "Additional controls" = "額外控制項";
-"Additional controls…" = "額外控制項…";
 "After keys are released" = "在按鍵釋放後";
 "All apps" = "所有 App";
 "All screens" = "所有螢幕";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "我認為這個 App 可以這樣改善…";
 "Ignore shortcuts" = "忽略快捷鍵";
 "Import settings…" = "輸入設定…";
+"Keyboard, mouse, and trackpad" = "鍵盤、滑鼠和觸控板";
 "Language" = "語言";
 "Language Change" = "語言變更";
 "Large" = "大";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "移至「應用程式」檔案夾";
 "Move to Applications folder?" = "移至「應用程式」檔案夾?";
 "Multiple screens" = "多個螢幕";
+"Navigation & pointer" = "導覽與指標";
 "Never" = "永不";
 "Never send crash reports" = "永不傳送當機報告";
 "No Window" = "沒有視窗";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "打開「輔助使用」設定…";
 "Open Trackpad Settings…" = "打開「觸控板」設定…";
 "Order windows by" = "視窗排序方式";
+"Ordering" = "排序";
 "Ordering & Grouping" = "排序與群組";
+"Pause preview animation" = "暫停預覽動畫";
 "Please drag ScryTab into the Applications folder manually." = "請手動將 ScryTab 拖至「應用程式」檔案夾。";
 "Please fill in the form" = "請填寫表格";
+"Preview of the selected appearance style" = "所選外觀樣式的預覽";
 "Quit %@" = "結束 %@";
 "Quit app" = "結束 App";
 "Recently Created First" = "最近建立優先";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "重設設定並重新啟動";
 "Reset settings and restart…" = "重設設定並重新啟動…";
 "Restart Now" = "立即重新啟動";
+"Resume preview animation" = "繼續預覽動畫";
 "Screen including menu bar" = "包含選單列的螢幕";
 "Screen including mouse" = "包含滑鼠的螢幕";
 "Screen showing ScryTab" = "顯示 ScryTab 的螢幕";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab 在您上次使用時當機。傳送當機報告有助於修復此問題";
+"ScryTab needs accessibility permission" = "ScryTab 需要輔助使用權限";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab 會以狀態圖示顯示視窗目前是否縮到最小或全螢幕。";
 "Search" = "搜尋";
 "Select next window" = "選取下一個視窗";
@@ -147,7 +155,7 @@
 "Shortcut" = "快捷鍵";
 "Shortcut already assigned to: %@" = "快捷鍵已指派給:%@";
 "Shortcuts When Active" = "作用中時的快捷鍵";
-"Shortcuts when active…" = "作用中時的快捷鍵…";
+"Shortcuts while ScryTab is active" = "ScryTab 啟用時的快捷鍵";
 "Show" = "顯示";
 "Show all windows" = "顯示所有視窗";
 "Show apps with no open window" = "顯示沒有開啟視窗的 App";
@@ -170,6 +178,7 @@
 "Space Order" = "空間順序";
 "Start" = "開頭";
 "Start at login" = "登入時啟動";
+"Style" = "樣式";
 "Suggest a change" = "建議變更";
 "System" = "系統";
 "System Default" = "系統預設";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "應用程式需要重新啟動才能套用語言變更。";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "伺服器未接受提交。請檢查網絡連線後再試 — 您的草稿已保留。";
 "Theme" = "主題";
-"This permission is needed to focus windows after you release the shortcut" = "釋放快捷鍵後需要此權限才能聚焦視窗";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "放開快捷鍵後聚焦視窗需要此權限。請在系統設定 > 私隱與保安 > 輔助使用中啟用「%@」。為其他建置啟用的「ScryTab」項目不會計算在內。";
 "This will keep your Downloads folder uncluttered." = "這樣可以讓您的「下載」檔案夾保持整潔。";
 "Title truncation" = "標題截斷";
 "Titles" = "標題";
+"Trackpad" = "觸控板";
 "Trackpad haptic feedback" = "觸控板觸覺回饋";
 "Trigger" = "觸發";
 "Unassign existing shortcut and continue" = "取消指派現有快捷鍵並繼續";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "您期望什麼?發生了什麼?重現步驟…";
 "When fullscreen" = "全螢幕時";
 "When no open window" = "沒有開啟視窗時";
+"Window actions" = "視窗動作";
 "Window is fullscreen" = "視窗全螢幕";
 "Window is minimized" = "視窗已縮到最小";
 "Window is on every Space" = "視窗位於每個空間";

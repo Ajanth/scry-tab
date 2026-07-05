@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "Вертикальный свайп четырьмя пальцами";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "К сообщению приложен отладочный профиль (версии, настройки, оборудование) для диагностики проблемы.";
 "A new version of ScryTab is available" = "Доступна новая версия ScryTab";
+"About" = "О программе";
 "About %@" = "О программе %@";
 "Accessibility" = "Универсальный доступ";
+"Acknowledgments" = "Благодарности";
 "Active app" = "Активное приложение";
 "Active screen" = "Активный экран";
 "Add a pattern" = "Добавить шаблон";
 "Add a running app" = "Добавить запущенное приложение";
 "Add an app from disk" = "Добавить приложение с диска";
 "Additional controls" = "Дополнительные элементы управления";
-"Additional controls…" = "Дополнительные элементы управления…";
 "After keys are released" = "После отпускания клавиш";
 "All apps" = "Все приложения";
 "All screens" = "Все экраны";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "Я думаю, приложение можно улучшить, добавив…";
 "Ignore shortcuts" = "Игнорировать сочетания клавиш";
 "Import settings…" = "Импорт настроек…";
+"Keyboard, mouse, and trackpad" = "Клавиатура, мышь и трекпад";
 "Language" = "Язык";
 "Language Change" = "Смена языка";
 "Large" = "Большой";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "Переместить в папку «Программы»";
 "Move to Applications folder?" = "Переместить в папку «Программы»?";
 "Multiple screens" = "Несколько экранов";
+"Navigation & pointer" = "Навигация и указатель";
 "Never" = "Никогда";
 "Never send crash reports" = "Никогда не отправлять отчёты о сбоях";
 "No Window" = "Без окна";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "Открыть настройки Универсального доступа…";
 "Open Trackpad Settings…" = "Открыть настройки Трекпада…";
 "Order windows by" = "Сортировка окон";
+"Ordering" = "Порядок";
 "Ordering & Grouping" = "Сортировка и группировка";
+"Pause preview animation" = "Приостановить анимацию предпросмотра";
 "Please drag ScryTab into the Applications folder manually." = "Перетащите ScryTab в папку «Программы» вручную.";
 "Please fill in the form" = "Заполните форму";
+"Preview of the selected appearance style" = "Предпросмотр выбранного стиля внешнего вида";
 "Quit %@" = "Завершить %@";
 "Quit app" = "Завершить приложение";
 "Recently Created First" = "Сначала недавно созданные";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "Сбросить настройки и перезапустить";
 "Reset settings and restart…" = "Сбросить настройки и перезапустить…";
 "Restart Now" = "Перезапустить сейчас";
+"Resume preview animation" = "Возобновить анимацию предпросмотра";
 "Screen including menu bar" = "Экран со строкой меню";
 "Screen including mouse" = "Экран с курсором мыши";
 "Screen showing ScryTab" = "Экран с ScryTab";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "В прошлый раз ScryTab завершился со сбоем. Отправка отчёта о сбое поможет устранить проблему";
+"ScryTab needs accessibility permission" = "ScryTab требуется разрешение Универсального доступа";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab покажет значком статуса, если окно сейчас свёрнуто или в полноэкранном режиме.";
 "Search" = "Поиск";
 "Select next window" = "Выбрать следующее окно";
@@ -147,7 +155,7 @@
 "Shortcut" = "Сочетание клавиш";
 "Shortcut already assigned to: %@" = "Сочетание клавиш уже назначено: %@";
 "Shortcuts When Active" = "Сочетания клавиш при активном переключателе";
-"Shortcuts when active…" = "Сочетания клавиш при активном переключателе…";
+"Shortcuts while ScryTab is active" = "Сочетания клавиш, когда ScryTab активен";
 "Show" = "Показать";
 "Show all windows" = "Показать все окна";
 "Show apps with no open window" = "Показывать приложения без открытых окон";
@@ -170,6 +178,7 @@
 "Space Order" = "Порядок пространств";
 "Start" = "Начало";
 "Start at login" = "Запускать при входе в систему";
+"Style" = "Стиль";
 "Suggest a change" = "Предложить изменение";
 "System" = "Система";
 "System Default" = "По умолчанию";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "Чтобы применить смену языка, приложение нужно перезапустить.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Сервер не принял отправку. Проверьте подключение к интернету и повторите попытку — черновик сохранён.";
 "Theme" = "Тема";
-"This permission is needed to focus windows after you release the shortcut" = "Это разрешение необходимо для фокусировки окон после отпускания сочетания клавиш";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Это разрешение нужно, чтобы фокусировать окна после отпускания сочетания клавиш. Включите «%@» в Системные настройки > Конфиденциальность и безопасность > Универсальный доступ. Включенная запись «ScryTab» для другой сборки не учитывается.";
 "This will keep your Downloads folder uncluttered." = "Это позволит не загромождать папку «Загрузки».";
 "Title truncation" = "Обрезка заголовков";
 "Titles" = "Заголовки";
+"Trackpad" = "Трекпад";
 "Trackpad haptic feedback" = "Тактильный отклик трекпада";
 "Trigger" = "Триггер";
 "Unassign existing shortcut and continue" = "Снять текущее сочетание и продолжить";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Что вы ожидали? Что произошло? Шаги для воспроизведения…";
 "When fullscreen" = "В полноэкранном режиме";
 "When no open window" = "Когда нет открытых окон";
+"Window actions" = "Действия с окнами";
 "Window is fullscreen" = "Окно в полноэкранном режиме";
 "Window is minimized" = "Окно свёрнуто";
 "Window is on every Space" = "Окно на всех пространствах";

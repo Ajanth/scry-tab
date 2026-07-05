@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "四指垂直滑动";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "已附上调试信息（版本、设置、硬件）以协助诊断问题。";
 "A new version of ScryTab is available" = "ScryTab 有新版本可用";
+"About" = "关于";
 "About %@" = "关于 %@";
 "Accessibility" = "辅助功能";
+"Acknowledgments" = "致谢";
 "Active app" = "活跃应用";
 "Active screen" = "活跃屏幕";
 "Add a pattern" = "添加规则";
 "Add a running app" = "添加正在运行的应用";
 "Add an app from disk" = "从磁盘添加应用";
 "Additional controls" = "其他控制";
-"Additional controls…" = "其他控制…";
 "After keys are released" = "释放按键后";
 "All apps" = "所有应用";
 "All screens" = "所有屏幕";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "我认为该应用可以通过以下方式改进…";
 "Ignore shortcuts" = "忽略快捷键";
 "Import settings…" = "导入设置…";
+"Keyboard, mouse, and trackpad" = "键盘、鼠标和触控板";
 "Language" = "语言";
 "Language Change" = "语言更改";
 "Large" = "大";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "移动到应用程序文件夹";
 "Move to Applications folder?" = "要移动到应用程序文件夹吗？";
 "Multiple screens" = "多个屏幕";
+"Navigation & pointer" = "导航与指针";
 "Never" = "从不";
 "Never send crash reports" = "从不发送崩溃报告";
 "No Window" = "无窗口";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "打开辅助功能设置…";
 "Open Trackpad Settings…" = "打开触控板设置…";
 "Order windows by" = "窗口排序方式";
+"Ordering" = "排序";
 "Ordering & Grouping" = "排序与分组";
+"Pause preview animation" = "暂停预览动画";
 "Please drag ScryTab into the Applications folder manually." = "请手动将 ScryTab 拖动到应用程序文件夹。";
 "Please fill in the form" = "请填写表单";
+"Preview of the selected appearance style" = "所选外观样式的预览";
 "Quit %@" = "退出 %@";
 "Quit app" = "退出应用";
 "Recently Created First" = "最近创建优先";
@@ -126,10 +132,12 @@
 "Reset settings and restart" = "重置设置并重启";
 "Reset settings and restart…" = "重置设置并重启…";
 "Restart Now" = "立即重启";
+"Resume preview animation" = "继续预览动画";
 "Screen including menu bar" = "包含菜单栏的屏幕";
 "Screen including mouse" = "包含鼠标的屏幕";
 "Screen showing ScryTab" = "显示 ScryTab 的屏幕";
 "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab 在您上次使用时崩溃了。发送崩溃报告有助于修复问题";
+"ScryTab needs accessibility permission" = "ScryTab 需要辅助功能权限";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab 将通过状态图标显示窗口当前是否已最小化或全屏。";
 "Search" = "搜索";
 "Select next window" = "选择下一个窗口";
@@ -147,7 +155,7 @@
 "Shortcut" = "快捷键";
 "Shortcut already assigned to: %@" = "快捷键已分配给：%@";
 "Shortcuts When Active" = "激活时的快捷键";
-"Shortcuts when active…" = "激活时的快捷键…";
+"Shortcuts while ScryTab is active" = "ScryTab 处于活跃状态时的快捷键";
 "Show" = "显示";
 "Show all windows" = "显示所有窗口";
 "Show apps with no open window" = "显示没有打开窗口的应用";
@@ -170,6 +178,7 @@
 "Space Order" = "桌面顺序";
 "Start" = "起始";
 "Start at login" = "登录时启动";
+"Style" = "样式";
 "Suggest a change" = "提出改动建议";
 "System" = "系统";
 "System Default" = "系统默认";
@@ -177,10 +186,11 @@
 "The application needs to restart to apply the language change." = "应用需要重启以应用语言更改。";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "服务器未接受提交。请检查网络连接并重试 — 草稿已保留。";
 "Theme" = "主题";
-"This permission is needed to focus windows after you release the shortcut" = "释放快捷键后需要此权限才能聚焦窗口";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "释放快捷键后聚焦窗口需要此权限。请在系统设置 > 隐私与安全性 > 辅助功能中启用“%@”。为其他构建启用的“ScryTab”条目不算数。";
 "This will keep your Downloads folder uncluttered." = "这样可以让您的下载文件夹保持整洁。";
 "Title truncation" = "标题截断";
 "Titles" = "标题";
+"Trackpad" = "触控板";
 "Trackpad haptic feedback" = "触控板触感反馈";
 "Trigger" = "触发";
 "Unassign existing shortcut and continue" = "取消现有快捷键分配并继续";
@@ -196,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "您期望什么？发生了什么？重现步骤…";
 "When fullscreen" = "全屏时";
 "When no open window" = "无打开窗口时";
+"Window actions" = "窗口操作";
 "Window is fullscreen" = "窗口已全屏";
 "Window is minimized" = "窗口已最小化";
 "Window is on every Space" = "窗口在所有桌面上";

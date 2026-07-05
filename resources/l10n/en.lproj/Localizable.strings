@@ -4,15 +4,16 @@
 "4-finger Vertical Swipe" = "4-finger Vertical Swipe";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "A debug profile (versions, settings, hardware) is attached to help diagnose the issue.";
 "A new version of ScryTab is available" = "A new version of ScryTab is available";
+"About" = "About";
 "About %@" = "About %@";
 "Accessibility" = "Accessibility";
+"Acknowledgments" = "Acknowledgments";
 "Active app" = "Active app";
 "Active screen" = "Active screen";
 "Add a pattern" = "Add a pattern";
 "Add a running app" = "Add a running app";
 "Add an app from disk" = "Add an app from disk";
 "Additional controls" = "Additional controls";
-"Additional controls…" = "Additional controls…";
 "After keys are released" = "After keys are released";
 "All apps" = "All apps";
 "All screens" = "All screens";
@@ -88,6 +89,7 @@
 "I think the app could be improved with…" = "I think the app could be improved with…";
 "Ignore shortcuts" = "Ignore shortcuts";
 "Import settings…" = "Import settings…";
+"Keyboard, mouse, and trackpad" = "Keyboard, mouse, and trackpad";
 "Language" = "Language";
 "Language Change" = "Language Change";
 "Large" = "Large";
@@ -102,6 +104,7 @@
 "Move to Applications Folder" = "Move to Applications Folder";
 "Move to Applications folder?" = "Move to Applications folder?";
 "Multiple screens" = "Multiple screens";
+"Navigation & pointer" = "Navigation & pointer";
 "Never" = "Never";
 "Never send crash reports" = "Never send crash reports";
 "No Window" = "No Window";
@@ -113,9 +116,12 @@
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
 "Order windows by" = "Order windows by";
+"Ordering" = "Ordering";
 "Ordering & Grouping" = "Ordering & Grouping";
+"Pause preview animation" = "Pause preview animation";
 "Please drag ScryTab into the Applications folder manually." = "Please drag ScryTab into the Applications folder manually.";
 "Please fill in the form" = "Please fill in the form";
+"Preview of the selected appearance style" = "Preview of the selected appearance style";
 "Quit %@" = "Quit %@";
 "Quit app" = "Quit app";
 "Recently Created First" = "Recently Created First";
@@ -126,6 +132,7 @@
 "Reset settings and restart" = "Reset settings and restart";
 "Reset settings and restart…" = "Reset settings and restart…";
 "Restart Now" = "Restart Now";
+"Resume preview animation" = "Resume preview animation";
 "Screen including menu bar" = "Screen including menu bar";
 "Screen including mouse" = "Screen including mouse";
 "Screen showing ScryTab" = "Screen showing ScryTab";
@@ -148,7 +155,7 @@
 "Shortcut" = "Shortcut";
 "Shortcut already assigned to: %@" = "Shortcut already assigned to: %@";
 "Shortcuts When Active" = "Shortcuts When Active";
-"Shortcuts when active…" = "Shortcuts when active…";
+"Shortcuts while ScryTab is active" = "Shortcuts while ScryTab is active";
 "Show" = "Show";
 "Show all windows" = "Show all windows";
 "Show apps with no open window" = "Show apps with no open window";
@@ -171,18 +178,19 @@
 "Space Order" = "Space Order";
 "Start" = "Start";
 "Start at login" = "Start at login";
+"Style" = "Style";
 "Suggest a change" = "Suggest a change";
-
 "System" = "System";
 "System Default" = "System Default";
 "The application needs to restart to apply the imported settings." = "The application needs to restart to apply the imported settings.";
 "The application needs to restart to apply the language change." = "The application needs to restart to apply the language change.";
 "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved.";
 "Theme" = "Theme";
-"This permission is needed to focus windows after you release the shortcut" = "This permission is needed to focus windows after you release the shortcut";
+"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count.";
 "This will keep your Downloads folder uncluttered." = "This will keep your Downloads folder uncluttered.";
 "Title truncation" = "Title truncation";
 "Titles" = "Titles";
+"Trackpad" = "Trackpad";
 "Trackpad haptic feedback" = "Trackpad haptic feedback";
 "Trigger" = "Trigger";
 "Unassign existing shortcut and continue" = "Unassign existing shortcut and continue";
@@ -198,6 +206,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "What did you expect? What happened? Steps to reproduce…";
 "When fullscreen" = "When fullscreen";
 "When no open window" = "When no open window";
+"Window actions" = "Window actions";
 "Window is fullscreen" = "Window is fullscreen";
 "Window is minimized" = "Window is minimized";
 "Window is on every Space" = "Window is on every Space";
