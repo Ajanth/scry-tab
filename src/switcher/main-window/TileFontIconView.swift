@@ -104,6 +104,13 @@ class TileFontIconView: NSView {
         frame.size = symbolSizeForCurrentText()
     }
 
+    /// For dynamically composed glyphs (e.g. `StatusIconsView.symbolForSpace(_:)`) that aren't a fixed `Symbols` case.
+    convenience init(symbolText: String, tooltip: String? = nil, size: CGFloat = Appearance.fontHeight, color: NSColor = Appearance.fontColor) {
+        self.init(rendering: .symbol, initialText: symbolText, size: size, symbolColor: color, badgeFillColor: .clear, badgeTextColor: .clear)
+        toolTip = tooltip
+        frame.size = symbolSizeForCurrentText()
+    }
+
     convenience init(badgeSize: CGFloat,
                      fillColor: NSColor = NSColor(srgbRed: 1, green: 0.25, blue: 0.2, alpha: 0.9),
                      textColor: NSColor = .white) {

@@ -21,18 +21,18 @@ enum AppearanceLivePreviewArtwork {
         static let appIconsLabelFontSize = CGFloat(7.5)
         static let appIconsLabelWidth = CGFloat(60)
         static let appIconsLabelGap = CGFloat(7)
-        static let titlesSwitcherWidth = CGFloat(164)
-        static let titlesSwitcherHeight = CGFloat(92)
-        static let titlesRowWidth = CGFloat(146)
-        static let titlesRowHeight = CGFloat(24)
-        static let titlesRowSpacing = CGFloat(7)
-        static let titlesRowCornerRadius = CGFloat(10)
-        static let titlesIconSize = CGFloat(15)
-        static let titlesLabelFontSize = CGFloat(8.5)
-        static let titlesSideInset = CGFloat(8)
-        static let titlesLabelGap = CGFloat(8)
+        static let titlesSwitcherWidth = CGFloat(192)
+        static let titlesSwitcherHeight = CGFloat(148)
+        static let titlesRowWidth = CGFloat(172)
+        static let titlesRowHeight = CGFloat(36)
+        static let titlesRowSpacing = CGFloat(8)
+        static let titlesRowCornerRadius = CGFloat(12)
+        static let titlesIconSize = CGFloat(22)
+        static let titlesLabelFontSize = CGFloat(12)
+        static let titlesSideInset = CGFloat(10)
+        static let titlesLabelGap = CGFloat(9)
         static let titlesStatusGap = CGFloat(7)
-        static let titlesStatusSize = CGFloat(16)
+        static let titlesStatusSize = CGFloat(18)
         static let pauseButtonDiameter = CGFloat(22)
         static let pauseButtonInset = CGFloat(10)
         static let pauseButtonGlyphSize = CGFloat(11)
@@ -245,12 +245,7 @@ enum AppearanceLivePreviewArtwork {
             statusStack.spacing = Metrics.titlesStatusGap
             addSubview(statusStack)
             statusSymbols.forEach { symbol in
-                let view = TileFontIconView(rendering: .symbol,
-                                            initialText: symbol,
-                                            size: Metrics.titlesStatusSize,
-                                            symbolColor: Palette.titleStatusColor,
-                                            badgeFillColor: .clear,
-                                            badgeTextColor: .clear)
+                let view = TileFontIconView(symbolText: symbol, size: Metrics.titlesStatusSize, color: Palette.titleStatusColor)
                 view.translatesAutoresizingMaskIntoConstraints = false
                 statusStack.addArrangedSubview(view)
             }

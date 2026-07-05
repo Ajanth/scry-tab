@@ -5,12 +5,12 @@ Regenerate docs/readme/main.svg, the consolidated SVG that drives README.md.
 The README is a single dark, on-brand image (hero + stats + CTAs + screenshot)
 that hands GitHub visitors off to https://scry-tab.app/. To stay seamless across
 GitHub light & dark themes, every visible element is baked into one SVG —
-including the hero screenshot, embedded as a base64 JPG.
+including the app icon and hero screenshot, embedded as base64 images.
 
 What this script does:
-  1. Reads a source screenshot (default: docs/readme/screenshot-source.webp).
-  2. Re-encodes it to a 1800-wide quality-86 JPG via ImageMagick.
-  3. Embeds it as base64 in the SVG template defined below.
+  1. Reads the app icon and a source screenshot (default: docs/readme/screenshot-source.webp).
+  2. Re-encodes the icon to 288px PNG and screenshot to 1800-wide quality-86 JPG.
+  3. Embeds both images as base64 in the SVG template defined below.
   4. Writes the result to docs/readme/main.svg.
 
 This script is intentionally NOT wired into CI. Run it manually after updating
@@ -36,7 +36,16 @@ import tempfile
 
 REPO_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 DEFAULT_SOURCE = os.path.join(REPO_ROOT, 'docs', 'readme', 'screenshot-source.webp')
+APP_ICON_SOURCE = os.path.join(
+    REPO_ROOT, 'resources', 'icons', 'app', 'app.iconset', 'icon_512x512@2x.png'
+)
 OUTPUT_PATH = os.path.join(REPO_ROOT, 'docs', 'readme', 'main.svg')
+
+
+def encode_file(input_path: str) -> str:
+    """Return a file as base64."""
+    with open(input_path, 'rb') as f:
+        return base64.b64encode(f.read()).decode('ascii')
 
 
 def encode_screenshot(input_path: str) -> str:
@@ -48,13 +57,30 @@ def encode_screenshot(input_path: str) -> str:
             ['magick', input_path, '-resize', '1800x>', '-quality', '86', tmp_path],
             check=True,
         )
-        with open(tmp_path, 'rb') as f:
-            return base64.b64encode(f.read()).decode('ascii')
+        return encode_file(tmp_path)
     finally:
         os.unlink(tmp_path)
 
 
-def build_svg(screenshot_b64: str) -> str:
+def encode_app_icon(input_path: str) -> str:
+    """Re-encode the app icon to 288px PNG for its 144-point @2x display size."""
+    with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+        tmp_path = tmp.name
+    try:
+        subprocess.run(
+            [
+                'magick', input_path, '-filter', 'Lanczos', '-resize', '288x288', '-depth', '8',
+                '+set', 'date:create', '+set', 'date:modify', '+set', 'date:timestamp',
+                '-define', 'png:compression-level=9', '-define', 'png:compression-filter=5', tmp_path,
+            ],
+            check=True,
+        )
+        return encode_file(tmp_path)
+    finally:
+        os.unlink(tmp_path)
+
+
+def build_svg(screenshot_b64: str, app_icon_b64: str) -> str:
     """
     Build the SVG. Layout (y coordinates inside a 900x1040 viewBox):
        50 - 194 : icon (144x144, vertically centered with the title+tagline stack)
@@ -109,18 +135,6 @@ def build_svg(screenshot_b64: str) -> str:
       <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000000" flood-opacity="0.25"/>
     </filter>
 
-    <linearGradient id="iconCardA" x1="50%" x2="50%" y1="0%" y2="100%">
-      <stop stop-color="#d619ac"/>
-      <stop offset="1" stop-color="#d0224c"/>
-    </linearGradient>
-    <linearGradient id="iconCardB" x1="50%" x2="50%" y1="0%" y2="100%">
-      <stop stop-color="#1ddfdf"/>
-      <stop offset="1" stop-color="#1d8cdc"/>
-    </linearGradient>
-    <linearGradient id="iconCardC" x1="50%" x2="50%" y1="0%" y2="100%">
-      <stop stop-color="#161386"/>
-      <stop offset="1" stop-color="#0a093d"/>
-    </linearGradient>
     <clipPath id="screenshotClip">
       <rect x="40" y="455" width="820" height="461" rx="14"/>
     </clipPath>
@@ -161,11 +175,7 @@ def build_svg(screenshot_b64: str) -> str:
     <circle cx="860" cy="940" r="0.5" opacity="0.3"/>
   </g>
 
-  <g transform="translate(166 50)">
-    <svg width="144" height="144" viewBox="0 0 55 55">
-      <g><rect width="43.171" height="36.695" x="1.843" y="15.476" fill="url(#iconCardA)" rx="1.125" transform="rotate(-9 1.843 15.476)"/><rect width="43.171" height="36.695" x="5.771" y="9.315" fill="url(#iconCardB)" rx="1.125" transform="rotate(-9 5.771 9.315)"/><path fill="url(#iconCardC)" d="M6.481 13.787 43.49 7.926a1.125 1.125 0 0 1 1.287.935l4.856 30.658-37.009 5.862a1.125 1.125 0 0 1-1.287-.935z"/><path fill="#fff" fill-rule="evenodd" d="m43.728 21.934-9.955 8.01-.639-4.033-6.662 1.055-.714-4.51L32.42 21.4l-.635-4.009z" clip-rule="evenodd"/><path fill="#fff" fill-rule="evenodd" d="m12.892 34.939 11.943 4.542-.639-4.033 6.663-1.055-.714-4.51-6.663 1.055-.635-4.01z" clip-rule="evenodd"/><circle cx="12.121" cy="18.181" r="1.923" fill="#fff" transform="rotate(-9 12.121 18.18)"/><circle cx="17.55" cy="17.322" r="1.923" fill="#fff" transform="rotate(-9 17.55 17.322)"/><circle cx="23.036" cy="16.452" r="1.923" fill="#fff" transform="rotate(-9 23.036 16.452)"/></g>
-    </svg>
-  </g>
+  <image href="data:image/png;base64,{app_icon_b64}" x="166" y="50" width="144" height="144" preserveAspectRatio="xMidYMid meet"/>
 
   <text x="330" y="120" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="56" fill="#ffffff" letter-spacing="-1.5">ScryTab</text>
 
@@ -248,10 +258,14 @@ def main() -> None:
         print(f'error: screenshot not found at {src}', file=sys.stderr)
         print(f'pass a path as the first argument, or place the file at {DEFAULT_SOURCE}', file=sys.stderr)
         sys.exit(1)
+    if not os.path.exists(APP_ICON_SOURCE):
+        print(f'error: app icon not found at {APP_ICON_SOURCE}', file=sys.stderr)
+        sys.exit(1)
 
     print(f'reading screenshot: {src}')
-    b64 = encode_screenshot(src)
-    svg = build_svg(b64)
+    screenshot_b64 = encode_screenshot(src)
+    app_icon_b64 = encode_app_icon(APP_ICON_SOURCE)
+    svg = build_svg(screenshot_b64, app_icon_b64)
 
     with open(OUTPUT_PATH, 'w') as f:
         f.write(svg)
