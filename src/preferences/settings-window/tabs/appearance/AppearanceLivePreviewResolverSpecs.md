@@ -2,8 +2,8 @@
 
 ## Summary
 
-The Appearance tab's style preview shows a small looping animation of demo app tiles, cycling
-which tile is highlighted so the user can see what the selected style looks like in motion.
+The Appearance tab's style preview cycles the focus state across demo app tiles once per second
+so the user can see how selection looks in the chosen style.
 `AppearanceLivePreviewResolver` holds the two pure decisions behind that loop:
 `nextFocusedIndex` picks which tile is highlighted next, and `shouldRun` decides whether the
 loop should currently be advancing at all.
@@ -13,13 +13,14 @@ the Settings window is actually visible, whether the real switcher panel is curr
 (so the decorative preview never competes with it for main-thread work), and whether the system
 Reduce Motion accessibility setting is on. All four must be favorable for the loop to run.
 
-Only pure decisions live here. Building the demo tiles, running the timer, animating the
-highlight view, and observing window/accessibility notifications are AppKit glue in
-`AppearanceLivePreviewView` and are not covered by this resolver.
+Only pure decisions live here. Building the demo tiles, running the timer, updating the
+highlight view, and observing window/accessibility notifications are AppKit glue outside this
+resolver and are not covered by its tests.
 
 ## Test scenarios
 
 ### Cycling through tiles
+- **testAdvancesOncePerSecond** - The preview holds each focused item for exactly one second.
 - **testCyclesToNextIndex** - Advancing from a middle index moves to the next one.
 - **testWrapsFromLastIndexToFirst** - Advancing from the last index wraps around to zero.
 - **testHandlesSingleTile** - A single tile always advances to itself.

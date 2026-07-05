@@ -285,6 +285,8 @@
 		6A7000000000000000000032 /* AppearanceLivePreviewResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7000000000000000000021 /* AppearanceLivePreviewResolver.swift */; };
 		6A7000000000000000000033 /* AppearanceLivePreviewResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7000000000000000000022 /* AppearanceLivePreviewResolverTests.swift */; };
 		6A7000000000000000000034 /* AppearanceLivePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7000000000000000000023 /* AppearanceLivePreviewView.swift */; };
+		6A7000000000000000000035 /* AppearanceLivePreviewArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7000000000000000000024 /* AppearanceLivePreviewArtwork.swift */; };
+		6A7000000000000000000036 /* AppearanceLivePreviewPlayback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7000000000000000000025 /* AppearanceLivePreviewPlayback.swift */; };
 		E70C8A2200000000000SP002 /* SparkleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70C8A1100000000000SP001 /* SparkleDelegate.swift */; };
 		F00DCAFE0000000000001002 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DCAFE0000000000000002 /* Search.swift */; };
 		F00DCAFE0000000000001003 /* SearchTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DCAFE0000000000000003 /* SearchTestable.swift */; };
@@ -395,6 +397,8 @@
 		6A7000000000000000000021 /* AppearanceLivePreviewResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceLivePreviewResolver.swift; sourceTree = "<group>"; };
 		6A7000000000000000000022 /* AppearanceLivePreviewResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceLivePreviewResolverTests.swift; sourceTree = "<group>"; };
 		6A7000000000000000000023 /* AppearanceLivePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceLivePreviewView.swift; sourceTree = "<group>"; };
+		6A7000000000000000000024 /* AppearanceLivePreviewArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceLivePreviewArtwork.swift; sourceTree = "<group>"; };
+		6A7000000000000000000025 /* AppearanceLivePreviewPlayback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceLivePreviewPlayback.swift; sourceTree = "<group>"; };
 		69A2E38AF41E866D3CDE71BF /* OverrideClickResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverrideClickResolver.swift; sourceTree = "<group>"; };
 		AA0C8A000000000000000001 /* AXCallScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AXCallScheduler.swift; sourceTree = "<group>"; };
 		AA0C8A0000000000000000B1 /* CGSCallScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSCallScheduler.swift; sourceTree = "<group>"; };
@@ -768,6 +772,8 @@
 				6A7000000000000000000021 /* AppearanceLivePreviewResolver.swift */,
 				6A7000000000000000000022 /* AppearanceLivePreviewResolverTests.swift */,
 				6A7000000000000000000023 /* AppearanceLivePreviewView.swift */,
+				6A7000000000000000000024 /* AppearanceLivePreviewArtwork.swift */,
+				6A7000000000000000000025 /* AppearanceLivePreviewPlayback.swift */,
 				5F21C9E32C6E94700091F72F /* CustomizeStyleSheet.swift */,
 			);
 			path = appearance;
@@ -1827,6 +1833,8 @@
 				6A7000000000000000000011 /* GlobalAppearanceChangeResolver.swift in Sources */,
 				6A7000000000000000000031 /* AppearanceLivePreviewResolver.swift in Sources */,
 				6A7000000000000000000034 /* AppearanceLivePreviewView.swift in Sources */,
+				6A7000000000000000000035 /* AppearanceLivePreviewArtwork.swift in Sources */,
+				6A7000000000000000000036 /* AppearanceLivePreviewPlayback.swift in Sources */,
 				D04BAD1BE9DC22C48C53D195 /* AboutTab.swift in Sources */,
 				D04BA15A1B0C4871EA7CB899 /* GeneralTab.swift in Sources */,
 				D04BAD451966B43720120D2E /* Menubar.swift in Sources */,

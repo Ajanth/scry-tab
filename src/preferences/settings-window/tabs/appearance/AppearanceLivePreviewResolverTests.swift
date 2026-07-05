@@ -2,6 +2,11 @@ import XCTest
 
 final class AppearanceLivePreviewResolverTests: XCTestCase {
 
+    /// The preview holds each focused item for exactly one second.
+    func testAdvancesOncePerSecond() {
+        XCTAssertEqual(AppearanceLivePreviewResolver.advanceInterval, 1)
+    }
+
     /// Advancing from a middle index moves to the next one.
     func testCyclesToNextIndex() {
         let next = AppearanceLivePreviewResolver.nextFocusedIndex(current: 1, count: 5)

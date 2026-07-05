@@ -1,6 +1,8 @@
 import Foundation
 
 enum AppearanceLivePreviewResolver {
+    static let advanceInterval = TimeInterval(1)
+
     static func nextFocusedIndex(current: Int, count: Int) -> Int {
         guard count > 0 else { return 0 }
         let normalizedCurrent = ((current % count) + count) % count
