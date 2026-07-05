@@ -23,6 +23,7 @@ final class AppearanceLivePreviewView: NSView {
     private var items = [PreviewArtwork.ItemView]()
     private var selectionConstraints = [NSLayoutConstraint]()
     private var switcherSizeConstraints = [NSLayoutConstraint]()
+    private var stackCenterYConstraint: NSLayoutConstraint?
     private var focusedIndex = 0
     private var currentStyle = AppearanceStylePreference.appIcons
     private var isPauseButtonHovered = false
@@ -86,9 +87,11 @@ final class AppearanceLivePreviewView: NSView {
         switcherView.addSubview(selectionView)
         stack.translatesAutoresizingMaskIntoConstraints = false
         switcherView.addSubview(stack)
+        let centerYConstraint = stack.centerYAnchor.constraint(equalTo: switcherView.centerYAnchor)
+        stackCenterYConstraint = centerYConstraint
         NSLayoutConstraint.activate([
             stack.centerXAnchor.constraint(equalTo: switcherView.centerXAnchor),
-            stack.centerYAnchor.constraint(equalTo: switcherView.centerYAnchor),
+            centerYConstraint,
         ])
     }
 
@@ -116,10 +119,9 @@ final class AppearanceLivePreviewView: NSView {
         NSLayoutConstraint.activate([
             wallpaperView.leadingAnchor.constraint(equalTo: leadingAnchor),
             wallpaperView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            wallpaperView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            wallpaperView.topAnchor.constraint(equalTo: topAnchor),
             wallpaperView.heightAnchor.constraint(equalTo: wallpaperView.widthAnchor,
                                                   multiplier: 1 / PreviewArtwork.Metrics.wallpaperAspectRatio),
-            wallpaperView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
             wallpaperView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             switcherView.centerXAnchor.constraint(equalTo: wallpaperView.centerXAnchor),
             switcherView.centerYAnchor.constraint(equalTo: wallpaperView.centerYAnchor),
@@ -151,7 +153,8 @@ final class AppearanceLivePreviewView: NSView {
         configureStack(for: style)
         configureSwitcherSize(for: style)
         PreviewArtwork.demoItems.forEach { item in
-            let info = AppDisplayInfo.resolve(bundleId: item.bundleId)
+            let resolvedInfo = AppDisplayInfo.resolve(bundleId: item.bundleId)
+            let info = AppDisplayInfo(name: item.displayName, icon: resolvedInfo.icon)
             let view: PreviewArtwork.ItemView
             if style == .appIcons {
                 view = PreviewArtwork.AppIconTileView(info)
@@ -171,6 +174,9 @@ final class AppearanceLivePreviewView: NSView {
             ? PreviewArtwork.Metrics.appIconsTileSpacing
             : PreviewArtwork.Metrics.titlesRowSpacing
         stack.alignment = style == .appIcons ? .centerY : .centerX
+        stackCenterYConstraint?.constant = style == .appIcons
+            ? PreviewArtwork.Metrics.appIconsContentVerticalOffset
+            : 0
     }
 
     private func configureSwitcherSize(for style: AppearanceStylePreference) {

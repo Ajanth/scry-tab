@@ -261,11 +261,9 @@ class ShowHideIllustratedView {
 }
 
 private final class AppearanceStylePreviewPane: NSView {
-    static let width = CGFloat(268)
-    static let splitSpacing = CGFloat(12)
-    private static let contentInset = CGFloat(16)
+    static let width = CGFloat(272)
+    static let splitSpacing = TableGroupView.spacing
     private let livePreviewView = AppearanceLivePreviewView()
-    private var accessibilityObserver: NSObjectProtocol?
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -277,53 +275,20 @@ private final class AppearanceStylePreviewPane: NSView {
         fatalError("Class only supports programmatic initialization")
     }
 
-    deinit {
-        if let accessibilityObserver {
-            NotificationCenter.default.removeObserver(accessibilityObserver)
-        }
-    }
-
-    override func viewDidMoveToWindow() {
-        super.viewDidMoveToWindow()
-        if let accessibilityObserver {
-            NotificationCenter.default.removeObserver(accessibilityObserver)
-        }
-        accessibilityObserver = NotificationCenter.default.addObserver(
-            forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main
-        ) { [weak self] _ in
-            self?.refreshSurface()
-        }
-        refreshSurface()
-    }
-
-    @available(macOS 10.14, *)
-    override func viewDidChangeEffectiveAppearance() {
-        super.viewDidChangeEffectiveAppearance()
-        refreshSurface()
-    }
-
     func updateStyle(_ style: AppearanceStylePreference) {
         livePreviewView.updateStyle(style)
     }
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        DesignSystemControlStyler.styleSurface(self)
         addSubview(livePreviewView)
-        // Fills the whole card instead of a vertically-centered aspect-ratio box, so the
-        // pause button (pinned to livePreviewView's own top-trailing corner) lands in this
-        // card's actual corner rather than floating close to the centered demo tiles.
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: Self.width),
-            livePreviewView.topAnchor.constraint(equalTo: topAnchor, constant: Self.contentInset),
-            livePreviewView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.contentInset),
-            livePreviewView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.contentInset),
-            livePreviewView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Self.contentInset),
+            livePreviewView.topAnchor.constraint(equalTo: topAnchor),
+            livePreviewView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            livePreviewView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            livePreviewView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
-    }
-
-    private func refreshSurface() {
-        DesignSystemControlStyler.refreshSurface(self)
     }
 }
 
