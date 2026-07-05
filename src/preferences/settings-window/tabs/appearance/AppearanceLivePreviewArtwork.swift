@@ -7,17 +7,20 @@ enum AppearanceLivePreviewArtwork {
         static let wallpaperBorderWidth = CGFloat(1)
         static let switcherCornerRadius = CGFloat(16)
         static let switcherBorderWidth = CGFloat(1)
-        static let appIconsSwitcherWidth = CGFloat(200)
-        static let appIconsSwitcherHeight = CGFloat(72)
-        static let appIconsTileWidth = CGFloat(57)
-        static let appIconsTileHeight = CGFloat(57)
+        static let appIconsSwitcherWidth = CGFloat(184)
+        static let appIconsSwitcherHeight = CGFloat(96)
+        static let appIconsTileWidth = CGFloat(48)
+        static let appIconsTileHeight = CGFloat(68)
         static let appIconsTileSpacing = CGFloat(8)
-        static let appIconsIconSize = CGFloat(39)
+        static let appIconsContentVerticalOffset = CGFloat(5)
+        static let appIconsIconSize = CGFloat(48)
+        static let appIconsIconTopInset = CGFloat(1)
         static let appIconsSelectionPadding = CGFloat(4)
-        static let appIconsSelectionCornerRadius = CGFloat(11)
-        static let appIconsSelectionBorderWidth = CGFloat(1)
+        static let appIconsSelectionCornerRadius = CGFloat(14)
+        static let appIconsSelectionBorderWidth = CGFloat(2)
         static let appIconsLabelFontSize = CGFloat(7.5)
-        static let appIconsLabelInset = CGFloat(7)
+        static let appIconsLabelWidth = CGFloat(60)
+        static let appIconsLabelGap = CGFloat(7)
         static let titlesSwitcherWidth = CGFloat(164)
         static let titlesSwitcherHeight = CGFloat(92)
         static let titlesRowWidth = CGFloat(146)
@@ -55,15 +58,19 @@ enum AppearanceLivePreviewArtwork {
 
     struct DemoItem {
         let bundleId: String
+        let displayName: String
         let statusSymbols: [String]
     }
 
     static let demoItems = [
-        DemoItem(bundleId: "com.apple.Safari",
+        DemoItem(bundleId: "com.google.Chrome",
+                 displayName: "Chrome",
                  statusSymbols: [Symbols.circledPlusSign.rawValue, StatusIconsView.symbolForSpace(2)]),
         DemoItem(bundleId: "com.apple.finder",
+                 displayName: "Finder",
                  statusSymbols: [Symbols.circledPlusSign.rawValue, StatusIconsView.symbolForSpace(2)]),
-        DemoItem(bundleId: "com.apple.Notes",
+        DemoItem(bundleId: "com.apple.systempreferences",
+                 displayName: "Settings",
                  statusSymbols: [StatusIconsView.symbolForSpace(1)]),
     ]
 
@@ -183,13 +190,15 @@ enum AppearanceLivePreviewArtwork {
             NSLayoutConstraint.activate([
                 widthAnchor.constraint(equalToConstant: Metrics.appIconsTileWidth),
                 heightAnchor.constraint(equalToConstant: Metrics.appIconsTileHeight),
-                iconView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+                iconView.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.appIconsIconTopInset),
                 iconView.centerXAnchor.constraint(equalTo: centerXAnchor),
                 iconView.widthAnchor.constraint(equalToConstant: Metrics.appIconsIconSize),
                 iconView.heightAnchor.constraint(equalToConstant: Metrics.appIconsIconSize),
-                titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4),
-                titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
-                titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Metrics.appIconsLabelInset),
+                titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor,
+                                                constant: Metrics.appIconsLabelGap),
+                titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+                titleLabel.widthAnchor.constraint(equalToConstant: Metrics.appIconsLabelWidth),
+                titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             ])
         }
     }
