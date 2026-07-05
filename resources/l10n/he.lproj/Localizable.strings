@@ -22,12 +22,9 @@
 "Always" = "תמיד";
 "Always send crash reports" = "שלח תמיד דיווחי קריסה";
 "and press" = "ולחץ על";
-"Animations" = "אנימציות";
-"Animations…" = "אנימציות…";
 "App Icons" = "סמלי יישומים";
 "App is hidden" = "יישום מוסתר";
 "App is running but has no open window" = "יישום פועל אך אין לו חלון פתוח";
-"Apparition delay of Switcher" = "השהיית הופעת המחליף";
 "Appearance" = "מראה";
 "Application Name" = "שם היישום";
 "Application Name - Window Title" = "שם היישום - כותרת החלון";
@@ -70,7 +67,6 @@
 "End" = "סוף";
 "Exceptions" = "חריגים";
 "Export settings…" = "ייצא הגדרות…";
-"Fade out animation of Switcher" = "אנימציית היעלמות הדרגתית של המחליף";
 "Failed to import settings" = "ייבוא ההגדרות נכשל";
 "Filtering" = "סינון";
 "Focus" = "מיקוד";

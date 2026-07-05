@@ -22,12 +22,9 @@
 "Always" = "Siempre";
 "Always send crash reports" = "Enviar siempre los informes de problema";
 "and press" = "y pulsa";
-"Animations" = "Animaciones";
-"Animations…" = "Animaciones…";
 "App Icons" = "Iconos de app";
 "App is hidden" = "App oculta";
 "App is running but has no open window" = "La app se está ejecutando pero no tiene ventanas abiertas";
-"Apparition delay of Switcher" = "Retraso de aparición del selector";
 "Appearance" = "Apariencia";
 "Application Name" = "Nombre de la aplicación";
 "Application Name - Window Title" = "Nombre de la aplicación - Título de la ventana";
@@ -70,7 +67,6 @@
 "End" = "Fin";
 "Exceptions" = "Excepciones";
 "Export settings…" = "Exportar ajustes…";
-"Fade out animation of Switcher" = "Animación de desaparición gradual del selector";
 "Failed to import settings" = "Error al importar los ajustes";
 "Filtering" = "Filtrado";
 "Focus" = "Foco";

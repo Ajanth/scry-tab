@@ -22,12 +22,9 @@
 "Always" = "Altijd";
 "Always send crash reports" = "Altijd crashrapporten versturen";
 "and press" = "en druk op";
-"Animations" = "Animaties";
-"Animations…" = "Animaties…";
 "App Icons" = "App-symbolen";
 "App is hidden" = "App is verborgen";
 "App is running but has no open window" = "App is actief maar heeft geen open venster";
-"Apparition delay of Switcher" = "Verschijningsvertraging van wisselaar";
 "Appearance" = "Weergave";
 "Application Name" = "Naam van app";
 "Application Name - Window Title" = "Naam van app - Venstertitel";
@@ -70,7 +67,6 @@
 "End" = "Einde";
 "Exceptions" = "Uitzonderingen";
 "Export settings…" = "Instellingen exporteren…";
-"Fade out animation of Switcher" = "Fade-out-animatie van wisselaar";
 "Failed to import settings" = "Importeren van instellingen mislukt";
 "Filtering" = "Filteren";
 "Focus" = "Focus";

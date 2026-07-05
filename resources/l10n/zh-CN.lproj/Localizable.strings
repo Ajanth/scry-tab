@@ -22,12 +22,9 @@
 "Always" = "始终";
 "Always send crash reports" = "始终发送崩溃报告";
 "and press" = "然后按";
-"Animations" = "动画";
-"Animations…" = "动画…";
 "App Icons" = "应用图标";
 "App is hidden" = "应用已隐藏";
 "App is running but has no open window" = "应用正在运行但没有打开的窗口";
-"Apparition delay of Switcher" = "切换器出现延迟";
 "Appearance" = "外观";
 "Application Name" = "应用名称";
 "Application Name - Window Title" = "应用名称 - 窗口标题";
@@ -70,7 +67,6 @@
 "End" = "末尾";
 "Exceptions" = "例外";
 "Export settings…" = "导出设置…";
-"Fade out animation of Switcher" = "切换器淡出动画";
 "Failed to import settings" = "导入设置失败";
 "Filtering" = "筛选";
 "Focus" = "聚焦";

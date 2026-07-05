@@ -22,12 +22,9 @@
 "Always" = "Luôn luôn";
 "Always send crash reports" = "Luôn gửi báo cáo sự cố";
 "and press" = "và nhấn";
-"Animations" = "Hoạt ảnh";
-"Animations…" = "Hoạt ảnh…";
 "App Icons" = "Biểu tượng ứng dụng";
 "App is hidden" = "Ứng dụng đang ẩn";
 "App is running but has no open window" = "Ứng dụng đang chạy nhưng không có cửa sổ mở";
-"Apparition delay of Switcher" = "Độ trễ xuất hiện của Trình chuyển đổi";
 "Appearance" = "Giao diện";
 "Application Name" = "Tên ứng dụng";
 "Application Name - Window Title" = "Tên ứng dụng - Tiêu đề cửa sổ";
@@ -70,7 +67,6 @@
 "End" = "Cuối";
 "Exceptions" = "Ngoại lệ";
 "Export settings…" = "Xuất cài đặt…";
-"Fade out animation of Switcher" = "Hoạt ảnh mờ dần của Trình chuyển đổi";
 "Failed to import settings" = "Không thể nhập cài đặt";
 "Filtering" = "Bộ lọc";
 "Focus" = "Tiêu điểm";

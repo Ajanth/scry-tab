@@ -22,12 +22,9 @@
 "Always" = "دائمًا";
 "Always send crash reports" = "إرسال تقارير الأعطال دائمًا";
 "and press" = "ثم اضغط";
-"Animations" = "الرسوم المتحركة";
-"Animations…" = "الرسوم المتحركة…";
 "App Icons" = "أيقونات التطبيقات";
 "App is hidden" = "التطبيق مخفي";
 "App is running but has no open window" = "التطبيق قيد التشغيل ولكن ليس لديه نافذة مفتوحة";
-"Apparition delay of Switcher" = "تأخير ظهور المُحوّل";
 "Appearance" = "المظهر";
 "Application Name" = "اسم التطبيق";
 "Application Name - Window Title" = "اسم التطبيق - عنوان النافذة";
@@ -70,7 +67,6 @@
 "End" = "النهاية";
 "Exceptions" = "استثناءات";
 "Export settings…" = "تصدير الإعدادات…";
-"Fade out animation of Switcher" = "حركة الاختفاء التدريجي للمُحوّل";
 "Failed to import settings" = "فشل استيراد الإعدادات";
 "Filtering" = "التصفية";
 "Focus" = "التركيز";

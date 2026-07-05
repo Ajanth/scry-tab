@@ -22,12 +22,9 @@
 "Always" = "Zawsze";
 "Always send crash reports" = "Zawsze wysyłaj raporty awarii";
 "and press" = "i naciśnij";
-"Animations" = "Animacje";
-"Animations…" = "Animacje…";
 "App Icons" = "Ikony aplikacji";
 "App is hidden" = "Aplikacja ukryta";
 "App is running but has no open window" = "Aplikacja działa, ale nie ma otwartego okna";
-"Apparition delay of Switcher" = "Opóźnienie pojawiania przełącznika";
 "Appearance" = "Wygląd";
 "Application Name" = "Nazwa aplikacji";
 "Application Name - Window Title" = "Nazwa aplikacji - Tytuł okna";
@@ -70,7 +67,6 @@
 "End" = "Koniec";
 "Exceptions" = "Wyjątki";
 "Export settings…" = "Wyeksportuj ustawienia…";
-"Fade out animation of Switcher" = "Animacja znikania przełącznika";
 "Failed to import settings" = "Nie udało się zaimportować ustawień";
 "Filtering" = "Filtrowanie";
 "Focus" = "Uaktywnij";

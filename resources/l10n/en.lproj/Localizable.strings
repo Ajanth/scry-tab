@@ -22,12 +22,9 @@
 "Always" = "Always";
 "Always send crash reports" = "Always send crash reports";
 "and press" = "and press";
-"Animations" = "Animations";
-"Animations…" = "Animations…";
 "App Icons" = "App Icons";
 "App is hidden" = "App is hidden";
 "App is running but has no open window" = "App is running but has no open window";
-"Apparition delay of Switcher" = "Apparition delay of Switcher";
 "Appearance" = "Appearance";
 "Application Name" = "Application Name";
 "Application Name - Window Title" = "Application Name - Window Title";
@@ -70,7 +67,6 @@
 "End" = "End";
 "Exceptions" = "Exceptions";
 "Export settings…" = "Export settings…";
-"Fade out animation of Switcher" = "Fade out animation of Switcher";
 "Failed to import settings" = "Failed to import settings";
 "Filtering" = "Filtering";
 "Focus" = "Focus";

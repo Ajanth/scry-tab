@@ -30,8 +30,6 @@ class App: AppCenterApplication {
     // periphery:ignore
     static var sparkleDelegate: SparkleDelegate?
     static var updaterController: SPUStandardUpdaterController?
-    // don't queue multiple delayed rebuildUi() calls
-    private static var delayedDisplayScheduled = 0
     private static let switcherUiRefreshThrottler = Throttler(delayInMs: 200)
 
     override init() {
@@ -289,17 +287,7 @@ class App: AppCenterApplication {
             }
             if !Windows.updatesBeforeShowing() { hideUi(); return }
             Windows.setInitialSelectedAndHoveredWindowIndex()
-            if Preferences.windowDisplayDelay == DispatchTimeInterval.milliseconds(0) {
-                buildUiAndShowPanel()
-            } else {
-                delayedDisplayScheduled += 1
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Preferences.windowDisplayDelay) { () -> () in
-                    if delayedDisplayScheduled == 1 {
-                        buildUiAndShowPanel()
-                    }
-                    delayedDisplayScheduled -= 1
-                }
-            }
+            buildUiAndShowPanel()
         } else {
             cycleSelection(.leading)
             KeyRepeatTimer.startRepeatingKeyNextWindow()

@@ -22,12 +22,9 @@
 "Always" = "항상";
 "Always send crash reports" = "항상 충돌 보고서 보내기";
 "and press" = "그리고 누르기";
-"Animations" = "애니메이션";
-"Animations…" = "애니메이션…";
 "App Icons" = "앱 아이콘";
 "App is hidden" = "앱 숨김";
 "App is running but has no open window" = "앱이 실행 중이지만 열린 윈도우가 없음";
-"Apparition delay of Switcher" = "전환기 표시 지연 시간";
 "Appearance" = "모양";
 "Application Name" = "응용 프로그램 이름";
 "Application Name - Window Title" = "응용 프로그램 이름 - 윈도우 제목";
@@ -70,7 +67,6 @@
 "End" = "끝";
 "Exceptions" = "예외";
 "Export settings…" = "설정 내보내기…";
-"Fade out animation of Switcher" = "전환기 페이드 아웃 애니메이션";
 "Failed to import settings" = "설정 가져오기 실패";
 "Filtering" = "필터링";
 "Focus" = "포커스";

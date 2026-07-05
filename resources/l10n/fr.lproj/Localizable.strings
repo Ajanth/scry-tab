@@ -22,12 +22,9 @@
 "Always" = "Toujours";
 "Always send crash reports" = "Toujours envoyer les rapports de plantage";
 "and press" = "et appuyer sur";
-"Animations" = "Animations";
-"Animations…" = "Animations…";
 "App Icons" = "Icônes d'app";
 "App is hidden" = "App masquée";
 "App is running but has no open window" = "App en cours d'exécution sans fenêtre ouverte";
-"Apparition delay of Switcher" = "Délai d'apparition du sélecteur";
 "Appearance" = "Apparence";
 "Application Name" = "Nom de l'application";
 "Application Name - Window Title" = "Nom de l'application - Titre de la fenêtre";
@@ -70,7 +67,6 @@
 "End" = "Fin";
 "Exceptions" = "Exceptions";
 "Export settings…" = "Exporter les réglages…";
-"Fade out animation of Switcher" = "Animation de disparition du sélecteur";
 "Failed to import settings" = "Échec de l'importation des réglages";
 "Filtering" = "Filtrage";
 "Focus" = "Sélection";
