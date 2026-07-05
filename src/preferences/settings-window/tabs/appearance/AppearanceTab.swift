@@ -260,6 +260,75 @@ class ShowHideIllustratedView {
     }
 }
 
+private final class AppearanceStylePreviewPane: NSView {
+    static let width = CGFloat(268)
+    static let splitSpacing = CGFloat(12)
+    private static let imageInset = CGFloat(16)
+    private let imageView = NSImageView()
+    private var accessibilityObserver: NSObjectProtocol?
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        setupView()
+        updateStyle(AppearanceTab.selectedAppearanceStyle())
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    deinit {
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if let accessibilityObserver {
+            NotificationCenter.default.removeObserver(accessibilityObserver)
+        }
+        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.refreshSurface()
+        }
+        refreshSurface()
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshSurface()
+    }
+
+    func updateStyle(_ style: AppearanceStylePreference) {
+        imageView.image = IllustratedImageThemeView.loadIllustration(IllustratedImageThemeView.getConcatenatedImageName(style, "light"))
+    }
+
+    private func setupView() {
+        translatesAutoresizingMaskIntoConstraints = false
+        DesignSystemControlStyler.styleSurface(self)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.imageScaling = .scaleProportionallyUpOrDown
+        imageView.wantsLayer = true
+        imageView.layer?.masksToBounds = true
+        imageView.layer?.cornerRadius = TableGroupView.cornerRadius
+        addSubview(imageView)
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalToConstant: Self.width),
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: Self.imageInset),
+            imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Self.imageInset),
+            imageView.widthAnchor.constraint(equalTo: widthAnchor, constant: -2 * Self.imageInset),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1 / 1.6),
+        ])
+    }
+
+    private func refreshSurface() {
+        DesignSystemControlStyler.refreshSurface(self)
+    }
+}
+
 class Popover: NSPopover {
     static let shared = Popover()
     private var hidingInitiated = true
@@ -371,6 +440,9 @@ class AppearanceTab: NSObject {
 
     static var customizeStyleButton: NSButton!
     static var customizeStyleSheet: CustomizeStyleSheet!
+    private static let appearanceControlsWidth = SettingsWindow.contentWidth - AppearanceStylePreviewPane.width - AppearanceStylePreviewPane.splitSpacing
+    private static let compactSegmentWidth = CGFloat(86)
+    private static let styleSegmentWidth = CGFloat(132)
 
     static func initTab() -> NSView {
         customizeStyleButton = DesignSystemControlStyler.makeButton(getCustomizeStyleButtonTitle(), target: self, action: #selector(showCustomizeStyleSheet))
@@ -386,8 +458,9 @@ class AppearanceTab: NSObject {
         customizeStyleSheet = nil
     }
 
-    private static func makeView() -> NSStackView {
-        let appearanceView = makeAppearanceView()
+    private static func makeView() -> NSView {
+        let previewPane = AppearanceStylePreviewPane()
+        let appearanceView = makeAppearanceControlsView(previewPane)
         let multipleScreensView = makeMultipleScreensView()
         // `padding: 0` — `TableGroupSetView` adds 20pt of horizontal inset by default before its
         // inner content stack. The enclosing section (from `SettingsWindow.addSection`) already
@@ -395,67 +468,72 @@ class AppearanceTab: NSObject {
         // 20pt here pushes the TGV content to `container.leading + 20`, while the section title
         // sits at `container.leading + TableGroupView.padding(10)` — a 10pt visible misalignment
         // between the title and the row content below it.
-        let view = TableGroupSetView(originalViews: [appearanceView, multipleScreensView], titleTableGroupSpacing: 15, padding: 0, bottomPadding: 0)
+        let leftColumn = TableGroupSetView(originalViews: [appearanceView, multipleScreensView], titleTableGroupSpacing: 15, padding: 0, bottomPadding: 0)
+        leftColumn.translatesAutoresizingMaskIntoConstraints = false
+        // Plain container (not a stack view) because the preview pane's top must align with
+        // `appearanceView`'s row panel rather than with `leftColumn`'s own top, which sits above
+        // that panel's subtitle. A stack view's `.top` alignment can only match sibling frames,
+        // not a specific descendant, and would fight a manual constraint to that descendant.
+        let view = NSView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.widthAnchor.constraint(equalToConstant: view.fittingSize.width).isActive = true
+        view.addSubview(leftColumn)
+        view.addSubview(previewPane)
+        let previewTopAnchor = appearanceView.tableStackViews.first?.topAnchor ?? appearanceView.topAnchor
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: SettingsWindow.contentWidth),
+            leftColumn.widthAnchor.constraint(equalToConstant: appearanceControlsWidth),
+            leftColumn.topAnchor.constraint(equalTo: view.topAnchor),
+            leftColumn.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            leftColumn.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            previewPane.leadingAnchor.constraint(equalTo: leftColumn.trailingAnchor, constant: AppearanceStylePreviewPane.splitSpacing),
+            previewPane.topAnchor.constraint(equalTo: previewTopAnchor),
+            previewPane.bottomAnchor.constraint(equalTo: leftColumn.bottomAnchor),
+        ])
         return view
     }
 
-    private static func makeAppearanceView() -> NSView {
+    private static func makeAppearanceControlsView(_ previewPane: AppearanceStylePreviewPane) -> TableGroupView {
         let table = TableGroupView(subTitle: NSLocalizedString("Switch between 2 different styles. You can customize them.", comment: ""),
-            width: SettingsWindow.contentWidth)
-        let styleButtons = LabelAndControl.makeImageRadioButtons(
-            "appearanceStyle", AppearanceStylePreference.allCases, buttonSpacing: 10)
-        configureGlobalStyleActions(styleButtons)
-        configureStyleButtons(styleButtons)
-        table.addRow(secondaryViews: [styleButtons], secondaryViewsAlignment: .centerX, secondaryViewsTopGap: 6)
+            width: appearanceControlsWidth)
+        let styleControl = makeStyleSegmentedControl(previewPane)
+        table.addRow(leftText: NSLocalizedString("Style", comment: ""), rightViews: [styleControl])
         let sizeControl = makeGlobalSegmentedControl("appearanceSize", overrideBaseName: "appearanceSizeOverride",
-            cases: AppearanceSizePreference.allCases, segmentWidth: 105)
+            cases: AppearanceSizePreference.allCases, segmentWidth: compactSegmentWidth)
         table.addRow(leftText: AppearanceTab.labelSize,
             rightViews: [sizeControl])
         table.addRow(leftText: AppearanceTab.labelTheme,
             rightViews: [makeGlobalSegmentedControl("appearanceTheme", overrideBaseName: "appearanceThemeOverride",
-                cases: AppearanceThemePreference.allCases, segmentWidth: 105)])
+                cases: AppearanceThemePreference.allCases, segmentWidth: compactSegmentWidth)])
         addAfterKeysReleasedRow(table)
         table.addRow(rightViews: customizeStyleButton)
         return table
     }
 
-    private static func configureGlobalStyleActions(_ styleButtons: NSStackView) {
-        let buttonViews = styleButtons.arrangedSubviews.compactMap { $0 as? ImageTextButtonView }
-        buttonViews.enumerated().forEach { index, buttonView in
-            buttonView.onClick = { [weak buttonView] _ in
-                guard let buttonView else { return }
-                let previousValue = UserDefaults.standard.string(forKey: "appearanceStyle")
-                let siblings = (buttonView.superview as? NSStackView)?.arrangedSubviews.compactMap {
-                    $0 as? ImageTextButtonView
-                } ?? []
-                siblings.forEach { $0.state = $0 === buttonView ? .on : .off }
-                LabelAndControl.controlWasChanged(buttonView.button, String(index))
-                let newValue = String(index)
-                let decision = resolveGlobalChange(previousValue: previousValue, newValue: newValue,
-                    overrideBaseName: "appearanceStyleOverride")
-                guard decision != .skip else { return }
-                toggleCustomizeStyleButton()
-                confirmOverrideResetIfNeeded(decision, overrideBaseName: "appearanceStyleOverride")
-            }
+    private static func makeStyleSegmentedControl(_ previewPane: AppearanceStylePreviewPane) -> NSSegmentedControl {
+        let control = LabelAndControl.makeSegmentedControl("appearanceStyle", AppearanceStylePreference.allCases,
+            segmentWidth: styleSegmentWidth)
+        control.onAction = { control in
+            let previousValue = UserDefaults.standard.string(forKey: "appearanceStyle")
+            let newValue = LabelAndControl.getControlValue(control, nil)
+            LabelAndControl.controlWasChanged(control, nil)
+            updatePreview(previewPane, newValue)
+            let decision = resolveGlobalChange(previousValue: previousValue, newValue: newValue,
+                overrideBaseName: "appearanceStyleOverride")
+            guard decision != .skip else { return }
+            toggleCustomizeStyleButton()
+            confirmOverrideResetIfNeeded(decision, overrideBaseName: "appearanceStyleOverride")
         }
+        return control
     }
 
-    private static func configureStyleButtons(_ styleButtons: NSStackView) {
-        styleButtons.spacing = 12
-        styleButtons.alignment = .top
-        styleButtons.setContentCompressionResistancePriority(.required, for: .horizontal)
-        styleButtons.arrangedSubviews.compactMap {
-            $0 as? ImageTextButtonView
-        }.forEach {
-            $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        }
+    private static func updatePreview(_ previewPane: AppearanceStylePreviewPane, _ newValue: String?) {
+        guard let raw = newValue, let index = Int(raw), AppearanceStylePreference.allCases.indices.contains(index) else { return }
+        previewPane.updateStyle(AppearanceStylePreference.allCases[index])
     }
 
     private static func addAfterKeysReleasedRow(_ table: TableGroupView) {
         let control = makeGlobalSegmentedControl("shortcutStyle", overrideBaseName: "shortcutStyleOverride",
-            cases: ShortcutStylePreference.allCases, segmentWidth: 105)
+            cases: ShortcutStylePreference.allCases, segmentWidth: compactSegmentWidth)
         table.addRow(leftText: AppearanceTab.labelShortcutStyle,
             rightViews: [control])
     }
@@ -482,12 +560,23 @@ class AppearanceTab: NSObject {
         GlobalAppearanceChangeResolver.decide(
             previousValue: previousValue,
             newValue: newValue,
-            hasExplicitOverrides: Preferences.hasAnyOverride(overrideBaseName))
+            hasExplicitOverrides: Preferences.hasAnyOverride(overrideBaseName),
+            rememberedOverrideChoice: Preferences.appearanceOverrideResetChoice)
     }
 
     private static func confirmOverrideResetIfNeeded(_ decision: GlobalAppearanceChangeDecision,
                                                      overrideBaseName: String) {
-        guard decision == .confirmOverrideReset else { return }
+        switch decision {
+            case .skip, .applyWithoutConfirmation:
+                return
+            case let .applyRememberedOverrideChoice(removesOverrides):
+                if removesOverrides { Preferences.removeAllOverrides(overrideBaseName) }
+            case .confirmOverrideReset:
+                promptOverrideReset(overrideBaseName)
+        }
+    }
+
+    private static func promptOverrideReset(_ overrideBaseName: String) {
         let alert = NSAlert()
         alert.alertStyle = .warning
         alert.messageText = NSLocalizedString("Apply this change to all shortcuts?", comment: "")
@@ -497,15 +586,26 @@ class AppearanceTab: NSObject {
         globalOnlyButton.keyEquivalent = "\u{1b}"
         let applyAllButton = alert.addButton(withTitle: NSLocalizedString("Apply to All Shortcuts", comment: ""))
         if #available(macOS 11.0, *) { applyAllButton.hasDestructiveAction = true }
-        guard alert.runModal() == .alertSecondButtonReturn else { return }
+        alert.showsSuppressionButton = true
+        let removesOverrides = alert.runModal() == .alertSecondButtonReturn
+        if alert.suppressionButton?.state == .on {
+            Preferences.rememberAppearanceOverrideResetChoice(removesOverrides: removesOverrides)
+        }
+        guard removesOverrides else { return }
         Preferences.removeAllOverrides(overrideBaseName)
     }
 
     private static func makeMultipleScreensView() -> NSView {
-        let table = TableGroupView(title: NSLocalizedString("Multiple screens", comment: ""), width: SettingsWindow.contentWidth)
+        let table = TableGroupView(title: NSLocalizedString("Multiple screens", comment: ""), width: appearanceControlsWidth)
         _ = table.addRow(leftText: NSLocalizedString("Show on", comment: ""),
             rightViews: LabelAndControl.makeDropdown("showOnScreen", ShowOnScreenPreference.allCases))
         return table
+    }
+
+    fileprivate static func selectedAppearanceStyle() -> AppearanceStylePreference {
+        let index = CachedUserDefaults.intFromMacroPref("appearanceStyle", AppearanceStylePreference.allCases)
+        guard AppearanceStylePreference.allCases.indices.contains(index) else { return .appIcons }
+        return AppearanceStylePreference.allCases[index]
     }
 
     private static func getCustomizeStyleButtonTitle() -> String {
