@@ -20,6 +20,7 @@ class Appearance {
     static let interCellPadding = CGFloat(1)
     static let intraCellPadding = CGFloat(5)
     static let appIconLabelSpacing = CGFloat(2)
+    static let statusIconSpacing = CGFloat(2)
 
     // theme
     static var fontColor = NSColor.red

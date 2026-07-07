@@ -250,7 +250,7 @@ class TilesView {
         layoutCache.comfortableReadabilityWidth = TileView.widthOfComfortableReadability()
         TileFontIconView.symbolCache.removeAll()
         let spaceNumberStrings = (0...19).map { StatusIconsView.symbolForSpace($0) }
-        TileFontIconView.warmCaches(symbols: [.circledPlusSign, .circledMinusSign, .circledSlashSign, .circledStar], extraStrings: spaceNumberStrings, size: Appearance.fontHeight, color: Appearance.fontColor)
+        TileFontIconView.warmCaches(symbols: [.arrowUpBackwardAndArrowDownForwardRectangle, .circledMinusSign, .circledSlashSign, .circledStar], extraStrings: spaceNumberStrings, size: Appearance.fontHeight, color: Appearance.fontColor)
     }
 
     static func updateBackgroundView() {

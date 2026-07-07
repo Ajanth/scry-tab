@@ -65,10 +65,10 @@ enum AppearanceLivePreviewArtwork {
     static let demoItems = [
         DemoItem(bundleId: "com.google.Chrome",
                  displayName: "Chrome",
-                 statusSymbols: [Symbols.circledPlusSign.rawValue, StatusIconsView.symbolForSpace(2)]),
+                 statusSymbols: [Symbols.arrowUpBackwardAndArrowDownForwardRectangle.rawValue, StatusIconsView.symbolForSpace(2)]),
         DemoItem(bundleId: "com.apple.finder",
                  displayName: "Finder",
-                 statusSymbols: [Symbols.circledPlusSign.rawValue, StatusIconsView.symbolForSpace(2)]),
+                 statusSymbols: [Symbols.arrowUpBackwardAndArrowDownForwardRectangle.rawValue, StatusIconsView.symbolForSpace(2)]),
         DemoItem(bundleId: "com.apple.systempreferences",
                  displayName: "Settings",
                  statusSymbols: [StatusIconsView.symbolForSpace(1)]),

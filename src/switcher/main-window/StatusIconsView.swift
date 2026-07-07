@@ -15,7 +15,7 @@ class StatusIconsView: FlippedView {
     private static let defaultSymbols: [(Symbols, String?)] = [
         (.circledNumber0, nil),
         (.circledSlashSign, NSLocalizedString("App is hidden", comment: "")),
-        (.circledPlusSign, NSLocalizedString("Window is fullscreen", comment: "")),
+        (.arrowUpBackwardAndArrowDownForwardRectangle, NSLocalizedString("Window is fullscreen", comment: "")),
         (.circledMinusSign, NSLocalizedString("Window is minimized", comment: "")),
     ]
 
@@ -58,7 +58,10 @@ class StatusIconsView: FlippedView {
 
     required init?(coder: NSCoder) { fatalError() }
 
-    var totalWidth: CGFloat { CGFloat(visibleCount) * TilesView.layoutCache.iconWidth }
+    var totalWidth: CGFloat {
+        guard visibleCount > 0 else { return 0 }
+        return CGFloat(visibleCount) * TilesView.layoutCache.iconWidth + CGFloat(visibleCount - 1) * Appearance.statusIconSpacing
+    }
 
     func update(isHidden: Bool, isFullscreen: Bool, isMinimized: Bool, showSpace: Bool) {
         icons[Self.hiddenIdx].visible = isHidden
@@ -105,17 +108,11 @@ class StatusIconsView: FlippedView {
         tooltipStrings.removeAll()
         let iconWidth = TilesView.layoutCache.iconWidth
         let iconHeight = TilesView.layoutCache.iconHeight
-        let isLTR = App.shared.userInterfaceLayoutDirection == .leftToRight
         let yOffset = ((frame.height - iconHeight) / 2).rounded()
-        var offset = CGFloat(0)
-        for icon in icons {
-            guard icon.visible else { continue }
-            offset += iconWidth
-            let x = isLTR ? frame.width - offset : offset - iconWidth
-            if let tooltip = icon.tooltip {
-                let tag = addToolTip(NSRect(x: x, y: yOffset, width: iconWidth, height: iconHeight), owner: self, userData: nil)
-                tooltipStrings[tag] = tooltip
-            }
+        for (icon, x) in visibleIconPositions() {
+            guard let tooltip = icon.tooltip else { continue }
+            let tag = addToolTip(NSRect(x: x, y: yOffset, width: iconWidth, height: iconHeight), owner: self, userData: nil)
+            tooltipStrings[tag] = tooltip
         }
     }
 
@@ -125,16 +122,27 @@ class StatusIconsView: FlippedView {
 
     override func draw(_ dirtyRect: NSRect) {
         guard visibleCount > 0 else { return }
-        let iconWidth = TilesView.layoutCache.iconWidth
         let iconHeight = TilesView.layoutCache.iconHeight
-        let isLTR = App.shared.userInterfaceLayoutDirection == .leftToRight
         let yOffset = ((frame.height - iconHeight) / 2).rounded()
+        for (icon, x) in visibleIconPositions() {
+            Self.cachedAttrString(for: icon.symbol).draw(at: NSPoint(x: x, y: yOffset))
+        }
+    }
+
+    /// Left-to-right visual order is reversed here since icons stack from the trailing edge inward;
+    /// `Appearance.statusIconSpacing` is inserted only *between* visible icons, never before the first
+    /// or after the last, so it can't be recovered from a single glyph's own side-bearing.
+    private func visibleIconPositions() -> [(icon: Icon, x: CGFloat)] {
+        let iconWidth = TilesView.layoutCache.iconWidth
+        let isLTR = App.shared.userInterfaceLayoutDirection == .leftToRight
+        var positions: [(Icon, CGFloat)] = []
         var offset = CGFloat(0)
         for icon in icons {
             guard icon.visible else { continue }
-            offset += iconWidth
+            offset += iconWidth + (positions.isEmpty ? 0 : Appearance.statusIconSpacing)
             let x = isLTR ? frame.width - offset : offset - iconWidth
-            Self.cachedAttrString(for: icon.symbol).draw(at: NSPoint(x: x, y: yOffset))
+            positions.append((icon, x))
         }
+        return positions
     }
 }
