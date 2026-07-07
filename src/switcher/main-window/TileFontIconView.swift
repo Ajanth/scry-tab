@@ -5,7 +5,7 @@ import Cocoa
 // scripts/assets/subset_font.sh so it ships in the bundled font subset.
 enum Symbols: String {
     // Switcher status icons
-    case circledPlusSign = "􀁌"       // plus.circle
+    case arrowUpBackwardAndArrowDownForwardRectangle = "􂂡"   // arrow.up.backward.and.arrow.down.forward.rectangle
     case circledMinusSign = "􀁎"      // minus.circle
     case circledSlashSign = "􀕧"      // circle.slash
     case circledNumber0 = "􀀸"        // 0.circle
