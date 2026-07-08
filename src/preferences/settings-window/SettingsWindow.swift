@@ -787,6 +787,15 @@ class SettingsWindow: NSWindow {
             if let target = SettingsWindow.highlightTarget(popUpButton) {
                 highlightTargets.append(target)
             }
+        } else if let chipSelect = root as? DesignSystemChipSelectControl {
+            (0..<chipSelect.chipCount).forEach {
+                if let value = chipSelect.chipTitle(at: $0)?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty {
+                    textValues.append(value)
+                }
+            }
+            if let target = SettingsWindow.highlightTarget(chipSelect) {
+                highlightTargets.append(target)
+            }
         } else if let button = root as? NSButton {
             let value = button.title.trimmingCharacters(in: .whitespacesAndNewlines)
             if !value.isEmpty {
@@ -884,6 +893,14 @@ class SettingsWindow: NSWindow {
         }, {
             SettingsWindow.clearSegmentedControlHighlight(from: segmentedControl)
         })
+    }
+
+    static func highlightTarget(_ chipSelect: DesignSystemChipSelectControl) -> SettingsSearchHighlightTarget? {
+        controlHighlightTarget(chipSelect) {
+            (0..<chipSelect.chipCount).map {
+                SettingsWindow.trimmedText(chipSelect.chipTitle(at: $0) ?? "")
+            }.filter { !$0.isEmpty }
+        }
     }
 
     /// True iff any user-visible text in the view subtree matches `query`. Walks the same set of

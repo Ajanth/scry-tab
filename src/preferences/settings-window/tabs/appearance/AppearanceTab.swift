@@ -163,8 +163,8 @@ class ShowHideIllustratedView {
         setupItems()
     }
 
-    func makeView() -> TableGroupSetView {
-        table = TableGroupView(width: CustomizeStyleSheet.width)
+    func makeView(width: CGFloat, title: String? = nil) -> TableGroupView {
+        table = TableGroupView(title: title, width: width)
         for row in showHideRows {
             table.addRow(leftViews: row.leftViews, rightViews: row.rightViews, onClick: { [weak self] _, _ in
                 self?.clickCheckbox(rowId: row.rowId)
@@ -177,7 +177,7 @@ class ShowHideIllustratedView {
             guard let self else { return }
             IllustratedImageThemeView.resetImage(self.illustratedImageView, event, view)
         }
-        return TableGroupSetView(originalViews: [table], padding: 0)
+        return table
     }
 
     private func setupItems() {

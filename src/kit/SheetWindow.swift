@@ -24,6 +24,7 @@ class SheetWindow: NSWindow {
     static let width = CGFloat(500)
     let separator = DesignSystemDividerView()
     var doneButton: NSButton!
+    var contentWidth: CGFloat { SheetWindow.width }
 
     convenience init() {
         self.init(contentRect: .zero, styleMask: [.titled, .closable], backing: .buffered, defer: false)
@@ -42,7 +43,7 @@ class SheetWindow: NSWindow {
         contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -TableGroupSetView.padding).isActive = true
         contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: TableGroupSetView.padding).isActive = true
         view.addArrangedSubview(separator)
-        separator.widthAnchor.constraint(equalToConstant: SheetWindow.width + TableGroupSetView.leftRightPadding).isActive = true
+        separator.widthAnchor.constraint(equalToConstant: contentWidth + TableGroupSetView.leftRightPadding).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         separator.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: TableGroupSetView.padding).isActive = true
         view.addArrangedSubview(doneButton)

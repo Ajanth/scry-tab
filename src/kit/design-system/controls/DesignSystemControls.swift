@@ -81,6 +81,12 @@ private func copyTextCellState(from source: NSTextFieldCell, to destination: NST
 
 final class DesignSystemFlatButton: NSButton {
     var drawsAppOwnedSurface: Bool { true }
+    var isChoiceSelected = false {
+        didSet {
+            refreshTitle()
+            needsDisplay = true
+        }
+    }
     var usesDestructiveAccent = false {
         didSet {
             if #available(macOS 11.0, *) { hasDestructiveAction = usesDestructiveAccent }
@@ -235,7 +241,7 @@ final class DesignSystemFlatButton: NSButton {
         paragraph.alignment = .center
         let color = titleColor()
         attributedTitle = NSAttributedString(string: title, attributes: [
-            .font: font ?? NSFont.systemFont(ofSize: 13),
+            .font: titleFont(),
             .foregroundColor: color,
             .paragraphStyle: paragraph,
         ])
@@ -263,6 +269,8 @@ final class DesignSystemFlatButton: NSButton {
             base = DesignSystem.color(.surfaceFlat, appearance: effectiveAppearance).withAlphaComponent(0.5)
         } else if pressed {
             base = DesignSystem.color(.surfacePressed, appearance: effectiveAppearance)
+        } else if isChoiceSelected {
+            base = DesignSystem.color(.surfaceSelected, appearance: effectiveAppearance)
         } else if hovered {
             base = DesignSystem.color(.surfaceHover, appearance: effectiveAppearance)
         } else {
@@ -283,6 +291,9 @@ final class DesignSystemFlatButton: NSButton {
         if isFocused {
             return DesignSystem.color(.focusAccent, appearance: effectiveAppearance)
         }
+        if isChoiceSelected {
+            return DesignSystem.color(.borderSelected, appearance: effectiveAppearance)
+        }
         return DesignSystem.color(.borderSubtle, appearance: effectiveAppearance)
     }
 
@@ -291,7 +302,118 @@ final class DesignSystemFlatButton: NSButton {
         return usesDestructiveAccent ? DesignSystem.color(.statusDestructive, appearance: effectiveAppearance) : DesignSystem.color(.textPrimary, appearance: effectiveAppearance)
     }
 
+    private func titleFont() -> NSFont {
+        guard isChoiceSelected else { return font ?? NSFont.systemFont(ofSize: 13) }
+        return NSFont.systemFont(ofSize: font?.pointSize ?? 13, weight: .semibold)
+    }
+
     private var isFocused: Bool { window?.firstResponder == self && NSApp.isActive }
+}
+
+final class DesignSystemChipSelectControl: NSControl {
+    var drawsAppOwnedSurface: Bool { true }
+    private let stack = NSStackView()
+    private var buttons = [DesignSystemFlatButton]()
+    private var selectedIndexStorage: Int
+
+    var selectedIndex: Int {
+        get { selectedIndexStorage }
+        set { selectIndex(newValue, notify: false) }
+    }
+
+    init(labels: [String], selectedIndex: Int = 0, chipWidth: CGFloat = -1, equalWidth: Bool = false) {
+        selectedIndexStorage = max(0, min(selectedIndex, max(labels.count - 1, 0)))
+        super.init(frame: .zero)
+        setupStack()
+        makeButtons(labels, chipWidth: chipWidth, equalWidth: equalWidth)
+        updateButtonStates()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    override var intrinsicContentSize: NSSize {
+        stack.fittingSize
+    }
+
+    override var isEnabled: Bool {
+        didSet { buttons.forEach { $0.isEnabled = isEnabled } }
+    }
+
+    var chipCount: Int { buttons.count }
+
+    func chipTitle(at index: Int) -> String? {
+        guard buttons.indices.contains(index) else { return nil }
+        return buttons[index].title
+    }
+
+    func isChipSelected(at index: Int) -> Bool {
+        guard buttons.indices.contains(index) else { return false }
+        return buttons[index].state == .on
+    }
+
+    @objc private func chipPressed(_ sender: DesignSystemFlatButton) {
+        selectIndex(sender.tag, notify: true)
+    }
+
+    private func setupStack() {
+        translatesAutoresizingMaskIntoConstraints = false
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.orientation = .horizontal
+        stack.alignment = .centerY
+        stack.spacing = 6
+        addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: topAnchor),
+            stack.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: trailingAnchor),
+        ])
+    }
+
+    private func makeButtons(_ labels: [String], chipWidth: CGFloat, equalWidth: Bool) {
+        let buttonWidths = labels.enumerated().map { index, label -> (DesignSystemFlatButton, CGFloat) in
+            let button = DesignSystemControlStyler.makeButton(label, target: self, action: #selector(chipPressed(_:)))
+            button.setButtonType(.toggle)
+            button.tag = index
+            button.setContentHuggingPriority(.required, for: .horizontal)
+            button.setContentCompressionResistancePriority(.required, for: .horizontal)
+            return (button, stabilizedButtonWidth(button, minimumWidth: chipWidth))
+        }
+        let resolvedEqualWidth = equalWidth ? buttonWidths.map { $0.1 }.max() ?? 0 : 0
+        buttons = buttonWidths.map {
+            let button = $0.0
+            let width = equalWidth ? resolvedEqualWidth : $0.1
+            button.widthAnchor.constraint(equalToConstant: width).isActive = true
+            stack.addArrangedSubview(button)
+            return button
+        }
+    }
+
+    private func stabilizedButtonWidth(_ button: DesignSystemFlatButton, minimumWidth: CGFloat) -> CGFloat {
+        let wasSelected = button.isChoiceSelected
+        let regularWidth = button.intrinsicContentSize.width
+        button.isChoiceSelected = true
+        let selectedWidth = button.intrinsicContentSize.width
+        button.isChoiceSelected = wasSelected
+        return ceil(max(regularWidth, selectedWidth, minimumWidth))
+    }
+
+    private func selectIndex(_ index: Int, notify: Bool) {
+        guard !buttons.isEmpty else { return }
+        selectedIndexStorage = max(0, min(index, buttons.count - 1))
+        updateButtonStates()
+        if notify { sendAction(action, to: target) }
+    }
+
+    private func updateButtonStates() {
+        for (index, button) in buttons.enumerated() {
+            let isSelected = index == selectedIndexStorage
+            button.state = isSelected ? .on : .off
+            button.isChoiceSelected = isSelected
+        }
+    }
 }
 
 final class DesignSystemSegmentedControl: NSSegmentedControl {

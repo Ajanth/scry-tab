@@ -112,6 +112,39 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(control.imageTintColor(enabled: false), DesignSystem.color(.textDisabled, appearance: control.effectiveAppearance))
     }
 
+    func testChipSelectUsesAppOwnedChoiceButtons() {
+        let control = DesignSystemChipSelectControl(labels: ["Start", "Middle", "End"], selectedIndex: 1, chipWidth: 72)
+        XCTAssertTrue(control.drawsAppOwnedSurface)
+        XCTAssertEqual(control.chipCount, 3)
+        XCTAssertEqual(control.chipTitle(at: 1), "Middle")
+        XCTAssertEqual(control.selectedIndex, 1)
+        XCTAssertTrue(control.isChipSelected(at: 1))
+        XCTAssertFalse(control.isChipSelected(at: 0))
+        XCTAssertGreaterThanOrEqual(control.intrinsicContentSize.height, DesignSystem.Metrics.standardControlMinHeight)
+    }
+
+    func testChipSelectClampsSelectionToAvailableChoices() {
+        let control = DesignSystemChipSelectControl(labels: ["Start", "Middle", "End"], selectedIndex: 12)
+        XCTAssertEqual(control.selectedIndex, 2)
+        control.selectedIndex = -4
+        XCTAssertEqual(control.selectedIndex, 0)
+    }
+
+    func testChipSelectKeepsStableEqualWidthsAcrossSelectionChanges() {
+        let control = DesignSystemChipSelectControl(labels: ["Start", "Middle", "End"], selectedIndex: 0, chipWidth: 72, equalWidth: true)
+        let initialWidth = control.intrinsicContentSize.width
+        control.selectedIndex = 2
+        XCTAssertEqual(control.intrinsicContentSize.width, initialWidth, accuracy: 0.0001)
+        let stack = try! XCTUnwrap(control.subviews.first as? NSStackView)
+        let buttons = stack.arrangedSubviews.compactMap { $0 as? NSButton }
+        let widths = buttons.compactMap { button in
+            button.constraints.first { $0.firstAttribute == .width && $0.relation == .equal }?.constant
+        }
+        XCTAssertEqual(widths.count, 3)
+        XCTAssertEqual(widths[0], widths[1], accuracy: 0.0001)
+        XCTAssertEqual(widths[1], widths[2], accuracy: 0.0001)
+    }
+
     func testDarkModeSurfacesUseOpaqueMattePalette() {
         guard #available(macOS 10.14, *) else { return }
         let darkAppearance = NSAppearance(named: .darkAqua)
