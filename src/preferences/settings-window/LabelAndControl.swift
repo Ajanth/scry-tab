@@ -253,6 +253,19 @@ class LabelAndControl: NSObject {
         }
     }
 
+    static func makeChipSelect(_ rawName: String, _ macroPreferences: [MacroPreference],
+                               chipWidth: CGFloat = -1,
+                               equalWidth: Bool = false,
+                               extraAction: ActionClosure? = nil) -> DesignSystemChipSelectControl {
+        let control = DesignSystemChipSelectControl(labels: macroPreferences.map { $0.localizedString },
+                                                    selectedIndex: CachedUserDefaults.intFromMacroPref(rawName, macroPreferences),
+                                                    chipWidth: chipWidth,
+                                                    equalWidth: equalWidth)
+        SettingsSearchIndex.registerStrings(macroPreferences.map { $0.localizedString })
+        SettingsSearchIndex.registerTarget(SettingsWindow.highlightTarget(control))
+        return setupControl(control, rawName, extraAction: extraAction) as! DesignSystemChipSelectControl
+    }
+
     static func makeSegmentedControl(_ rawName: String, _ macroPreferences: [MacroPreference], segmentWidth: CGFloat = -1, extraAction: ActionClosure? = nil) -> NSSegmentedControl {
         let button = DesignSystemSegmentedControl(labels: macroPreferences.map {
             $0.localizedString
@@ -408,6 +421,8 @@ class LabelAndControl: NSObject {
             } else {
                 return String((control as! Switch).state == NSButton.StateValue.on)
             }
+        } else if control is DesignSystemChipSelectControl {
+            return String((control as! DesignSystemChipSelectControl).selectedIndex)
         } else if control is NSSegmentedControl {
             return String((control as! NSSegmentedControl).selectedSegment)
         } else {
