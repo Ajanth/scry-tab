@@ -4,15 +4,17 @@ enum AppearanceLivePreviewResolver {
     static let advanceInterval = TimeInterval(1)
 
     static func nextFocusedIndex(current: Int, count: Int) -> Int {
-        guard count > 0 else { return 0 }
-        let normalizedCurrent = ((current % count) + count) % count
-        return (normalizedCurrent + 1) % count
+        AnimatedSelectionResolver.nextFocusedIndex(current: current, count: count)
     }
 
     static func shouldRun(isManuallyPaused: Bool,
                           isWindowVisible: Bool,
                           isSwitcherActive: Bool,
                           prefersReducedMotion: Bool) -> Bool {
-        !isManuallyPaused && isWindowVisible && !isSwitcherActive && !prefersReducedMotion
+        AnimatedSelectionResolver.shouldRun(
+            isManuallyPaused: isManuallyPaused,
+            isWindowVisible: isWindowVisible,
+            prefersReducedMotion: prefersReducedMotion,
+            shouldAdvance: !isSwitcherActive)
     }
 }

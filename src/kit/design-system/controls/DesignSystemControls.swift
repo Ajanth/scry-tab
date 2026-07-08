@@ -534,10 +534,14 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
         drawTitle(title, image: image, in: rect, enabled: enabled)
     }
 
+    // `NSSegmentedControl` is flipped (top-left origin). Plain `NSImage.draw(in:from:operation:fraction:)`
+    // doesn't account for that — it renders asymmetric glyphs (e.g. the search magnifying glass) upside
+    // down. `respectFlipped: true` tells AppKit to orient the image for the current context's flippedness.
     private func drawImage(_ image: NSImage, centeredIn rect: CGRect, enabled: Bool) {
         let imageRect = fittedImageRect(image.size, centeredIn: rect, maximumDimension: 16)
         let drawableImage = image.isTemplate ? image.tinted(imageTintColor(enabled: enabled)) : image
-        drawableImage.draw(in: imageRect, from: .zero, operation: .sourceOver, fraction: image.isTemplate || enabled ? 1 : 0.45)
+        drawableImage.draw(in: imageRect, from: .zero, operation: .sourceOver,
+            fraction: image.isTemplate || enabled ? 1 : 0.45, respectFlipped: true, hints: nil)
     }
 
     private func drawTitle(_ title: String, image: NSImage?, in rect: CGRect, enabled: Bool) {
