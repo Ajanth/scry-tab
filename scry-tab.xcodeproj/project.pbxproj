@@ -23,6 +23,7 @@
 		1C961B13D88FBA5F6F68B8E2 /* titles_show_running_applications_windows_light@2x.heic in Resources */ = {isa = PBXBuildFile; fileRef = 1C96168DC0D8707F8EC6B442 /* titles_show_running_applications_windows_light@2x.heic */; };
 		1C961F9CF4F1BEDF04ACAEE0 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C96189273B7482124C36F4C /* Switch.swift */; };
 		1C961FA2D2D99AE54EBECA67 /* titles_show_running_windows_light@2x.heic in Resources */ = {isa = PBXBuildFile; fileRef = 1C9610B2E76F1E429C8D3660 /* titles_show_running_windows_light@2x.heic */; };
+		4A17E7437EC93796C6109B9B /* scry_wallpaper@2x.heic in Resources */ = {isa = PBXBuildFile; fileRef = 9B66DFB88E1DE740B24278FF /* scry_wallpaper@2x.heic */; };
 		4807A6C623A9CD190052A53E /* SkyLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4807A6C523A9CD190052A53E /* SkyLight.framework */; };
 		48F3E16224EC0D8800A1C64B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BABDA79F8EF76E3ACDD5F /* Localizable.strings */; };
 		5883F0A829A5182C0071DB65 /* TrackpadEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5883F0A729A5182C0071DB65 /* TrackpadEvents.swift */; };
@@ -329,6 +330,7 @@
 		1C961F57248D4E2377A9038E /* titles_show_running_applications_light@2x.heic */ = {isa = PBXFileReference; lastKnownFileType = image.heic; path = "titles_show_running_applications_light@2x.heic"; sourceTree = "<group>"; };
 		1C961F68C77AAE38E5A2E046 /* app_icons_show_running_applications_light@2x.heic */ = {isa = PBXFileReference; lastKnownFileType = image.heic; path = "app_icons_show_running_applications_light@2x.heic"; sourceTree = "<group>"; };
 		1C961FB3DCF4906FEEF4A23D /* TableGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableGroupView.swift; sourceTree = "<group>"; };
+		9B66DFB88E1DE740B24278FF /* scry_wallpaper@2x.heic */ = {isa = PBXFileReference; lastKnownFileType = image.heic; path = "scry_wallpaper@2x.heic"; sourceTree = "<group>"; };
 		3F9B638CE7C1DF9BD655C52B /* ObjCExceptionCatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCExceptionCatcher.h; sourceTree = "<group>"; };
 		4807A6C523A9CD190052A53E /* SkyLight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SkyLight.framework; path = ../../../../System/Library/PrivateFrameworks/SkyLight.framework; sourceTree = "<group>"; };
 		481FE54624D2D387001032F1 /* scry-tab-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "scry-tab-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -668,6 +670,7 @@
 				1C96127120349FE18C5C39DA /* app_icons_show_running_windows_light@2x.heic */,
 				1C9615FFB4138E542A2CB07F /* titles_hide_space_number_labels_light@2x.heic */,
 				1C961E64CF8FB6E3FDAA3DAA /* titles_hide_status_icons_light@2x.heic */,
+				9B66DFB88E1DE740B24278FF /* scry_wallpaper@2x.heic */,
 				1C961B26B70C826BBD762AC5 /* titles_light@2x.heic */,
 				1C961F57248D4E2377A9038E /* titles_show_running_applications_light@2x.heic */,
 				1C96168DC0D8707F8EC6B442 /* titles_show_running_applications_windows_light@2x.heic */,
@@ -1676,6 +1679,7 @@
 				1C961FA2D2D99AE54EBECA67 /* titles_show_running_windows_light@2x.heic in Resources */,
 				1C9619D3A3ACDBA31235409D /* titles_show_space_number_labels_light@2x.heic in Resources */,
 				1C9614F589E212F9A768D936 /* titles_show_status_icons_light@2x.heic in Resources */,
+				4A17E7437EC93796C6109B9B /* scry_wallpaper@2x.heic in Resources */,
 				BF0C8BD4410A3D597409C328 /* InfoPlist.strings in Resources */,
 				BF0C86B26D16AFC588C88DB4 /* Localizable.strings in Resources */,
 				BF0C8668A861AD9E42D26842 /* InfoPlist.strings in Resources */,

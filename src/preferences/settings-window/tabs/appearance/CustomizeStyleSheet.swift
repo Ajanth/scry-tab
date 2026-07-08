@@ -23,8 +23,7 @@ class CustomizeStyleSheet: SheetWindow {
       + TitleTruncationPreference.allCases.map { $0.localizedString }
 
     private static let sheetWidth = CGFloat(520)
-    private static let previewWidth = CGFloat(420)
-    private static let illustratedImageWidth = previewWidth - IllustratedImageThemeView.padding
+    private static let illustratedImageWidth = sheetWidth
 
     let style = Preferences.appearanceStyle
     var illustratedImageView: IllustratedImageThemeView!

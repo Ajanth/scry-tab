@@ -17,37 +17,20 @@ class IllustratedImageThemeView: ClickHoverImageView {
     /// is for another style). Exposed so `CustomizeStyleSheet.searchableStrings` can reference it
     /// without re-`NSLocalizedString`-ing the same English text.
     static let placeholderLabelText = NSLocalizedString("Applies in other Appearances", comment: "")
-    var style: AppearanceStylePreference!
-    var theme: String!
-    var imageName: String!
-    var isFocused: Bool = false
+    private let style: AppearanceStylePreference
+    private let imageView: NSImageView
+    private var isFocused = false
     private var placeholderLabel: NSTextField!
 
-    /// Loads an illustration from the bundle without going through `NSImage(named:)`'s global
-    /// named cache (which never releases). Pairs with `cacheMode = .never` so the per-image scaled
-    /// bitmap cache is also disabled. Lets ARC reclaim the bitmap when no view holds the image.
-    static func loadIllustration(_ name: String) -> NSImage? {
-        guard let path = Bundle.main.path(forResource: "\(name)@2x", ofType: "heic") else { return nil }
-        let image = NSImage(contentsOfFile: path)
-        image?.cacheMode = .never
-        return image
-    }
-
     init(_ style: AppearanceStylePreference, _ width: CGFloat) {
-        // TODO: The appearance theme functionality has not been implemented yet.
-        // We will implement it later; for now, use the light theme.
-        let theme = "light"
-        let imageName = IllustratedImageThemeView.getConcatenatedImageName(style, theme)
-        let imageView = NSImageView(image: IllustratedImageThemeView.loadIllustration(imageName)!)
+        self.style = style
+        imageView = NSImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.imageScaling = .scaleProportionallyUpOrDown
         imageView.wantsLayer = true
-        imageView.layer!.masksToBounds = true
-        imageView.layer!.cornerRadius = TableGroupView.cornerRadius
+        imageView.layer?.masksToBounds = true
+        imageView.layer?.cornerRadius = TableGroupView.cornerRadius
         super.init(infoCircle: imageView)
-        self.style = style
-        self.theme = theme
-        self.imageName = imageName
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
         let imageWidth = width - IllustratedImageThemeView.padding
@@ -75,9 +58,7 @@ class IllustratedImageThemeView: ClickHoverImageView {
         ])
         placeholderLabel = placeholder
         highlight(false)
-        onClick = { (event, view) in
-            self.highlight(false)
-        }
+        onClick = { [weak self] _, _ in self?.highlight(false) }
     }
 
     required init?(coder: NSCoder) {
@@ -103,11 +84,7 @@ class IllustratedImageThemeView: ClickHoverImageView {
         setBorder()
         placeholderLabel.isHidden = true
         infoCircle.isHidden = false
-        if highlighted {
-            updateImage(imageName)
-        } else {
-            (infoCircle as! NSImageView).image = IllustratedImageThemeView.loadIllustration(self.imageName)
-        }
+        imageView.image = AppearanceLivePreviewArtwork.illustratedPreviewImage(previewState(highlighted ? imageName : nil))
     }
 
     func showPlaceholder() {
@@ -117,23 +94,69 @@ class IllustratedImageThemeView: ClickHoverImageView {
         placeholderLabel.isHidden = false
     }
 
-    private func updateImage(_ imageName: String) {
-        (infoCircle as! NSImageView).image = IllustratedImageThemeView.loadIllustration(getStyleThemeImageName(imageName))
-    }
-
-    static func getConcatenatedImageName(_ style: AppearanceStylePreference,
-                                         _ theme: String,
-                                         _ imageName: String = "") -> String {
-        if imageName.isEmpty {
-            // app_icons_light/titles_dark
-            return style.image.name + "_" + theme
+    private func previewState(_ imageName: String?) -> AppearanceLivePreviewArtwork.IllustratedPreviewState {
+        var state = style == .appIcons
+            ? AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
+                                                                   titleMode: .focusedAppName,
+                                                                   showsStatusIcons: false,
+                                                                   showsSpaceNumbers: false,
+                                                                   highlight: .none)
+            : AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
+                                                                   titleMode: .appNameAndWindowTitle,
+                                                                   showsStatusIcons: true,
+                                                                   showsSpaceNumbers: true,
+                                                                   highlight: .none)
+        guard let imageName else { return state }
+        if imageName == ShowTitlesPreference.appName.image.name {
+            state = AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
+                                                                         titleMode: .appName,
+                                                                         showsStatusIcons: state.showsStatusIcons,
+                                                                         showsSpaceNumbers: state.showsSpaceNumbers,
+                                                                         highlight: .none)
         }
-        // app_icons_hide_colored_circles_light/titles_show_status_icons_light
-        return style.image.name + "_" + imageName + "_" + theme
-    }
-
-    func getStyleThemeImageName(_ imageName: String = "") -> String {
-        return IllustratedImageThemeView.getConcatenatedImageName(style, theme, imageName)
+        if imageName == ShowTitlesPreference.windowTitle.image.name {
+            state = AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
+                                                                         titleMode: .windowTitle,
+                                                                         showsStatusIcons: state.showsStatusIcons,
+                                                                         showsSpaceNumbers: state.showsSpaceNumbers,
+                                                                         highlight: .none)
+        }
+        if imageName == ShowTitlesPreference.appNameAndWindowTitle.image.name {
+            state = AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
+                                                                         titleMode: .appNameAndWindowTitle,
+                                                                         showsStatusIcons: state.showsStatusIcons,
+                                                                         showsSpaceNumbers: state.showsSpaceNumbers,
+                                                                         highlight: .none)
+        }
+        if imageName == "show_status_icons" {
+            state = AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
+                                                                         titleMode: state.titleMode,
+                                                                         showsStatusIcons: true,
+                                                                         showsSpaceNumbers: state.showsSpaceNumbers,
+                                                                         highlight: .statusIcons)
+        }
+        if imageName == "hide_status_icons" {
+            state = AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
+                                                                         titleMode: state.titleMode,
+                                                                         showsStatusIcons: false,
+                                                                         showsSpaceNumbers: state.showsSpaceNumbers,
+                                                                         highlight: .none)
+        }
+        if imageName == "show_space_number_labels" {
+            state = AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
+                                                                         titleMode: state.titleMode,
+                                                                         showsStatusIcons: state.showsStatusIcons,
+                                                                         showsSpaceNumbers: true,
+                                                                         highlight: .spaceNumbers)
+        }
+        if imageName == "hide_space_number_labels" {
+            state = AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
+                                                                         titleMode: state.titleMode,
+                                                                         showsStatusIcons: state.showsStatusIcons,
+                                                                         showsSpaceNumbers: false,
+                                                                         highlight: .none)
+        }
+        return state
     }
 
     static func resetImage(_ illustratedImageView: IllustratedImageThemeView, _ event: NSEvent, _ view: NSView) {
