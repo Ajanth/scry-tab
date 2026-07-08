@@ -167,7 +167,7 @@ enum AppearanceLivePreviewArtwork {
         }
     }
 
-    class ItemView: NSView {
+    class ItemView: NSView, AnimatedSelectionItemView {
         var selectionTarget: NSView { self }
         var selectionPadding: CGFloat { 0 }
 
