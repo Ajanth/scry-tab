@@ -160,10 +160,12 @@
 "Show all windows" = "Показать все окна";
 "Show apps with no open window" = "Показывать приложения без открытых окон";
 "Show at the end" = "Показывать в конце";
+"Show Fewer Options" = "Показать меньше параметров";
 "Show fullscreen windows" = "Показывать полноэкранные окна";
 "Show hidden windows" = "Показывать скрытые окна";
 "Show main window" = "Показать главное окно";
 "Show minimized windows" = "Показывать свёрнутые окна";
+"Show More Options" = "Показать больше параметров";
 "Show on" = "Показывать на";
 "Show separate window for each tab" = "Отдельное окно для каждой вкладки";
 "Show single window for all tabs" = "Одно окно для всех вкладок";

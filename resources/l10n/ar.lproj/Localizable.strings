@@ -160,10 +160,12 @@
 "Show all windows" = "إظهار جميع النوافذ";
 "Show apps with no open window" = "إظهار التطبيقات التي ليس لديها نافذة مفتوحة";
 "Show at the end" = "الإظهار في النهاية";
+"Show Fewer Options" = "إظهار خيارات أقل";
 "Show fullscreen windows" = "إظهار النوافذ بملء الشاشة";
 "Show hidden windows" = "إظهار النوافذ المخفية";
 "Show main window" = "إظهار النافذة الرئيسية";
 "Show minimized windows" = "إظهار النوافذ المصغّرة";
+"Show More Options" = "إظهار المزيد من الخيارات";
 "Show on" = "الإظهار على";
 "Show separate window for each tab" = "إظهار نافذة منفصلة لكل علامة تبويب";
 "Show single window for all tabs" = "إظهار نافذة واحدة لجميع علامات التبويب";

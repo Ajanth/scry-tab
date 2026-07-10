@@ -265,21 +265,12 @@ final class TriggerBinding {
         }
     }
 
-    private static func makeInlineLabel(_ text: String) -> NSView {
-        let wrapper = NSView()
-        wrapper.translatesAutoresizingMaskIntoConstraints = false
-        wrapper.heightAnchor.constraint(equalToConstant: ShortcutEditor.triggerRowContentHeight).isActive = true
+    private static func makeInlineLabel(_ text: String) -> NSTextField {
         let label = LabelAndControl.makeLabel(text)
         label.alignment = .left
         label.setContentHuggingPriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        wrapper.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: wrapper.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: wrapper.trailingAnchor),
-            label.centerYAnchor.constraint(equalTo: wrapper.centerYAnchor),
-        ])
-        return wrapper
+        return label
     }
 
     func bind(toShortcut index: Int) {
@@ -321,6 +312,8 @@ final class FilteringPane {
     private static let labelHidden = NSLocalizedString("Show hidden windows", comment: "")
     private static let labelFullscreen = NSLocalizedString("Show fullscreen windows", comment: "")
     private static let labelWindowless = NSLocalizedString("Show apps with no open window", comment: "")
+    private static let showMoreOptions = NSLocalizedString("Show More Options", comment: "")
+    private static let showFewerOptions = NSLocalizedString("Show Fewer Options", comment: "")
 
     /// All text contributed to the search index by this pane. Includes row titles + the localized
     /// strings of each dropdown's `MacroPreference` cases. `ShortcutEditor.init` registers this
@@ -330,6 +323,7 @@ final class FilteringPane {
     static let searchableStrings: [String] = [
         labelApps, labelSpaces, labelScreens,
         labelMinimized, labelHidden, labelFullscreen, labelWindowless,
+        showMoreOptions, showFewerOptions,
     ] + AppsToShowPreference.allCases.map { $0.localizedString }
       + SpacesToShowPreference.allCases.map { $0.localizedString }
       + ScreensToShowPreference.allCases.map { $0.localizedString }
@@ -353,15 +347,26 @@ final class FilteringPane {
         showFullscreen = ShortcutBoundDropdown(baseName: "showFullscreenWindows", cases: ShowHowPreference.allCases.filter { $0 != .showAtTheEnd })
         showWindowless = ShortcutBoundDropdown(baseName: "showWindowlessApps", cases: ShowHowPreference.allCases)
 
-        let table = TableGroupView(width: width)
-        table.addRow(leftViews: [TableGroupView.makeText(Self.labelApps)], rightViews: [appsToShow])
-        table.addRow(leftViews: [TableGroupView.makeText(Self.labelSpaces)], rightViews: [spacesToShow])
-        table.addRow(leftViews: [TableGroupView.makeText(Self.labelScreens)], rightViews: [screensToShow])
-        table.addRow(TableGroupView.Row(leftTitle: Self.labelMinimized, rightViews: [showMinimized]))
-        table.addRow(TableGroupView.Row(leftTitle: Self.labelHidden, rightViews: [showHidden]))
-        table.addRow(TableGroupView.Row(leftTitle: Self.labelFullscreen, rightViews: [showFullscreen]))
-        table.addRow(TableGroupView.Row(leftTitle: Self.labelWindowless, rightViews: [showWindowless]))
-        view = table
+        let scopeTable = TableGroupView(width: width)
+        scopeTable.addRow(leftViews: [TableGroupView.makeText(Self.labelApps)], rightViews: [appsToShow])
+        scopeTable.addRow(leftViews: [TableGroupView.makeText(Self.labelSpaces)], rightViews: [spacesToShow])
+        scopeTable.addRow(leftViews: [TableGroupView.makeText(Self.labelScreens)], rightViews: [screensToShow])
+
+        let windowStateTable = TableGroupView(width: width)
+        windowStateTable.addRow(TableGroupView.Row(leftTitle: Self.labelMinimized, rightViews: [showMinimized]))
+        windowStateTable.addRow(TableGroupView.Row(leftTitle: Self.labelHidden, rightViews: [showHidden]))
+        windowStateTable.addRow(TableGroupView.Row(leftTitle: Self.labelFullscreen, rightViews: [showFullscreen]))
+        windowStateTable.addRow(TableGroupView.Row(leftTitle: Self.labelWindowless, rightViews: [showWindowless]))
+
+        let moreOptions = DesignSystemDisclosureSection(
+            collapsedTitle: Self.showMoreOptions,
+            expandedTitle: Self.showFewerOptions,
+            content: windowStateTable)
+        let container = NSStackView(views: [scopeTable, moreOptions])
+        container.orientation = .vertical
+        container.alignment = .leading
+        container.spacing = TableGroupSetView.tableGroupSpacing
+        view = container
     }
 
     func bind(toShortcut index: Int) {

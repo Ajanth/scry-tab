@@ -28,6 +28,8 @@ enum Symbols: String {
     case plus = "􀅼"                  // plus
     case minus = "􀅽"                 // minus
     case minusCircleFill = "􀁏"       // minus.circle.fill
+    case caretUp = "▴"                // triangle.up
+    case caretDown = "▾"              // triangle.down
     // ShortcutStylePreference
     case cursorarrowRays = "􀇰"       // cursorarrow.rays
     case pauseRectangle = "􀊛"        // pause.rectangle

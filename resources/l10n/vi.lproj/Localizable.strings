@@ -160,10 +160,12 @@
 "Show all windows" = "Hiển thị tất cả cửa sổ";
 "Show apps with no open window" = "Hiển thị ứng dụng không có cửa sổ mở";
 "Show at the end" = "Hiển thị ở cuối";
+"Show Fewer Options" = "Hiển thị ít tùy chọn hơn";
 "Show fullscreen windows" = "Hiển thị cửa sổ toàn màn hình";
 "Show hidden windows" = "Hiển thị cửa sổ đã ẩn";
 "Show main window" = "Hiển thị cửa sổ chính";
 "Show minimized windows" = "Hiển thị cửa sổ đã thu nhỏ";
+"Show More Options" = "Hiển thị thêm tùy chọn";
 "Show on" = "Hiển thị trên";
 "Show separate window for each tab" = "Hiển thị cửa sổ riêng cho mỗi tab";
 "Show single window for all tabs" = "Hiển thị một cửa sổ cho tất cả tab";

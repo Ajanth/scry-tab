@@ -26,7 +26,6 @@ class CustomRecorderControl: RecorderControl {
         restrictModifiers([])
         objectValue = shortcut
         addOrUpdateConstraint(widthAnchor, 100)
-        heightAnchor.constraint(greaterThanOrEqualToConstant: DesignSystem.Metrics.standardControlMinHeight).isActive = true
     }
 
     override func drawClearButton(_ aDirtyRect: NSRect) {

@@ -284,7 +284,7 @@ class ShowHideIllustratedView {
 }
 
 private final class AppearanceStylePreviewPane: NSView {
-    static let width = CGFloat(272)
+    static let width = CGFloat(320)
     static let splitSpacing = TableGroupView.spacing
     private let livePreviewView = AppearanceLivePreviewView()
 
@@ -427,7 +427,6 @@ class AppearanceTab: NSObject {
     static var customizeStyleButton: NSButton!
     static var customizeStyleSheet: CustomizeStyleSheet!
     private static let appearanceControlsWidth = SettingsWindow.contentWidth - AppearanceStylePreviewPane.width - AppearanceStylePreviewPane.splitSpacing
-    private static let compactSegmentWidth = CGFloat(86)
     private static let styleSegmentWidth = CGFloat(132)
 
     static func initTab() -> NSView {
@@ -482,13 +481,13 @@ class AppearanceTab: NSObject {
         let table = TableGroupView(width: appearanceControlsWidth)
         let styleControl = makeStyleSegmentedControl(previewPane)
         table.addRow(leftText: NSLocalizedString("Style", comment: ""), rightViews: [styleControl])
-        let sizeControl = makeGlobalSegmentedControl("appearanceSize", overrideBaseName: "appearanceSizeOverride",
-            cases: AppearanceSizePreference.allCases, segmentWidth: compactSegmentWidth)
-        table.addRow(leftText: AppearanceTab.labelSize,
-            rightViews: [sizeControl])
+        table.addRow(leftText: AppearanceTab.labelSize, rightViews: [
+            makeGlobalDropdown("appearanceSize", overrideBaseName: "appearanceSizeOverride",
+                cases: AppearanceSizePreference.allCases)
+        ])
         table.addRow(leftText: AppearanceTab.labelTheme,
-            rightViews: [makeGlobalSegmentedControl("appearanceTheme", overrideBaseName: "appearanceThemeOverride",
-                cases: AppearanceThemePreference.allCases, segmentWidth: compactSegmentWidth)])
+            rightViews: [makeGlobalDropdown("appearanceTheme", overrideBaseName: "appearanceThemeOverride",
+                cases: AppearanceThemePreference.allCases)])
         addAfterKeysReleasedRow(table)
         table.addRow(rightViews: customizeStyleButton)
         return table
@@ -517,17 +516,16 @@ class AppearanceTab: NSObject {
     }
 
     private static func addAfterKeysReleasedRow(_ table: TableGroupView) {
-        let control = makeGlobalSegmentedControl("shortcutStyle", overrideBaseName: "shortcutStyleOverride",
-            cases: ShortcutStylePreference.allCases, segmentWidth: compactSegmentWidth)
+        let control = makeGlobalDropdown("shortcutStyle", overrideBaseName: "shortcutStyleOverride",
+            cases: ShortcutStylePreference.allCases)
         table.addRow(leftText: AppearanceTab.labelShortcutStyle,
             rightViews: [control])
     }
 
-    private static func makeGlobalSegmentedControl(_ rawName: String,
-                                                   overrideBaseName: String,
-                                                   cases: [MacroPreference],
-                                                   segmentWidth: CGFloat) -> NSSegmentedControl {
-        let control = LabelAndControl.makeSegmentedControl(rawName, cases, segmentWidth: segmentWidth)
+    private static func makeGlobalDropdown(_ rawName: String,
+                                           overrideBaseName: String,
+                                           cases: [MacroPreference]) -> NSPopUpButton {
+        let control = LabelAndControl.makeDropdown(rawName, cases)
         control.onAction = { control in
             let previousValue = UserDefaults.standard.string(forKey: rawName)
             let newValue = LabelAndControl.getControlValue(control, nil)

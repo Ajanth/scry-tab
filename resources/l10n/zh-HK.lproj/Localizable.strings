@@ -160,10 +160,12 @@
 "Show all windows" = "顯示所有視窗";
 "Show apps with no open window" = "顯示沒有開啟視窗的 App";
 "Show at the end" = "在結尾顯示";
+"Show Fewer Options" = "顯示較少選項";
 "Show fullscreen windows" = "顯示全螢幕視窗";
 "Show hidden windows" = "顯示隱藏的視窗";
 "Show main window" = "顯示主視窗";
 "Show minimized windows" = "顯示縮到最小的視窗";
+"Show More Options" = "顯示更多選項";
 "Show on" = "顯示於";
 "Show separate window for each tab" = "為每個分頁顯示獨立視窗";
 "Show single window for all tabs" = "為所有分頁顯示單一視窗";

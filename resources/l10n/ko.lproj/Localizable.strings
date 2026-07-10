@@ -160,10 +160,12 @@
 "Show all windows" = "모든 윈도우 보이기";
 "Show apps with no open window" = "열린 윈도우가 없는 앱 보이기";
 "Show at the end" = "끝에 표시";
+"Show Fewer Options" = "더 적은 옵션 보기";
 "Show fullscreen windows" = "전체 화면 윈도우 보이기";
 "Show hidden windows" = "숨겨진 윈도우 보이기";
 "Show main window" = "메인 윈도우 보이기";
 "Show minimized windows" = "최소화된 윈도우 보이기";
+"Show More Options" = "더 많은 옵션 보기";
 "Show on" = "표시 위치";
 "Show separate window for each tab" = "각 탭을 별도의 윈도우로 표시";
 "Show single window for all tabs" = "모든 탭을 하나의 윈도우로 표시";

@@ -160,10 +160,12 @@
 "Show all windows" = "Pokaż wszystkie okna";
 "Show apps with no open window" = "Pokaż aplikacje bez otwartych okien";
 "Show at the end" = "Pokaż na końcu";
+"Show Fewer Options" = "Pokaż mniej opcji";
 "Show fullscreen windows" = "Pokaż okna na pełnym ekranie";
 "Show hidden windows" = "Pokaż ukryte okna";
 "Show main window" = "Pokaż okno główne";
 "Show minimized windows" = "Pokaż zminimalizowane okna";
+"Show More Options" = "Pokaż więcej opcji";
 "Show on" = "Pokaż na";
 "Show separate window for each tab" = "Pokaż osobne okno dla każdej karty";
 "Show single window for all tabs" = "Pokaż pojedyncze okno dla wszystkich kart";

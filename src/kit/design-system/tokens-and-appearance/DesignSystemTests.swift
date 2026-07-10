@@ -30,9 +30,14 @@ final class DesignSystemTests: XCTestCase {
     func testControlGeometryTokensMatchMigrationPlan() {
         XCTAssertEqual(DesignSystem.Metrics.standardControlMinHeight, 32)
         XCTAssertEqual(DesignSystem.Metrics.controlRadius, 8)
+        XCTAssertEqual(DesignSystem.Metrics.focusIndicatorBorderWidth, 3)
         XCTAssertEqual(DesignSystem.Metrics.controlTextInset, 10)
         XCTAssertEqual(DesignSystem.Metrics.buttonHorizontalPadding, 14)
         XCTAssertEqual(DesignSystem.Metrics.buttonVerticalPadding, 7)
+        XCTAssertEqual(DesignSystem.Metrics.disclosureCaretWidth, 10)
+        XCTAssertEqual(DesignSystem.Metrics.disclosureCaretHeight, 6)
+        XCTAssertEqual(DesignSystem.Metrics.disclosureCaretStrokeWidth, 1.75)
+        XCTAssertEqual(DesignSystem.Metrics.disclosureCaretTitleSpacing, 6)
     }
 
     func testFlatButtonUsesAppOwnedSurfaceAndDestructiveAccent() {
@@ -52,12 +57,49 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(button.intrinsicContentSize.height, DesignSystem.Metrics.standardControlMinHeight)
     }
 
+    func testDisclosureSectionTogglesItsContentAndTitle() {
+        let content = NSView()
+        content.translatesAutoresizingMaskIntoConstraints = false
+        content.widthAnchor.constraint(equalToConstant: 220).isActive = true
+        content.heightAnchor.constraint(equalToConstant: 64).isActive = true
+        let section = DesignSystemDisclosureSection(collapsedTitle: "Show More Options", expandedTitle: "Show Fewer Options", content: content)
+
+        XCTAssertFalse(section.isExpanded)
+        XCTAssertFalse(section.isContentVisible)
+        XCTAssertEqual(section.alignment, .centerX)
+        XCTAssertEqual(section.fittingSize.width, 220, accuracy: 0.0001)
+        XCTAssertEqual(section.caretDirection, .down)
+        XCTAssertTrue(section.hasTrailingCaret)
+        XCTAssertEqual(section.title, "Show More Options")
+        XCTAssertEqual(section.caretImageSize.width, DesignSystem.Metrics.disclosureCaretTitleSpacing + DesignSystem.Metrics.disclosureCaretWidth)
+        XCTAssertEqual(section.caretImageSize.height, DesignSystem.Metrics.disclosureCaretHeight)
+        XCTAssertGreaterThanOrEqual(section.caretTrailingPadding, DesignSystem.Metrics.buttonHorizontalPadding)
+        let collapsedButtonWidth = section.disclosureButtonWidth
+
+        section.setExpanded(true, animated: false)
+
+        XCTAssertTrue(section.isExpanded)
+        XCTAssertTrue(section.isContentVisible)
+        XCTAssertEqual(section.caretDirection, .up)
+        XCTAssertEqual(section.title, "Show Fewer Options")
+        XCTAssertEqual(section.disclosureButtonWidth, collapsedButtonWidth, accuracy: 0.0001)
+        XCTAssertGreaterThanOrEqual(section.caretTrailingPadding, DesignSystem.Metrics.buttonHorizontalPadding)
+
+        section.setExpanded(false, animated: false)
+
+        XCTAssertFalse(section.isExpanded)
+        XCTAssertFalse(section.isContentVisible)
+        XCTAssertEqual(section.title, "Show More Options")
+    }
+
     func testPopupButtonUsesAppOwnedSurface() {
         let button = PopupButtonLikeSystemSettings()
         button.addItems(withTitles: ["One", "Two"])
         XCTAssertTrue(button.drawsAppOwnedSurface)
         XCTAssertFalse(button.isBordered)
         XCTAssertEqual(button.focusRingType, NSFocusRingType.none)
+        XCTAssertTrue(button.wantsLayer)
+        XCTAssertNotNil(button.layer)
     }
 
     func testTextFieldUsesFlatSurfaceAndHorizontalPadding() {
@@ -95,6 +137,15 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertTrue(control.drawsAppOwnedSurface)
     }
 
+    func testSegmentedControlUsesCompositorSelectionIndicator() {
+        let control = DesignSystemSegmentedControl(labels: ["One", "Two"], trackingMode: .selectOne, target: nil, action: nil)
+        let indicator = try! XCTUnwrap(control.layer?.sublayers?.first)
+        XCTAssertTrue(control.usesAnimatedSelectionIndicator)
+        XCTAssertTrue(control.wantsLayer)
+        XCTAssertNotNil(control.layer)
+        XCTAssertEqual(indicator.borderWidth, DesignSystem.Metrics.focusIndicatorBorderWidth)
+    }
+
     func testSegmentedControlImageContentPreservesAspectRatio() {
         let control = DesignSystemSegmentedControl(labels: [""], trackingMode: .momentary, target: nil, action: nil)
         let rect = control.fittedImageRect(CGSize(width: 9, height: 1),
@@ -121,6 +172,15 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertTrue(control.isChipSelected(at: 1))
         XCTAssertFalse(control.isChipSelected(at: 0))
         XCTAssertGreaterThanOrEqual(control.intrinsicContentSize.height, DesignSystem.Metrics.standardControlMinHeight)
+    }
+
+    func testChipSelectUsesCompositorSelectionIndicator() {
+        let control = DesignSystemChipSelectControl(labels: ["Start", "Middle", "End"])
+        let indicator = try! XCTUnwrap(control.layer?.sublayers?.first)
+        XCTAssertTrue(control.usesAnimatedSelectionIndicator)
+        XCTAssertTrue(control.wantsLayer)
+        XCTAssertNotNil(control.layer)
+        XCTAssertEqual(indicator.borderWidth, DesignSystem.Metrics.focusIndicatorBorderWidth)
     }
 
     func testChipSelectClampsSelectionToAvailableChoices() {
