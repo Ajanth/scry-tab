@@ -79,8 +79,80 @@ private func copyTextCellState(from source: NSTextFieldCell, to destination: NST
     destination.wraps = source.wraps
 }
 
+private final class DesignSystemSelectedControlIndicator {
+    private enum Motion {
+        static let visibilityDuration = CFTimeInterval(0.14)
+        static let springMass = CGFloat(1)
+        static let springStiffness = CGFloat(600)
+        static let springDamping = CGFloat(50)
+    }
+
+    static let inset = CGFloat(2)
+    let layer = CALayer()
+
+    func install(on view: NSView) {
+        layer.zPosition = 1
+        layer.borderWidth = DesignSystem.Metrics.focusIndicatorBorderWidth
+        layer.opacity = 0
+        view.layer?.addSublayer(layer)
+    }
+
+    func show(in rect: NSRect, on view: NSView, animated: Bool) {
+        let previousBounds = layer.presentation()?.bounds ?? layer.bounds
+        let previousPosition = layer.presentation()?.position ?? layer.position
+        let wasVisible = layer.opacity > 0
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        layer.bounds = NSRect(origin: .zero, size: rect.size)
+        layer.position = NSPoint(x: rect.midX, y: rect.midY)
+        layer.cornerRadius = DesignSystem.Metrics.controlRadius - 1
+        layer.borderColor = DesignSystem.semanticCGColor(.accentPrimary, in: view)
+        layer.borderWidth = DesignSystem.Metrics.focusIndicatorBorderWidth
+        layer.opacity = 1
+        CATransaction.commit()
+        guard animated && !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else { return }
+        if wasVisible {
+            animateMotion(keyPath: "bounds", from: previousBounds, to: layer.bounds)
+            animateMotion(keyPath: "position", from: previousPosition, to: layer.position)
+        } else {
+            animateVisibility(from: 0, to: 1)
+        }
+    }
+
+    func hide(animated: Bool) {
+        guard layer.opacity > 0 else { return }
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        layer.opacity = 0
+        CATransaction.commit()
+        guard animated && !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else { return }
+        animateVisibility(from: 1, to: 0)
+    }
+
+    private func animateMotion(keyPath: String, from: Any, to: Any) {
+        let animation = CASpringAnimation(keyPath: keyPath)
+        animation.fromValue = from
+        animation.toValue = to
+        animation.mass = Motion.springMass
+        animation.stiffness = Motion.springStiffness
+        animation.damping = Motion.springDamping
+        animation.duration = animation.settlingDuration
+        layer.add(animation, forKey: "selectedControlIndicator.\(keyPath)")
+    }
+
+    private func animateVisibility(from: CGFloat, to: CGFloat) {
+        let animation = CABasicAnimation(keyPath: "opacity")
+        animation.fromValue = from
+        animation.toValue = to
+        animation.duration = Motion.visibilityDuration
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        layer.add(animation, forKey: "selectedControlIndicator.opacity")
+    }
+}
+
 final class DesignSystemFlatButton: NSButton {
     var drawsAppOwnedSurface: Bool { true }
+    var usesExternalFocusIndicator = false
     var isChoiceSelected = false {
         didSet {
             refreshTitle()
@@ -252,7 +324,7 @@ final class DesignSystemFlatButton: NSButton {
     }
 
     private func drawSurface() {
-        let lineWidth = isFocused ? CGFloat(1.5) : CGFloat(1)
+        let lineWidth = showsOwnFocusAccent ? CGFloat(1.5) : CGFloat(1)
         let inset = lineWidth / 2
         let rect = bounds.insetBy(dx: inset, dy: inset)
         let path = NSBezierPath(roundedRect: rect, xRadius: DesignSystem.Metrics.controlRadius, yRadius: DesignSystem.Metrics.controlRadius)
@@ -288,7 +360,7 @@ final class DesignSystemFlatButton: NSButton {
             let alpha = isEnabled ? 0.32 : 0.18
             return DesignSystem.color(.statusDestructive, appearance: effectiveAppearance).withAlphaComponent(alpha)
         }
-        if isFocused {
+        if showsOwnFocusAccent {
             return DesignSystem.color(.focusAccent, appearance: effectiveAppearance)
         }
         if isChoiceSelected {
@@ -307,12 +379,194 @@ final class DesignSystemFlatButton: NSButton {
         return NSFont.systemFont(ofSize: font?.pointSize ?? 13, weight: .semibold)
     }
 
-    private var isFocused: Bool { window?.firstResponder == self && NSApp.isActive }
+    var hasKeyboardFocus: Bool { isEnabled && window?.firstResponder == self && NSApp.isActive }
+    private var showsOwnFocusAccent: Bool { hasKeyboardFocus && !usesExternalFocusIndicator }
+}
+
+enum DesignSystemDisclosureCaretDirection: Equatable {
+    case up
+    case down
+}
+
+private enum DesignSystemDisclosureCaretImage {
+    private static let up = draw(.up)
+    private static let down = draw(.down)
+
+    static func make(_ direction: DesignSystemDisclosureCaretDirection) -> NSImage {
+        switch direction {
+        case .up: return up
+        case .down: return down
+        }
+    }
+
+    private static func draw(_ direction: DesignSystemDisclosureCaretDirection) -> NSImage {
+        let metrics = DesignSystem.Metrics.self
+        let size = NSSize(width: metrics.disclosureCaretTitleSpacing + metrics.disclosureCaretWidth,
+                          height: metrics.disclosureCaretHeight)
+        let image = NSImage(size: size, flipped: false) { _ in
+            let strokeInset = metrics.disclosureCaretStrokeWidth / 2
+            let caretRect = NSRect(x: metrics.disclosureCaretTitleSpacing, y: 0,
+                                   width: metrics.disclosureCaretWidth, height: metrics.disclosureCaretHeight)
+                .insetBy(dx: strokeInset, dy: strokeInset)
+            let path = NSBezierPath()
+            let outsideY = direction == .down ? caretRect.maxY : caretRect.minY
+            let centerY = direction == .down ? caretRect.minY : caretRect.maxY
+            path.move(to: NSPoint(x: caretRect.minX, y: outsideY))
+            path.line(to: NSPoint(x: caretRect.midX, y: centerY))
+            path.line(to: NSPoint(x: caretRect.maxX, y: outsideY))
+            path.lineWidth = metrics.disclosureCaretStrokeWidth
+            path.lineCapStyle = .round
+            path.lineJoinStyle = .round
+            NSColor.black.setStroke()
+            path.stroke()
+            return true
+        }
+        image.isTemplate = true
+        return image
+    }
+}
+
+/// A compact, app-styled disclosure action followed by optional content. The content height and
+/// opacity animate together so sections reveal their additional settings without adding custom
+/// chrome or intercepting native button / keyboard behavior.
+final class DesignSystemDisclosureSection: NSStackView {
+    private enum Motion {
+        static let duration = TimeInterval(0.2)
+    }
+
+    private let collapsedTitle: String
+    private let expandedTitle: String
+    private let disclosureButton: DesignSystemFlatButton
+    private let contentContainer = NSView()
+    private let content: NSView
+    private var contentHeightConstraint: NSLayoutConstraint!
+    private var disclosureButtonWidthConstraint: NSLayoutConstraint!
+
+    private(set) var isExpanded = true
+    var title: String { disclosureButton.title }
+    var isContentVisible: Bool { !contentContainer.isHidden }
+    var caretDirection: DesignSystemDisclosureCaretDirection { isExpanded ? .up : .down }
+    var hasTrailingCaret: Bool { disclosureButton.image != nil && disclosureButton.imagePosition == .imageTrailing }
+    var disclosureButtonWidth: CGFloat { disclosureButtonWidthConstraint.constant }
+    var caretImageSize: NSSize { disclosureButton.image?.size ?? .zero }
+    var caretTrailingPadding: CGFloat {
+        let buttonBounds = NSRect(origin: .zero, size: NSSize(width: disclosureButtonWidth, height: disclosureButton.intrinsicContentSize.height))
+        return buttonBounds.maxX - (disclosureButton.cell?.imageRect(forBounds: buttonBounds).maxX ?? buttonBounds.maxX)
+    }
+
+    init(collapsedTitle: String, expandedTitle: String, content: NSView) {
+        self.collapsedTitle = collapsedTitle
+        self.expandedTitle = expandedTitle
+        self.content = content
+        disclosureButton = DesignSystemControlStyler.makeButton(collapsedTitle)
+        super.init(frame: .zero)
+        setupView()
+        setExpanded(false, animated: false)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    func setExpanded(_ expanded: Bool, animated: Bool = true) {
+        guard isExpanded != expanded else { return }
+        isExpanded = expanded
+        refreshDisclosureButton()
+        disclosureButton.setAccessibilityExpanded(expanded)
+        let targetHeight = expanded ? resolvedContentHeight() : 0
+        let shouldAnimate = animated && !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
+        if expanded {
+            contentContainer.isHidden = false
+            contentContainer.alphaValue = shouldAnimate ? 0 : 1
+        }
+        guard shouldAnimate else {
+            contentHeightConstraint.constant = targetHeight
+            contentContainer.alphaValue = expanded ? 1 : 0
+            contentContainer.isHidden = !expanded
+            layoutParent()
+            return
+        }
+        NSAnimationContext.runAnimationGroup({ context in
+            context.duration = Motion.duration
+            context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            contentHeightConstraint.animator().constant = targetHeight
+            contentContainer.animator().alphaValue = expanded ? 1 : 0
+            layoutParent()
+        }, completionHandler: { [weak self] in
+            guard let self, self.isExpanded == expanded else { return }
+            self.contentContainer.isHidden = !expanded
+        })
+    }
+
+    @objc private func toggleDisclosure(_ sender: NSButton) {
+        setExpanded(!isExpanded)
+    }
+
+    private func setupView() {
+        translatesAutoresizingMaskIntoConstraints = false
+        orientation = .vertical
+        alignment = .centerX
+        spacing = DesignSystem.Metrics.sectionGap
+        disclosureButton.target = self
+        disclosureButton.action = #selector(toggleDisclosure(_:))
+        disclosureButton.imagePosition = .imageTrailing
+        disclosureButton.imageHugsTitle = true
+        contentContainer.translatesAutoresizingMaskIntoConstraints = false
+        contentContainer.wantsLayer = true
+        contentContainer.clipsToBounds = true
+        contentContainer.addSubview(content)
+        addArrangedSubview(disclosureButton)
+        addArrangedSubview(contentContainer)
+        stabilizeDisclosureButtonWidth()
+        NSLayoutConstraint.activate([
+            content.topAnchor.constraint(equalTo: contentContainer.topAnchor),
+            content.leadingAnchor.constraint(equalTo: contentContainer.leadingAnchor),
+            content.trailingAnchor.constraint(equalTo: contentContainer.trailingAnchor),
+            contentContainer.widthAnchor.constraint(equalTo: content.widthAnchor),
+            disclosureButton.widthAnchor.constraint(lessThanOrEqualTo: content.widthAnchor),
+            widthAnchor.constraint(equalTo: content.widthAnchor),
+        ])
+        contentHeightConstraint = contentContainer.heightAnchor.constraint(equalToConstant: 0)
+        contentHeightConstraint.isActive = true
+    }
+
+    private func stabilizeDisclosureButtonWidth() {
+        let states = [(collapsedTitle, DesignSystemDisclosureCaretDirection.down),
+                      (expandedTitle, DesignSystemDisclosureCaretDirection.up)]
+        let widths = states.map { title, direction -> CGFloat in
+            disclosureButton.title = title
+            disclosureButton.image = DesignSystemDisclosureCaretImage.make(direction)
+            return disclosureButton.intrinsicContentSize.width
+        }
+        disclosureButtonWidthConstraint = disclosureButton.widthAnchor.constraint(equalToConstant: ceil(widths.max() ?? 0))
+        disclosureButtonWidthConstraint.priority = .defaultHigh
+        disclosureButtonWidthConstraint.isActive = true
+    }
+
+    private func refreshDisclosureButton() {
+        disclosureButton.title = isExpanded ? expandedTitle : collapsedTitle
+        disclosureButton.image = DesignSystemDisclosureCaretImage.make(caretDirection)
+    }
+
+    private func resolvedContentHeight() -> CGFloat {
+        content.layoutSubtreeIfNeeded()
+        return ceil(content.fittingSize.height)
+    }
+
+    private func layoutParent() {
+        if let contentView = window?.contentView {
+            contentView.layoutSubtreeIfNeeded()
+        } else {
+            superview?.layoutSubtreeIfNeeded()
+        }
+    }
 }
 
 final class DesignSystemChipSelectControl: NSControl {
     var drawsAppOwnedSurface: Bool { true }
+    var usesAnimatedSelectionIndicator: Bool { true }
     private let stack = NSStackView()
+    private let selectionIndicator = DesignSystemSelectedControlIndicator()
     private var buttons = [DesignSystemFlatButton]()
     private var selectedIndexStorage: Int
 
@@ -338,7 +592,21 @@ final class DesignSystemChipSelectControl: NSControl {
     }
 
     override var isEnabled: Bool {
-        didSet { buttons.forEach { $0.isEnabled = isEnabled } }
+        didSet {
+            buttons.forEach { $0.isEnabled = isEnabled }
+            updateSelectionIndicator(animated: false)
+        }
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        updateSelectionIndicator(animated: false)
+    }
+
+    override func layout() {
+        super.layout()
+        updateSelectionIndicator(animated: false)
     }
 
     var chipCount: Int { buttons.count }
@@ -359,6 +627,8 @@ final class DesignSystemChipSelectControl: NSControl {
 
     private func setupStack() {
         translatesAutoresizingMaskIntoConstraints = false
+        wantsLayer = true
+        selectionIndicator.install(on: self)
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.orientation = .horizontal
         stack.alignment = .centerY
@@ -377,6 +647,7 @@ final class DesignSystemChipSelectControl: NSControl {
             let button = DesignSystemControlStyler.makeButton(label, target: self, action: #selector(chipPressed(_:)))
             button.setButtonType(.toggle)
             button.tag = index
+            button.usesExternalFocusIndicator = true
             button.setContentHuggingPriority(.required, for: .horizontal)
             button.setContentCompressionResistancePriority(.required, for: .horizontal)
             return (button, stabilizedButtonWidth(button, minimumWidth: chipWidth))
@@ -402,8 +673,11 @@ final class DesignSystemChipSelectControl: NSControl {
 
     private func selectIndex(_ index: Int, notify: Bool) {
         guard !buttons.isEmpty else { return }
-        selectedIndexStorage = max(0, min(index, buttons.count - 1))
+        let selectedIndex = max(0, min(index, buttons.count - 1))
+        let changed = selectedIndex != selectedIndexStorage
+        selectedIndexStorage = selectedIndex
         updateButtonStates()
+        updateSelectionIndicator(animated: changed)
         if notify { sendAction(action, to: target) }
     }
 
@@ -414,13 +688,26 @@ final class DesignSystemChipSelectControl: NSControl {
             button.isChoiceSelected = isSelected
         }
     }
+
+    private func updateSelectionIndicator(animated: Bool) {
+        guard isEnabled, buttons.indices.contains(selectedIndexStorage) else {
+            selectionIndicator.hide(animated: animated)
+            return
+        }
+        let button = buttons[selectedIndexStorage]
+        let rect = button.convert(button.bounds, to: self).insetBy(dx: DesignSystemSelectedControlIndicator.inset, dy: DesignSystemSelectedControlIndicator.inset)
+        selectionIndicator.show(in: rect, on: self, animated: animated)
+    }
 }
 
 final class DesignSystemSegmentedControl: NSSegmentedControl {
     var drawsAppOwnedSurface: Bool { true }
+    var usesAnimatedSelectionIndicator: Bool { trackingMode == .selectOne }
     private var hoveredSegment = -1
     private var pressedSegment = -1
     private var trackingArea: NSTrackingArea?
+    private let selectionIndicator = DesignSystemSelectedControlIndicator()
+    private var windowObservers = [NSObjectProtocol]()
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -431,10 +718,71 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
         fatalError("Class only supports programmatic initialization")
     }
 
+    deinit {
+        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
+    }
+
+    override var selectedSegment: Int {
+        didSet {
+            updateSelectionIndicator(animated: true)
+            needsDisplay = true
+        }
+    }
+
+    override var isEnabled: Bool {
+        didSet {
+            updateSelectionIndicator(animated: false)
+            needsDisplay = true
+        }
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        windowObservers.forEach { NotificationCenter.default.removeObserver($0) }
+        windowObservers.removeAll()
+        if let window {
+            for name in [NSWindow.didBecomeKeyNotification, NSWindow.didResignKeyNotification] {
+                windowObservers.append(NotificationCenter.default.addObserver(forName: name, object: window, queue: .main) { [weak self] _ in
+                    self?.updateSelectionIndicator(animated: false)
+                    self?.needsDisplay = true
+                })
+            }
+        }
+        windowObservers.append(NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.updateSelectionIndicator(animated: false)
+            self?.needsDisplay = true
+        })
+        updateSelectionIndicator(animated: false)
+    }
+
     @available(macOS 10.14, *)
     override func viewDidChangeEffectiveAppearance() {
         super.viewDidChangeEffectiveAppearance()
+        updateSelectionIndicator(animated: false)
         needsDisplay = true
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        let became = super.becomeFirstResponder()
+        if became {
+            updateSelectionIndicator(animated: true)
+            needsDisplay = true
+        }
+        return became
+    }
+
+    override func resignFirstResponder() -> Bool {
+        let resigned = super.resignFirstResponder()
+        if resigned {
+            updateSelectionIndicator(animated: true)
+            needsDisplay = true
+        }
+        return resigned
+    }
+
+    override func layout() {
+        super.layout()
+        updateSelectionIndicator(animated: false)
     }
 
     override func updateTrackingAreas() {
@@ -463,6 +811,12 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
         needsDisplay = true
     }
 
+    override func sendAction(_ action: Selector?, to target: Any?) -> Bool {
+        let sent = super.sendAction(action, to: target)
+        updateSelectionIndicator(animated: true)
+        return sent
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         drawPlateau()
         drawSegments()
@@ -470,6 +824,8 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
 
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
+        wantsLayer = true
+        selectionIndicator.install(on: self)
         segmentStyle = .rounded
         controlSize = .regular
         font = NSFont.systemFont(ofSize: 13)
@@ -487,7 +843,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     }
 
     private func drawPlateau() {
-        let lineWidth = isFocused ? CGFloat(1.5) : CGFloat(1)
+        let lineWidth = usesAnimatedSelectionIndicator ? CGFloat(1) : (isFocused ? CGFloat(1.5) : CGFloat(1))
         let inset = lineWidth / 2
         let rect = bounds.insetBy(dx: inset, dy: inset)
         let path = NSBezierPath(roundedRect: rect, xRadius: DesignSystem.Metrics.controlRadius, yRadius: DesignSystem.Metrics.controlRadius)
@@ -607,7 +963,16 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     }
 
     private func borderColor() -> NSColor {
-        isFocused ? DesignSystem.color(.focusAccent, appearance: effectiveAppearance) : DesignSystem.color(.borderSubtle, appearance: effectiveAppearance)
+        usesAnimatedSelectionIndicator ? DesignSystem.color(.borderSubtle, appearance: effectiveAppearance) : (isFocused ? DesignSystem.color(.focusAccent, appearance: effectiveAppearance) : DesignSystem.color(.borderSubtle, appearance: effectiveAppearance))
+    }
+
+    private func updateSelectionIndicator(animated: Bool) {
+        guard usesAnimatedSelectionIndicator, isEnabled, selectedSegment >= 0, selectedSegment < segmentCount, isEnabled(forSegment: selectedSegment) else {
+            selectionIndicator.hide(animated: animated)
+            return
+        }
+        let rect = segmentRects()[selectedSegment].insetBy(dx: DesignSystemSelectedControlIndicator.inset, dy: DesignSystemSelectedControlIndicator.inset)
+        selectionIndicator.show(in: rect, on: self, animated: animated)
     }
 
     private func segmentRects() -> [CGRect] {

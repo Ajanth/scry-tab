@@ -160,10 +160,12 @@
 "Show all windows" = "Visa alla fönster";
 "Show apps with no open window" = "Visa appar utan öppet fönster";
 "Show at the end" = "Visa i slutet";
+"Show Fewer Options" = "Visa färre alternativ";
 "Show fullscreen windows" = "Visa fönster i helskärm";
 "Show hidden windows" = "Visa dolda fönster";
 "Show main window" = "Visa huvudfönster";
 "Show minimized windows" = "Visa minimerade fönster";
+"Show More Options" = "Visa fler alternativ";
 "Show on" = "Visa på";
 "Show separate window for each tab" = "Visa separat fönster för varje flik";
 "Show single window for all tabs" = "Visa ett enda fönster för alla flikar";

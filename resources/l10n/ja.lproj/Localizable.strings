@@ -160,10 +160,12 @@
 "Show all windows" = "すべてのウインドウを表示";
 "Show apps with no open window" = "開いているウインドウのない App を表示";
 "Show at the end" = "末尾に表示";
+"Show Fewer Options" = "オプションを減らす";
 "Show fullscreen windows" = "フルスクリーンのウインドウを表示";
 "Show hidden windows" = "非表示のウインドウを表示";
 "Show main window" = "メインウインドウを表示";
 "Show minimized windows" = "最小化されたウインドウを表示";
+"Show More Options" = "その他のオプションを表示";
 "Show on" = "表示する画面";
 "Show separate window for each tab" = "タブごとに別のウインドウを表示";
 "Show single window for all tabs" = "すべてのタブを 1 つのウインドウで表示";

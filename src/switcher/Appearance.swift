@@ -26,7 +26,7 @@ class Appearance {
     static var fontColor = NSColor.red
     static var imagesShadowColor = NSColor.red // for app icon and windowless images
     static var material = NSVisualEffectView.Material.ultraDark
-    static var highlightBorderWidth = CGFloat(3)
+    static var highlightBorderWidth = DesignSystem.Metrics.focusIndicatorBorderWidth
 
     // theme: constants
     static var enablePanelShadow = true
@@ -74,7 +74,7 @@ class Appearance {
     }
 
     private static func updateTheme() {
-        highlightBorderWidth = currentStyle == .titles ? 2 : 3
+        highlightBorderWidth = currentStyle == .titles ? 2 : DesignSystem.Metrics.focusIndicatorBorderWidth
         if currentTheme == .dark {
             darkTheme()
         } else {

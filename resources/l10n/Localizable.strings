@@ -485,6 +485,9 @@
 "Show at the end" = "Show at the end";
 
 /* No comment provided by engineer. */
+"Show Fewer Options" = "Show Fewer Options";
+
+/* No comment provided by engineer. */
 "Show fullscreen windows" = "Show fullscreen windows";
 
 /* No comment provided by engineer. */
@@ -495,6 +498,9 @@
 
 /* No comment provided by engineer. */
 "Show minimized windows" = "Show minimized windows";
+
+/* No comment provided by engineer. */
+"Show More Options" = "Show More Options";
 
 /* No comment provided by engineer. */
 "Show on" = "Show on";

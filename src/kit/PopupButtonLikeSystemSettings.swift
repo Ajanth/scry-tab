@@ -20,6 +20,11 @@ import Cocoa
 /// happens on every selection mutation), so we don't have to override every individual mutator
 /// path. AppKit's repeated queries hit the cache in O(1).
 class PopupButtonLikeSystemSettings: NSPopUpButton {
+    private enum PressBubble {
+        static let expandedScale = CGFloat(1.055)
+        static let settleDuration = CFTimeInterval(0.36)
+    }
+
     var drawsAppOwnedSurface: Bool { true }
     private var cachedIntrinsicSize: NSSize?
     private var cachedIntrinsicSizeTitle: String?
@@ -36,6 +41,7 @@ class PopupButtonLikeSystemSettings: NSPopUpButton {
     override init(frame buttonFrame: NSRect, pullsDown flag: Bool) {
         super.init(frame: buttonFrame, pullsDown: flag)
         DesignSystemControlStyler.stylePopupButton(self)
+        wantsLayer = true
     }
 
     required init?(coder: NSCoder) {
@@ -89,7 +95,9 @@ class PopupButtonLikeSystemSettings: NSPopUpButton {
     override func mouseDown(with event: NSEvent) {
         pressed = true
         needsDisplay = true
+        let bubblesOnPress = beginPressBubble()
         super.mouseDown(with: event)
+        if bubblesOnPress { settlePressBubble() }
         pressed = false
         needsDisplay = true
     }
@@ -167,6 +175,33 @@ class PopupButtonLikeSystemSettings: NSPopUpButton {
         borderColor().setStroke()
         path.lineWidth = lineWidth
         path.stroke()
+    }
+
+    private func beginPressBubble() -> Bool {
+        guard !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion, let layer else { return false }
+        layer.removeAnimation(forKey: "popupPressBubble")
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        layer.setAffineTransform(CGAffineTransform(scaleX: PressBubble.expandedScale, y: PressBubble.expandedScale))
+        CATransaction.commit()
+        CATransaction.flush()
+        return true
+    }
+
+    private func settlePressBubble() {
+        guard let layer else { return }
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        layer.setAffineTransform(.identity)
+        CATransaction.commit()
+        let animation = CASpringAnimation(keyPath: "transform.scale")
+        animation.fromValue = PressBubble.expandedScale
+        animation.toValue = 1
+        animation.mass = 0.7
+        animation.stiffness = 320
+        animation.damping = 13
+        animation.duration = PressBubble.settleDuration
+        layer.add(animation, forKey: "popupPressBubble")
     }
 
     private func surfaceFillColor() -> NSColor {

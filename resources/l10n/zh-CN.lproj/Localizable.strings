@@ -160,10 +160,12 @@
 "Show all windows" = "显示所有窗口";
 "Show apps with no open window" = "显示没有打开窗口的应用";
 "Show at the end" = "在末尾显示";
+"Show Fewer Options" = "显示更少选项";
 "Show fullscreen windows" = "显示全屏窗口";
 "Show hidden windows" = "显示隐藏窗口";
 "Show main window" = "显示主窗口";
 "Show minimized windows" = "显示最小化窗口";
+"Show More Options" = "显示更多选项";
 "Show on" = "显示于";
 "Show separate window for each tab" = "每个标签显示单独的窗口";
 "Show single window for all tabs" = "所有标签显示单个窗口";

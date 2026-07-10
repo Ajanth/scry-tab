@@ -160,10 +160,12 @@
 "Show all windows" = "Alle Fenster anzeigen";
 "Show apps with no open window" = "Apps ohne geöffnetes Fenster anzeigen";
 "Show at the end" = "Am Ende anzeigen";
+"Show Fewer Options" = "Weniger Optionen anzeigen";
 "Show fullscreen windows" = "Vollbildfenster anzeigen";
 "Show hidden windows" = "Ausgeblendete Fenster anzeigen";
 "Show main window" = "Hauptfenster anzeigen";
 "Show minimized windows" = "Minimierte Fenster anzeigen";
+"Show More Options" = "Weitere Optionen anzeigen";
 "Show on" = "Anzeigen auf";
 "Show separate window for each tab" = "Separates Fenster für jeden Tab anzeigen";
 "Show single window for all tabs" = "Ein Fenster für alle Tabs anzeigen";

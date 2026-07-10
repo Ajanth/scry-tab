@@ -160,10 +160,12 @@
 "Show all windows" = "Show all windows";
 "Show apps with no open window" = "Show apps with no open window";
 "Show at the end" = "Show at the end";
+"Show Fewer Options" = "Show Fewer Options";
 "Show fullscreen windows" = "Show fullscreen windows";
 "Show hidden windows" = "Show hidden windows";
 "Show main window" = "Show main window";
 "Show minimized windows" = "Show minimized windows";
+"Show More Options" = "Show More Options";
 "Show on" = "Show on";
 "Show separate window for each tab" = "Show separate window for each tab";
 "Show single window for all tabs" = "Show single window for all tabs";
