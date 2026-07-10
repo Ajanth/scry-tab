@@ -14,6 +14,7 @@
 "Add a running app" = "إضافة تطبيق قيد التشغيل";
 "Add an app from disk" = "إضافة تطبيق من القرص";
 "Additional controls" = "عناصر تحكم إضافية";
+"Advanced" = "متقدم";
 "After keys are released" = "بعد تحرير المفاتيح";
 "All apps" = "جميع التطبيقات";
 "All screens" = "جميع الشاشات";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "ملء الشاشة/إلغاء ملء الشاشة للنافذة";
 "General" = "عام";
 "Gesture" = "الإيماءة";
+"Gestures" = "الإيماءات";
 "Go back" = "العودة";
 "Group apps" = "تجميع التطبيقات";
 "Group tabs" = "تجميع علامات التبويب";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "أعتقد أن التطبيق يمكن تحسينه بـ…";
 "Ignore shortcuts" = "تجاهل الاختصارات";
 "Import settings…" = "استيراد الإعدادات…";
-"Keyboard, mouse, and trackpad" = "لوحة المفاتيح والماوس ولوحة التعقب";
 "Language" = "اللغة";
 "Language Change" = "تغيير اللغة";
 "Large" = "كبير";
@@ -154,6 +155,7 @@
 "Settings…" = "الإعدادات…";
 "Shortcut" = "اختصار";
 "Shortcut already assigned to: %@" = "الاختصار معيّن بالفعل: %@";
+"Shortcuts" = "الاختصارات";
 "Shortcuts When Active" = "الاختصارات عند النشاط";
 "Shortcuts while ScryTab is active" = "الاختصارات أثناء نشاط ScryTab";
 "Show" = "إظهار";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "ماذا توقعت؟ ماذا حدث؟ خطوات إعادة الإنتاج…";
 "When fullscreen" = "عند ملء الشاشة";
 "When no open window" = "عند عدم وجود نافذة مفتوحة";
-"Window actions" = "إجراءات النوافذ";
 "Window is fullscreen" = "النافذة بملء الشاشة";
 "Window is minimized" = "النافذة مصغّرة";
 "Window is on every Space" = "النافذة في كل مساحة";

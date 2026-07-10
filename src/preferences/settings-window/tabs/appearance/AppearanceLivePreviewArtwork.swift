@@ -6,34 +6,6 @@ enum AppearanceLivePreviewArtwork {
         static let wallpaperCornerRadius = CGFloat(18)
         static let wallpaperBorderWidth = CGFloat(1)
         static let illustratedRenderSize = NSSize(width: 1000, height: 625)
-        static let switcherCornerRadius = CGFloat(16)
-        static let switcherBorderWidth = CGFloat(1)
-        static let appIconsSwitcherWidth = CGFloat(184)
-        static let appIconsSwitcherHeight = CGFloat(96)
-        static let appIconsTileWidth = CGFloat(48)
-        static let appIconsTileHeight = CGFloat(68)
-        static let appIconsTileSpacing = CGFloat(8)
-        static let appIconsContentVerticalOffset = CGFloat(5)
-        static let appIconsIconSize = CGFloat(48)
-        static let appIconsIconTopInset = CGFloat(1)
-        static let appIconsSelectionPadding = CGFloat(4)
-        static let appIconsSelectionCornerRadius = CGFloat(14)
-        static let appIconsSelectionBorderWidth = CGFloat(2)
-        static let appIconsLabelFontSize = CGFloat(7.5)
-        static let appIconsLabelWidth = CGFloat(60)
-        static let appIconsLabelGap = CGFloat(7)
-        static let titlesSwitcherWidth = CGFloat(192)
-        static let titlesSwitcherHeight = CGFloat(148)
-        static let titlesRowWidth = CGFloat(172)
-        static let titlesRowHeight = CGFloat(36)
-        static let titlesRowSpacing = CGFloat(8)
-        static let titlesRowCornerRadius = CGFloat(12)
-        static let titlesIconSize = CGFloat(22)
-        static let titlesLabelFontSize = CGFloat(12)
-        static let titlesSideInset = CGFloat(10)
-        static let titlesLabelGap = CGFloat(9)
-        static let titlesStatusGap = CGFloat(7)
-        static let titlesStatusSize = CGFloat(18)
         static let pauseButtonDiameter = CGFloat(22)
         static let pauseButtonInset = CGFloat(10)
         static let pauseButtonGlyphSize = CGFloat(11)
@@ -47,8 +19,6 @@ enum AppearanceLivePreviewArtwork {
         static let wallpaperBlueBlob = NSColor(srgbRed: 0.45, green: 0.46, blue: 0.97, alpha: 0.72)
         static let wallpaperGreenBlob = NSColor(srgbRed: 0.45, green: 0.64, blue: 0.05, alpha: 0.46)
         static let wallpaperBorder = NSColor.white.withAlphaComponent(0.12)
-        static let switcherFill = NSColor.black.withAlphaComponent(0.58)
-        static let switcherBorder = NSColor.white.withAlphaComponent(0.16)
         static let titleColor = NSColor.white.withAlphaComponent(0.94)
         static let titleStatusColor = NSColor.white.withAlphaComponent(0.94)
         static let pauseFill = NSColor.black.withAlphaComponent(0.12)
@@ -60,7 +30,8 @@ enum AppearanceLivePreviewArtwork {
     struct DemoItem {
         let bundleId: String
         let displayName: String
-        let statusSymbols: [String]
+        let isFullscreen: Bool
+        let spaceNumber: Int
     }
 
     enum IllustratedTitleMode: Hashable {
@@ -95,14 +66,27 @@ enum AppearanceLivePreviewArtwork {
     static let demoItems = [
         DemoItem(bundleId: "com.google.Chrome",
                  displayName: "Chrome",
-                 statusSymbols: [Symbols.arrowUpBackwardAndArrowDownForwardRectangle.rawValue, StatusIconsView.symbolForSpace(2)]),
+                 isFullscreen: true,
+                 spaceNumber: 2),
         DemoItem(bundleId: "com.apple.finder",
                  displayName: "Finder",
-                 statusSymbols: [Symbols.arrowUpBackwardAndArrowDownForwardRectangle.rawValue, StatusIconsView.symbolForSpace(2)]),
+                 isFullscreen: true,
+                 spaceNumber: 2),
         DemoItem(bundleId: "com.apple.systempreferences",
                  displayName: "Settings",
-                 statusSymbols: [StatusIconsView.symbolForSpace(1)]),
+                 isFullscreen: false,
+                 spaceNumber: 1),
     ]
+
+    static func demoPresentationItems() -> [SwitcherPresentationItem] {
+        demoItems.map { item in
+            let resolved = AppDisplayInfo.resolve(bundleId: item.bundleId)
+            return SwitcherPresentationItem(title: item.displayName,
+                                            icon: resolved.icon,
+                                            isFullscreen: item.isFullscreen,
+                                            spaceNumber: item.spaceNumber)
+        }
+    }
 
     static let illustratedPreviewItems = [
         IllustratedPreviewItem(bundleId: "com.apple.Safari",
@@ -149,6 +133,8 @@ enum AppearanceLivePreviewArtwork {
             super.init(frame: frameRect)
             translatesAutoresizingMaskIntoConstraints = false
             wantsLayer = true
+            layer?.cornerRadius = Metrics.wallpaperCornerRadius
+            layer?.masksToBounds = true
         }
 
         required init?(coder: NSCoder) {
@@ -164,147 +150,6 @@ enum AppearanceLivePreviewArtwork {
             Palette.wallpaperBorder.setStroke()
             clipPath.lineWidth = Metrics.wallpaperBorderWidth
             clipPath.stroke()
-        }
-    }
-
-    class ItemView: NSView, AnimatedSelectionItemView {
-        var selectionTarget: NSView { self }
-        var selectionPadding: CGFloat { 0 }
-
-        override init(frame frameRect: NSRect) {
-            super.init(frame: frameRect)
-            translatesAutoresizingMaskIntoConstraints = false
-        }
-
-        required init?(coder: NSCoder) {
-            fatalError("Class only supports programmatic initialization")
-        }
-
-        func setFocused(_ focused: Bool) {}
-    }
-
-    final class AppIconTileView: ItemView {
-        private let iconView = NSImageView()
-        private let titleLabel = NSTextField(labelWithString: "")
-        override var selectionTarget: NSView { iconView }
-        override var selectionPadding: CGFloat { Metrics.appIconsSelectionPadding }
-
-        init(_ info: AppDisplayInfo) {
-            super.init(frame: .zero)
-            configureIcon(info.icon)
-            configureTitle(info.name)
-            activateConstraints()
-            setFocused(false)
-        }
-
-        required init?(coder: NSCoder) {
-            fatalError("Class only supports programmatic initialization")
-        }
-
-        override func setFocused(_ focused: Bool) {
-            titleLabel.isHidden = !focused
-        }
-
-        private func configureIcon(_ icon: NSImage) {
-            iconView.translatesAutoresizingMaskIntoConstraints = false
-            iconView.image = icon
-            iconView.imageScaling = .scaleProportionallyUpOrDown
-            iconView.isEditable = false
-            iconView.shadow = TileView.makeAppIconShadow(NSColor.black.withAlphaComponent(0.45))
-            addSubview(iconView)
-        }
-
-        private func configureTitle(_ title: String) {
-            titleLabel.translatesAutoresizingMaskIntoConstraints = false
-            titleLabel.stringValue = title
-            titleLabel.font = NSFont.systemFont(ofSize: Metrics.appIconsLabelFontSize)
-            titleLabel.textColor = Palette.titleColor
-            titleLabel.alignment = .center
-            titleLabel.lineBreakMode = .byTruncatingTail
-            titleLabel.usesSingleLineMode = true
-            addSubview(titleLabel)
-        }
-
-        private func activateConstraints() {
-            NSLayoutConstraint.activate([
-                widthAnchor.constraint(equalToConstant: Metrics.appIconsTileWidth),
-                heightAnchor.constraint(equalToConstant: Metrics.appIconsTileHeight),
-                iconView.topAnchor.constraint(equalTo: topAnchor, constant: Metrics.appIconsIconTopInset),
-                iconView.centerXAnchor.constraint(equalTo: centerXAnchor),
-                iconView.widthAnchor.constraint(equalToConstant: Metrics.appIconsIconSize),
-                iconView.heightAnchor.constraint(equalToConstant: Metrics.appIconsIconSize),
-                titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor,
-                                                constant: Metrics.appIconsLabelGap),
-                titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-                titleLabel.widthAnchor.constraint(equalToConstant: Metrics.appIconsLabelWidth),
-                titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-            ])
-        }
-    }
-
-    final class TitlesRowView: ItemView {
-        private let iconView = NSImageView()
-        private let titleLabel = NSTextField(labelWithString: "")
-        private let statusStack = NSStackView()
-
-        init(_ info: AppDisplayInfo, statusSymbols: [String]) {
-            super.init(frame: .zero)
-            configureIcon(info.icon)
-            configureTitle(info.name)
-            configureStatusStack(statusSymbols)
-            activateConstraints()
-        }
-
-        required init?(coder: NSCoder) {
-            fatalError("Class only supports programmatic initialization")
-        }
-
-        private func configureIcon(_ icon: NSImage) {
-            iconView.translatesAutoresizingMaskIntoConstraints = false
-            iconView.image = icon
-            iconView.imageScaling = .scaleProportionallyUpOrDown
-            iconView.isEditable = false
-            addSubview(iconView)
-        }
-
-        private func configureTitle(_ title: String) {
-            titleLabel.translatesAutoresizingMaskIntoConstraints = false
-            titleLabel.stringValue = title
-            titleLabel.font = NSFont.systemFont(ofSize: Metrics.titlesLabelFontSize)
-            titleLabel.textColor = Palette.titleColor
-            titleLabel.lineBreakMode = .byTruncatingTail
-            titleLabel.usesSingleLineMode = true
-            addSubview(titleLabel)
-        }
-
-        private func configureStatusStack(_ statusSymbols: [String]) {
-            statusStack.translatesAutoresizingMaskIntoConstraints = false
-            statusStack.orientation = .horizontal
-            statusStack.alignment = .centerY
-            statusStack.spacing = Metrics.titlesStatusGap
-            addSubview(statusStack)
-            statusSymbols.forEach { symbol in
-                let view = TileFontIconView(symbolText: symbol, size: Metrics.titlesStatusSize, color: Palette.titleStatusColor)
-                view.translatesAutoresizingMaskIntoConstraints = false
-                statusStack.addArrangedSubview(view)
-            }
-        }
-
-        private func activateConstraints() {
-            NSLayoutConstraint.activate([
-                widthAnchor.constraint(equalToConstant: Metrics.titlesRowWidth),
-                heightAnchor.constraint(equalToConstant: Metrics.titlesRowHeight),
-                iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Metrics.titlesSideInset),
-                iconView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                iconView.widthAnchor.constraint(equalToConstant: Metrics.titlesIconSize),
-                iconView.heightAnchor.constraint(equalToConstant: Metrics.titlesIconSize),
-                statusStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Metrics.titlesSideInset),
-                statusStack.centerYAnchor.constraint(equalTo: centerYAnchor),
-                titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: Metrics.titlesLabelGap),
-                titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: statusStack.leadingAnchor,
-                                                     constant: -Metrics.titlesLabelGap),
-                titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            ])
         }
     }
 

@@ -8,7 +8,7 @@ final class AppearanceLivePreviewView: NSView {
     static let previewAccessibilityLabel = NSLocalizedString("Preview of the selected appearance style", comment: "")
 
     private let wallpaperView = PreviewArtwork.WallpaperView()
-    private var selectionContainer: AnimatedSelectionContainerView?
+    private var switcherView: AnimatedSwitcherPresentationView?
     private let pauseButton: ClickHoverImageView = {
         let glyph = AppearanceLivePreviewPauseGlyphView(symbol: .pause)
         glyph.translatesAutoresizingMaskIntoConstraints = false
@@ -37,6 +37,7 @@ final class AppearanceLivePreviewView: NSView {
     @available(macOS 10.14, *)
     override func viewDidChangeEffectiveAppearance() {
         super.viewDidChangeEffectiveAppearance()
+        switcherView?.update(style: currentStyle, items: PreviewArtwork.demoPresentationItems())
         refreshColors()
     }
 
@@ -48,7 +49,7 @@ final class AppearanceLivePreviewView: NSView {
 
     func updateStyle(_ style: AppearanceStylePreference) {
         currentStyle = style
-        selectionContainer?.updateConfiguration(makeConfiguration(for: style))
+        switcherView?.update(style: style, items: PreviewArtwork.demoPresentationItems())
         refreshColors()
     }
 
@@ -59,7 +60,7 @@ final class AppearanceLivePreviewView: NSView {
         configureContainer(for: currentStyle)
         configurePauseButton()
         activateConstraints()
-        selectionContainer?.onPauseStateChange = { [weak self] in self?.refreshPauseButtonState() }
+        switcherView?.onPauseStateChange = { [weak self] in self?.refreshPauseButtonState() }
         refreshColors()
     }
 
@@ -69,10 +70,15 @@ final class AppearanceLivePreviewView: NSView {
     }
 
     private func configureContainer(for style: AppearanceStylePreference) {
-        let container = AnimatedSelectionContainerView(configuration: makeConfiguration(for: style))
-        container.translatesAutoresizingMaskIntoConstraints = false
-        wallpaperView.addSubview(container)
-        selectionContainer = container
+        let view = AnimatedSwitcherPresentationView(
+            style: style,
+            items: PreviewArtwork.demoPresentationItems(),
+            advanceInterval: AppearanceLivePreviewResolver.advanceInterval,
+            maximumWidthRatio: 0.9,
+            maximumHeightRatio: 0.9,
+            shouldAdvance: { !SwitcherSession.isActive })
+        wallpaperView.addSubview(view, positioned: .below, relativeTo: pauseButton)
+        switcherView = view
     }
 
     private func configurePauseButton() {
@@ -80,10 +86,10 @@ final class AppearanceLivePreviewView: NSView {
         pauseButton.layer?.cornerRadius = PreviewArtwork.Metrics.pauseButtonDiameter / 2
         pauseButton.layer?.borderWidth = 1
         pauseButton.setAccessibilityRole(.button)
-        pauseButton.onClick = { [weak self] _, _ in self?.selectionContainer?.togglePause() }
+        pauseButton.onClick = { [weak self] _, _ in self?.switcherView?.togglePause() }
         pauseButton.onAccessibilityPress = { [weak self] in
             guard let self else { return false }
-            self.selectionContainer?.togglePause()
+            self.switcherView?.togglePause()
             return true
         }
         pauseButton.onMouseEntered = { [weak self] _, _ in self?.setPauseButtonHovered(true) }
@@ -96,7 +102,7 @@ final class AppearanceLivePreviewView: NSView {
     }
 
     private func activateConstraints() {
-        guard let container = selectionContainer else { return }
+        guard let switcherView else { return }
         NSLayoutConstraint.activate([
             wallpaperView.leadingAnchor.constraint(equalTo: leadingAnchor),
             wallpaperView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -104,10 +110,10 @@ final class AppearanceLivePreviewView: NSView {
             wallpaperView.heightAnchor.constraint(equalTo: wallpaperView.widthAnchor,
                                                   multiplier: 1 / PreviewArtwork.Metrics.wallpaperAspectRatio),
             wallpaperView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-            container.leadingAnchor.constraint(equalTo: wallpaperView.leadingAnchor),
-            container.trailingAnchor.constraint(equalTo: wallpaperView.trailingAnchor),
-            container.topAnchor.constraint(equalTo: wallpaperView.topAnchor),
-            container.bottomAnchor.constraint(equalTo: wallpaperView.bottomAnchor),
+            switcherView.leadingAnchor.constraint(equalTo: wallpaperView.leadingAnchor),
+            switcherView.trailingAnchor.constraint(equalTo: wallpaperView.trailingAnchor),
+            switcherView.topAnchor.constraint(equalTo: wallpaperView.topAnchor),
+            switcherView.bottomAnchor.constraint(equalTo: wallpaperView.bottomAnchor),
             pauseButton.topAnchor.constraint(equalTo: wallpaperView.topAnchor,
                                              constant: PreviewArtwork.Metrics.pauseButtonInset),
             pauseButton.trailingAnchor.constraint(equalTo: wallpaperView.trailingAnchor,
@@ -117,85 +123,13 @@ final class AppearanceLivePreviewView: NSView {
         ])
     }
 
-    private func makeConfiguration(for style: AppearanceStylePreference) -> AnimatedSelectionContainerConfiguration {
-        AnimatedSelectionContainerConfiguration(
-            items: makeItems(for: style),
-            orientation: style == .appIcons ? .horizontal : .vertical,
-            alignment: style == .appIcons ? .centerY : .centerX,
-            spacing: style == .appIcons
-                ? PreviewArtwork.Metrics.appIconsTileSpacing
-                : PreviewArtwork.Metrics.titlesRowSpacing,
-            contentVerticalOffset: style == .appIcons
-                ? PreviewArtwork.Metrics.appIconsContentVerticalOffset
-                : 0,
-            containerSize: style == .appIcons
-                ? NSSize(width: PreviewArtwork.Metrics.appIconsSwitcherWidth,
-                         height: PreviewArtwork.Metrics.appIconsSwitcherHeight)
-                : NSSize(width: PreviewArtwork.Metrics.titlesSwitcherWidth,
-                         height: PreviewArtwork.Metrics.titlesSwitcherHeight),
-            containerChrome: makeSwitcherChrome(),
-            selectionChrome: makeSelectionChrome(for: style),
-            advanceInterval: AppearanceLivePreviewResolver.advanceInterval,
-            initialFocusedIndex: defaultFocusedIndex(for: style),
-            shouldAdvance: { !SwitcherSession.isActive },
-            accessibilityLabel: Self.previewAccessibilityLabel,
-            isAccessibilityElement: false)
-    }
-
-    private func makeItems(for style: AppearanceStylePreference) -> [AnimatedSelectionItemView] {
-        var views = [AnimatedSelectionItemView]()
-        PreviewArtwork.demoItems.forEach { item in
-            let resolvedInfo = AppDisplayInfo.resolve(bundleId: item.bundleId)
-            let info = AppDisplayInfo(name: item.displayName, icon: resolvedInfo.icon)
-            let view: PreviewArtwork.ItemView
-            if style == .appIcons {
-                view = PreviewArtwork.AppIconTileView(info)
-            } else {
-                view = PreviewArtwork.TitlesRowView(info, statusSymbols: item.statusSymbols)
-            }
-            views.append(view)
-        }
-        return views
-    }
-
-    private func makeSwitcherChrome() -> AnimatedSelectionChrome {
-        AnimatedSelectionChrome(
-            cornerRadius: PreviewArtwork.Metrics.switcherCornerRadius,
-            borderWidth: PreviewArtwork.Metrics.switcherBorderWidth,
-            fillColor: PreviewArtwork.Palette.switcherFill,
-            borderColor: PreviewArtwork.Palette.switcherBorder,
-            borderAlpha: 0.2,
-            increasedContrastBorderAlpha: 0.34)
-    }
-
-    private func makeSelectionChrome(for style: AppearanceStylePreference) -> AnimatedSelectionChrome {
-        let cornerRadius = style == .appIcons
-            ? PreviewArtwork.Metrics.appIconsSelectionCornerRadius
-            : PreviewArtwork.Metrics.titlesRowCornerRadius
-        let borderWidth = style == .appIcons
-            ? PreviewArtwork.Metrics.appIconsSelectionBorderWidth
-            : Appearance.highlightBorderWidth
-        return AnimatedSelectionChrome(
-            cornerRadius: cornerRadius,
-            borderWidth: borderWidth,
-            fillColor: Appearance.highlightFocusedBackgroundColor,
-            borderColor: Appearance.highlightFocusedBorderColor)
-    }
-
-    private func defaultFocusedIndex(for style: AppearanceStylePreference) -> Int {
-        let count = PreviewArtwork.demoItems.count
-        guard count > 0 else { return 0 }
-        guard style == .appIcons else { return 0 }
-        return min(1, count - 1)
-    }
-
     private func setPauseButtonHovered(_ hovered: Bool) {
         isPauseButtonHovered = hovered
         refreshColors()
     }
 
     private func refreshPauseButtonState() {
-        let isPaused = selectionContainer?.isManuallyPaused ?? false
+        let isPaused = switcherView?.isManuallyPaused ?? false
         (pauseButton.infoCircle as? AppearanceLivePreviewPauseGlyphView)?.symbol = isPaused ? .play : .pause
         let label = isPaused ? Self.resumeAccessibilityLabel : Self.pauseAccessibilityLabel
         pauseButton.setAccessibilityLabel(label)

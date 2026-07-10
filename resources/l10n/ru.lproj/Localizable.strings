@@ -14,6 +14,7 @@
 "Add a running app" = "Добавить запущенное приложение";
 "Add an app from disk" = "Добавить приложение с диска";
 "Additional controls" = "Дополнительные элементы управления";
+"Advanced" = "Дополнительно";
 "After keys are released" = "После отпускания клавиш";
 "All apps" = "Все приложения";
 "All screens" = "Все экраны";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "Развернуть/свернуть окно на весь экран";
 "General" = "Основные";
 "Gesture" = "Жест";
+"Gestures" = "Жесты";
 "Go back" = "Назад";
 "Group apps" = "Группировать приложения";
 "Group tabs" = "Группировать вкладки";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "Я думаю, приложение можно улучшить, добавив…";
 "Ignore shortcuts" = "Игнорировать сочетания клавиш";
 "Import settings…" = "Импорт настроек…";
-"Keyboard, mouse, and trackpad" = "Клавиатура, мышь и трекпад";
 "Language" = "Язык";
 "Language Change" = "Смена языка";
 "Large" = "Большой";
@@ -154,6 +155,7 @@
 "Settings…" = "Настройки…";
 "Shortcut" = "Сочетание клавиш";
 "Shortcut already assigned to: %@" = "Сочетание клавиш уже назначено: %@";
+"Shortcuts" = "Сочетания клавиш";
 "Shortcuts When Active" = "Сочетания клавиш при активном переключателе";
 "Shortcuts while ScryTab is active" = "Сочетания клавиш, когда ScryTab активен";
 "Show" = "Показать";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "Что вы ожидали? Что произошло? Шаги для воспроизведения…";
 "When fullscreen" = "В полноэкранном режиме";
 "When no open window" = "Когда нет открытых окон";
-"Window actions" = "Действия с окнами";
 "Window is fullscreen" = "Окно в полноэкранном режиме";
 "Window is minimized" = "Окно свёрнуто";
 "Window is on every Space" = "Окно на всех пространствах";

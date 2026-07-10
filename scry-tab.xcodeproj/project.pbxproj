@@ -191,6 +191,7 @@
 		D04BA1B133D53572D7B312C2 /* TileFontIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA1DF8CAB2FAB7FE9244B /* TileFontIconView.swift */; };
 		D04BA1C85041FB043FD43E65 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BA05006D56C7AA011C0CE /* Localizable.strings */; };
 		D04BA1CEC6B9C8945FEC8740 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA258B56193958D60978A /* TileView.swift */; };
+		6A7100000000000000000002 /* AnimatedSwitcherPresentationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7100000000000000000001 /* AnimatedSwitcherPresentationView.swift */; };
 		D04BA22840D40E3885B2B29E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BA3A932D3C8F850504919 /* InfoPlist.strings */; };
 		D04BA26A691D56031FCCF00C /* Sysctl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA8DB8AA7E5570DAC568A /* Sysctl.swift */; };
 		D04BA276B3241D440F65B149 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BA5C2BB394F1624DD5B45 /* InfoPlist.strings */; };
@@ -521,6 +522,7 @@
 		D04BA1DF8CAB2FAB7FE9244B /* TileFontIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileFontIconView.swift; sourceTree = "<group>"; };
 		D04BA2526DC6726E0F7ACF7C /* LabelAndControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAndControl.swift; sourceTree = "<group>"; };
 		D04BA258B56193958D60978A /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TileView.swift; sourceTree = "<group>"; };
+		6A7100000000000000000001 /* AnimatedSwitcherPresentationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedSwitcherPresentationView.swift; sourceTree = "<group>"; };
 		D04BA26C75F76C277653C932 /* FeedbackWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackWindow.swift; sourceTree = "<group>"; };
 		D04BA27695D9A5824720BD7B /* ExceptionsTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExceptionsTab.swift; sourceTree = "<group>"; };
 		D04BA282BB16C1554595A968 /* Applications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Applications.swift; sourceTree = "<group>"; };
@@ -1309,6 +1311,7 @@
 				D04BAD1297730B191E96E7FE /* TileTitleView.swift */,
 				D04BA1DF8CAB2FAB7FE9244B /* TileFontIconView.swift */,
 				D04BA258B56193958D60978A /* TileView.swift */,
+				6A7100000000000000000001 /* AnimatedSwitcherPresentationView.swift */,
 				5F7B6AFB2F3BAB98003E25E8 /* StatusIconsView.swift */,
 				D04BAA998119CAA8B70A2B67 /* TilesView.swift */,
 				D04BAFC0A1B2C3D4E5F60001 /* TileOverView.swift */,
@@ -1842,6 +1845,7 @@
 				D04BA69D47B5E60A6AD9CBD9 /* TileTitleView.swift in Sources */,
 				D04BA1B133D53572D7B312C2 /* TileFontIconView.swift in Sources */,
 				D04BA1CEC6B9C8945FEC8740 /* TileView.swift in Sources */,
+				6A7100000000000000000002 /* AnimatedSwitcherPresentationView.swift in Sources */,
 				D04BA14D93726795A6937832 /* LabelAndControl.swift in Sources */,
 				5F791E4B2F1C65E100B6419C /* ApplicationDiscriminator.swift in Sources */,
 				D04BA7BE7F3DD24D58ACE942 /* AppearanceTab.swift in Sources */,

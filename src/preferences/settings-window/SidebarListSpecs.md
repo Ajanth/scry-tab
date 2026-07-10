@@ -10,7 +10,9 @@ not accumulate stale subviews.
 
 - `setContent` updates the visible title/summary without adding replacement view trees.
 - Selection and hover backgrounds stay vertically inset from the row bounds.
+- Selection and hover backgrounds keep a horizontal gutter from the sidebar border.
 - A fixed-height sidebar remains independent from dynamic editor height.
+- A spaced sidebar/editor layout uses the shared section gap and omits the divider.
 
 ## Test scenarios
 
@@ -18,4 +20,6 @@ Mirrors `SidebarListTests.swift` 1:1.
 
 - **testRepeatedContentUpdatesDoNotAccumulateViews** — repeated row content updates keep the row's descendant view count stable.
 - **testHighlightBackgroundUsesVerticalInset** — the row background uses the shared vertical inset on both edges.
+- **testHighlightBackgroundUsesHorizontalInset** — the row background uses the shared horizontal inset on both edges.
 - **testFixedSidebarHeightDoesNotFollowEditorHeight** — a fixed-height sidebar receives a constant height constraint instead of following the editor.
+- **testSpacedLayoutUsesSectionGapWithoutDivider** — the spaced layout contains only the sidebar and editor, separated by the shared section gap.

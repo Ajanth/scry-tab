@@ -14,6 +14,7 @@
 "Add a running app" = "เพิ่มแอปที่กำลังทำงาน";
 "Add an app from disk" = "เพิ่มแอปจากดิสก์";
 "Additional controls" = "การควบคุมเพิ่มเติม";
+"Advanced" = "ขั้นสูง";
 "After keys are released" = "หลังจากปล่อยปุ่ม";
 "All apps" = "แอปทั้งหมด";
 "All screens" = "หน้าจอทั้งหมด";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "เต็มหน้าจอ/ออกจากเต็มหน้าจอ";
 "General" = "ทั่วไป";
 "Gesture" = "ท่าทาง";
+"Gestures" = "ท่าทาง";
 "Go back" = "ย้อนกลับ";
 "Group apps" = "จัดกลุ่มแอป";
 "Group tabs" = "จัดกลุ่มแท็บ";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "ฉันคิดว่าแอปนี้สามารถปรับปรุงได้ด้วย…";
 "Ignore shortcuts" = "เพิกเฉยต่อทางลัด";
 "Import settings…" = "นำเข้าการตั้งค่า…";
-"Keyboard, mouse, and trackpad" = "แป้นพิมพ์ เมาส์ และแทร็คแพด";
 "Language" = "ภาษา";
 "Language Change" = "การเปลี่ยนภาษา";
 "Large" = "ใหญ่";
@@ -154,6 +155,7 @@
 "Settings…" = "การตั้งค่า…";
 "Shortcut" = "ทางลัด";
 "Shortcut already assigned to: %@" = "ทางลัดถูกกำหนดไว้แล้ว: %@";
+"Shortcuts" = "ทางลัด";
 "Shortcuts When Active" = "ทางลัดเมื่อทำงานอยู่";
 "Shortcuts while ScryTab is active" = "ปุ่มลัดขณะ ScryTab ทำงานอยู่";
 "Show" = "แสดง";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "คุณคาดหวังอะไร? เกิดอะไรขึ้น? ขั้นตอนการทำซ้ำ…";
 "When fullscreen" = "เมื่อเต็มหน้าจอ";
 "When no open window" = "เมื่อไม่มีหน้าต่างที่เปิดอยู่";
-"Window actions" = "การทำงานของหน้าต่าง";
 "Window is fullscreen" = "หน้าต่างเต็มหน้าจอ";
 "Window is minimized" = "หน้าต่างถูกย่อ";
 "Window is on every Space" = "หน้าต่างอยู่บนทุกพื้นที่ทำงาน";

@@ -14,6 +14,7 @@
 "Add a running app" = "加入執行中的 App";
 "Add an app from disk" = "從磁碟加入 App";
 "Additional controls" = "額外控制項";
+"Advanced" = "進階";
 "After keys are released" = "在按鍵釋放後";
 "All apps" = "所有 App";
 "All screens" = "所有螢幕";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "視窗全螢幕/取消全螢幕";
 "General" = "一般";
 "Gesture" = "手勢";
+"Gestures" = "手勢";
 "Go back" = "返回";
 "Group apps" = "群組 App";
 "Group tabs" = "群組分頁";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "我認為這個 App 可以這樣改善…";
 "Ignore shortcuts" = "忽略快捷鍵";
 "Import settings…" = "輸入設定…";
-"Keyboard, mouse, and trackpad" = "鍵盤、滑鼠和觸控板";
 "Language" = "語言";
 "Language Change" = "語言變更";
 "Large" = "大";
@@ -154,6 +155,7 @@
 "Settings…" = "設定…";
 "Shortcut" = "快捷鍵";
 "Shortcut already assigned to: %@" = "快捷鍵已指派給:%@";
+"Shortcuts" = "快捷鍵";
 "Shortcuts When Active" = "作用中時的快捷鍵";
 "Shortcuts while ScryTab is active" = "ScryTab 啟用時的快捷鍵";
 "Show" = "顯示";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "您期望什麼?發生了什麼?重現步驟…";
 "When fullscreen" = "全螢幕時";
 "When no open window" = "沒有開啟視窗時";
-"Window actions" = "視窗動作";
 "Window is fullscreen" = "視窗全螢幕";
 "Window is minimized" = "視窗已縮到最小";
 "Window is on every Space" = "視窗位於每個空間";

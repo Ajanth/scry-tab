@@ -33,14 +33,14 @@ class TileUnderLayer: CALayer {
             height: hf.height
         )
         highlightLayer.frame = rect
-        highlightLayer.cornerRadius = Appearance.cellCornerRadius
+        highlightLayer.cornerRadius = Appearance.cellCornerRadius * view.presentationScale
         highlightLayer.backgroundColor = (isFocused
             ? Appearance.highlightFocusedBackgroundColor
             : Appearance.highlightHoveredBackgroundColor).cgColor
         highlightLayer.borderColor = (isFocused
             ? Appearance.highlightFocusedBorderColor
             : Appearance.highlightHoveredBorderColor).cgColor
-        highlightLayer.borderWidth = Appearance.highlightBorderWidth
+        highlightLayer.borderWidth = Appearance.highlightBorderWidth * view.presentationScale
         highlightLayer.isHidden = false
     }
 }

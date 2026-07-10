@@ -52,6 +52,25 @@ final class SidebarListTests: XCTestCase {
                                     constant: -SidebarListRow.highlightVerticalInset))
     }
 
+    func testHighlightBackgroundUsesHorizontalInset() throws {
+        let row = SidebarListRow()
+        let background = try XCTUnwrap(descendantViews(row).first {
+            $0.identifier?.rawValue == "sidebarRowBackground"
+        })
+        XCTAssertTrue(hasConstraint(row,
+                                    first: background,
+                                    firstAttribute: .leading,
+                                    second: row,
+                                    secondAttribute: .leading,
+                                    constant: SidebarListRow.highlightHorizontalInset))
+        XCTAssertTrue(hasConstraint(row,
+                                    first: background,
+                                    firstAttribute: .trailing,
+                                    second: row,
+                                    secondAttribute: .trailing,
+                                    constant: -SidebarListRow.highlightHorizontalInset))
+    }
+
     func testFixedSidebarHeightDoesNotFollowEditorHeight() {
         let sidebar = NSView()
         let editor = NSView()
@@ -70,5 +89,20 @@ final class SidebarListTests: XCTestCase {
             $0.firstAnchor == sidebar.heightAnchor
                 && $0.secondAnchor == editor.heightAnchor
         })
+    }
+
+    func testSpacedLayoutUsesSectionGapWithoutDivider() throws {
+        let sidebar = NSView()
+        let editor = NSView()
+        sidebar.translatesAutoresizingMaskIntoConstraints = false
+        editor.translatesAutoresizingMaskIntoConstraints = false
+        sidebar.widthAnchor.constraint(equalToConstant: 196).isActive = true
+        editor.widthAnchor.constraint(equalToConstant: SettingsWindow.contentWidth - 196 - DesignSystem.Metrics.sectionGap).isActive = true
+        let container = makeSidebarEditorContainer(sidebar: sidebar, editor: editor, chrome: .plain, layout: .spaced)
+        let content = try XCTUnwrap(container.subviews.first as? NSStackView)
+        XCTAssertEqual(content.arrangedSubviews.count, 2)
+        XCTAssertTrue(content.arrangedSubviews[0] === sidebar)
+        XCTAssertTrue(content.arrangedSubviews[1] === editor)
+        XCTAssertEqual(content.spacing, DesignSystem.Metrics.sectionGap)
     }
 }

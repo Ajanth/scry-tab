@@ -35,6 +35,10 @@ class LiquidGlassEffectView: NSGlassEffectView, EffectView {
     func updateAppearance() {
         cornerRadius = Appearance.windowCornerRadius
     }
+
+    func updatePresentationScale(_ scale: CGFloat) {
+        cornerRadius = Appearance.windowCornerRadius * scale
+    }
 }
 
 class FrostedGlassEffectView: NSVisualEffectView, EffectView {
@@ -49,6 +53,10 @@ class FrostedGlassEffectView: NSVisualEffectView, EffectView {
     func updateAppearance() {
         material = Appearance.material
         updateRoundedCorners(Appearance.windowCornerRadius)
+    }
+
+    func updatePresentationScale(_ scale: CGFloat) {
+        updateRoundedCorners(Appearance.windowCornerRadius * scale)
     }
 
     /// using layer!.cornerRadius works but the corners are aliased; this custom approach gives smooth rounded corners

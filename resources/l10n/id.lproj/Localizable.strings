@@ -14,6 +14,7 @@
 "Add a running app" = "Tambah aplikasi yang sedang berjalan";
 "Add an app from disk" = "Tambah aplikasi dari disk";
 "Additional controls" = "Kontrol tambahan";
+"Advanced" = "Lanjutan";
 "After keys are released" = "Setelah tombol dilepas";
 "All apps" = "Semua aplikasi";
 "All screens" = "Semua layar";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "Jendela layar penuh/Keluar dari layar penuh";
 "General" = "Umum";
 "Gesture" = "Gestur";
+"Gestures" = "Gestur";
 "Go back" = "Kembali";
 "Group apps" = "Kelompokkan aplikasi";
 "Group tabs" = "Kelompokkan tab";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "Menurut saya aplikasi dapat ditingkatkan dengan…";
 "Ignore shortcuts" = "Abaikan pintasan";
 "Import settings…" = "Impor pengaturan…";
-"Keyboard, mouse, and trackpad" = "Papan ketik, mouse, dan trackpad";
 "Language" = "Bahasa";
 "Language Change" = "Perubahan Bahasa";
 "Large" = "Besar";
@@ -154,6 +155,7 @@
 "Settings…" = "Pengaturan…";
 "Shortcut" = "Pintasan";
 "Shortcut already assigned to: %@" = "Pintasan sudah ditetapkan untuk: %@";
+"Shortcuts" = "Pintasan";
 "Shortcuts When Active" = "Pintasan Saat Aktif";
 "Shortcuts while ScryTab is active" = "Pintasan saat ScryTab aktif";
 "Show" = "Tampilkan";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "Apa yang Anda harapkan? Apa yang terjadi? Langkah-langkah untuk mereproduksi…";
 "When fullscreen" = "Saat layar penuh";
 "When no open window" = "Saat tidak ada jendela terbuka";
-"Window actions" = "Tindakan jendela";
 "Window is fullscreen" = "Jendela dalam layar penuh";
 "Window is minimized" = "Jendela diminimalkan";
 "Window is on every Space" = "Jendela ada di setiap Ruang";

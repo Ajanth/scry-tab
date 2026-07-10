@@ -14,6 +14,7 @@
 "Add a running app" = "הוסף יישום פעיל";
 "Add an app from disk" = "הוסף יישום מהדיסק";
 "Additional controls" = "פקדים נוספים";
+"Advanced" = "מתקדם";
 "After keys are released" = "לאחר שחרור המקשים";
 "All apps" = "כל היישומים";
 "All screens" = "כל המסכים";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "מסך מלא/יציאה ממסך מלא של חלון";
 "General" = "כללי";
 "Gesture" = "מחווה";
+"Gestures" = "מחוות";
 "Go back" = "חזור";
 "Group apps" = "קבץ יישומים";
 "Group tabs" = "קבץ לשוניות";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "אני חושב שהיישום יכול להשתפר עם…";
 "Ignore shortcuts" = "התעלם מקיצורי דרך";
 "Import settings…" = "ייבא הגדרות…";
-"Keyboard, mouse, and trackpad" = "מקלדת, עכבר ומשטח עקיבה";
 "Language" = "שפה";
 "Language Change" = "שינוי שפה";
 "Large" = "גדול";
@@ -154,6 +155,7 @@
 "Settings…" = "הגדרות…";
 "Shortcut" = "קיצור דרך";
 "Shortcut already assigned to: %@" = "קיצור הדרך כבר משויך: %@";
+"Shortcuts" = "קיצורי דרך";
 "Shortcuts When Active" = "קיצורי דרך כאשר פעיל";
 "Shortcuts while ScryTab is active" = "קיצורי דרך בזמן ש-ScryTab פעיל";
 "Show" = "הצג";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "מה ציפית? מה קרה? שלבים לשחזור…";
 "When fullscreen" = "כאשר במסך מלא";
 "When no open window" = "כאשר אין חלון פתוח";
-"Window actions" = "פעולות חלון";
 "Window is fullscreen" = "חלון במסך מלא";
 "Window is minimized" = "חלון ממוזער";
 "Window is on every Space" = "חלון נמצא בכל מרחב";
