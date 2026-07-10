@@ -108,6 +108,7 @@ final class ShortcutEditor {
         outerContainer.alignment = .leading
         outerContainer.spacing = TableGroupSetView.tableGroupSpacing
         outerContainer.distribution = .fill
+        outerContainer.translatesAutoresizingMaskIntoConstraints = false
         outerContainer.addArrangedSubview(triggerTable)
         outerContainer.addArrangedSubview(tabControl)
         outerContainer.addArrangedSubview(bottomSpacer)

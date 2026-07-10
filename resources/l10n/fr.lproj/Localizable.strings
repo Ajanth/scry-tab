@@ -14,6 +14,7 @@
 "Add a running app" = "Ajouter une app en cours d'exécution";
 "Add an app from disk" = "Ajouter une app depuis le disque";
 "Additional controls" = "Contrôles supplémentaires";
+"Advanced" = "Avancé";
 "After keys are released" = "Après le relâchement des touches";
 "All apps" = "Toutes les apps";
 "All screens" = "Tous les écrans";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "Mettre/Quitter le plein écran";
 "General" = "Général";
 "Gesture" = "Geste";
+"Gestures" = "Gestes";
 "Go back" = "Retour";
 "Group apps" = "Grouper les apps";
 "Group tabs" = "Grouper les onglets";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "Je pense que l'app pourrait être améliorée avec…";
 "Ignore shortcuts" = "Ignorer les raccourcis";
 "Import settings…" = "Importer les réglages…";
-"Keyboard, mouse, and trackpad" = "Clavier, souris et trackpad";
 "Language" = "Langue";
 "Language Change" = "Changement de langue";
 "Large" = "Grand";
@@ -154,6 +155,7 @@
 "Settings…" = "Réglages…";
 "Shortcut" = "Raccourci";
 "Shortcut already assigned to: %@" = "Raccourci déjà affecté à : %@";
+"Shortcuts" = "Raccourcis";
 "Shortcuts When Active" = "Raccourcis pendant l'utilisation";
 "Shortcuts while ScryTab is active" = "Raccourcis lorsque ScryTab est actif";
 "Show" = "Afficher";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "Qu'attendiez-vous ? Que s'est-il passé ? Étapes pour reproduire…";
 "When fullscreen" = "En plein écran";
 "When no open window" = "Sans fenêtre ouverte";
-"Window actions" = "Actions de fenêtre";
 "Window is fullscreen" = "Fenêtre en plein écran";
 "Window is minimized" = "Fenêtre réduite";
 "Window is on every Space" = "Fenêtre sur tous les Bureaux";

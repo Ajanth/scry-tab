@@ -7,8 +7,7 @@ class ExceptionsTab {
     private static let sidebarHorizontalPadding = TableGroupView.padding
     private static let editorTopBottomPadding = TableGroupView.padding
     private static let editorHorizontalPadding = TableGroupView.padding
-    private static var editorWidth: CGFloat { SettingsWindow.contentWidth - sidebarWidth - 1 }
-    private static var editorContentWidth: CGFloat { editorWidth - 2 * editorHorizontalPadding }
+    private static var editorWidth: CGFloat { SettingsWindow.contentWidth - sidebarWidth - DesignSystem.Metrics.sectionGap }
 
     private static var items: [ExceptionEntry] = []
     private static var selectedIndex = -1
@@ -47,7 +46,11 @@ class ExceptionsTab {
     }
 
     private static func makeContainer() -> NSView {
-        let container = makeSidebarEditorContainer(sidebar: makeSidebar(), editor: makeEditorPane(), minHeight: DesignSystem.Metrics.settingsEditorSidebarHeight)
+        let container = makeSidebarEditorContainer(sidebar: makeSidebar(),
+                                                   editor: makeEditorPane(),
+                                                   fixedSidebarHeight: DesignSystem.Metrics.settingsEditorSidebarHeight,
+                                                   chrome: .plain,
+                                                   layout: .spaced)
         return TableGroupSetView(originalViews: [container], padding: 0, bottomPadding: 0)
     }
 
@@ -135,9 +138,7 @@ class ExceptionsTab {
         pane.addSubview(editorView)
         NSLayoutConstraint.activate([
             editorView.topAnchor.constraint(equalTo: pane.topAnchor, constant: editorTopBottomPadding),
-            // No leading padding: the card sits right after the separator. Visual gap from the
-            // sidebar section comes from the sidebar's own trailing margin (TableGroupView.padding).
-            editorView.leadingAnchor.constraint(equalTo: pane.leadingAnchor),
+            editorView.leadingAnchor.constraint(equalTo: pane.leadingAnchor, constant: editorHorizontalPadding),
             editorView.trailingAnchor.constraint(equalTo: pane.trailingAnchor, constant: -editorHorizontalPadding),
             editorView.bottomAnchor.constraint(lessThanOrEqualTo: pane.bottomAnchor, constant: -editorTopBottomPadding),
         ])

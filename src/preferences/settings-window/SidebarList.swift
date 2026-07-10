@@ -9,21 +9,24 @@ enum SidebarEditorContainerChrome {
     case plain
 }
 
-/// Builds the [sidebar | 1px separator | editor] horizontal chassis shared by ExceptionsTab and
-/// ControlsTab. Callers are responsible for pinning a fixed width on `sidebar` and `editor`.
-/// By default the sidebar follows the editor height. `fixedSidebarHeight` keeps navigation stable
-/// while the editor changes height. Content is pinned to all four edges of the returned wrapper.
+enum SidebarEditorContainerLayout {
+    case divided
+    case spaced
+}
+
+/// Builds the horizontal sidebar/editor chassis shared by ExceptionsTab and ControlsTab. The
+/// layout can use either the standard divider or the shared section gap. Callers are responsible
+/// for pinning a fixed width on `sidebar` and `editor`. By default the sidebar follows the editor
+/// height; `fixedSidebarHeight` keeps navigation stable while the editor changes height.
 func makeSidebarEditorContainer(sidebar: NSView,
                                 editor: NSView,
                                 minHeight: CGFloat? = nil,
                                 fixedSidebarHeight: CGFloat? = nil,
-                                chrome: SidebarEditorContainerChrome = .framed) -> NSView {
-    let separator = sidebarSeparatorView()
-    separator.widthAnchor.constraint(equalToConstant: 1).isActive = true
-    let content = NSStackView(views: [sidebar, separator, editor])
+                                chrome: SidebarEditorContainerChrome = .framed,
+                                layout: SidebarEditorContainerLayout = .divided) -> NSView {
+    let content = makeSidebarEditorStack(sidebar: sidebar, editor: editor, layout: layout)
     content.orientation = .horizontal
     content.alignment = .top
-    content.spacing = 0
     content.translatesAutoresizingMaskIntoConstraints = false
     if let fixedSidebarHeight {
         sidebar.heightAnchor.constraint(equalToConstant: fixedSidebarHeight).isActive = true
@@ -50,6 +53,21 @@ func makeSidebarEditorContainer(sidebar: NSView,
         content.bottomAnchor.constraint(equalTo: container.bottomAnchor),
     ])
     return container
+}
+
+private func makeSidebarEditorStack(sidebar: NSView, editor: NSView, layout: SidebarEditorContainerLayout) -> NSStackView {
+    switch layout {
+    case .divided:
+        let separator = sidebarSeparatorView()
+        separator.widthAnchor.constraint(equalToConstant: DesignSystem.Metrics.splitDividerThickness).isActive = true
+        let stack = NSStackView(views: [sidebar, separator, editor])
+        stack.spacing = 0
+        return stack
+    case .spaced:
+        let stack = NSStackView(views: [sidebar, editor])
+        stack.spacing = DesignSystem.Metrics.sectionGap
+        return stack
+    }
 }
 
 class SidebarListContainer: NSView {
@@ -100,6 +118,7 @@ class SidebarListContainer: NSView {
 
 class SidebarListRow: ClickHoverStackView {
     static let highlightVerticalInset = CGFloat(4)
+    static let highlightHorizontalInset = DesignSystem.Metrics.headerFooterGap
 
     private let backgroundView = NSView()
     private let iconView = NSImageView()
@@ -163,8 +182,8 @@ class SidebarListRow: ClickHoverStackView {
         addArrangedSubview(chevronLabel)
         NSLayoutConstraint.activate([
             backgroundView.topAnchor.constraint(equalTo: topAnchor, constant: Self.highlightVerticalInset),
-            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.highlightHorizontalInset),
+            backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Self.highlightHorizontalInset),
             backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.highlightVerticalInset),
         ])
         iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: TableGroupView.padding).isActive = true

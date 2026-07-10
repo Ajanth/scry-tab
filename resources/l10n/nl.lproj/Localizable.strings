@@ -14,6 +14,7 @@
 "Add a running app" = "Actieve app toevoegen";
 "Add an app from disk" = "App vanaf schijf toevoegen";
 "Additional controls" = "Extra bedieningselementen";
+"Advanced" = "Geavanceerd";
 "After keys are released" = "Nadat toetsen zijn losgelaten";
 "All apps" = "Alle apps";
 "All screens" = "Alle schermen";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "Venster in/uit volledig scherm";
 "General" = "Algemeen";
 "Gesture" = "Gebaar";
+"Gestures" = "Gebaren";
 "Go back" = "Terug";
 "Group apps" = "Apps groeperen";
 "Group tabs" = "Tabbladen groeperen";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "Ik denk dat de app verbeterd kan worden met…";
 "Ignore shortcuts" = "Sneltoetsen negeren";
 "Import settings…" = "Instellingen importeren…";
-"Keyboard, mouse, and trackpad" = "Toetsenbord, muis en trackpad";
 "Language" = "Taal";
 "Language Change" = "Taalwijziging";
 "Large" = "Groot";
@@ -154,6 +155,7 @@
 "Settings…" = "Instellingen…";
 "Shortcut" = "Sneltoets";
 "Shortcut already assigned to: %@" = "Sneltoets is al toegewezen aan: %@";
+"Shortcuts" = "Sneltoetsen";
 "Shortcuts When Active" = "Sneltoetsen wanneer actief";
 "Shortcuts while ScryTab is active" = "Sneltoetsen terwijl ScryTab actief is";
 "Show" = "Toon";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "Wat verwachtte je? Wat gebeurde er? Stappen om te reproduceren…";
 "When fullscreen" = "In volledig scherm";
 "When no open window" = "Bij geen open venster";
-"Window actions" = "Vensteracties";
 "Window is fullscreen" = "Venster in volledig scherm";
 "Window is minimized" = "Venster is geminimaliseerd";
 "Window is on every Space" = "Venster op elke Space";

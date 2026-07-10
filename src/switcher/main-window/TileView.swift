@@ -14,6 +14,8 @@ class TileView: FlippedView {
     var windowlessAppIndicator = WindowlessAppIndicator(tooltip: TileView.noOpenWindowToolTip)
     private var fullTitle = ""
     private var fullTitleWidth = CGFloat(0)
+    private var presentationRowWidth: CGFloat?
+    private(set) var presentationScale = CGFloat(1)
 
     var mouseUpCallback: (() -> Void)!
     var mouseMovedCallback: (() -> Void)!
@@ -62,12 +64,14 @@ class TileView: FlippedView {
     var highlightFrame: CGRect {
         if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons {
             return CGRect(x: 0, y: 0,
-                          width: frame.width, height: appIcon.frame.height + Appearance.edgeInsetsSize * 2)
+                          width: frame.width, height: appIcon.frame.height + Appearance.edgeInsetsSize * presentationScale * 2)
         }
         return CGRect(origin: .zero, size: frame.size)
     }
 
     func updateRecycledCellWithNewContent(_ element: Window, _ index: Int, _ newHeight: CGFloat) {
+        presentationRowWidth = nil
+        presentationScale = 1
         window_ = element
         label.toolTip = nil
         applyCurrentStyle()
@@ -75,6 +79,69 @@ class TileView: FlippedView {
         updateSizes(newHeight)
         updatePositions(newHeight)
         applySearchHighlight()
+    }
+
+    func updatePresentationCell(title: String,
+                                icon: NSImage,
+                                frameSize: NSSize,
+                                rowWidth: CGFloat,
+                                isFullscreen: Bool,
+                                spaceNumber: Int,
+                                scale: CGFloat = 1) {
+        window_ = nil
+        presentationRowWidth = rowWidth
+        presentationScale = scale
+        applyCurrentStyle()
+        frame.size = frameSize
+        label.font = NSFontManager.shared.convert(Appearance.font, toSize: Appearance.font.pointSize * scale)
+        label.fixHeight()
+        label.stringValue = title
+        fullTitle = title
+        fullTitleWidth = label.cell?.cellSize.width ?? 0
+        let iconSize = pixelAligned(TileView.iconSize().scaled(by: scale))
+        let iconImage = Application.appIconWithoutPadding(icon) ?? presentationIcon(icon, size: iconSize)
+        appIcon.updateContents(.cgImage(iconImage), iconSize)
+        statusIcons.update(isHidden: false, isFullscreen: isFullscreen, isMinimized: false, showSpace: true)
+        statusIcons.setSpaceNumber(spaceNumber)
+        dockLabelIcon.isHidden = true
+        windowlessAppIndicator.isHidden = true
+        updatePresentationPositions(frameSize.height)
+    }
+
+    func setPresentationFocused(_ focused: Bool) {
+        guard Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons else {
+            label.isHidden = false
+            return
+        }
+        label.isHidden = !focused
+        guard focused else { return }
+        updateAppIconsLabelFrame()
+    }
+
+    private func updatePresentationPositions(_ height: CGFloat) {
+        let edgeInsets = pixelAligned(Appearance.edgeInsetsSize * presentationScale)
+        assignIfDifferent(&appIcon.frame.origin, NSPoint(x: edgeInsets, y: edgeInsets))
+        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) != .appIcons {
+            let contentWidth = frame.width - edgeInsets * 2
+            let labelWidth = contentWidth - appIcon.frame.width - Appearance.appIconLabelSpacing * presentationScale - statusIcons.totalWidth
+            label.setWidth(labelWidth)
+            updatePositions(height)
+        }
+    }
+
+    private func presentationIcon(_ icon: NSImage, size: NSSize) -> CGImage? {
+        var proposedRect = NSRect(origin: .zero, size: size)
+        let hints: [NSImageRep.HintKey: NSNumber] = [.interpolation: NSNumber(value: NSImageInterpolation.high.rawValue)]
+        return icon.cgImage(forProposedRect: &proposedRect, context: nil, hints: hints)
+    }
+
+    private func pixelAligned(_ value: CGFloat) -> CGFloat {
+        let scale = window?.backingScaleFactor ?? NSScreen.main?.backingScaleFactor ?? 2
+        return (value * scale).rounded() / scale
+    }
+
+    private func pixelAligned(_ size: NSSize) -> NSSize {
+        NSSize(width: pixelAligned(size.width), height: pixelAligned(size.height))
     }
 
     func drawHighlight() {
@@ -191,7 +258,7 @@ class TileView: FlippedView {
 
     private func getMaxAllowedLabelWidth() -> CGFloat {
         let viewWidth = frame.width
-        let maxAllowedWidth = min(viewWidth * 2, TilesView.rowWidth)
+        let maxAllowedWidth = min(viewWidth * 2, presentationRowWidth ?? TilesView.rowWidth)
         let availableLeftWidth = isFirstInRow ? 0 : CGFloat(indexInRow) * viewWidth
         let availableRightWidth = isLastInRow ? 0 : CGFloat(numberOfViewsInRow - 1 - indexInRow) * viewWidth
         let totalWidth = availableLeftWidth + availableRightWidth + viewWidth
@@ -202,7 +269,8 @@ class TileView: FlippedView {
     private func updateAppIconsLabelFrame() {
         let viewWidth = frame.width
         let labelWidth = fullTitleWidth
-        let padding = (Appearance.resolvedSize == .small ? 0 : (Appearance.resolvedSize == .medium ? 1 : 2)) * Appearance.intraCellPadding
+        let intraCellPadding = Appearance.intraCellPadding * presentationScale
+        let padding = (Appearance.resolvedSize == .small ? 0 : (Appearance.resolvedSize == .medium ? 1 : 2)) * intraCellPadding
         let maxAllowedLabelWidth = getMaxAllowedLabelWidth()
         let sidesToOffset: CGFloat = (isFirstInRow ? 1 : 0) + (isLastInRow ? 1 : 0)
         let paddingForOffset = sidesToOffset * padding
@@ -231,8 +299,8 @@ class TileView: FlippedView {
             }
         }
         let xPosition = -leftOffset
-        let height = TilesView.layoutCache.labelHeight
-        let yPosition = appIcon.frame.maxY + Appearance.intraCellPadding * 2
+        let height = presentationScale == 1 ? TilesView.layoutCache.labelHeight : label.cell?.cellSize.height ?? Appearance.fontHeight * presentationScale
+        let yPosition = appIcon.frame.maxY + intraCellPadding * 2
         label.frame = NSRect(x: xPosition, y: yPosition, width: effectiveLabelWidth, height: height)
         label.setWidth(effectiveLabelWidth)
         label.toolTip = labelWidth >= label.frame.size.width ? fullTitle : nil
@@ -642,5 +710,11 @@ class TileView: FlippedView {
             return TileView.iconSize().height + Appearance.edgeInsetsSize * 2 + Appearance.intraCellPadding * 2 + labelHeight
         }
         return max(TileView.iconSize().height, labelHeight) + Appearance.edgeInsetsSize * 2
+    }
+}
+
+private extension NSSize {
+    func scaled(by scale: CGFloat) -> NSSize {
+        NSSize(width: width * scale, height: height * scale)
     }
 }

@@ -14,6 +14,7 @@
 "Add a running app" = "Thêm một ứng dụng đang chạy";
 "Add an app from disk" = "Thêm một ứng dụng từ ổ đĩa";
 "Additional controls" = "Điều khiển bổ sung";
+"Advanced" = "Nâng cao";
 "After keys are released" = "Sau khi nhả phím";
 "All apps" = "Tất cả ứng dụng";
 "All screens" = "Tất cả màn hình";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "Bật/Tắt toàn màn hình cửa sổ";
 "General" = "Tổng quát";
 "Gesture" = "Cử chỉ";
+"Gestures" = "Cử chỉ";
 "Go back" = "Quay lại";
 "Group apps" = "Nhóm ứng dụng";
 "Group tabs" = "Nhóm tab";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "Tôi nghĩ ứng dụng có thể được cải thiện với…";
 "Ignore shortcuts" = "Bỏ qua phím tắt";
 "Import settings…" = "Nhập cài đặt…";
-"Keyboard, mouse, and trackpad" = "Bàn phím, chuột và bàn di chuột";
 "Language" = "Ngôn ngữ";
 "Language Change" = "Thay đổi ngôn ngữ";
 "Large" = "Lớn";
@@ -154,6 +155,7 @@
 "Settings…" = "Cài đặt…";
 "Shortcut" = "Phím tắt";
 "Shortcut already assigned to: %@" = "Phím tắt đã được gán cho: %@";
+"Shortcuts" = "Phím tắt";
 "Shortcuts When Active" = "Phím tắt khi hoạt động";
 "Shortcuts while ScryTab is active" = "Phím tắt khi ScryTab đang hoạt động";
 "Show" = "Hiển thị";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "Bạn mong đợi điều gì? Đã xảy ra chuyện gì? Các bước tái hiện…";
 "When fullscreen" = "Khi toàn màn hình";
 "When no open window" = "Khi không có cửa sổ mở";
-"Window actions" = "Tác vụ cửa sổ";
 "Window is fullscreen" = "Cửa sổ ở chế độ toàn màn hình";
 "Window is minimized" = "Cửa sổ đang được thu nhỏ";
 "Window is on every Space" = "Cửa sổ ở trên mọi Không gian";

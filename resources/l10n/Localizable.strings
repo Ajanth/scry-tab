@@ -47,6 +47,9 @@
 "Additional controls" = "Additional controls";
 
 /* No comment provided by engineer. */
+"Advanced" = "Advanced";
+
+/* No comment provided by engineer. */
 "After keys are released" = "After keys are released";
 
 /* No comment provided by engineer. */
@@ -230,6 +233,9 @@
 "Gesture" = "Gesture";
 
 /* No comment provided by engineer. */
+"Gestures" = "Gestures";
+
+/* No comment provided by engineer. */
 "Go back" = "Go back";
 
 /* No comment provided by engineer. */
@@ -270,9 +276,6 @@
 
 /* No comment provided by engineer. */
 "Import settings…" = "Import settings…";
-
-/* No comment provided by engineer. */
-"Keyboard, mouse, and trackpad" = "Keyboard, mouse, and trackpad";
 
 /* No comment provided by engineer. */
 "Language" = "Language";
@@ -467,6 +470,9 @@
 "Shortcut already assigned to: %@" = "Shortcut already assigned to: %@";
 
 /* No comment provided by engineer. */
+"Shortcuts" = "Shortcuts";
+
+/* No comment provided by engineer. */
 "Shortcuts When Active" = "Shortcuts When Active";
 
 /* No comment provided by engineer. */
@@ -627,9 +633,6 @@
 
 /* No comment provided by engineer. */
 "When no open window" = "When no open window";
-
-/* No comment provided by engineer. */
-"Window actions" = "Window actions";
 
 /* No comment provided by engineer. */
 "Window is fullscreen" = "Window is fullscreen";

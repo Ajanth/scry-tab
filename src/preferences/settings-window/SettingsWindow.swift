@@ -563,13 +563,14 @@ class SettingsWindow: NSWindow {
               + ShowOnScreenPreference.allCases.map(\.localizedString)
               + CustomizeStyleSheet.searchableStrings),
             SettingsSearchDescriptor(id: "controls-gesture", route: .controls(.gesture), sectionID: "controls", title: NSLocalizedString("Gesture", comment: ""), keywords: [
+                NSLocalizedString("Gestures", comment: ""),
                 NSLocalizedString("Trackpad", comment: ""),
                 NSLocalizedString("Filtering", comment: ""),
                 NSLocalizedString("Appearance", comment: ""),
                 NSLocalizedString("Ordering", comment: ""),
             ]),
-            SettingsSearchDescriptor(id: "controls-active", route: .controls(.activeShortcuts), sectionID: "controls", title: NSLocalizedString("Shortcuts while ScryTab is active", comment: ""), keywords: ShortcutsWhenActiveSheet.searchableStrings),
-            SettingsSearchDescriptor(id: "controls-navigation-pointer", route: .controls(.navigationPointer), sectionID: "controls", title: NSLocalizedString("Navigation & pointer", comment: ""), keywords: AdditionalControlsSheet.searchableStrings),
+            SettingsSearchDescriptor(id: "controls-active", route: .controls(.activeShortcuts), sectionID: "controls", title: NSLocalizedString("Shortcuts while ScryTab is active", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + ShortcutsWhenActiveSheet.searchableStrings),
+            SettingsSearchDescriptor(id: "controls-navigation-pointer", route: .controls(.navigationPointer), sectionID: "controls", title: NSLocalizedString("Navigation & pointer", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + AdditionalControlsSheet.searchableStrings),
             SettingsSearchDescriptor(id: "general", route: .general, sectionID: "general", title: NSLocalizedString("General", comment: ""), keywords: [
                 NSLocalizedString("Start at login", comment: ""),
                 NSLocalizedString("Language", comment: ""),
@@ -607,7 +608,7 @@ class SettingsWindow: NSWindow {
                                             route: .controls(.shortcut(id: id, pane: nil)),
                                             sectionID: "controls",
                                             title: NSLocalizedString("Shortcut", comment: "") + " " + String(index + 1),
-                                            keywords: FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings,
+                                            keywords: [NSLocalizedString("Shortcuts", comment: "")] + FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings,
                                             valueProvider: { [index] in
                                                 [
                                                     Preferences.shortcut(Preferences.indexToName("holdShortcut", index))?.keyEquivalent ?? "",

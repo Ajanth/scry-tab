@@ -2,6 +2,46 @@ import XCTest
 
 final class AnimatedSelectionResolverTests: XCTestCase {
 
+    /// Content already inside the configured width share keeps its real size.
+    func testScaleToFitDoesNotUpscaleForWidth() {
+        let scale = AnimatedSelectionResolver.scaleToFit(
+            contentSize: CGSize(width: 200, height: 50),
+            availableSize: CGSize(width: 400, height: 300),
+            maximumWidthRatio: 0.9,
+            maximumHeightRatio: 0.9)
+        XCTAssertEqual(scale, 1)
+    }
+
+    /// Content already inside the configured height share keeps its real size.
+    func testScaleToFitDoesNotUpscaleForHeight() {
+        let scale = AnimatedSelectionResolver.scaleToFit(
+            contentSize: CGSize(width: 50, height: 200),
+            availableSize: CGSize(width: 400, height: 300),
+            maximumWidthRatio: 0.9,
+            maximumHeightRatio: 0.9)
+        XCTAssertEqual(scale, 1)
+    }
+
+    /// Oversized content shrinks to the tighter configured parent bound.
+    func testScaleToFitShrinksOversizedContent() {
+        let scale = AnimatedSelectionResolver.scaleToFit(
+            contentSize: CGSize(width: 400, height: 200),
+            availableSize: CGSize(width: 300, height: 180),
+            maximumWidthRatio: 0.9,
+            maximumHeightRatio: 0.9)
+        XCTAssertEqual(scale, 0.675)
+    }
+
+    /// Unlaid-out content keeps its neutral scale instead of producing an invalid transform.
+    func testScaleToFitHandlesEmptyContent() {
+        let scale = AnimatedSelectionResolver.scaleToFit(
+            contentSize: .zero,
+            availableSize: CGSize(width: 400, height: 300),
+            maximumWidthRatio: 0.9,
+            maximumHeightRatio: 0.9)
+        XCTAssertEqual(scale, 1)
+    }
+
     /// Advancing from a middle index moves to the next one.
     func testCyclesToNextIndex() {
         XCTAssertEqual(AnimatedSelectionResolver.nextFocusedIndex(current: 1, count: 5), 2)

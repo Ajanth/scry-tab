@@ -14,6 +14,7 @@
 "Add a running app" = "Add a running app";
 "Add an app from disk" = "Add an app from disk";
 "Additional controls" = "Additional controls";
+"Advanced" = "Advanced";
 "After keys are released" = "After keys are released";
 "All apps" = "All apps";
 "All screens" = "All screens";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "Fullscreen/Defullscreen window";
 "General" = "General";
 "Gesture" = "Gesture";
+"Gestures" = "Gestures";
 "Go back" = "Go back";
 "Group apps" = "Group apps";
 "Group tabs" = "Group tabs";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "I think the app could be improved with…";
 "Ignore shortcuts" = "Ignore shortcuts";
 "Import settings…" = "Import settings…";
-"Keyboard, mouse, and trackpad" = "Keyboard, mouse, and trackpad";
 "Language" = "Language";
 "Language Change" = "Language Change";
 "Large" = "Large";
@@ -154,6 +155,7 @@
 "Settings…" = "Settings…";
 "Shortcut" = "Shortcut";
 "Shortcut already assigned to: %@" = "Shortcut already assigned to: %@";
+"Shortcuts" = "Shortcuts";
 "Shortcuts When Active" = "Shortcuts When Active";
 "Shortcuts while ScryTab is active" = "Shortcuts while ScryTab is active";
 "Show" = "Show";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "What did you expect? What happened? Steps to reproduce…";
 "When fullscreen" = "When fullscreen";
 "When no open window" = "When no open window";
-"Window actions" = "Window actions";
 "Window is fullscreen" = "Window is fullscreen";
 "Window is minimized" = "Window is minimized";
 "Window is on every Space" = "Window is on every Space";

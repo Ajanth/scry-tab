@@ -302,6 +302,10 @@ private final class AppearanceStylePreviewPane: NSView {
         livePreviewView.updateStyle(style)
     }
 
+    func refreshAppearance() {
+        updateStyle(AppearanceTab.selectedAppearanceStyle())
+    }
+
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         addSubview(livePreviewView)
@@ -355,7 +359,12 @@ class Popover: NSPopover {
         label.isEditable = false
         label.isSelectable = true
         label.font = NSFont.systemFont(ofSize: 12)
-        let actualView: NSView = extraView == nil ? label : StackView([label, extraView!], .vertical)
+        let actualView: NSView
+        if let extraView {
+            actualView = StackView([label, extraView], .vertical, spacing: DesignSystem.Metrics.headerFooterGap)
+        } else {
+            actualView = label
+        }
         view.addSubview(actualView)
         NSLayoutConstraint.activate([
             view.widthAnchor.constraint(lessThanOrEqualToConstant: 400),
@@ -483,11 +492,11 @@ class AppearanceTab: NSObject {
         table.addRow(leftText: NSLocalizedString("Style", comment: ""), rightViews: [styleControl])
         table.addRow(leftText: AppearanceTab.labelSize, rightViews: [
             makeGlobalDropdown("appearanceSize", overrideBaseName: "appearanceSizeOverride",
-                cases: AppearanceSizePreference.allCases)
+                cases: AppearanceSizePreference.allCases, extraAction: previewPane.refreshAppearance)
         ])
         table.addRow(leftText: AppearanceTab.labelTheme,
             rightViews: [makeGlobalDropdown("appearanceTheme", overrideBaseName: "appearanceThemeOverride",
-                cases: AppearanceThemePreference.allCases)])
+                cases: AppearanceThemePreference.allCases, extraAction: previewPane.refreshAppearance)])
         addAfterKeysReleasedRow(table)
         table.addRow(rightViews: customizeStyleButton)
         return table
@@ -524,12 +533,14 @@ class AppearanceTab: NSObject {
 
     private static func makeGlobalDropdown(_ rawName: String,
                                            overrideBaseName: String,
-                                           cases: [MacroPreference]) -> NSPopUpButton {
+                                           cases: [MacroPreference],
+                                           extraAction: (() -> Void)? = nil) -> NSPopUpButton {
         let control = LabelAndControl.makeDropdown(rawName, cases)
         control.onAction = { control in
             let previousValue = UserDefaults.standard.string(forKey: rawName)
             let newValue = LabelAndControl.getControlValue(control, nil)
             LabelAndControl.controlWasChanged(control, nil)
+            extraAction?()
             let decision = resolveGlobalChange(previousValue: previousValue, newValue: newValue,
                 overrideBaseName: overrideBaseName)
             confirmOverrideResetIfNeeded(decision, overrideBaseName: overrideBaseName)

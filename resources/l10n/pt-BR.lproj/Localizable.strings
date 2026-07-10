@@ -14,6 +14,7 @@
 "Add a running app" = "Adicionar um app em execução";
 "Add an app from disk" = "Adicionar um app do disco";
 "Additional controls" = "Controles adicionais";
+"Advanced" = "Avançado";
 "After keys are released" = "Depois que as teclas forem soltas";
 "All apps" = "Todos os apps";
 "All screens" = "Todas as telas";
@@ -75,6 +76,7 @@
 "Fullscreen/Defullscreen window" = "Entrar/sair de tela cheia";
 "General" = "Geral";
 "Gesture" = "Gesto";
+"Gestures" = "Gestos";
 "Go back" = "Voltar";
 "Group apps" = "Agrupar apps";
 "Group tabs" = "Agrupar abas";
@@ -89,7 +91,6 @@
 "I think the app could be improved with…" = "Acho que o app poderia ser melhorado com…";
 "Ignore shortcuts" = "Ignorar atalhos";
 "Import settings…" = "Importar ajustes…";
-"Keyboard, mouse, and trackpad" = "Teclado, mouse e trackpad";
 "Language" = "Idioma";
 "Language Change" = "Mudança de idioma";
 "Large" = "Grande";
@@ -154,6 +155,7 @@
 "Settings…" = "Ajustes…";
 "Shortcut" = "Atalho";
 "Shortcut already assigned to: %@" = "Atalho já atribuído a: %@";
+"Shortcuts" = "Atalhos";
 "Shortcuts When Active" = "Atalhos quando ativo";
 "Shortcuts while ScryTab is active" = "Atalhos enquanto o ScryTab está ativo";
 "Show" = "Mostrar";
@@ -208,7 +210,6 @@
 "What did you expect? What happened? Steps to reproduce…" = "O que você esperava? O que aconteceu? Passos para reproduzir…";
 "When fullscreen" = "Em tela cheia";
 "When no open window" = "Sem janelas abertas";
-"Window actions" = "Ações de janela";
 "Window is fullscreen" = "Janela em tela cheia";
 "Window is minimized" = "Janela minimizada";
 "Window is on every Space" = "Janela em todos os Espaços";
