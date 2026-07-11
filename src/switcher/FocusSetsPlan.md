@@ -2,6 +2,11 @@
 
 ## Status
 
+The profile-related product and implementation decisions in this historical plan are superseded by
+[`focus-sets/FocusSetsTopLevelMigrationPlan.md`](focus-sets/FocusSetsTopLevelMigrationPlan.md).
+Retain this document for the completed membership, picker, and lifecycle rationale; use the newer
+plan for all remaining presentation, persistence, and Settings-navigation work.
+
 Draft. This plan refines Focus Sets into a user-facing, opt-in project scope feature for people
 working across many IDE, terminal, browser, and coding-agent windows.
 

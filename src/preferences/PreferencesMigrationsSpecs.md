@@ -12,6 +12,7 @@
 
 - **Version gating (`shouldRun`)** uses `String.compare(_, options: .numeric)`. A migration with threshold `T` runs iff the stored version is **≤ T** (i.e. compare is *not* `.orderedDescending`). The `.numeric` option is load-bearing: lexically `"9" > "10"`, but numerically `9 < 10`, so a user on `9.x` still gets a `10.x` migration.
 - **Order matters**: `updateToNewPreferences` runs migrations newest-threshold-first; some depend on keys earlier ones leave behind. The per-migration tests isolate each, but the registration list in `updateToNewPreferences` is the integration contract.
+- **Shared presentation migration** runs once behind `sharedPresentationDefaultsMigrated`. It seeds shared ordering/grouping from shortcut 1, removes redundant equal values, and retains different shortcut values as explicit overrides.
 - **Idempotency**: `migrateExceptionsTitleArray` must be safe to re-run — already-migrated (array-form) data fails to decode into the legacy (`String?`) shape, triggering an early return that leaves data untouched.
 - **A quirk worth knowing** (pinned by a test): the global→per-shortcut grouping migration copies the global value into the indexed keys, but because index 0's key *is* the old global key, that key is removed at the end — so slot 0 ends up unset while slots 2…10 hold the value.
 - **Testability**: production reads/writes `UserDefaults.standard`; the tests inject an isolated suite via `PreferencesMigrations.defaults` (reset in `tearDown`) so they never touch the dev machine's real prefs.
@@ -29,13 +30,18 @@ Mirrors `PreferencesMigrationsTests.swift` 1:1.
 - **testVersionGatingSkipsForNewerStoredVersion** — stored `11.0.0` > `10.13.0` → skipped.
 - **testVersionGatingUsesNumericCompareNotLexical** — stored `9.0.0` < `10.0.0` numerically → runs (guards the `.numeric` option).
 
-### B. Grouping moved global → per-shortcut
+### B. Shared presentation defaults
+- **testSharedPresentationDefaultsPreserveDistinctShortcutValues** — shortcut 1 seeds shared ordering/grouping and different shortcut values survive as explicit overrides, including legacy Bool tab-group normalization.
+- **testSharedPresentationDefaultsUseNormalFallbacksAndRemoveEqualOverrides** — absent legacy values use the normal defaults and redundant equal stored values are removed.
+- **testSharedPresentationDefaultsMigrationRunsOnlyOnce** — the persistent marker prevents a later launch from overwriting shared-setting edits.
+
+### C. Grouping moved global → per-shortcut
 - **testGroupingCopiesGlobalShowAppsOrWindowsToPerShortcutKeysAndRemovesGlobal** — global value lands in `showAppsOrWindows2…10`; the global key is removed (slot 0 ends nil — the documented quirk).
 - **testGroupingDoesNotOverwriteExistingPerShortcutValue** — a pre-set per-shortcut key is left untouched.
 - **testGroupingConvertsShowTabsAsWindowsBoolGlobalToEnumIndex** — `"false"` → `"0"` across indexed keys; global removed.
 - **testGroupingConvertsPreExistingPerShortcutBoolString** — a leftover `"true"` per-shortcut Bool string → `"1"`.
 
-### C. Language index remap (59 → 21 cases)
+### D. Language index remap (59 → 21 cases)
 - **testLanguageRemapsKnownIndex** — `5` → `2` via the remap table.
 - **testLanguageRemapsLastKnownIndex** — `58` → `21` (table boundary).
 - **testLanguageRemovedLanguageFallsBackToSystemDefault** — an index no longer valid → `0`.

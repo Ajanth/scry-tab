@@ -401,9 +401,18 @@ final class OrderingPane {
     private let windowOrder: ShortcutBoundDropdown
 
     init(width: CGFloat) {
-        showAppsOrWindows = ShortcutBoundDropdown(baseName: "showAppsOrWindows", cases: GroupAppsPreference.allCases)
-        showTabsAsWindows = ShortcutBoundDropdown(baseName: "showTabsAsWindows", cases: GroupTabsPreference.allCases)
-        windowOrder = ShortcutBoundDropdown(baseName: "windowOrder", cases: WindowOrderPreference.allCases)
+        showAppsOrWindows = ShortcutBoundDropdown(
+            baseName: "showAppsOrWindows",
+            cases: GroupAppsPreference.allCases,
+            inheritedIndex: { Preferences.sharedGroupApps.index })
+        showTabsAsWindows = ShortcutBoundDropdown(
+            baseName: "showTabsAsWindows",
+            cases: GroupTabsPreference.allCases,
+            inheritedIndex: { Preferences.sharedGroupTabs.index })
+        windowOrder = ShortcutBoundDropdown(
+            baseName: "windowOrder",
+            cases: WindowOrderPreference.allCases,
+            inheritedIndex: { Preferences.sharedWindowOrder.index })
 
         let table = TableGroupView(width: width)
         table.addRow(TableGroupView.Row(leftTitle: Self.labelGroupApps, rightViews: [showAppsOrWindows]))
@@ -512,27 +521,45 @@ final class AppearancePane {
 final class ShortcutBoundDropdown: PopupButtonLikeSystemSettings {
     private let baseName: String
     private let cases: [MacroPreference]
+    private let inheritedIndex: (() -> Int)?
+    private var currentShortcutIndex = 0
 
-    init(baseName: String, cases: [MacroPreference]) {
+    init(baseName: String, cases: [MacroPreference], inheritedIndex: (() -> Int)? = nil) {
         self.baseName = baseName
         self.cases = cases
+        self.inheritedIndex = inheritedIndex
         super.init(frame: .zero, pullsDown: false)
         addItems(withTitles: cases.map { $0.localizedString })
         // Identifier set in bind(); placeholder until then.
         identifier = NSUserInterfaceItemIdentifier(Preferences.indexToName(baseName, 0))
-        onAction = { control in
-            LabelAndControl.controlWasChanged(control, nil)
+        onAction = { [weak self] control in
+            self?.handleChange(control)
         }
     }
 
     required init?(coder: NSCoder) { fatalError("Class only supports programmatic initialization") }
 
     func bind(toShortcut index: Int) {
+        currentShortcutIndex = index
         let key = Preferences.indexToName(baseName, index)
         identifier = NSUserInterfaceItemIdentifier(key)
-        let selectedIndex = CachedUserDefaults.intFromMacroPref(key, cases)
+        let selectedIndex = inheritedIndex.flatMap { Preferences.hasOverride(baseName, index) ? nil : $0() }
+            ?? CachedUserDefaults.intFromMacroPref(key, cases)
         let clamped = max(0, min(selectedIndex, numberOfItems - 1))
         selectItem(at: clamped)
+    }
+
+    private func handleChange(_ control: NSControl) {
+        guard let inheritedIndex else {
+            LabelAndControl.controlWasChanged(control, nil)
+            return
+        }
+        let key = Preferences.indexToName(baseName, currentShortcutIndex)
+        if indexOfSelectedItem == inheritedIndex() {
+            Preferences.remove(key)
+        } else {
+            Preferences.set(key, String(indexOfSelectedItem))
+        }
     }
 }
 

@@ -26,6 +26,10 @@ class Preferences {
             "appearanceStyle": AppearanceStylePreference.appIcons.indexAsString,
             "appearanceSize": AppearanceSizePreference.auto.indexAsString,
             "appearanceTheme": AppearanceThemePreference.system.indexAsString,
+            "sharedWindowOrder": WindowOrderPreference.recentlyFocused.indexAsString,
+            "sharedGroupApps": GroupAppsPreference.allWindows.indexAsString,
+            "sharedGroupTabs": GroupTabsPreference.singleWindow.indexAsString,
+            "sharedPresentationDefaultsMigrated": "false",
             "theme": ThemePreference.macOs.indexAsString,
             "showOnScreen": ShowOnScreenPreference.active.indexAsString,
             "titleTruncation": TitleTruncationPreference.end.indexAsString,
@@ -115,6 +119,9 @@ class Preferences {
     static var appearanceStyle: AppearanceStylePreference { CachedUserDefaults.macroPref("appearanceStyle", AppearanceStylePreference.allCases) }
     static var appearanceSize: AppearanceSizePreference { CachedUserDefaults.macroPref("appearanceSize", AppearanceSizePreference.allCases) }
     static var appearanceTheme: AppearanceThemePreference { CachedUserDefaults.macroPref("appearanceTheme", AppearanceThemePreference.allCases) }
+    static var sharedWindowOrder: WindowOrderPreference { CachedUserDefaults.macroPref("sharedWindowOrder", WindowOrderPreference.allCases) }
+    static var sharedGroupApps: GroupAppsPreference { CachedUserDefaults.macroPref("sharedGroupApps", GroupAppsPreference.allCases) }
+    static var sharedGroupTabs: GroupTabsPreference { CachedUserDefaults.macroPref("sharedGroupTabs", GroupTabsPreference.allCases) }
     // periphery:ignore
     static var theme: ThemePreference { ThemePreference.macOs/*CachedUserDefaults.macroPref("theme", ThemePreference.allCases)*/ }
     static var showOnScreen: ShowOnScreenPreference { CachedUserDefaults.macroPref("showOnScreen", ShowOnScreenPreference.allCases) }
@@ -135,9 +142,9 @@ class Preferences {
     static func showHiddenWindows(_ i: Int) -> ShowHowPreference { CachedUserDefaults.macroPref(indexToName("showHiddenWindows", i), ShowHowPreference.allCases) }
     static func showFullscreenWindows(_ i: Int) -> ShowHowPreference { CachedUserDefaults.macroPref(indexToName("showFullscreenWindows", i), ShowHowPreference.allCases) }
     static func showWindowlessApps(_ i: Int) -> ShowHowPreference { CachedUserDefaults.macroPref(indexToName("showWindowlessApps", i), ShowHowPreference.allCases) }
-    static func windowOrder(_ i: Int) -> WindowOrderPreference { CachedUserDefaults.macroPref(indexToName("windowOrder", i), WindowOrderPreference.allCases) }
-    static func groupApps(_ i: Int) -> GroupAppsPreference { CachedUserDefaults.macroPref(indexToName("showAppsOrWindows", i), GroupAppsPreference.allCases) }
-    static func groupTabs(_ i: Int) -> GroupTabsPreference { CachedUserDefaults.macroPref(indexToName("showTabsAsWindows", i), GroupTabsPreference.allCases) }
+    static func windowOrder(_ i: Int) -> WindowOrderPreference { effectivePresentationPreference("windowOrder", i, sharedWindowOrder, WindowOrderPreference.allCases) }
+    static func groupApps(_ i: Int) -> GroupAppsPreference { effectivePresentationPreference("showAppsOrWindows", i, sharedGroupApps, GroupAppsPreference.allCases) }
+    static func groupTabs(_ i: Int) -> GroupTabsPreference { effectivePresentationPreference("showTabsAsWindows", i, sharedGroupTabs, GroupTabsPreference.allCases) }
     static var shortcutStyle: ShortcutStylePreference { CachedUserDefaults.macroPref("shortcutStyle", ShortcutStylePreference.allCases) }
     static var language: LanguagePreference { CachedUserDefaults.macroPref("language", LanguagePreference.allCases) }
 
@@ -234,6 +241,35 @@ class Preferences {
 
     static func onlyShowMainWindows(_ index: Int = SwitcherSession.activeShortcutIndex) -> Bool {
         return groupApps(index) == .mainWindow
+    }
+
+    static func onlyShowMainWindows(_ source: SwitcherPresentationSource) -> Bool {
+        switch source {
+            case let .shortcut(index): return groupApps(index) == .mainWindow
+            case .focusSets: return sharedGroupApps == .mainWindow
+        }
+    }
+
+    static func windowOrder(_ source: SwitcherPresentationSource) -> WindowOrderPreference {
+        switch source {
+            case let .shortcut(index): return windowOrder(index)
+            case .focusSets: return sharedWindowOrder
+        }
+    }
+
+    static func groupTabs(_ source: SwitcherPresentationSource) -> GroupTabsPreference {
+        switch source {
+            case let .shortcut(index): return groupTabs(index)
+            case .focusSets: return sharedGroupTabs
+        }
+    }
+
+    private static func effectivePresentationPreference<T>(_ baseName: String,
+                                                            _ index: Int,
+                                                            _ shared: T,
+                                                            _ cases: [T]) -> T where T: MacroPreference {
+        guard hasOverride(baseName, index) else { return shared }
+        return CachedUserDefaults.macroPref(indexToName(baseName, index), cases)
     }
 
     // MARK: - Per-shortcut appearance overrides

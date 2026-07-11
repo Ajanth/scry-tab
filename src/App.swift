@@ -335,9 +335,19 @@ class App: AppCenterApplication {
                   state: session.focusSetSessionState,
                   shortcutIdentifier: identifier,
                   forceDoNothingOnRelease: session.forceDoNothingOnRelease,
-                  profileFocusesOnRelease: Preferences.effectiveShortcutStyle(session.shortcutIndex) == .focusOnRelease
+                  profileFocusesOnRelease: Preferences.effectiveShortcutStyle(session.shortcutIndex) == .focusOnRelease,
+                  profileHoldModifierIsReleased: profileHoldModifierIsReleased(session.shortcutIndex)
               ) else { return }
         focusTarget()
+    }
+
+    private static func profileHoldModifierIsReleased(_ shortcutIndex: Int) -> Bool {
+        guard let holdShortcut = ControlsTab.shortcuts[
+            Preferences.indexToName("holdShortcut", shortcutIndex)
+        ] else { return true }
+        let heldModifiers = cocoaToCarbonFlags(ModifierFlags.current).cleaned()
+        let holdModifiers = holdShortcut.shortcut.carbonModifierFlags.cleaned()
+        return holdModifiers == 0 || heldModifiers & holdModifiers != holdModifiers
     }
 
     static func confirmFocusSetPickerSelection(_ item: FocusSetPickerItem? = nil) {
@@ -424,6 +434,8 @@ class App: AppCenterApplication {
         case .showFocusSetGrid:
             guard let snapshot = snapshot ?? session.focusSetPickerSnapshot else { return }
             showFocusSetGrid(snapshot, session: session)
+        case .cycleFocusSetSelection:
+            showUiOrCycleSelection(session.shortcutIndex, false)
         case .returnToFocusSetPicker:
             guard let snapshot = snapshot ?? session.focusSetPickerSnapshot else { return }
             KeyRepeatTimer.stopCurrentTimer()
@@ -606,7 +618,10 @@ class App: AppCenterApplication {
 
     static func showUiOrCycleSelection(_ shortcutIndex: Int, _ forceDoNothingOnRelease_: Bool) {
         let replacesFocusSetFlow = SwitcherSession.current.map {
-            $0.focusSetSessionState != .ordinaryGrid
+            FocusSetSessionResolver.shouldReplaceFocusSetFlow(
+                state: $0.focusSetSessionState,
+                activeShortcutIndex: $0.shortcutIndex,
+                incomingShortcutIndex: shortcutIndex)
         } ?? false
         let session = SwitcherSession.current ?? {
             let new = SwitcherSession()

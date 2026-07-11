@@ -27,11 +27,9 @@ private struct FocusSetsStoreParser {
 
     private static func configuration(from root: FocusSetsJSONObject) -> FocusSetsConfiguration {
         let version = validVersion(root["version"]) ?? FocusSetsConfiguration.currentVersion
-        let presentationShortcutIdentifier = root["presentationShortcutIdentifier"] as? String ?? ""
         let sets = (root["sets"] as? [Any] ?? []).compactMap(focusSet)
         return FocusSetsConfiguration(
             version: version,
-            presentationShortcutIdentifier: presentationShortcutIdentifier,
             sets: sets
         )
     }
@@ -84,17 +82,17 @@ final class FocusSetsStore {
         notifiesRuntimeChanges = defaults === UserDefaults.standard && key == Preferences.focusSetsKey
     }
 
-    func read(availableShortcutIdentifiers: [String]) -> FocusSetsConfiguration {
+    func read() -> FocusSetsConfiguration {
         let parsed = FocusSetsStoreParser.parse(defaults.string(forKey: key))
-        let configuration = normalized(parsed.configuration, availableShortcutIdentifiers: availableShortcutIdentifiers)
+        let configuration = normalized(parsed.configuration)
         guard parsed.rawRoot != nil, configuration != parsed.configuration else { return configuration }
-        _ = set(configuration, availableShortcutIdentifiers: availableShortcutIdentifiers)
+        _ = set(configuration)
         return configuration
     }
 
     @discardableResult
-    func set(_ configuration: FocusSetsConfiguration, availableShortcutIdentifiers: [String]) -> Bool {
-        let configuration = normalized(configuration, availableShortcutIdentifiers: availableShortcutIdentifiers)
+    func set(_ configuration: FocusSetsConfiguration) -> Bool {
+        let configuration = normalized(configuration)
         let parsed = FocusSetsStoreParser.parse(defaults.string(forKey: key))
         let object = encoded(configuration, preserving: parsed.rawRoot)
         guard JSONSerialization.isValidJSONObject(object),
@@ -108,13 +106,8 @@ final class FocusSetsStore {
         return true
     }
 
-    private func normalized(_ configuration: FocusSetsConfiguration,
-                            availableShortcutIdentifiers: [String]) -> FocusSetsConfiguration {
+    private func normalized(_ configuration: FocusSetsConfiguration) -> FocusSetsConfiguration {
         let version = max(configuration.version, FocusSetsConfiguration.currentVersion)
-        let presentationShortcutIdentifier = normalizedPresentationShortcutIdentifier(
-            configuration.presentationShortcutIdentifier,
-            availableShortcutIdentifiers: availableShortcutIdentifiers
-        )
         var identifiers = Set<UUID>()
         let sets = configuration.sets.compactMap { focusSet -> FocusSet? in
             guard identifiers.insert(focusSet.id).inserted else { return nil }
@@ -127,16 +120,8 @@ final class FocusSetsStore {
         }
         return FocusSetsConfiguration(
             version: version,
-            presentationShortcutIdentifier: presentationShortcutIdentifier,
             sets: sets
         )
-    }
-
-    private func normalizedPresentationShortcutIdentifier(_ identifier: String,
-                                                           availableShortcutIdentifiers: [String]) -> String {
-        let identifiers = availableShortcutIdentifiers.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-        guard let first = identifiers.first else { return identifier }
-        return identifiers.contains(identifier) ? identifier : first
     }
 
     private func valid(_ rule: FocusSetRule) -> Bool {
@@ -152,7 +137,7 @@ final class FocusSetsStore {
                          preserving rawRoot: FocusSetsJSONObject?) -> FocusSetsJSONObject {
         var object = rawRoot ?? [:]
         object["version"] = configuration.version
-        object["presentationShortcutIdentifier"] = configuration.presentationShortcutIdentifier
+        object.removeValue(forKey: "presentationShortcutIdentifier")
         object["sets"] = encodedSets(configuration.sets, preserving: rawRoot)
         return object
     }
