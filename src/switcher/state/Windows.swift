@@ -79,13 +79,13 @@ class Windows {
             window.recomputeIsPhantom()
             refreshIfWindowShouldBeShownToTheUser(window, filters)
         }
-        refreshWhichWindowsToShowTheUser()
+        refreshWhichWindowsToShowTheUser(filters)
         sort()
         return true
     }
 
-    static func refreshWhichWindowsToShowTheUser() {
-        if Preferences.onlyShowMainWindows() {
+    static func refreshWhichWindowsToShowTheUser(_ filters: WindowFilters = .snapshot()) {
+        if filters.onlyMainWindowPerApplication {
             // Group windows by application and select the optimal main window
             let windowsGroupedByApp = Dictionary(grouping: list) { $0.application.pid }
             windowsGroupedByApp.forEach { (app, windows) in
@@ -198,7 +198,7 @@ class Windows {
             selectedIndex: session.selectedIndex,
             selectedTarget: session.selectedTarget,
             useLastFocusedRule: Applications.frontmostPid != nil
-                && Preferences.windowOrder[session.shortcutIndex] != .recentlyFocused,
+                && Preferences.windowOrder(session.presentationSource) != .recentlyFocused,
             restoreDefaultOnSearchClear: shouldRestoreDefaultSelectionOnSearchClear,
             bestMatchOnSearchChange: shouldSelectBestMatchOnSearchChange)
     }
@@ -324,14 +324,15 @@ class Windows {
     /// reordered list based on preferences, keeping the original index
     private static func sort() {
         let trimmedQuery = Search.normalizedQuery((SwitcherSession.current?.searchQuery ?? ""))
-        let shortcutIndex = (SwitcherSession.current?.shortcutIndex ?? 0)
+        let source = SwitcherSession.current?.presentationSource ?? .shortcut(0)
+        let visibility = WindowFilters.snapshot()
         // Hoisted once per sort: locals are captured by the comparator closure so each of the
         // O(n log n) comparisons reads them directly.
         let searchActive = !trimmedQuery.isEmpty
-        let windowlessAtEnd = Preferences.showWindowlessApps(shortcutIndex) == .showAtTheEnd
-        let hiddenAtEnd = Preferences.showHiddenWindows(shortcutIndex) == .showAtTheEnd
-        let minimizedAtEnd = Preferences.showMinimizedWindows(shortcutIndex) == .showAtTheEnd
-        let sortType = orderSortType(Preferences.windowOrder(shortcutIndex))
+        let windowlessAtEnd = visibility.showWindowlessApps == .showAtTheEnd
+        let hiddenAtEnd = visibility.showHiddenWindows == .showAtTheEnd
+        let minimizedAtEnd = visibility.showMinimizedWindows == .showAtTheEnd
+        let sortType = orderSortType(Preferences.windowOrder(source))
         // Precompute each window's ordering facts once (O(n) Search calls), then sort on the snapshots.
         let facts = Dictionary(uniqueKeysWithValues: list.map { (ObjectIdentifier($0), orderWindow($0, trimmedQuery)) })
         list.sort {
@@ -471,10 +472,9 @@ enum WindowActivityType: Int {
     case focus = 2
 }
 
-/// Snapshot of per-shortcut preferences used by `refreshIfWindowShouldBeShownToTheUser`. The
-/// `Preferences.<arrayPref>` getters each rebuild a `[MacroPreference]` array via N×`macroPref`
-/// calls — cheap once, dominant when read inside a per-window loop. Snapshotting once at the
-/// start of `updatesBeforeShowing` collapses N_windows × M_prefs accesses into M_prefs.
+/// Snapshot of the active presentation source used by `refreshIfWindowShouldBeShownToTheUser`.
+/// Numbered-shortcut array getters rebuild preference arrays, so snapshotting once before the
+/// per-window loop avoids multiplying those reads by the number of windows.
 struct WindowFilters {
     let exceptions: [ExceptionEntry]
     let appsToShow: AppsToShowPreference
@@ -485,14 +485,32 @@ struct WindowFilters {
     let spacesToShow: SpacesToShowPreference
     let screensToShow: ScreensToShowPreference
     let groupTabs: GroupTabsPreference
+    let onlyMainWindowPerApplication: Bool
     let focusSetScope: FocusSetScope
     let focusSetResolver: FocusSetResolver?
 
     static func snapshot() -> WindowFilters {
         let session = SwitcherSession.current
-        let i = session?.shortcutIndex ?? 0
+        let source = session?.presentationSource ?? .shortcut(0)
         let focusSetScope = session?.focusSetScope ?? .none
         let focusSetResolver = focusSetScope == .none ? nil : session?.focusSetPickerSnapshot?.presentation.resolver
+        if source == .focusSets {
+            let policy = FocusSetsPresentationPolicy.standard
+            return WindowFilters(
+                exceptions: Preferences.exceptions,
+                appsToShow: .all,
+                showHiddenWindows: policy.hideHidden ? .hide : .show,
+                showWindowlessApps: policy.hideWindowless ? .hide : (policy.windowlessAtEnd ? .showAtTheEnd : .show),
+                showFullscreenWindows: policy.hideFullscreen ? .hide : .show,
+                showMinimizedWindows: policy.hideMinimized ? .hide : .show,
+                spacesToShow: policy.onlyVisibleSpaces ? .visible : (policy.onlyNonVisibleSpaces ? .nonVisible : .all),
+                screensToShow: policy.onlyPreferredScreen ? .showingScryTab : .all,
+                groupTabs: Preferences.sharedGroupTabs,
+                onlyMainWindowPerApplication: Preferences.sharedGroupApps == .mainWindow,
+                focusSetScope: focusSetScope,
+                focusSetResolver: focusSetResolver)
+        }
+        let i = source.shortcutIndex ?? 0
         return WindowFilters(
             exceptions: Preferences.exceptions,
             appsToShow: Preferences.appsToShow[i],
@@ -503,6 +521,7 @@ struct WindowFilters {
             spacesToShow: Preferences.spacesToShow[i],
             screensToShow: Preferences.screensToShow[i],
             groupTabs: Preferences.groupTabs(i),
+            onlyMainWindowPerApplication: Preferences.groupApps(i) == .mainWindow,
             focusSetScope: focusSetScope,
             focusSetResolver: focusSetResolver)
     }

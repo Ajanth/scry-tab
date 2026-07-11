@@ -18,14 +18,19 @@ class KeyRepeatTimer {
     }
 
     static func startRepeatingKeyNextWindow() {
-        let nextWindowShortcutName = Preferences.indexToName("nextWindowShortcut", SwitcherSession.current?.shortcutIndex ?? 0)
+        guard let shortcutIndex = SwitcherSession.current?.presentationSource.shortcutIndex else { return }
+        let nextWindowShortcutName = Preferences.indexToName("nextWindowShortcut", shortcutIndex)
         if let shortcut = ControlsTab.shortcuts[nextWindowShortcutName],
            // Esc is delivered via the cghid event tap (#5585), which emits real OS key-repeats; an artificial
            // timer would never stop, because the absorbed keyDown gives Carbon no release event to pair with,
            // so it cycles selection to the very end (#5742). Same rationale as startRepeatingKeyPreviousWindow().
            shortcut.shortcut.carbonKeyCode != kVK_Escape {
             startTimerForRepeatingKey(shortcut) {
-                ShortcutActions.execute(Preferences.indexToName("nextWindowShortcut", SwitcherSession.current?.shortcutIndex ?? 0))
+                guard let shortcutIndex = SwitcherSession.current?.presentationSource.shortcutIndex else {
+                    stopCurrentTimer()
+                    return
+                }
+                ShortcutActions.execute(Preferences.indexToName("nextWindowShortcut", shortcutIndex))
             }
         }
     }
@@ -71,7 +76,8 @@ class KeyRepeatTimer {
     /// (e.g. when main thread is busy under CPU stress). Mirrors ATShortcut.redundantSafetyMeasures()
     private static func holdModifierIsReleased() -> Bool {
         guard let session = SwitcherSession.current,
-              let holdShortcut = ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", session.shortcutIndex)] else {
+              let shortcutIndex = session.presentationSource.shortcutIndex,
+              let holdShortcut = ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", shortcutIndex)] else {
             return true
         }
         let currentModifiers = cocoaToCarbonFlags(ModifierFlags.current).cleaned()

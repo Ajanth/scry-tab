@@ -37,8 +37,8 @@ final class FocusSetPickerResolverTests: XCTestCase {
         XCTAssertEqual(items.map(\.candidateCount), [9, 3, 1])
     }
 
-    /// Unassigned Windows is appended only when the supplied profile snapshot has candidates.
-    func testUnassignedWindowsAppearsOnlyWithPositiveProfileScopedCount() {
+    /// Unassigned Windows is appended only when the supplied policy snapshot has candidates.
+    func testUnassignedWindowsAppearsOnlyWithPositivePolicyScopedCount() {
         let setID = UUID()
         let sets = [focusSet(setID, "Writing")]
         let absent = makeResolver(

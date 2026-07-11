@@ -14,7 +14,6 @@
 "About" = "关于";
 "About %@" = "关于 %@";
 "Accessibility" = "辅助功能";
-"Actions" = "操作";
 "Active app" = "活跃应用";
 "Active screen" = "活跃屏幕";
 "Add a pattern" = "添加规则";
@@ -37,9 +36,11 @@
 "App is hidden" = "应用已隐藏";
 "App is running but has no open window" = "应用正在运行但没有打开的窗口";
 "Appearance" = "外观";
+"Appearance and organization" = "外观与整理";
 "Application Name" = "应用名称";
 "Application Name - Window Title" = "应用名称 - 窗口标题";
 "Applies in other Appearances" = "适用于其他外观";
+"Applies to every direct Focus Set shortcut." = "适用于每个直接专注集快捷键。";
 "Apply" = "应用";
 "Apply this change to all shortcuts?" = "将此更改应用到所有快捷键吗？";
 "Apply to All Shortcuts" = "应用到所有快捷键";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "取消";
 "Change Global Only" = "仅更改全局设置";
-"Changes are saved automatically." = "更改会自动存储。";
 "Check for updates now…" = "立即检查更新…";
 "Check for updates periodically" = "定期检查更新";
 "Check for updates…" = "检查更新…";
 "Check permissions…" = "检查权限…";
 "Choose a global shortcut to open the Focus Sets picker." = "选择一个全局快捷键以打开专注集选择器。";
-"Choose Applications…" = "选择应用程序…";
 "Choose the applications whose windows belong to this Focus Set." = "选择窗口要归入此专注集的应用。";
 "Close window" = "关闭窗口";
 "Conflicting shortcut" = "快捷键冲突";
@@ -74,6 +73,7 @@
 "Dark" = "深色";
 "Debug tools" = "调试工具";
 "Delete" = "删除";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "直接专注集快捷键使用标准外观和窗口组织方式。";
 "Disabled" = "已停用";
 "Do Not Move" = "不移动";
 "Don't hide" = "不隐藏";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "例如 com.example.app";
 "e.g. Debug" = "例如 Debug";
 "Edit" = "编辑";
-"Editing" = "正在编辑";
 "Editing “%@”" = "正在编辑“%@”";
 "End" = "末尾";
 "Exceptions" = "例外";
@@ -93,7 +92,7 @@
 "Focus" = "聚焦";
 "Focus selected window" = "聚焦所选窗口";
 "Focus Sets" = "专注集";
-"Focus Sets profile" = "专注集配置";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "专注集使用共享的激活时快捷键。请在“控制”中更改它们。";
 "Fullscreen/Defullscreen window" = "全屏/退出全屏窗口";
 "General" = "通用";
 "Gesture" = "手势";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "从不发送崩溃报告";
 "New Focus Set" = "新建专注集";
 "No applications selected" = "未选择应用";
-"No applications selected." = "未选择应用程序。";
 "No Focus Sets" = "没有专注集";
 "No matching applications." = "没有匹配的应用程序。";
 "No Window" = "无窗口";
@@ -148,7 +146,9 @@
 "OK" = "好";
 "Only on different screen" = "仅在不同屏幕上";
 "Open Accessibility Settings…" = "打开辅助功能设置…";
+"Open Appearance Settings" = "打开“外观”设置";
 "Open Focus Sets" = "打开专注集";
+"Open Shortcuts When Active Settings" = "打开“激活时的快捷键”设置";
 "Open Trackpad Settings…" = "打开触控板设置…";
 "Order windows by" = "窗口排序方式";
 "Ordering" = "排序";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "快捷键已分配给：%@";
 "Shortcuts" = "快捷键";
 "Shortcuts When Active" = "激活时的快捷键";
+"Shortcuts while browsing" = "浏览时的快捷键";
 "Shortcuts while ScryTab is active" = "ScryTab 处于活跃状态时的快捷键";
 "Show" = "显示";
 "Show all windows" = "显示所有窗口";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "显示来自应用的窗口";
 "Show windows from screens" = "显示来自屏幕的窗口";
 "Show windows from Spaces" = "显示来自桌面的窗口";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "显示所有 Spaces 和屏幕中的应用，并按标准方式处理隐藏、最小化、全屏和无窗口项目。";
 "Size" = "大小";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "部分快捷键覆盖了此设置。移除这些覆盖以将新的全局值应用到所有快捷键，或保留这些覆盖。";
@@ -242,11 +244,11 @@
 "Update now" = "立即更新";
 "Updates policy" = "更新策略";
 "Usage" = "使用情况";
-"Uses this shortcut’s filters when counting and showing windows." = "在计数和显示窗口时使用此快捷键的过滤条件。";
 "Version" = "版本";
 "View existing discussions" = "查看现有讨论";
 "Vim keys" = "Vim 键";
 "Vim keys already assigned to other actions:\n%@" = "Vim 键已分配给其他操作：\n%@";
+"Visibility" = "可见性";
 "Visible Spaces" = "可见的桌面";
 "Website" = "网站";
 "What did you expect? What happened? Steps to reproduce…" = "您期望什么？发生了什么？重现步骤…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "窗口已最小化";
 "Window is on every Space" = "窗口在所有桌面上";
 "Window is on Space %d" = "窗口在桌面 %d 上";
+"Window organization" = "窗口整理";
 "Window Title" = "窗口标题";
 "Window title contains" = "窗口标题包含";
 "You can’t undo this action." = "此操作无法撤销。";

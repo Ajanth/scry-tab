@@ -14,7 +14,6 @@
 "About" = "About";
 "About %@" = "About %@";
 "Accessibility" = "Accessibility";
-"Actions" = "Actions";
 "Active app" = "Active app";
 "Active screen" = "Active screen";
 "Add a pattern" = "Add a pattern";
@@ -37,9 +36,11 @@
 "App is hidden" = "App is hidden";
 "App is running but has no open window" = "App is running but has no open window";
 "Appearance" = "Appearance";
+"Appearance and organization" = "Appearance and organization";
 "Application Name" = "Application Name";
 "Application Name - Window Title" = "Application Name - Window Title";
 "Applies in other Appearances" = "Applies in other Appearances";
+"Applies to every direct Focus Set shortcut." = "Applies to every direct Focus Set shortcut.";
 "Apply" = "Apply";
 "Apply this change to all shortcuts?" = "Apply this change to all shortcuts?";
 "Apply to All Shortcuts" = "Apply to All Shortcuts";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Cancel";
 "Change Global Only" = "Change Global Only";
-"Changes are saved automatically." = "Changes are saved automatically.";
 "Check for updates now…" = "Check for updates now…";
 "Check for updates periodically" = "Check for updates periodically";
 "Check for updates…" = "Check for updates…";
 "Check permissions…" = "Check permissions…";
 "Choose a global shortcut to open the Focus Sets picker." = "Choose a global shortcut to open the Focus Sets picker.";
-"Choose Applications…" = "Choose Applications…";
 "Choose the applications whose windows belong to this Focus Set." = "Choose the applications whose windows belong to this Focus Set.";
 "Close window" = "Close window";
 "Conflicting shortcut" = "Conflicting shortcut";
@@ -74,6 +73,7 @@
 "Dark" = "Dark";
 "Debug tools" = "Debug tools";
 "Delete" = "Delete";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Direct Focus Set shortcuts use the standard appearance and window organization.";
 "Disabled" = "Disabled";
 "Do Not Move" = "Do Not Move";
 "Don't hide" = "Don't hide";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "e.g. com.example.app";
 "e.g. Debug" = "e.g. Debug";
 "Edit" = "Edit";
-"Editing" = "Editing";
 "Editing “%@”" = "Editing “%@”";
 "End" = "End";
 "Exceptions" = "Exceptions";
@@ -93,7 +92,7 @@
 "Focus" = "Focus";
 "Focus selected window" = "Focus selected window";
 "Focus Sets" = "Focus Sets";
-"Focus Sets profile" = "Focus Sets profile";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Focus Sets uses the shared active shortcuts. Change them in Controls.";
 "Fullscreen/Defullscreen window" = "Fullscreen/Defullscreen window";
 "General" = "General";
 "Gesture" = "Gesture";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Never send crash reports";
 "New Focus Set" = "New Focus Set";
 "No applications selected" = "No applications selected";
-"No applications selected." = "No applications selected.";
 "No Focus Sets" = "No Focus Sets";
 "No matching applications." = "No matching applications.";
 "No Window" = "No Window";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Only on different screen";
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
+"Open Appearance Settings" = "Open Appearance Settings";
 "Open Focus Sets" = "Open Focus Sets";
+"Open Shortcuts When Active Settings" = "Open Shortcuts When Active Settings";
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
 "Order windows by" = "Order windows by";
 "Ordering" = "Ordering";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Shortcut already assigned to: %@";
 "Shortcuts" = "Shortcuts";
 "Shortcuts When Active" = "Shortcuts When Active";
+"Shortcuts while browsing" = "Shortcuts while browsing";
 "Shortcuts while ScryTab is active" = "Shortcuts while ScryTab is active";
 "Show" = "Show";
 "Show all windows" = "Show all windows";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Show windows from applications";
 "Show windows from screens" = "Show windows from screens";
 "Show windows from Spaces" = "Show windows from Spaces";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows.";
 "Size" = "Size";
 "Small" = "Small";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
@@ -242,11 +244,11 @@
 "Update now" = "Update now";
 "Updates policy" = "Updates policy";
 "Usage" = "Usage";
-"Uses this shortcut’s filters when counting and showing windows." = "Uses this shortcut’s filters when counting and showing windows.";
 "Version" = "Version";
 "View existing discussions" = "View existing discussions";
 "Vim keys" = "Vim keys";
 "Vim keys already assigned to other actions:\n%@" = "Vim keys already assigned to other actions:\n%@";
+"Visibility" = "Visibility";
 "Visible Spaces" = "Visible Spaces";
 "Website" = "Website";
 "What did you expect? What happened? Steps to reproduce…" = "What did you expect? What happened? Steps to reproduce…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Window is minimized";
 "Window is on every Space" = "Window is on every Space";
 "Window is on Space %d" = "Window is on Space %d";
+"Window organization" = "Window organization";
 "Window Title" = "Window Title";
 "Window title contains" = "Window title contains";
 "You can’t undo this action." = "You can’t undo this action.";

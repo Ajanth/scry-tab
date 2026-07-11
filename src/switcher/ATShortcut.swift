@@ -57,7 +57,7 @@ class ATShortcut {
         }
         let session = SwitcherSession.current
         // other shortcuts: contains exactly or exactly + holdShortcut modifiers
-        let holdModifiersCleaned = ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", session?.shortcutIndex ?? 0)]?.shortcut.carbonModifierFlags.cleaned() ?? 0
+        let holdModifiersCleaned = activeHoldModifiers(session)
         // nextWindowShortcut when panel is open: also match base key without holdShortcut modifiers
         if session != nil && id.hasPrefix("nextWindowShortcut") {
             let baseModifiersCleaned = shortcutModifiersCleaned & ~holdModifiersCleaned
@@ -68,22 +68,29 @@ class ATShortcut {
         return modifiersCleaned == shortcutModifiersCleaned || modifiersCleaned == (shortcutModifiersCleaned | holdModifiersCleaned)
     }
 
+    private func activeHoldModifiers(_ session: SwitcherSession?) -> CarbonModifierFlags {
+        guard let session else { return 0 }
+        if let shortcutIndex = session.presentationSource.shortcutIndex {
+            return ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", shortcutIndex)]?.shortcut.carbonModifierFlags.cleaned() ?? 0
+        }
+        guard let chord = session.chordLifecycleState,
+              case let .directFocusSet(identifier) = chord.owner,
+              session.focusSetSessionState.directFocusSetIdentifier == identifier else { return 0 }
+        return chord.holdModifiers.cleaned()
+    }
+
     func shouldTrigger() -> Bool {
         let session = SwitcherSession.current
         if scope == .global {
             if triggerPhase == .both {
                 return true
             }
-            if triggerPhase == .down, session == nil || index == nil || index == session?.shortcutIndex {
-                return true
-            }
-            if triggerPhase == .up, let session, index == nil || index == session.shortcutIndex,
-               !session.forceDoNothingOnRelease, Preferences.effectiveShortcutStyle(session.shortcutIndex) == .focusOnRelease {
+            if triggerPhase == .down, session == nil || index == nil || index == session?.presentationSource.shortcutIndex {
                 return true
             }
         }
         if scope == .local {
-            if let session, index == nil || index == session.shortcutIndex {
+            if let session, index == nil || index == session.presentationSource.shortcutIndex {
                 return true
             }
         }
@@ -96,26 +103,8 @@ class ATShortcut {
         ShortcutActions.execute(id)
     }
 
-    /// keyboard events can be unreliable. They can arrive in the wrong order, or may never arrive
-    /// this function acts as a safety net to improve the chances that some keyUp behaviors are enforced
     func redundantSafetyMeasures() {
-        // Keyboard shortcuts come from different sources. As a result, they can arrive in the wrong order (e.g. alt DOWN > alt UP > alt+tab DOWN > alt+tab UP)
-        // The events can be disordered between sources, but not within each source
-        // Another issue is events being dropped by macOS, which we never receive
-        // Knowing this, we handle these edge-cases by double checking if holdShortcut is UP, when any shortcut state is UP
-        // If it is, then we trigger the holdShortcut action
-        if let session = SwitcherSession.current, !session.forceDoNothingOnRelease, Preferences.effectiveShortcutStyle(session.shortcutIndex) == .focusOnRelease {
-            if let currentHoldShortcut = ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", session.shortcutIndex)],
-               id == currentHoldShortcut.id {
-                let currentModifiers = cocoaToCarbonFlags(ModifierFlags.current)
-                if currentModifiers != (currentModifiers | (currentHoldShortcut.shortcut.carbonModifierFlags)) {
-                    currentHoldShortcut.state = .up
-                    ShortcutActions.execute(currentHoldShortcut.id)
-                }
-            }
-        }
         if state == .up {
-            // ensure timers don't keep running if their shortcut is UP
             KeyRepeatTimer.stopTimerForRepeatingKey(id)
         }
     }
@@ -135,6 +124,52 @@ enum ShortcutState {
 enum ShortcutScope {
     case global
     case local
+}
+
+enum ShortcutChordOwner: Equatable {
+    case shortcut(Int)
+    case directFocusSet(UUID)
+}
+
+struct ShortcutChordLifecycleState: Equatable {
+    let owner: ShortcutChordOwner
+    let holdModifiers: CarbonModifierFlags
+}
+
+enum ShortcutChordLifecycleEvent: Equatable {
+    case press(owner: ShortcutChordOwner, holdModifiers: CarbonModifierFlags)
+    case modifiersChanged(CarbonModifierFlags)
+}
+
+enum ShortcutChordLifecycleAction: Equatable {
+    case none
+    case release(ShortcutChordOwner)
+}
+
+struct ShortcutChordLifecycleDecision: Equatable {
+    let nextState: ShortcutChordLifecycleState?
+    let action: ShortcutChordLifecycleAction
+}
+
+enum ShortcutChordLifecycleResolver {
+    static func resolve(_ state: ShortcutChordLifecycleState?,
+                        _ event: ShortcutChordLifecycleEvent) -> ShortcutChordLifecycleDecision {
+        switch event {
+        case let .press(owner, holdModifiers):
+            let cleaned = holdModifiers.cleaned()
+            return ShortcutChordLifecycleDecision(
+                nextState: cleaned == 0 ? nil : ShortcutChordLifecycleState(owner: owner, holdModifiers: cleaned),
+                action: .none)
+        case let .modifiersChanged(modifiers):
+            guard let state else {
+                return ShortcutChordLifecycleDecision(nextState: nil, action: .none)
+            }
+            guard modifiers.cleaned() & state.holdModifiers == 0 else {
+                return ShortcutChordLifecycleDecision(nextState: state, action: .none)
+            }
+            return ShortcutChordLifecycleDecision(nextState: nil, action: .release(state.owner))
+        }
+    }
 }
 
 extension NSEvent.ModifierFlags {

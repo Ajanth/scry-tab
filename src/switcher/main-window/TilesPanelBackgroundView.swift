@@ -90,7 +90,7 @@ enum EffectViewKind: Equatable {
 }
 
 func requiredEffectViewKind() -> EffectViewKind {
-    requiredEffectViewKind(style: Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex))
+    requiredEffectViewKind(style: Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0)))
 }
 
 func requiredEffectViewKind(style: AppearanceStylePreference) -> EffectViewKind {
@@ -107,7 +107,7 @@ func requiredEffectViewKind(style: AppearanceStylePreference) -> EffectViewKind 
 func makeEffectView(for kind: EffectViewKind) -> EffectView {
     makeEffectView(
         for: kind,
-        style: Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex))
+        style: Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0)))
 }
 
 func makeEffectView(for kind: EffectViewKind, style: AppearanceStylePreference) -> EffectView {

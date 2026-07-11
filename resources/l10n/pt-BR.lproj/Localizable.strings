@@ -14,7 +14,6 @@
 "About" = "Sobre";
 "About %@" = "Sobre o %@";
 "Accessibility" = "Acessibilidade";
-"Actions" = "Ações";
 "Active app" = "App ativo";
 "Active screen" = "Tela ativa";
 "Add a pattern" = "Adicionar um padrão";
@@ -37,9 +36,11 @@
 "App is hidden" = "App oculto";
 "App is running but has no open window" = "App em execução, mas sem janelas abertas";
 "Appearance" = "Aparência";
+"Appearance and organization" = "Aparência e organização";
 "Application Name" = "Nome do Aplicativo";
 "Application Name - Window Title" = "Nome do Aplicativo - Título da Janela";
 "Applies in other Appearances" = "Aplica-se a outras aparências";
+"Applies to every direct Focus Set shortcut." = "Aplica-se a todos os atalhos diretos de Conjuntos de foco.";
 "Apply" = "Aplicar";
 "Apply this change to all shortcuts?" = "Aplicar esta alteração a todos os atalhos?";
 "Apply to All Shortcuts" = "Aplicar a todos os atalhos";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Cancelar";
 "Change Global Only" = "Alterar somente o valor global";
-"Changes are saved automatically." = "As alterações são salvas automaticamente.";
 "Check for updates now…" = "Buscar atualizações agora…";
 "Check for updates periodically" = "Buscar atualizações de tempos em tempos";
 "Check for updates…" = "Buscar atualizações…";
 "Check permissions…" = "Verificar permissões…";
 "Choose a global shortcut to open the Focus Sets picker." = "Escolha um atalho global para abrir o seletor de conjuntos de foco.";
-"Choose Applications…" = "Escolher aplicativos…";
 "Choose the applications whose windows belong to this Focus Set." = "Escolha os apps cujas janelas pertencem a este Conjunto de Foco.";
 "Close window" = "Fechar janela";
 "Conflicting shortcut" = "Atalho em conflito";
@@ -74,6 +73,7 @@
 "Dark" = "Escura";
 "Debug tools" = "Ferramentas de depuração";
 "Delete" = "Apagar";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Os atalhos diretos de Conjuntos de foco usam a aparência padrão e a organização padrão das janelas.";
 "Disabled" = "Desativado";
 "Do Not Move" = "Não Mover";
 "Don't hide" = "Não ocultar";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "ex.: com.example.app";
 "e.g. Debug" = "ex.: Debug";
 "Edit" = "Editar";
-"Editing" = "Editando";
 "Editing “%@”" = "Editando “%@”";
 "End" = "Fim";
 "Exceptions" = "Exceções";
@@ -93,7 +92,7 @@
 "Focus" = "Foco";
 "Focus selected window" = "Focar janela selecionada";
 "Focus Sets" = "Conjuntos de foco";
-"Focus Sets profile" = "Perfil de conjuntos de foco";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Os Conjuntos de Foco usam os atalhos compartilhados quando ativos. Altere-os em Controles.";
 "Fullscreen/Defullscreen window" = "Entrar/sair de tela cheia";
 "General" = "Geral";
 "Gesture" = "Gesto";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Nunca enviar relatórios de falha";
 "New Focus Set" = "Novo conjunto de foco";
 "No applications selected" = "Nenhum app selecionado";
-"No applications selected." = "Nenhum aplicativo selecionado.";
 "No Focus Sets" = "Nenhum conjunto de foco";
 "No matching applications." = "Nenhum aplicativo correspondente.";
 "No Window" = "Sem janela";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Apenas em outra tela";
 "Open Accessibility Settings…" = "Abrir Ajustes de Acessibilidade…";
+"Open Appearance Settings" = "Abrir ajustes de aparência";
 "Open Focus Sets" = "Abrir conjuntos de foco";
+"Open Shortcuts When Active Settings" = "Abrir ajustes de atalhos quando ativo";
 "Open Trackpad Settings…" = "Abrir Ajustes do Trackpad…";
 "Order windows by" = "Ordenar janelas por";
 "Ordering" = "Ordenação";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Atalho já atribuído a: %@";
 "Shortcuts" = "Atalhos";
 "Shortcuts When Active" = "Atalhos quando ativo";
+"Shortcuts while browsing" = "Atalhos durante a navegação";
 "Shortcuts while ScryTab is active" = "Atalhos enquanto o ScryTab está ativo";
 "Show" = "Mostrar";
 "Show all windows" = "Mostrar todas as janelas";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Mostrar janelas dos aplicativos";
 "Show windows from screens" = "Mostrar janelas das telas";
 "Show windows from Spaces" = "Mostrar janelas dos Espaços";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Mostra apps de todos os Spaces e telas, com o tratamento padrão para janelas ocultas, minimizadas, em tela cheia e apps sem janelas.";
 "Size" = "Tamanho";
 "Small" = "Pequeno";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Alguns atalhos substituem este ajuste. Aplique o novo valor global a todos os atalhos removendo essas substituições ou mantenha-as.";
@@ -242,11 +244,11 @@
 "Update now" = "Atualizar agora";
 "Updates policy" = "Política de atualizações";
 "Usage" = "Uso";
-"Uses this shortcut’s filters when counting and showing windows." = "Usa os filtros deste atalho ao contar e mostrar janelas.";
 "Version" = "Versão";
 "View existing discussions" = "Ver discussões existentes";
 "Vim keys" = "Teclas Vim";
 "Vim keys already assigned to other actions:\n%@" = "Teclas Vim já atribuídas a outras ações:\n%@";
+"Visibility" = "Visibilidade";
 "Visible Spaces" = "Espaços visíveis";
 "Website" = "Site";
 "What did you expect? What happened? Steps to reproduce…" = "O que você esperava? O que aconteceu? Passos para reproduzir…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Janela minimizada";
 "Window is on every Space" = "Janela em todos os Espaços";
 "Window is on Space %d" = "Janela no Espaço %d";
+"Window organization" = "Organização das janelas";
 "Window Title" = "Título da Janela";
 "Window title contains" = "Título da janela contém";
 "You can’t undo this action." = "Você não pode desfazer esta ação.";

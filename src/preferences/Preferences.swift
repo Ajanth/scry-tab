@@ -29,6 +29,7 @@ class Preferences {
             "sharedWindowOrder": WindowOrderPreference.recentlyFocused.indexAsString,
             "sharedGroupApps": GroupAppsPreference.allWindows.indexAsString,
             "sharedGroupTabs": GroupTabsPreference.singleWindow.indexAsString,
+            "focusSetsShortcutStyle": ShortcutStylePreference.focusOnRelease.indexAsString,
             "sharedPresentationDefaultsMigrated": "false",
             "theme": ThemePreference.macOs.indexAsString,
             "showOnScreen": ShowOnScreenPreference.active.indexAsString,
@@ -122,6 +123,7 @@ class Preferences {
     static var sharedWindowOrder: WindowOrderPreference { CachedUserDefaults.macroPref("sharedWindowOrder", WindowOrderPreference.allCases) }
     static var sharedGroupApps: GroupAppsPreference { CachedUserDefaults.macroPref("sharedGroupApps", GroupAppsPreference.allCases) }
     static var sharedGroupTabs: GroupTabsPreference { CachedUserDefaults.macroPref("sharedGroupTabs", GroupTabsPreference.allCases) }
+    static var focusSetsShortcutStyle: ShortcutStylePreference { CachedUserDefaults.macroPref("focusSetsShortcutStyle", ShortcutStylePreference.allCases) }
     // periphery:ignore
     static var theme: ThemePreference { ThemePreference.macOs/*CachedUserDefaults.macroPref("theme", ThemePreference.allCases)*/ }
     static var showOnScreen: ShowOnScreenPreference { CachedUserDefaults.macroPref("showOnScreen", ShowOnScreenPreference.allCases) }
@@ -136,8 +138,6 @@ class Preferences {
     static var showHiddenWindows: [ShowHowPreference] { (0...maxShortcutCount).map { CachedUserDefaults.macroPref(indexToName("showHiddenWindows", $0), ShowHowPreference.allCases) } }
     static var showFullscreenWindows: [ShowHowPreference] { (0...maxShortcutCount).map { CachedUserDefaults.macroPref(indexToName("showFullscreenWindows", $0), ShowHowPreference.allCases) } }
     static var showWindowlessApps: [ShowHowPreference] { (0...maxShortcutCount).map { CachedUserDefaults.macroPref(indexToName("showWindowlessApps", $0), ShowHowPreference.allCases) } }
-    static var windowOrder: [WindowOrderPreference] { (0...maxShortcutCount).map { CachedUserDefaults.macroPref(indexToName("windowOrder", $0), WindowOrderPreference.allCases) } }
-
     static func showMinimizedWindows(_ i: Int) -> ShowHowPreference { CachedUserDefaults.macroPref(indexToName("showMinimizedWindows", i), ShowHowPreference.allCases) }
     static func showHiddenWindows(_ i: Int) -> ShowHowPreference { CachedUserDefaults.macroPref(indexToName("showHiddenWindows", i), ShowHowPreference.allCases) }
     static func showFullscreenWindows(_ i: Int) -> ShowHowPreference { CachedUserDefaults.macroPref(indexToName("showFullscreenWindows", i), ShowHowPreference.allCases) }
@@ -239,17 +239,6 @@ class Preferences {
         cachedAll = nil
     }
 
-    static func onlyShowMainWindows(_ index: Int = SwitcherSession.activeShortcutIndex) -> Bool {
-        return groupApps(index) == .mainWindow
-    }
-
-    static func onlyShowMainWindows(_ source: SwitcherPresentationSource) -> Bool {
-        switch source {
-            case let .shortcut(index): return groupApps(index) == .mainWindow
-            case .focusSets: return sharedGroupApps == .mainWindow
-        }
-    }
-
     static func windowOrder(_ source: SwitcherPresentationSource) -> WindowOrderPreference {
         switch source {
             case let .shortcut(index): return windowOrder(index)
@@ -261,6 +250,34 @@ class Preferences {
         switch source {
             case let .shortcut(index): return groupTabs(index)
             case .focusSets: return sharedGroupTabs
+        }
+    }
+
+    static func appearanceStyle(_ source: SwitcherPresentationSource) -> AppearanceStylePreference {
+        switch source {
+            case let .shortcut(index): return effectiveAppearanceStyle(index)
+            case .focusSets: return appearanceStyle
+        }
+    }
+
+    static func appearanceSize(_ source: SwitcherPresentationSource) -> AppearanceSizePreference {
+        switch source {
+            case let .shortcut(index): return effectiveAppearanceSize(index)
+            case .focusSets: return appearanceSize
+        }
+    }
+
+    static func appearanceTheme(_ source: SwitcherPresentationSource) -> AppearanceThemePreference {
+        switch source {
+            case let .shortcut(index): return effectiveAppearanceTheme(index)
+            case .focusSets: return appearanceTheme
+        }
+    }
+
+    static func shortcutStyle(_ source: SwitcherPresentationSource) -> ShortcutStylePreference {
+        switch source {
+            case let .shortcut(index): return effectiveShortcutStyle(index)
+            case .focusSets: return focusSetsShortcutStyle
         }
     }
 

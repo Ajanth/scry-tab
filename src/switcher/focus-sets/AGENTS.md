@@ -1,9 +1,9 @@
 # Focus Sets agent map
 
 ## Rules
-- Window result = selected profile filters AND Focus Set app membership; never fork filter/render pipeline.
+- Window result = normal safety exclusions AND Focus Sets visibility policy AND Focus Set app membership; never fork filter/render pipeline.
 - Direct set shortcut skips picker; picker confirm and direct invoke both end at `Windows -> TilesView -> TilesPanel`.
-- Picker always titles UI; child grid keeps selected profile appearance.
+- Picker always titles UI; child grids use the standard app-wide appearance and shared organization defaults.
 - Run matching `*Specs.md` + `*Tests.swift`; run full `Test` scheme after keyboard/session work.
 
 ## File map
@@ -36,6 +36,10 @@
   Fix: `TilesView.swift`, `KeyboardEventsTestable.swift` — picker state routes text/query to picker; IME stays field-owned.
 - Direct Focus Set shortcuts missing.
   Fix: `FocusSet.swift`, `FocusSetsStore.swift`, `ControlsTab.swift`, `App.swift` — optional persisted chord; dynamic binding; direct normal-grid invoke.
+- Direct Focus Set shortcuts currently use the wrong release point and owner: key-up can mean the
+  press key released while modifiers remain held, and the behavior reads an unrelated base setting.
+  Pending fix: follow `FocusSetsTopLevelMigrationPlan.md`'s **Unresolved correction: direct Focus
+  Set chord-release behavior** before changing this path.
 - Shortcut edit could persist before Apply.
   Fix: `FocusSetSettingsView.swift`, `FocusSetSettingsResolver.swift` — recorder is sheet draft; Apply commits name/apps/chord; Cancel writes nothing.
 - Deleted/stale direct shortcut could target wrong set.
@@ -47,7 +51,7 @@
 - New shortcut field risked old/future JSON.
   Fix: `FocusSetsStore.swift` — config v2; optional tolerant parse; normalize; preserve unknown root/set/rule fields.
 - Focus Set counting risked second filter implementation.
-  Fix: `FocusSetCandidateCounter.swift`, `WindowFilterResolver.swift` — same profile predicate, then membership; no override.
+  Fix: `FocusSetCandidateCounter.swift`, `WindowFilterResolver.swift` — same explicit policy predicate, then membership; no override.
 - Direct invoke risked extra candidate-count work.
   Fix: `FocusSetPresentationSnapshotBuilder.swift`, `App.swift` — direct snapshot skips picker counts; existing window hot path stays.
 

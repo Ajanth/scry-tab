@@ -83,12 +83,8 @@ class App: AppCenterApplication {
 
     private static func updateFocusSetSession(_ snapshot: FocusSetPickerSnapshot,
                                               session: SwitcherSession) {
-        let configuration = snapshot.presentation.configuration
-        let profileIndex = snapshot.presentation.profileIndex
         session.focusSetPickerSnapshot = snapshot
-        session.focusSetPresentationShortcutIdentifier = configuration.presentationShortcutIdentifier
-        session.focusSetPickerProfileIndex = profileIndex
-        session.shortcutIndex = profileIndex
+        session.presentationSource = .focusSets
     }
 
     private static func focusSetCandidateCountSummary(_ count: Int) -> String {
@@ -299,10 +295,7 @@ class App: AppCenterApplication {
     }
 
     static func handleDirectFocusSetShortcut(_ identifier: UUID, state: ShortcutState) {
-        guard state == .down else {
-            focusDirectFocusSetSelectionOnRelease(identifier)
-            return
-        }
+        guard state == .down else { return }
         let snapshot = directFocusSetSnapshot()
         let currentState = SwitcherSession.current?.focusSetSessionState ?? .idle
         let decision = FocusSetSessionResolver.resolve(
@@ -329,25 +322,18 @@ class App: AppCenterApplication {
         return session
     }
 
-    private static func focusDirectFocusSetSelectionOnRelease(_ identifier: UUID) {
+    static func handleDirectFocusSetChordRelease(_ identifier: UUID) {
         guard let session = SwitcherSession.current,
-              FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
+              session.focusSetSessionState.directFocusSetIdentifier == identifier else { return }
+        switch FocusSetSessionResolver.directFocusSetReleaseAction(
                   state: session.focusSetSessionState,
                   shortcutIdentifier: identifier,
                   forceDoNothingOnRelease: session.forceDoNothingOnRelease,
-                  profileFocusesOnRelease: Preferences.effectiveShortcutStyle(session.shortcutIndex) == .focusOnRelease,
-                  profileHoldModifierIsReleased: profileHoldModifierIsReleased(session.shortcutIndex)
-              ) else { return }
-        focusTarget()
-    }
-
-    private static func profileHoldModifierIsReleased(_ shortcutIndex: Int) -> Bool {
-        guard let holdShortcut = ControlsTab.shortcuts[
-            Preferences.indexToName("holdShortcut", shortcutIndex)
-        ] else { return true }
-        let heldModifiers = cocoaToCarbonFlags(ModifierFlags.current).cleaned()
-        let holdModifiers = holdShortcut.shortcut.carbonModifierFlags.cleaned()
-        return holdModifiers == 0 || heldModifiers & holdModifiers != holdModifiers
+                  shortcutStyle: Preferences.shortcutStyle(.focusSets)) {
+        case .focus: focusTarget()
+        case .search: TilesView.enableSearchEditing()
+        case .none: break
+        }
     }
 
     static func confirmFocusSetPickerSelection(_ item: FocusSetPickerItem? = nil) {
@@ -377,7 +363,7 @@ class App: AppCenterApplication {
             }
             return
         }
-        let entry: SearchEntryStyle = Preferences.effectiveShortcutStyle(session.shortcutIndex) == .searchOnRelease ? .startedInSearch : .toggledMidSession
+        let entry: SearchEntryStyle = Preferences.shortcutStyle(session.presentationSource) == .searchOnRelease ? .startedInSearch : .toggledMidSession
         switch SearchModeResolver.escape(mode: TilesView.searchMode, entry: entry) {
         case .exitSearch:
             TilesView.disableSearchMode()
@@ -425,6 +411,7 @@ class App: AppCenterApplication {
         if decision.suppressFocusOnRelease {
             session.forceDoNothingOnRelease = true
         }
+        discardInvalidChordLifecycleState(session)
         switch decision.action {
         case .showFocusSetPicker, .refreshFocusSetPicker:
             guard let snapshot = snapshot ?? session.focusSetPickerSnapshot else { return }
@@ -435,7 +422,7 @@ class App: AppCenterApplication {
             guard let snapshot = snapshot ?? session.focusSetPickerSnapshot else { return }
             showFocusSetGrid(snapshot, session: session)
         case .cycleFocusSetSelection:
-            showUiOrCycleSelection(session.shortcutIndex, false)
+            cycleSelection(.leading)
         case .returnToFocusSetPicker:
             guard let snapshot = snapshot ?? session.focusSetPickerSnapshot else { return }
             KeyRepeatTimer.stopCurrentTimer()
@@ -450,6 +437,23 @@ class App: AppCenterApplication {
             hideUi()
         case .noOp:
             break
+        }
+    }
+
+    private static func discardInvalidChordLifecycleState(_ session: SwitcherSession) {
+        guard let chord = session.chordLifecycleState else { return }
+        switch chord.owner {
+        case let .shortcut(index):
+            guard session.presentationSource == .shortcut(index),
+                  session.focusSetSessionState == .ordinaryGrid else {
+                session.chordLifecycleState = nil
+                return
+            }
+        case let .directFocusSet(identifier):
+            guard session.focusSetSessionState.directFocusSetIdentifier == identifier else {
+                session.chordLifecycleState = nil
+                return
+            }
         }
     }
 
@@ -508,10 +512,7 @@ class App: AppCenterApplication {
         }
         TilesPanel.shared.alphaValue = 0
         session.isFirstSummon = false
-        let startsInSearch = !session.returnsToFocusSetPicker
-            && Preferences.effectiveShortcutStyle(session.shortcutIndex) == .searchOnRelease
-        TilesView.startSearchSession(startsInSearch)
-        if startsInSearch { session.forceDoNothingOnRelease = true }
+        TilesView.startSearchSession(false)
         if !Windows.updatesBeforeShowing() {
             hideUi()
             return
@@ -555,7 +556,7 @@ class App: AppCenterApplication {
                     state: session.focusSetSessionState,
                     event: .availableScopesChanged,
                     availableScopes: snapshot.availableScopes))
-            if decision.action == .returnToFocusSetPicker {
+            if decision.action == .returnToFocusSetPicker || decision.action == .dismissSwitcherUi {
                 applyFocusSetDecision(decision, snapshot: snapshot, session: session)
             } else {
                 hideUi()
@@ -567,7 +568,7 @@ class App: AppCenterApplication {
                 state: session.focusSetSessionState,
                 event: .availableScopesChanged,
                 availableScopes: snapshot.availableScopes))
-        if decision.action == .returnToFocusSetPicker {
+        if decision.action == .returnToFocusSetPicker || decision.action == .dismissSwitcherUi {
             applyFocusSetDecision(decision, snapshot: snapshot, session: session)
             return
         }
@@ -617,12 +618,8 @@ class App: AppCenterApplication {
     }
 
     static func showUiOrCycleSelection(_ shortcutIndex: Int, _ forceDoNothingOnRelease_: Bool) {
-        let replacesFocusSetFlow = SwitcherSession.current.map {
-            FocusSetSessionResolver.shouldReplaceFocusSetFlow(
-                state: $0.focusSetSessionState,
-                activeShortcutIndex: $0.shortcutIndex,
-                incomingShortcutIndex: shortcutIndex)
-        } ?? false
+        let source = SwitcherPresentationSource.shortcut(shortcutIndex)
+        let replacesFocusSetFlow = SwitcherSession.current.map { $0.focusSetSessionState != .ordinaryGrid } ?? false
         let session = SwitcherSession.current ?? {
             let new = SwitcherSession()
             SwitcherSession.current = new
@@ -634,7 +631,6 @@ class App: AppCenterApplication {
             session.focusSetSessionState = decision.nextState
             session.focusSetPickerSelectedIdentifier = nil
             session.focusSetPickerQuery = ""
-            session.focusSetPresentationShortcutIdentifier = ""
             session.focusSetPickerSnapshot = nil
             session.isFirstSummon = true
             KeyRepeatTimer.stopCurrentTimer()
@@ -643,14 +639,14 @@ class App: AppCenterApplication {
         session.forceDoNothingOnRelease = forceDoNothingOnRelease_
         Logger.debug { "isFirstSummon:\(session.isFirstSummon) shortcutIndex:\(shortcutIndex)" }
         UsageStats.recordTrigger(shortcutIndex)
-        if session.isFirstSummon || shortcutIndex != session.shortcutIndex {
+        if session.isFirstSummon || source != session.presentationSource {
             NSScreen.updatePreferred()
             if isVeryFirstSummon {
                 Windows.sortByLevel()
                 isVeryFirstSummon = false
             }
             session.isFirstSummon = false
-            session.shortcutIndex = shortcutIndex
+            session.presentationSource = source
             // Hide instantly so the rebuild for a different shortcut (Appearance change, layout
             // recalc) is invisible. `TilesPanel.show()` flips alpha back to 1 once everything is
             // in its final state. No-op on first summon (panel was orderOut'd with alpha=0).

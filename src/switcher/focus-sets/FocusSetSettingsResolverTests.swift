@@ -180,7 +180,6 @@ final class FocusSetSettingsResolverTests: XCTestCase {
         let trailing = focusSet("Trailing")
         let configuration = FocusSetsConfiguration(
             version: 3,
-            presentationShortcutIdentifier: "profile-2",
             sets: [retained, deleted, trailing])
 
         let next = try XCTUnwrap(FocusSetSettingsResolver.configurationByDeletingFocusSet(deleted.id, from: configuration))
@@ -190,7 +189,6 @@ final class FocusSetSettingsResolverTests: XCTestCase {
             builtInNames: FocusSetPickerBuiltInNames(allWindows: "All", unassignedWindows: "Unassigned"))
 
         XCTAssertEqual(next.version, configuration.version)
-        XCTAssertEqual(next.presentationShortcutIdentifier, configuration.presentationShortcutIdentifier)
         XCTAssertEqual(next.sets.map(\.id), [retained.id, trailing.id])
         XCTAssertFalse(FocusSetShortcutBindingResolver.bindings(in: next).contains { $0.focusSetIdentifier == deleted.id })
         XCTAssertFalse(picker.visibleItems().contains { $0.identifier == .focusSet(deleted.id) })
@@ -289,7 +287,6 @@ final class FocusSetSettingsResolverTests: XCTestCase {
             shortcutKeyEquivalent: "⌃2")
         let configuration = FocusSetsConfiguration(
             version: 4,
-            presentationShortcutIdentifier: "profile-2",
             sets: [original, trailing])
 
         let next = FocusSetSettingsResolver.configurationBySavingFocusSet(
@@ -298,7 +295,6 @@ final class FocusSetSettingsResolverTests: XCTestCase {
             in: configuration)
 
         XCTAssertEqual(next.version, 4)
-        XCTAssertEqual(next.presentationShortcutIdentifier, "profile-2")
         XCTAssertEqual(next.sets, [draft, trailing])
     }
 

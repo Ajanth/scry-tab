@@ -1,5 +1,15 @@
 import Cocoa
 
+enum SwitcherPresentationSource: Equatable {
+    case shortcut(Int)
+    case focusSets
+
+    var shortcutIndex: Int? {
+        guard case let .shortcut(index) = self else { return nil }
+        return index
+    }
+}
+
 /// Holds all state scoped to a single switcher invocation: from when the user
 /// first triggers the shortcut to when the panel is dismissed.
 ///
@@ -9,13 +19,10 @@ import Cocoa
 final class SwitcherSession {
     static var current: SwitcherSession?
     static var isActive: Bool { current != nil }
-    /// The shortcut index of the currently-active session, or 0 when no session is active.
-    /// Used by every per-shortcut effective preference read in `Appearance`, `TileView`, etc.
-    static var activeShortcutIndex: Int { current?.shortcutIndex ?? 0 }
-
-    var shortcutIndex: Int = 0
+    var presentationSource = SwitcherPresentationSource.shortcut(0)
     var isFirstSummon: Bool = true
     var forceDoNothingOnRelease: Bool = false
+    var chordLifecycleState: ShortcutChordLifecycleState?
 
     var selectedIndex: Int = 0
     var hoveredIndex: Int?
@@ -27,8 +34,6 @@ final class SwitcherSession {
     var focusSetSessionState: FocusSetSessionState = .ordinaryGrid
     var focusSetPickerSelectedIdentifier: FocusSetPickerItemIdentifier?
     var focusSetPickerQuery: String = ""
-    var focusSetPresentationShortcutIdentifier: String = ""
-    var focusSetPickerProfileIndex: Int = 0
     var focusSetPickerSnapshot: FocusSetPickerSnapshot?
 
     var focusSetScope: FocusSetScope { focusSetSessionState.focusSetScope ?? .none }

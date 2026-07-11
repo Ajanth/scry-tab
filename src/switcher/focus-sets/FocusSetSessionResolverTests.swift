@@ -1,4 +1,5 @@
 import Foundation
+import Carbon.HIToolbox.Events
 import XCTest
 
 final class FocusSetSessionResolverTests: XCTestCase {
@@ -232,41 +233,7 @@ final class FocusSetSessionResolverTests: XCTestCase {
             decision(.ordinaryGrid, .showOrdinaryGrid))
     }
 
-    // MARK: - F. Profile shortcut routing
-
-    /// Repeating the profile that owns an active Focus Set grid keeps its membership scope for selection cycling.
-    func testActiveProfileShortcutKeepsFocusSetGrids() {
-        XCTAssertFalse(FocusSetSessionResolver.shouldReplaceFocusSetFlow(
-            state: .focusSetGrid(.set(id: UUID())),
-            activeShortcutIndex: 1,
-            incomingShortcutIndex: 1))
-        XCTAssertFalse(FocusSetSessionResolver.shouldReplaceFocusSetFlow(
-            state: .directFocusSetGrid(UUID()),
-            activeShortcutIndex: 1,
-            incomingShortcutIndex: 1))
-    }
-
-    /// An idle session, picker, and different profile retain the ordinary-grid transition instead of stale scope.
-    func testPickerAndDifferentProfileShortcutReplaceFocusSetFlow() {
-        XCTAssertTrue(FocusSetSessionResolver.shouldReplaceFocusSetFlow(
-            state: .idle,
-            activeShortcutIndex: 1,
-            incomingShortcutIndex: 1))
-        XCTAssertTrue(FocusSetSessionResolver.shouldReplaceFocusSetFlow(
-            state: .picker,
-            activeShortcutIndex: 1,
-            incomingShortcutIndex: 1))
-        XCTAssertTrue(FocusSetSessionResolver.shouldReplaceFocusSetFlow(
-            state: .focusSetGrid(.set(id: UUID())),
-            activeShortcutIndex: 1,
-            incomingShortcutIndex: 0))
-        XCTAssertTrue(FocusSetSessionResolver.shouldReplaceFocusSetFlow(
-            state: .directFocusSetGrid(UUID()),
-            activeShortcutIndex: 0,
-            incomingShortcutIndex: 1))
-    }
-
-    // MARK: - G. Scope invalidation
+    // MARK: - F. Scope invalidation
 
     /// Removing the active child scope returns safely to the picker instead of retaining stale state.
     func testRemovedActiveScopeReturnsChildGridToPicker() {
@@ -303,7 +270,92 @@ final class FocusSetSessionResolverTests: XCTestCase {
             decision(.ordinaryGrid, .noOp))
     }
 
-    // MARK: - H. Direct Focus Set shortcuts
+    // MARK: - G. Direct Focus Set shortcuts
+
+    /// Direct Focus Set release resolves only the exact active set from its own Focus Sets setting.
+    func testDirectShortcutReleaseRequiresExactActiveSetAndFocusSetsBehavior() {
+        let identifier = UUID()
+
+        XCTAssertEqual(FocusSetSessionResolver.directFocusSetReleaseAction(
+            state: .directFocusSetGrid(identifier),
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: false,
+            shortcutStyle: .focusOnRelease), .focus)
+        XCTAssertEqual(FocusSetSessionResolver.directFocusSetReleaseAction(
+            state: .directFocusSetGrid(identifier),
+            shortcutIdentifier: UUID(),
+            forceDoNothingOnRelease: false,
+            shortcutStyle: .focusOnRelease), .none)
+        XCTAssertEqual(FocusSetSessionResolver.directFocusSetReleaseAction(
+            state: .directFocusSetGrid(identifier),
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: true,
+            shortcutStyle: .focusOnRelease), .none)
+        XCTAssertEqual(FocusSetSessionResolver.directFocusSetReleaseAction(
+            state: .directFocusSetGrid(identifier),
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: false,
+            shortcutStyle: .doNothingOnRelease), .none)
+        XCTAssertEqual(FocusSetSessionResolver.directFocusSetReleaseAction(
+            state: .directFocusSetGrid(identifier),
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: false,
+            shortcutStyle: .searchOnRelease), .search)
+    }
+
+    /// Direct release cannot affect a picker, ordinary grid, or another active Focus Set.
+    func testDirectShortcutReleaseIgnoresOtherSessionStates() {
+        let identifier = UUID()
+
+        XCTAssertEqual(FocusSetSessionResolver.directFocusSetReleaseAction(
+            state: .directFocusSetGrid(UUID()),
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: false,
+            shortcutStyle: .focusOnRelease), .none)
+        XCTAssertEqual(FocusSetSessionResolver.directFocusSetReleaseAction(
+            state: .picker,
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: false,
+            shortcutStyle: .focusOnRelease), .none)
+        XCTAssertEqual(FocusSetSessionResolver.directFocusSetReleaseAction(
+            state: .ordinaryGrid,
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: false,
+            shortcutStyle: .focusOnRelease), .none)
+    }
+
+    /// A chord ignores non-final modifier changes and releases only its latest owner once.
+    func testDirectShortcutChordLifecycleWaitsForFinalModifierRelease() {
+        let firstIdentifier = UUID()
+        let secondIdentifier = UUID()
+        let command = CarbonModifierFlags(cmdKey)
+        let shift = CarbonModifierFlags(shiftKey)
+        let firstPress = ShortcutChordLifecycleResolver.resolve(
+            nil,
+            .press(owner: .directFocusSet(firstIdentifier), holdModifiers: command | shift))
+        let repeatedPress = ShortcutChordLifecycleResolver.resolve(
+            firstPress.nextState,
+            .press(owner: .directFocusSet(firstIdentifier), holdModifiers: command | shift))
+        let partialRelease = ShortcutChordLifecycleResolver.resolve(
+            repeatedPress.nextState,
+            .modifiersChanged(command))
+        let replacementPress = ShortcutChordLifecycleResolver.resolve(
+            partialRelease.nextState,
+            .press(owner: .directFocusSet(secondIdentifier), holdModifiers: command))
+        let release = ShortcutChordLifecycleResolver.resolve(
+            replacementPress.nextState,
+            .modifiersChanged(0))
+        let duplicateRelease = ShortcutChordLifecycleResolver.resolve(
+            release.nextState,
+            .modifiersChanged(0))
+
+        XCTAssertEqual(firstPress.action, .none)
+        XCTAssertEqual(repeatedPress.action, .none)
+        XCTAssertEqual(partialRelease.action, .none)
+        XCTAssertEqual(replacementPress.action, .none)
+        XCTAssertEqual(release.action, .release(.directFocusSet(secondIdentifier)))
+        XCTAssertEqual(duplicateRelease.action, .none)
+    }
 
     /// A configured direct shortcut opens an ordinary grid carrying only that set's membership scope.
     func testDirectShortcutShowsScopedGridWithoutPickerReturnIntent() {
@@ -374,43 +426,6 @@ final class FocusSetSessionResolverTests: XCTestCase {
         XCTAssertEqual(
             resolve(state, .ordinaryShortcutOrGesture),
             decision(.ordinaryGrid, .showOrdinaryGrid))
-    }
-
-    /// A direct shortcut key-up waits for the active profile's hold modifier before focusing its exact set.
-    func testDirectShortcutReleaseRequiresExactActiveSetProfilePermissionAndReleasedHoldModifier() {
-        let identifier = UUID()
-        let state = FocusSetSessionState.directFocusSetGrid(identifier)
-
-        XCTAssertTrue(FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
-            state: state,
-            shortcutIdentifier: identifier,
-            forceDoNothingOnRelease: false,
-            profileFocusesOnRelease: true,
-            profileHoldModifierIsReleased: true))
-        XCTAssertFalse(FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
-            state: state,
-            shortcutIdentifier: UUID(),
-            forceDoNothingOnRelease: false,
-            profileFocusesOnRelease: true,
-            profileHoldModifierIsReleased: true))
-        XCTAssertFalse(FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
-            state: state,
-            shortcutIdentifier: identifier,
-            forceDoNothingOnRelease: true,
-            profileFocusesOnRelease: true,
-            profileHoldModifierIsReleased: true))
-        XCTAssertFalse(FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
-            state: state,
-            shortcutIdentifier: identifier,
-            forceDoNothingOnRelease: false,
-            profileFocusesOnRelease: false,
-            profileHoldModifierIsReleased: true))
-        XCTAssertFalse(FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
-            state: state,
-            shortcutIdentifier: identifier,
-            forceDoNothingOnRelease: false,
-            profileFocusesOnRelease: true,
-            profileHoldModifierIsReleased: false))
     }
 
     private func resolve(_ state: FocusSetSessionState,

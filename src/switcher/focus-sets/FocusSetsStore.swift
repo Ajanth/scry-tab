@@ -85,7 +85,8 @@ final class FocusSetsStore {
     func read() -> FocusSetsConfiguration {
         let parsed = FocusSetsStoreParser.parse(defaults.string(forKey: key))
         let configuration = normalized(parsed.configuration)
-        guard parsed.rawRoot != nil, configuration != parsed.configuration else { return configuration }
+        let containsRetiredPresentationOwner = parsed.rawRoot?["presentationShortcutIdentifier"] != nil
+        guard parsed.rawRoot != nil, configuration != parsed.configuration || containsRetiredPresentationOwner else { return configuration }
         _ = set(configuration)
         return configuration
     }

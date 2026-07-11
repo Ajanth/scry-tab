@@ -11,6 +11,9 @@ class PreferencesEvents {
         "appearanceStyle",
         "appearanceSize",
         "appearanceTheme",
+        "sharedWindowOrder",
+        "sharedGroupApps",
+        "sharedGroupTabs",
         "showOnScreen",
     ]
 
@@ -29,7 +32,7 @@ class PreferencesEvents {
     /// + index suffix). These moved from global to per-shortcut, so a change on any index needs the
     /// same UI reset that the old global key used to trigger.
     private static func isPerShortcutGroupingKey(_ key: String) -> Bool {
-        for baseName in ["showAppsOrWindows", "showTabsAsWindows"] {
+        for baseName in ["showAppsOrWindows", "showTabsAsWindows", "windowOrder"] {
             for i in 0...Preferences.maxShortcutCount {
                 if Preferences.indexToName(baseName, i) == key { return true }
             }

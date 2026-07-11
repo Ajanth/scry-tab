@@ -25,14 +25,13 @@ final class FocusSetsStoreTests: XCTestCase {
 
     func testMalformedRootKeepsStoredStringAndReturnsFallback() throws {
         let store = try makeStore()
-        let defaults = try testDefaults()
+        let defaults = try isolatedDefaults()
         let malformed = "{not JSON"
         defaults.set(malformed, forKey: key)
 
-        let configuration = store.read(availableShortcutIdentifiers: ["profile-1"])
+        let configuration = store.read()
 
         XCTAssertEqual(configuration.version, FocusSetsConfiguration.currentVersion)
-        XCTAssertEqual(configuration.presentationShortcutIdentifier, "profile-1")
         XCTAssertTrue(configuration.sets.isEmpty)
         XCTAssertEqual(defaults.string(forKey: key), malformed)
     }
@@ -72,11 +71,10 @@ final class FocusSetsStoreTests: XCTestCase {
         ]
         try seed([
             "version": FocusSetsConfiguration.currentVersion,
-            "presentationShortcutIdentifier": "profile-1",
             "sets": [firstSet, malformedSet, secondSet],
         ])
 
-        let configuration = store.read(availableShortcutIdentifiers: ["profile-1"])
+        let configuration = store.read()
 
         XCTAssertEqual(configuration.sets.map(\.name), ["First", "Second"])
         XCTAssertEqual(configuration.sets.map { $0.rules.map(\.applicationBundleIdentifier) }, [
@@ -90,7 +88,6 @@ final class FocusSetsStoreTests: XCTestCase {
         let identifier = UUID()
         try seed([
             "version": FocusSetsConfiguration.currentVersion,
-            "presentationShortcutIdentifier": "profile-1",
             "sets": [
                 [
                     "id": identifier.uuidString,
@@ -115,7 +112,7 @@ final class FocusSetsStoreTests: XCTestCase {
             ],
         ])
 
-        let configuration = store.read(availableShortcutIdentifiers: ["profile-1"])
+        let configuration = store.read()
         let resolver = FocusSetResolver(configuration: configuration)
         let root = try storedRoot()
 
@@ -130,7 +127,6 @@ final class FocusSetsStoreTests: XCTestCase {
         let identifier = UUID()
         try seed([
             "version": FocusSetsConfiguration.currentVersion,
-            "presentationShortcutIdentifier": "profile-1",
             "sets": [
                 [
                     "id": identifier.uuidString,
@@ -149,10 +145,9 @@ final class FocusSetsStoreTests: XCTestCase {
             ],
         ])
 
-        XCTAssertTrue(store.read(availableShortcutIdentifiers: ["profile-1"]).sets.first?.rules.isEmpty == true)
+        XCTAssertTrue(store.read().sets.first?.rules.isEmpty == true)
 
         let configuration = FocusSetsConfiguration(
-            presentationShortcutIdentifier: "profile-1",
             sets: [
                 FocusSet(
                     id: identifier,
@@ -164,10 +159,10 @@ final class FocusSetsStoreTests: XCTestCase {
                 ),
             ]
         )
-        XCTAssertTrue(store.set(configuration, availableShortcutIdentifiers: ["profile-1"]))
+        XCTAssertTrue(store.set(configuration))
 
         XCTAssertEqual(
-            store.read(availableShortcutIdentifiers: ["profile-1"]).sets.first?.rules.map(\.applicationBundleIdentifier),
+            store.read().sets.first?.rules.map(\.applicationBundleIdentifier),
             ["com.apple.Terminal"]
         )
     }
@@ -176,7 +171,6 @@ final class FocusSetsStoreTests: XCTestCase {
         let store = try makeStore()
         let identifier = UUID()
         let configuration = FocusSetsConfiguration(
-            presentationShortcutIdentifier: "profile-1",
             sets: [
                 FocusSet(
                     id: identifier,
@@ -195,8 +189,8 @@ final class FocusSetsStoreTests: XCTestCase {
             ]
         )
 
-        XCTAssertTrue(store.set(configuration, availableShortcutIdentifiers: ["profile-1"]))
-        XCTAssertEqual(store.read(availableShortcutIdentifiers: ["profile-1"]).sets.map(\.name), ["First"])
+        XCTAssertTrue(store.set(configuration))
+        XCTAssertEqual(store.read().sets.map(\.name), ["First"])
     }
 
     func testReadKeepsCachedNameForUnavailableApplication() throws {
@@ -204,7 +198,6 @@ final class FocusSetsStoreTests: XCTestCase {
         let identifier = UUID()
         try seed([
             "version": FocusSetsConfiguration.currentVersion,
-            "presentationShortcutIdentifier": "profile-1",
             "sets": [
                 [
                     "id": identifier.uuidString,
@@ -219,7 +212,7 @@ final class FocusSetsStoreTests: XCTestCase {
             ],
         ])
 
-        let configuration = store.read(availableShortcutIdentifiers: ["profile-1"])
+        let configuration = store.read()
 
         XCTAssertEqual(configuration.sets.first?.rules.first?.cachedApplicationName, "Cursor")
         XCTAssertEqual(configuration.sets.first?.rules.first?.applicationBundleIdentifier, "com.cursor.Cursor")
@@ -230,7 +223,6 @@ final class FocusSetsStoreTests: XCTestCase {
         let identifier = UUID()
         try seed([
             "version": FocusSetsConfiguration.currentVersion,
-            "presentationShortcutIdentifier": "profile-1",
             "sets": [
                 [
                     "id": identifier.uuidString,
@@ -241,7 +233,7 @@ final class FocusSetsStoreTests: XCTestCase {
             ],
         ])
 
-        let configuration = store.read(availableShortcutIdentifiers: ["profile-1"])
+        let configuration = store.read()
 
         XCTAssertEqual(configuration.sets.map(\.id), [identifier])
         XCTAssertNil(configuration.sets.first?.shortcutKeyEquivalent)
@@ -254,7 +246,6 @@ final class FocusSetsStoreTests: XCTestCase {
         let identifier = UUID()
         try seed([
             "version": 1,
-            "presentationShortcutIdentifier": "profile-1",
             "futureRoot": ["enabled": true],
             "sets": [
                 [
@@ -266,13 +257,14 @@ final class FocusSetsStoreTests: XCTestCase {
             ],
         ])
 
-        let configuration = store.read(availableShortcutIdentifiers: ["profile-1"])
+        let configuration = store.read()
         let root = try storedRoot()
         let storedSet = try XCTUnwrap((root["sets"] as? [[String: Any]])?.first)
 
         XCTAssertEqual(configuration.version, FocusSetsConfiguration.currentVersion)
         XCTAssertEqual(root["version"] as? Int, FocusSetsConfiguration.currentVersion)
         XCTAssertEqual((root["futureRoot"] as? [String: Any])?["enabled"] as? Bool, true)
+        XCTAssertNil(root["presentationShortcutIdentifier"])
         XCTAssertEqual(storedSet["futureSet"] as? String, "retained")
     }
 
@@ -281,7 +273,7 @@ final class FocusSetsStoreTests: XCTestCase {
         let identifier = UUID()
         try seed([
             "version": 3,
-            "presentationShortcutIdentifier": "profile-2",
+            "presentationShortcutIdentifier": "shortcut-2",
             "futureRoot": ["enabled": true],
             "sets": [
                 [
@@ -301,16 +293,17 @@ final class FocusSetsStoreTests: XCTestCase {
             ],
         ])
 
-        let configuration = store.read(availableShortcutIdentifiers: ["profile-1", "profile-2"])
+        let configuration = store.read()
         XCTAssertEqual(configuration.version, 3)
         XCTAssertEqual(configuration.sets.first?.shortcutKeyEquivalent, "⌃1")
         XCTAssertEqual(configuration.sets.first?.rules.first?.titleContains, "scry-tab")
-        XCTAssertTrue(store.set(configuration, availableShortcutIdentifiers: ["profile-1", "profile-2"]))
+        XCTAssertTrue(store.set(configuration))
 
         let root = try storedRoot()
         let storedSet = try XCTUnwrap((root["sets"] as? [[String: Any]])?.first)
         let storedRule = try XCTUnwrap((storedSet["rules"] as? [[String: Any]])?.first)
         XCTAssertEqual((root["futureRoot"] as? [String: Any])?["enabled"] as? Bool, true)
+        XCTAssertNil(root["presentationShortcutIdentifier"])
         XCTAssertEqual(storedSet["futureSet"] as? [String], ["alpha", "beta"])
         XCTAssertEqual((storedRule["futureRule"] as? [String: Any])?["migrates"] as? Bool, true)
         XCTAssertEqual(storedRule["titleContains"] as? String, "scry-tab")
@@ -321,7 +314,6 @@ final class FocusSetsStoreTests: XCTestCase {
         let identifier = UUID()
         try seed([
             "version": FocusSetsConfiguration.currentVersion,
-            "presentationShortcutIdentifier": "profile-1",
             "sets": [
                 [
                     "id": identifier.uuidString,
@@ -337,7 +329,6 @@ final class FocusSetsStoreTests: XCTestCase {
             ],
         ])
         let configuration = FocusSetsConfiguration(
-            presentationShortcutIdentifier: "profile-1",
             sets: [
                 FocusSet(
                     id: identifier,
@@ -349,7 +340,7 @@ final class FocusSetsStoreTests: XCTestCase {
                     ])
             ])
 
-        XCTAssertTrue(store.set(configuration, availableShortcutIdentifiers: ["profile-1"]))
+        XCTAssertTrue(store.set(configuration))
 
         let root = try storedRoot()
         let storedSet = try XCTUnwrap((root["sets"] as? [[String: Any]])?.first)
@@ -358,37 +349,35 @@ final class FocusSetsStoreTests: XCTestCase {
         XCTAssertEqual((storedRule["futureRule"] as? [String: Any])?["migrates"] as? Bool, true)
     }
 
-    // MARK: - C. Profile rebinding and serialization
+    // MARK: - C. Retired presentation-owner field and serialization
 
-    func testReadRebindsMissingProfileToFirstAvailableIdentifier() throws {
+    /// A normalized V1/V2 read removes the known retired presentation-owner field without touching other data.
+    func testReadRemovesRetiredPresentationOwnerField() throws {
         let store = try makeStore()
         try seed([
-            "version": FocusSetsConfiguration.currentVersion,
-            "presentationShortcutIdentifier": "deleted-profile",
+            "version": 2,
+            "presentationShortcutIdentifier": "deleted-shortcut",
             "sets": [],
         ])
 
-        let configuration = store.read(availableShortcutIdentifiers: ["", "profile-1", "profile-2"])
+        let configuration = store.read()
 
-        XCTAssertEqual(configuration.presentationShortcutIdentifier, "profile-1")
-        XCTAssertEqual(try storedRoot()["presentationShortcutIdentifier"] as? String, "profile-1")
+        XCTAssertEqual(configuration.version, FocusSetsConfiguration.currentVersion)
+        XCTAssertNil(try storedRoot()["presentationShortcutIdentifier"])
     }
 
     /// An explicitly saved Focus Set with no applications survives a write/read cycle.
     func testWriteAndReadPreservesEmptyFocusSet() throws {
         let store = try makeStore()
-        let configuration = FocusSetsConfiguration(
-            presentationShortcutIdentifier: "profile-1",
-            sets: [FocusSet(name: "Empty", rules: [])])
+        let configuration = FocusSetsConfiguration(sets: [FocusSet(name: "Empty", rules: [])])
 
-        XCTAssertTrue(store.set(configuration, availableShortcutIdentifiers: ["profile-1"]))
-        XCTAssertEqual(store.read(availableShortcutIdentifiers: ["profile-1"]), configuration)
+        XCTAssertTrue(store.set(configuration))
+        XCTAssertEqual(store.read(), configuration)
     }
 
     func testWriteAndReadRoundTrip() throws {
         let store = try makeStore()
         let configuration = FocusSetsConfiguration(
-            presentationShortcutIdentifier: "profile-2",
             sets: [
                 FocusSet(
                     name: "Project",
@@ -411,27 +400,27 @@ final class FocusSetsStoreTests: XCTestCase {
             ]
         )
 
-        XCTAssertTrue(store.set(configuration, availableShortcutIdentifiers: ["profile-1", "profile-2"]))
-        XCTAssertEqual(store.read(availableShortcutIdentifiers: ["profile-1", "profile-2"]), configuration)
+        XCTAssertTrue(store.set(configuration))
+        XCTAssertEqual(store.read(), configuration)
     }
 
     private func makeStore() throws -> FocusSetsStore {
-        FocusSetsStore(defaults: try testDefaults(), key: key)
+        FocusSetsStore(defaults: try isolatedDefaults(), key: key)
     }
 
-    private func testDefaults() throws -> UserDefaults {
+    private func isolatedDefaults() throws -> UserDefaults {
         try XCTUnwrap(defaults)
     }
 
     private func seed(_ object: [String: Any]) throws {
         let data = try JSONSerialization.data(withJSONObject: object)
         let string = try XCTUnwrap(String(data: data, encoding: .utf8))
-        let defaults = try testDefaults()
+        let defaults = try isolatedDefaults()
         defaults.set(string, forKey: key)
     }
 
     private func storedRoot() throws -> [String: Any] {
-        let defaults = try testDefaults()
+        let defaults = try isolatedDefaults()
         let string = try XCTUnwrap(defaults.string(forKey: key))
         let data = try XCTUnwrap(string.data(using: .utf8))
         let object = try JSONSerialization.jsonObject(with: data)

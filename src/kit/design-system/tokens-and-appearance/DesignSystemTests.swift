@@ -12,6 +12,7 @@ final class DesignSystemTests: XCTestCase {
     func testSettingsPageIconDescriptorsFollowPageIdentity() {
         XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .appearance).symbolValue, "􀝥")
         XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .controls).symbolValue, "􀆔")
+        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .focusSets).symbolValue, "􀕬")
         XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .general).symbolValue, "􀣋")
         XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .exceptions).symbolValue, "􀉻")
         XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .about).symbolValue, "􀅴")

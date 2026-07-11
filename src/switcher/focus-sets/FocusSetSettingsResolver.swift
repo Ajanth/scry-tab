@@ -65,7 +65,6 @@ enum FocusSetSettingsResolver {
         guard configuration.sets.contains(where: { $0.id == identifier }) else { return nil }
         return FocusSetsConfiguration(
             version: configuration.version,
-            presentationShortcutIdentifier: configuration.presentationShortcutIdentifier,
             sets: configuration.sets.filter { $0.id != identifier })
     }
 
@@ -90,7 +89,6 @@ enum FocusSetSettingsResolver {
         }
         return FocusSetsConfiguration(
             version: configuration.version,
-            presentationShortcutIdentifier: configuration.presentationShortcutIdentifier,
             sets: sets)
     }
 

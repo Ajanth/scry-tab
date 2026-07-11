@@ -14,7 +14,6 @@
 "About" = "Über";
 "About %@" = "Über %@";
 "Accessibility" = "Bedienungshilfen";
-"Actions" = "Aktionen";
 "Active app" = "Aktive App";
 "Active screen" = "Aktiver Bildschirm";
 "Add a pattern" = "Muster hinzufügen";
@@ -37,9 +36,11 @@
 "App is hidden" = "App ausgeblendet";
 "App is running but has no open window" = "App läuft, hat aber kein geöffnetes Fenster";
 "Appearance" = "Darstellung";
+"Appearance and organization" = "Darstellung und Organisation";
 "Application Name" = "Anwendungsname";
 "Application Name - Window Title" = "Anwendungsname - Fenstertitel";
 "Applies in other Appearances" = "Gilt in anderen Darstellungen";
+"Applies to every direct Focus Set shortcut." = "Gilt für jeden direkten Fokus-Set-Kurzbefehl.";
 "Apply" = "Anwenden";
 "Apply this change to all shortcuts?" = "Änderung auf alle Tastenkürzel anwenden?";
 "Apply to All Shortcuts" = "Auf alle Tastenkürzel anwenden";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Abbrechen";
 "Change Global Only" = "Nur global ändern";
-"Changes are saved automatically." = "Änderungen werden automatisch gespeichert.";
 "Check for updates now…" = "Jetzt nach Updates suchen…";
 "Check for updates periodically" = "Regelmäßig nach Updates suchen";
 "Check for updates…" = "Nach Updates suchen…";
 "Check permissions…" = "Berechtigungen prüfen…";
 "Choose a global shortcut to open the Focus Sets picker." = "Wählen Sie einen globalen Kurzbefehl, um die Fokusgruppen-Auswahl zu öffnen.";
-"Choose Applications…" = "Apps auswählen…";
 "Choose the applications whose windows belong to this Focus Set." = "Wähle die Apps aus, deren Fenster zu diesem Fokusset gehören.";
 "Close window" = "Fenster schließen";
 "Conflicting shortcut" = "Kollidierendes Tastenkürzel";
@@ -74,6 +73,7 @@
 "Dark" = "Dunkel";
 "Debug tools" = "Debug-Tools";
 "Delete" = "Löschen";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Direkte Fokus-Set-Kurzbefehle verwenden das Standarderscheinungsbild und die Standardfensterorganisation.";
 "Disabled" = "Deaktiviert";
 "Do Not Move" = "Nicht verschieben";
 "Don't hide" = "Nicht ausblenden";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "z. B. com.example.app";
 "e.g. Debug" = "z. B. Debug";
 "Edit" = "Bearbeiten";
-"Editing" = "Wird bearbeitet";
 "Editing “%@”" = "„%@“ wird bearbeitet";
 "End" = "Ende";
 "Exceptions" = "Ausnahmen";
@@ -93,7 +92,7 @@
 "Focus" = "Fokus";
 "Focus selected window" = "Ausgewähltes Fenster fokussieren";
 "Focus Sets" = "Fokus-Sets";
-"Focus Sets profile" = "Profil für Fokus-Sets";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Fokus-Sets verwenden die gemeinsamen Tastenkürzel bei Aktivität. Ändere sie in der Steuerung.";
 "Fullscreen/Defullscreen window" = "Fenster in Vollbild/aus Vollbild";
 "General" = "Allgemein";
 "Gesture" = "Geste";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Absturzberichte nie senden";
 "New Focus Set" = "Neues Fokus-Set";
 "No applications selected" = "Keine Apps ausgewählt";
-"No applications selected." = "Keine Apps ausgewählt.";
 "No Focus Sets" = "Keine Fokus-Sets";
 "No matching applications." = "Keine passenden Apps.";
 "No Window" = "Kein Fenster";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Nur auf anderem Bildschirm";
 "Open Accessibility Settings…" = "Einstellungen für Bedienungshilfen öffnen…";
+"Open Appearance Settings" = "Darstellungseinstellungen öffnen";
 "Open Focus Sets" = "Fokusgruppen öffnen";
+"Open Shortcuts When Active Settings" = "Einstellungen für „Tastenkürzel bei Aktivität“ öffnen";
 "Open Trackpad Settings…" = "Einstellungen für Trackpad öffnen…";
 "Order windows by" = "Fenster sortieren nach";
 "Ordering" = "Sortierung";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Tastenkürzel ist bereits zugewiesen: %@";
 "Shortcuts" = "Tastenkürzel";
 "Shortcuts When Active" = "Tastenkürzel bei Aktivität";
+"Shortcuts while browsing" = "Tastenkürzel beim Durchsuchen";
 "Shortcuts while ScryTab is active" = "Kurzbefehle, während ScryTab aktiv ist";
 "Show" = "Anzeigen";
 "Show all windows" = "Alle Fenster anzeigen";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Fenster von Apps anzeigen";
 "Show windows from screens" = "Fenster von Bildschirmen anzeigen";
 "Show windows from Spaces" = "Fenster von Spaces anzeigen";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Zeigt Apps aus allen Spaces und von allen Bildschirmen mit Standardbehandlung für ausgeblendete, minimierte, Vollbild- und fensterlose Einträge.";
 "Size" = "Größe";
 "Small" = "Klein";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Einige Tastenkürzel überschreiben diese Einstellung. Wenden Sie den neuen globalen Wert auf jedes Tastenkürzel an, indem Sie diese Überschreibungen entfernen, oder behalten Sie die Überschreibungen bei.";
@@ -242,11 +244,11 @@
 "Update now" = "Jetzt aktualisieren";
 "Updates policy" = "Update-Richtlinie";
 "Usage" = "Nutzung";
-"Uses this shortcut’s filters when counting and showing windows." = "Verwendet die Filter dieses Kurzbefehls beim Zählen und Anzeigen von Fenstern.";
 "Version" = "Version";
 "View existing discussions" = "Vorhandene Diskussionen anzeigen";
 "Vim keys" = "Vim-Tasten";
 "Vim keys already assigned to other actions:\n%@" = "Vim-Tasten sind bereits anderen Aktionen zugewiesen:\n%@";
+"Visibility" = "Sichtbarkeit";
 "Visible Spaces" = "Sichtbare Spaces";
 "Website" = "Website";
 "What did you expect? What happened? Steps to reproduce…" = "Was haben Sie erwartet? Was ist passiert? Schritte zum Reproduzieren…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Fenster minimiert";
 "Window is on every Space" = "Fenster auf jedem Space";
 "Window is on Space %d" = "Fenster auf Space %d";
+"Window organization" = "Fensterorganisation";
 "Window Title" = "Fenstertitel";
 "Window title contains" = "Fenstertitel enthält";
 "You can’t undo this action." = "Diese Aktion kann nicht rückgängig gemacht werden.";

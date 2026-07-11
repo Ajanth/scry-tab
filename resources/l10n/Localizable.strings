@@ -47,9 +47,6 @@
 "Accessibility" = "Accessibility";
 
 /* No comment provided by engineer. */
-"Actions" = "Actions";
-
-/* No comment provided by engineer. */
 "Active app" = "Active app";
 
 /* No comment provided by engineer. */
@@ -116,6 +113,9 @@
 "Appearance" = "Appearance";
 
 /* No comment provided by engineer. */
+"Appearance and organization" = "Appearance and organization";
+
+/* No comment provided by engineer. */
 "Application Name" = "Application Name";
 
 /* No comment provided by engineer. */
@@ -123,6 +123,9 @@
 
 /* No comment provided by engineer. */
 "Applies in other Appearances" = "Applies in other Appearances";
+
+/* No comment provided by engineer. */
+"Applies to every direct Focus Set shortcut." = "Applies to every direct Focus Set shortcut.";
 
 /* No comment provided by engineer. */
 "Apply" = "Apply";
@@ -164,9 +167,6 @@
 "Change Global Only" = "Change Global Only";
 
 /* No comment provided by engineer. */
-"Changes are saved automatically." = "Changes are saved automatically.";
-
-/* No comment provided by engineer. */
 "Check for updates now…" = "Check for updates now…";
 
 /* No comment provided by engineer. */
@@ -180,9 +180,6 @@
 
 /* No comment provided by engineer. */
 "Choose a global shortcut to open the Focus Sets picker." = "Choose a global shortcut to open the Focus Sets picker.";
-
-/* No comment provided by engineer. */
-"Choose Applications…" = "Choose Applications…";
 
 /* No comment provided by engineer. */
 "Choose the applications whose windows belong to this Focus Set." = "Choose the applications whose windows belong to this Focus Set.";
@@ -227,6 +224,9 @@
 "Delete" = "Delete";
 
 /* No comment provided by engineer. */
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Direct Focus Set shortcuts use the standard appearance and window organization.";
+
+/* No comment provided by engineer. */
 "Disabled" = "Disabled";
 
 /* LetsMove replacement alert */
@@ -252,9 +252,6 @@
 
 /* No comment provided by engineer. */
 "Edit" = "Edit";
-
-/* No comment provided by engineer. */
-"Editing" = "Editing";
 
 /* No comment provided by engineer. */
 "Editing “%@”" = "Editing “%@”";
@@ -284,7 +281,7 @@
 "Focus Sets" = "Focus Sets";
 
 /* No comment provided by engineer. */
-"Focus Sets profile" = "Focus Sets profile";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Focus Sets uses the shared active shortcuts. Change them in Controls.";
 
 /* No comment provided by engineer. */
 "Fullscreen/Defullscreen window" = "Fullscreen/Defullscreen window";
@@ -416,9 +413,6 @@
 "No applications selected" = "No applications selected";
 
 /* No comment provided by engineer. */
-"No applications selected." = "No applications selected.";
-
-/* No comment provided by engineer. */
 "No Focus Sets" = "No Focus Sets";
 
 /* No comment provided by engineer. */
@@ -449,7 +443,13 @@
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
 
 /* No comment provided by engineer. */
+"Open Appearance Settings" = "Open Appearance Settings";
+
+/* No comment provided by engineer. */
 "Open Focus Sets" = "Open Focus Sets";
+
+/* No comment provided by engineer. */
+"Open Shortcuts When Active Settings" = "Open Shortcuts When Active Settings";
 
 /* No comment provided by engineer. */
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
@@ -596,6 +596,9 @@
 "Shortcuts When Active" = "Shortcuts When Active";
 
 /* No comment provided by engineer. */
+"Shortcuts while browsing" = "Shortcuts while browsing";
+
+/* No comment provided by engineer. */
 "Shortcuts while ScryTab is active" = "Shortcuts while ScryTab is active";
 
 /* Menubar option */
@@ -648,6 +651,9 @@
 
 /* No comment provided by engineer. */
 "Show windows from Spaces" = "Show windows from Spaces";
+
+/* No comment provided by engineer. */
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows.";
 
 /* No comment provided by engineer. */
 "Size" = "Size";
@@ -731,9 +737,6 @@
 "Usage" = "Usage";
 
 /* No comment provided by engineer. */
-"Uses this shortcut’s filters when counting and showing windows." = "Uses this shortcut’s filters when counting and showing windows.";
-
-/* No comment provided by engineer. */
 "Version" = "Version";
 
 /* No comment provided by engineer. */
@@ -744,6 +747,9 @@
 
 /* No comment provided by engineer. */
 "Vim keys already assigned to other actions:\n%@" = "Vim keys already assigned to other actions:\n%@";
+
+/* No comment provided by engineer. */
+"Visibility" = "Visibility";
 
 /* No comment provided by engineer. */
 "Visible Spaces" = "Visible Spaces";
@@ -771,6 +777,9 @@
 
 /* No comment provided by engineer. */
 "Window is on Space %d" = "Window is on Space %d";
+
+/* No comment provided by engineer. */
+"Window organization" = "Window organization";
 
 /* No comment provided by engineer. */
 "Window Title" = "Window Title";

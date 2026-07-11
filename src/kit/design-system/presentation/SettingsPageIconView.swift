@@ -8,6 +8,7 @@ struct SettingsPageIconDescriptor: Equatable {
         switch page {
         case .appearance: return SettingsPageIconDescriptor(symbolValue: "􀝥", baseColor: NSColor(srgbRed: 0.00, green: 0.55, blue: 0.50, alpha: 1.0))
         case .controls: return SettingsPageIconDescriptor(symbolValue: "􀆔", baseColor: NSColor(srgbRed: 0.36, green: 0.33, blue: 0.78, alpha: 1.0))
+        case .focusSets: return SettingsPageIconDescriptor(symbolValue: "􀕬", baseColor: NSColor(srgbRed: 0.18, green: 0.49, blue: 0.78, alpha: 1.0))
         case .general: return SettingsPageIconDescriptor(symbolValue: "􀣋", baseColor: NSColor(srgbRed: 0.23, green: 0.62, blue: 0.28, alpha: 1.0))
         case .exceptions: return SettingsPageIconDescriptor(symbolValue: "􀉻", baseColor: NSColor(srgbRed: 0.88, green: 0.46, blue: 0.14, alpha: 1.0))
         case .about: return SettingsPageIconDescriptor(symbolValue: "􀅴", baseColor: NSColor(srgbRed: 0.45, green: 0.47, blue: 0.50, alpha: 1.0))

@@ -14,7 +14,6 @@
 "About" = "Om";
 "About %@" = "Om %@";
 "Accessibility" = "Hjälpmedel";
-"Actions" = "Åtgärder";
 "Active app" = "Aktiv app";
 "Active screen" = "Aktiv skärm";
 "Add a pattern" = "Lägg till ett mönster";
@@ -37,9 +36,11 @@
 "App is hidden" = "App är dold";
 "App is running but has no open window" = "App körs men har inget öppet fönster";
 "Appearance" = "Utseende";
+"Appearance and organization" = "Utseende och ordning";
 "Application Name" = "Programnamn";
 "Application Name - Window Title" = "Programnamn - Fönstertitel";
 "Applies in other Appearances" = "Gäller i andra Utseenden";
+"Applies to every direct Focus Set shortcut." = "Gäller för varje direkt kortkommando för fokusuppsättningar.";
 "Apply" = "Tillämpa";
 "Apply this change to all shortcuts?" = "Vill du tillämpa ändringen på alla kortkommandon?";
 "Apply to All Shortcuts" = "Tillämpa på alla kortkommandon";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Avbryt";
 "Change Global Only" = "Ändra endast globalt";
-"Changes are saved automatically." = "Ändringar sparas automatiskt.";
 "Check for updates now…" = "Sök efter uppdateringar nu…";
 "Check for updates periodically" = "Sök efter uppdateringar regelbundet";
 "Check for updates…" = "Sök efter uppdateringar…";
 "Check permissions…" = "Kontrollera behörigheter…";
 "Choose a global shortcut to open the Focus Sets picker." = "Välj en global kortkommando för att öppna väljaren för fokusuppsättningar.";
-"Choose Applications…" = "Välj appar…";
 "Choose the applications whose windows belong to this Focus Set." = "Välj apparna vars fönster ska tillhöra den här fokusuppsättningen.";
 "Close window" = "Stäng fönster";
 "Conflicting shortcut" = "Kortkommando i konflikt";
@@ -74,6 +73,7 @@
 "Dark" = "Mörk";
 "Debug tools" = "Felsökningsverktyg";
 "Delete" = "Radera";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Direkta kortkommandon för fokusuppsättningar använder standardutseendet och standardfönsterorganisationen.";
 "Disabled" = "Inaktiverad";
 "Do Not Move" = "Flytta inte";
 "Don't hide" = "Dölj inte";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "t.ex. com.example.app";
 "e.g. Debug" = "t.ex. Debug";
 "Edit" = "Redigera";
-"Editing" = "Redigerar";
 "Editing “%@”" = "Redigerar ”%@”";
 "End" = "Slut";
 "Exceptions" = "Undantag";
@@ -93,7 +92,7 @@
 "Focus" = "Fokus";
 "Focus selected window" = "Fokusera valt fönster";
 "Focus Sets" = "Fokusuppsättningar";
-"Focus Sets profile" = "Profil för fokusuppsättningar";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Fokusuppsättningar använder de delade kortkommandona när de är aktiva. Ändra dem i Reglage.";
 "Fullscreen/Defullscreen window" = "Helskärm/Avsluta helskärm för fönster";
 "General" = "Allmänt";
 "Gesture" = "Gest";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Skicka aldrig kraschrapporter";
 "New Focus Set" = "Ny fokusuppsättning";
 "No applications selected" = "Inga appar valda";
-"No applications selected." = "Inga appar har valts.";
 "No Focus Sets" = "Inga fokusuppsättningar";
 "No matching applications." = "Inga matchande appar.";
 "No Window" = "Inget fönster";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Endast på annan skärm";
 "Open Accessibility Settings…" = "Öppna inställningar för Hjälpmedel…";
+"Open Appearance Settings" = "Öppna utseendeinställningar";
 "Open Focus Sets" = "Öppna fokusuppsättningar";
+"Open Shortcuts When Active Settings" = "Öppna inställningar för kortkommandon när aktiv";
 "Open Trackpad Settings…" = "Öppna inställningar för Styrplatta…";
 "Order windows by" = "Sortera fönster efter";
 "Ordering" = "Sortering";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Kortkommandot är redan tilldelat: %@";
 "Shortcuts" = "Kortkommandon";
 "Shortcuts When Active" = "Kortkommandon när aktiv";
+"Shortcuts while browsing" = "Kortkommandon under bläddring";
 "Shortcuts while ScryTab is active" = "Kortkommandon när ScryTab är aktivt";
 "Show" = "Visa";
 "Show all windows" = "Visa alla fönster";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Visa fönster från program";
 "Show windows from screens" = "Visa fönster från skärmar";
 "Show windows from Spaces" = "Visa fönster från skrivbord";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Visar appar från alla Spaces och bildskärmar med standardhantering för gömda, minimerade, helskärms- och fönsterlösa objekt.";
 "Size" = "Storlek";
 "Small" = "Liten";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Vissa kortkommandon åsidosätter den här inställningen. Tillämpa det nya globala värdet på alla kortkommandon genom att ta bort åsidosättningarna, eller behåll dem.";
@@ -242,11 +244,11 @@
 "Update now" = "Uppdatera nu";
 "Updates policy" = "Policy för uppdateringar";
 "Usage" = "Användning";
-"Uses this shortcut’s filters when counting and showing windows." = "Använder det här kortkommandots filter när fönster räknas och visas.";
 "Version" = "Version";
 "View existing discussions" = "Visa befintliga diskussioner";
 "Vim keys" = "Vim-tangenter";
 "Vim keys already assigned to other actions:\n%@" = "Vim-tangenter är redan tilldelade andra åtgärder:\n%@";
+"Visibility" = "Synlighet";
 "Visible Spaces" = "Synliga skrivbord";
 "Website" = "Webbplats";
 "What did you expect? What happened? Steps to reproduce…" = "Vad förväntade du dig? Vad hände? Steg för att återskapa…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Fönster minimerat";
 "Window is on every Space" = "Fönster på varje skrivbord";
 "Window is on Space %d" = "Fönster på skrivbord %d";
+"Window organization" = "Fönsterordning";
 "Window Title" = "Fönstertitel";
 "Window title contains" = "Fönstertitel innehåller";
 "You can’t undo this action." = "Den här åtgärden kan inte ångras.";

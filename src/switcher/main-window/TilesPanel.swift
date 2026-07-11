@@ -94,7 +94,7 @@ class TilesPanel: NSPanel {
 
     static func maxRowWidth(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
         maxRowWidth(
-            style: Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex),
+            style: Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0)),
             screen: screen)
     }
 

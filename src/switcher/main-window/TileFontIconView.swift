@@ -234,7 +234,7 @@ class TileFontIconView: NSView {
     private func badgeFrameSize(textWidth: CGFloat, text: String) -> NSSize {
         let height = badgeContainerHeight
         var width = max(height, textWidth + badgeHorizontalPadding * 2)
-        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons, text.count > 1 {
+        if Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0)) == .appIcons, text.count > 1 {
             let minRectWidth = (height * BadgeSizing.appIconsMinRectWidthRatio).rounded(.up)
             width = max(width, minRectWidth)
         }

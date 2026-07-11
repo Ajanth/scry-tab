@@ -3,6 +3,7 @@ import Foundation
 enum SettingsTopLevelPage: String, CaseIterable, Hashable {
     case appearance
     case controls
+    case focusSets
     case general
     case exceptions
     case about
@@ -20,7 +21,6 @@ enum ControlsDestination: Equatable {
     case gesture
     case activeShortcuts
     case navigationPointer
-    case focusSets
 }
 
 enum ExceptionDestination: Equatable {
@@ -30,6 +30,7 @@ enum ExceptionDestination: Equatable {
 enum SettingsRoute: Equatable {
     case appearance
     case controls(ControlsDestination?)
+    case focusSets
     case general
     case exceptions(ExceptionDestination?)
     case about
@@ -39,6 +40,7 @@ enum SettingsRoute: Equatable {
         switch self {
         case .appearance: return .appearance
         case .controls: return .controls
+        case .focusSets: return .focusSets
         case .general: return .general
         case .exceptions: return .exceptions
         case .about: return .about

@@ -15,7 +15,7 @@ struct SelectionInputs: Equatable {
     let list: [SelectionWindow]
     let selectedIndex: Int
     let selectedTarget: String?
-    /// True iff `Preferences.windowOrder[shortcutIndex] != .recentlyFocused`
+    /// True iff the active presentation source's effective window order is not recently focused.
     /// AND `Applications.frontmostPid != nil`. Gates the alpha/space-ordering initial-pick path.
     let useLastFocusedRule: Bool
     let restoreDefaultOnSearchClear: Bool

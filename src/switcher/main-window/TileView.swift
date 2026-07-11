@@ -19,7 +19,7 @@ class TileView: FlippedView {
     private(set) var presentationScale = CGFloat(1)
 
     private var profileStyle: AppearanceStylePreference {
-        Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex)
+        Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0))
     }
 
     private var resolvedStyle: AppearanceStylePreference {
@@ -111,7 +111,7 @@ class TileView: FlippedView {
             isFullscreen: isFullscreen,
             spaceNumber: spaceNumber,
             scale: scale,
-            style: Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex),
+            style: Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0)),
             showsStatus: true)
     }
 
@@ -386,7 +386,7 @@ class TileView: FlippedView {
             isFullscreen: element.isFullscreen && !Preferences.hideStatusIcons,
             isMinimized: element.isMinimized && !Preferences.hideStatusIcons,
             showSpace: !(element.isWindowlessApp || Spaces.isSingleSpace() || Preferences.hideSpaceNumberLabels || {
-                let shortcutIndex = SwitcherSession.current?.shortcutIndex ?? 0
+                guard let shortcutIndex = SwitcherSession.current?.presentationSource.shortcutIndex else { return false }
                 return Preferences.spacesToShow[shortcutIndex] == .visible && (
                     NSScreen.screens.count < 2 || Preferences.screensToShow[shortcutIndex] == .showingScryTab
                 )
@@ -730,7 +730,7 @@ class TileView: FlippedView {
     }
 
     static func maxTileWidth(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
-        let style = Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex)
+        let style = Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0))
         return maxTileWidth(style: style, screen: screen)
     }
 
@@ -761,7 +761,7 @@ class TileView: FlippedView {
     }
 
     static func minTileWidth(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
-        let style = Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex)
+        let style = Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0))
         return minTileWidth(style: style, screen: screen)
     }
 
@@ -771,7 +771,7 @@ class TileView: FlippedView {
     }
 
     static func iconSize(_ screen: NSScreen = NSScreen.preferred) -> NSSize {
-        let style = Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex)
+        let style = Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0))
         return iconSize(style: style, screen: screen)
     }
 
@@ -786,7 +786,7 @@ class TileView: FlippedView {
     }
 
     static func height(_ labelHeight: CGFloat) -> CGFloat {
-        let style = Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex)
+        let style = Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0))
         return height(labelHeight, style: style)
     }
 

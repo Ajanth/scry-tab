@@ -40,6 +40,7 @@ class KeyboardEventsTestable {
 
 @discardableResult
 func handleKeyboardEvent(_ globalId: Int?, _ shortcutState: ShortcutState?, _ keyCode: UInt32?, _ modifiers: NSEvent.ModifierFlags?, _ isARepeat: Bool, _ event: NSEvent? = nil) -> Bool {
+    applyChordReleaseIfNeeded(shortcutState, modifiers)
     if let handled = handleFocusSetPickerKeyboardEvent(globalId, shortcutState, keyCode, modifiers, isARepeat, event) {
         return handled
     }
@@ -152,7 +153,6 @@ private func triggerMatchingShortcuts(_ globalId: Int?, _ shortcutState: Shortcu
         guard let actionIdentifier = KeyboardEventsTestable.actionIdentifier(forGlobalShortcutId: globalId),
               let shortcut = ControlsTab.shortcuts[actionIdentifier] else { return false }
         let shouldAbsorb = triggerShortcut(shortcut, globalId, shortcutState, keyCode, modifiers, isARepeat)
-        applyActiveHoldReleaseSafety(afterDispatching: actionIdentifier)
         return shouldAbsorb
     }
     var someShortcutTriggered = false
@@ -172,13 +172,26 @@ private func triggerMatchingShortcuts(_ globalId: Int?, _ shortcutState: Shortcu
     return someShortcutTriggered
 }
 
-private func applyActiveHoldReleaseSafety(afterDispatching actionIdentifier: String) {
-    guard actionIdentifier.hasPrefix("nextWindowShortcut"),
-          let session = SwitcherSession.current,
-          let holdShortcut = ControlsTab.shortcuts[
-              Preferences.indexToName("holdShortcut", session.shortcutIndex)
-          ] else { return }
-    holdShortcut.redundantSafetyMeasures()
+private func applyChordReleaseIfNeeded(_ shortcutState: ShortcutState?,
+                                       _ modifiers: NSEvent.ModifierFlags?) {
+    guard modifiers != nil || shortcutState == .up,
+          let session = SwitcherSession.current else { return }
+    let modifierFlags = cocoaToCarbonFlags(modifiers ?? ModifierFlags.current)
+    let decision = ShortcutChordLifecycleResolver.resolve(
+        session.chordLifecycleState,
+        .modifiersChanged(modifierFlags))
+    session.chordLifecycleState = decision.nextState
+    guard case let .release(owner) = decision.action else { return }
+    switch owner {
+    case let .shortcut(index):
+        guard session.presentationSource == .shortcut(index),
+              session.focusSetSessionState == .ordinaryGrid,
+              !session.forceDoNothingOnRelease,
+              Preferences.effectiveShortcutStyle(index) == .focusOnRelease else { return }
+        ShortcutActions.execute(Preferences.indexToName("holdShortcut", index))
+    case let .directFocusSet(identifier):
+        App.handleDirectFocusSetChordRelease(identifier)
+    }
 }
 
 private func triggerShortcut(_ shortcut: ATShortcut,
@@ -190,8 +203,33 @@ private func triggerShortcut(_ shortcut: ATShortcut,
     var shouldAbsorb = false
     if shortcut.matches(globalId, shortcutState, keyCode, modifiers) && shortcut.shouldTrigger() {
         shortcut.executeAction(isARepeat)
+        armChordAfterExecuting(shortcut)
         shouldAbsorb = !shortcut.id.starts(with: "holdShortcut")
     }
     shortcut.redundantSafetyMeasures()
     return shouldAbsorb
+}
+
+private func armChordAfterExecuting(_ shortcut: ATShortcut) {
+    guard shortcut.state == .down, let session = SwitcherSession.current else { return }
+    if shortcut.id.hasPrefix("nextWindowShortcut") {
+        let index = Preferences.nameToIndex(shortcut.id)
+        guard session.presentationSource == .shortcut(index),
+              session.focusSetSessionState == .ordinaryGrid,
+              let holdShortcut = ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", index)] else { return }
+        session.chordLifecycleState = ShortcutChordLifecycleResolver.resolve(
+            session.chordLifecycleState,
+            .press(owner: .shortcut(index), holdModifiers: holdShortcut.shortcut.carbonModifierFlags)
+        ).nextState
+        return
+    }
+    guard let identifier = FocusSetShortcutBindingResolver.focusSetIdentifier(from: shortcut.id) else { return }
+    guard session.focusSetSessionState.directFocusSetIdentifier == identifier else {
+        session.chordLifecycleState = nil
+        return
+    }
+    session.chordLifecycleState = ShortcutChordLifecycleResolver.resolve(
+        session.chordLifecycleState,
+        .press(owner: .directFocusSet(identifier), holdModifiers: shortcut.shortcut.carbonModifierFlags)
+    ).nextState
 }

@@ -14,7 +14,6 @@
 "About" = "정보";
 "About %@" = "%@ 정보";
 "Accessibility" = "손쉬운 사용";
-"Actions" = "동작";
 "Active app" = "활성화된 앱";
 "Active screen" = "활성화된 화면";
 "Add a pattern" = "패턴 추가";
@@ -37,9 +36,11 @@
 "App is hidden" = "앱 숨김";
 "App is running but has no open window" = "앱이 실행 중이지만 열린 윈도우가 없음";
 "Appearance" = "모양";
+"Appearance and organization" = "모양 및 정리";
 "Application Name" = "응용 프로그램 이름";
 "Application Name - Window Title" = "응용 프로그램 이름 - 윈도우 제목";
 "Applies in other Appearances" = "다른 모양에도 적용됨";
+"Applies to every direct Focus Set shortcut." = "모든 직접 포커스 세트 단축키에 적용됩니다.";
 "Apply" = "적용";
 "Apply this change to all shortcuts?" = "이 변경 사항을 모든 단축키에 적용할까요?";
 "Apply to All Shortcuts" = "모든 단축키에 적용";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "취소";
 "Change Global Only" = "전역 설정만 변경";
-"Changes are saved automatically." = "변경 사항은 자동으로 저장됩니다.";
 "Check for updates now…" = "지금 업데이트 확인…";
 "Check for updates periodically" = "주기적으로 업데이트 확인";
 "Check for updates…" = "업데이트 확인…";
 "Check permissions…" = "권한 확인…";
 "Choose a global shortcut to open the Focus Sets picker." = "포커스 세트 선택기를 열 전역 단축키를 선택하십시오.";
-"Choose Applications…" = "응용 프로그램 선택…";
 "Choose the applications whose windows belong to this Focus Set." = "이 포커스 세트에 윈도우를 포함할 앱을 선택하십시오.";
 "Close window" = "윈도우 닫기";
 "Conflicting shortcut" = "충돌하는 단축키";
@@ -74,6 +73,7 @@
 "Dark" = "다크";
 "Debug tools" = "디버그 도구";
 "Delete" = "삭제";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "직접 포커스 세트 단축키는 표준 모양과 윈도우 구성 방식을 사용합니다.";
 "Disabled" = "비활성화됨";
 "Do Not Move" = "이동하지 않음";
 "Don't hide" = "숨기지 않기";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "예: com.example.app";
 "e.g. Debug" = "예: Debug";
 "Edit" = "편집";
-"Editing" = "편집 중";
 "Editing “%@”" = "‘%@’ 편집 중";
 "End" = "끝";
 "Exceptions" = "예외";
@@ -93,7 +92,7 @@
 "Focus" = "포커스";
 "Focus selected window" = "선택한 윈도우에 포커스";
 "Focus Sets" = "집중 세트";
-"Focus Sets profile" = "집중 세트 프로파일";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "포커스 세트는 활성 시 공유 단축키를 사용합니다. 제어에서 변경하세요.";
 "Fullscreen/Defullscreen window" = "윈도우 전체 화면 전환";
 "General" = "일반";
 "Gesture" = "제스처";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "충돌 보고서 보내지 않기";
 "New Focus Set" = "새 집중 세트";
 "No applications selected" = "선택한 앱 없음";
-"No applications selected." = "선택된 응용 프로그램 없음";
 "No Focus Sets" = "집중 세트 없음";
 "No matching applications." = "일치하는 응용 프로그램 없음";
 "No Window" = "윈도우 없음";
@@ -148,7 +146,9 @@
 "OK" = "확인";
 "Only on different screen" = "다른 화면에서만";
 "Open Accessibility Settings…" = "손쉬운 사용 설정 열기…";
+"Open Appearance Settings" = "모양 설정 열기";
 "Open Focus Sets" = "포커스 세트 열기";
+"Open Shortcuts When Active Settings" = "활성 시 단축키 설정 열기";
 "Open Trackpad Settings…" = "트랙패드 설정 열기…";
 "Order windows by" = "윈도우 정렬 기준";
 "Ordering" = "정렬";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "단축키가 이미 할당되어 있습니다: %@";
 "Shortcuts" = "단축키";
 "Shortcuts When Active" = "활성 시 단축키";
+"Shortcuts while browsing" = "탐색 중 단축키";
 "Shortcuts while ScryTab is active" = "ScryTab이 활성 상태일 때의 단축키";
 "Show" = "보이기";
 "Show all windows" = "모든 윈도우 보이기";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "다음 응용 프로그램의 윈도우 보이기";
 "Show windows from screens" = "다음 화면의 윈도우 보이기";
 "Show windows from Spaces" = "다음 Space의 윈도우 보이기";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "모든 Spaces와 화면의 앱을 표시하고 가려짐, 최소화, 전체 화면 및 윈도우 없는 항목을 표준 방식으로 처리합니다.";
 "Size" = "크기";
 "Small" = "작게";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "일부 단축키가 이 설정을 재정의합니다. 해당 재정의를 제거하여 새 전역 값을 모든 단축키에 적용하거나 재정의를 유지하십시오.";
@@ -242,11 +244,11 @@
 "Update now" = "지금 업데이트";
 "Updates policy" = "업데이트 정책";
 "Usage" = "사용량";
-"Uses this shortcut’s filters when counting and showing windows." = "윈도우를 계산하고 표시할 때 이 단축키의 필터를 사용합니다.";
 "Version" = "버전";
 "View existing discussions" = "기존 토론 보기";
 "Vim keys" = "Vim 키";
 "Vim keys already assigned to other actions:\n%@" = "Vim 키가 이미 다른 동작에 할당되어 있습니다:\n%@";
+"Visibility" = "가시성";
 "Visible Spaces" = "보이는 Space";
 "Website" = "웹사이트";
 "What did you expect? What happened? Steps to reproduce…" = "예상했던 동작은? 실제로 일어난 일은? 재현 단계…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "윈도우 최소화됨";
 "Window is on every Space" = "윈도우가 모든 Space에 있음";
 "Window is on Space %d" = "윈도우가 Space %d에 있음";
+"Window organization" = "윈도우 정리";
 "Window Title" = "윈도우 제목";
 "Window title contains" = "윈도우 제목 포함";
 "You can’t undo this action." = "이 작업은 되돌릴 수 없습니다.";

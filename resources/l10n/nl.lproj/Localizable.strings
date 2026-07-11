@@ -14,7 +14,6 @@
 "About" = "Info";
 "About %@" = "Over %@";
 "Accessibility" = "Toegankelijkheid";
-"Actions" = "Acties";
 "Active app" = "Actieve app";
 "Active screen" = "Actief scherm";
 "Add a pattern" = "Patroon toevoegen";
@@ -37,9 +36,11 @@
 "App is hidden" = "App is verborgen";
 "App is running but has no open window" = "App is actief maar heeft geen open venster";
 "Appearance" = "Weergave";
+"Appearance and organization" = "Weergave en ordening";
 "Application Name" = "Naam van app";
 "Application Name - Window Title" = "Naam van app - Venstertitel";
 "Applies in other Appearances" = "Geldt in andere weergaven";
+"Applies to every direct Focus Set shortcut." = "Geldt voor elke directe sneltoets voor Focussets.";
 "Apply" = "Pas toe";
 "Apply this change to all shortcuts?" = "Deze wijziging toepassen op alle sneltoetsen?";
 "Apply to All Shortcuts" = "Toepassen op alle sneltoetsen";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Annuleer";
 "Change Global Only" = "Alleen globaal wijzigen";
-"Changes are saved automatically." = "Wijzigingen worden automatisch bewaard.";
 "Check for updates now…" = "Nu op updates controleren…";
 "Check for updates periodically" = "Regelmatig op updates controleren";
 "Check for updates…" = "Op updates controleren…";
 "Check permissions…" = "Rechten controleren…";
 "Choose a global shortcut to open the Focus Sets picker." = "Kies een algemene sneltoets om de Focussets-kiezer te openen.";
-"Choose Applications…" = "Apps kiezen…";
 "Choose the applications whose windows belong to this Focus Set." = "Kies de apps waarvan de vensters bij deze focusset horen.";
 "Close window" = "Venster sluiten";
 "Conflicting shortcut" = "Conflicterende sneltoets";
@@ -74,6 +73,7 @@
 "Dark" = "Donker";
 "Debug tools" = "Foutopsporingstools";
 "Delete" = "Verwijder";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Directe Focussets-sneltoetsen gebruiken de standaardweergave en standaardvensterindeling.";
 "Disabled" = "Uitgeschakeld";
 "Do Not Move" = "Niet verplaatsen";
 "Don't hide" = "Niet verbergen";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "bijv. com.example.app";
 "e.g. Debug" = "bijv. Debug";
 "Edit" = "Bewerken";
-"Editing" = "Wordt bewerkt";
 "Editing “%@”" = "‘%@’ wordt bewerkt";
 "End" = "Einde";
 "Exceptions" = "Uitzonderingen";
@@ -93,7 +92,7 @@
 "Focus" = "Focus";
 "Focus selected window" = "Geselecteerd venster focussen";
 "Focus Sets" = "Focussets";
-"Focus Sets profile" = "Focussetprofiel";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Focussets gebruiken de gedeelde sneltoetsen wanneer actief. Wijzig ze in Bediening.";
 "Fullscreen/Defullscreen window" = "Venster in/uit volledig scherm";
 "General" = "Algemeen";
 "Gesture" = "Gebaar";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Nooit crashrapporten versturen";
 "New Focus Set" = "Nieuwe focusset";
 "No applications selected" = "Geen apps geselecteerd";
-"No applications selected." = "Geen apps geselecteerd.";
 "No Focus Sets" = "Geen focussets";
 "No matching applications." = "Geen overeenkomende apps.";
 "No Window" = "Geen venster";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Alleen op een ander scherm";
 "Open Accessibility Settings…" = "Open Toegankelijkheid-instellingen…";
+"Open Appearance Settings" = "Weergave-instellingen openen";
 "Open Focus Sets" = "Focussets openen";
+"Open Shortcuts When Active Settings" = "Instellingen voor sneltoetsen wanneer actief openen";
 "Open Trackpad Settings…" = "Open Trackpad-instellingen…";
 "Order windows by" = "Vensters rangschikken op";
 "Ordering" = "Sortering";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Sneltoets is al toegewezen aan: %@";
 "Shortcuts" = "Sneltoetsen";
 "Shortcuts When Active" = "Sneltoetsen wanneer actief";
+"Shortcuts while browsing" = "Sneltoetsen tijdens het bladeren";
 "Shortcuts while ScryTab is active" = "Sneltoetsen terwijl ScryTab actief is";
 "Show" = "Toon";
 "Show all windows" = "Toon alle vensters";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Toon vensters van apps";
 "Show windows from screens" = "Toon vensters van schermen";
 "Show windows from Spaces" = "Toon vensters van Spaces";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Toont apps uit alle Spaces en schermen, met de standaardafhandeling voor verborgen, geminimaliseerde, schermvullende en vensterloze items.";
 "Size" = "Grootte";
 "Small" = "Klein";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Sommige sneltoetsen overschrijven deze instelling. Pas de nieuwe globale waarde toe op elke sneltoets door die overschrijvingen te verwijderen, of behoud ze.";
@@ -242,11 +244,11 @@
 "Update now" = "Nu bijwerken";
 "Updates policy" = "Updatebeleid";
 "Usage" = "Gebruik";
-"Uses this shortcut’s filters when counting and showing windows." = "Gebruikt de filters van deze sneltoets bij het tellen en tonen van vensters.";
 "Version" = "Versie";
 "View existing discussions" = "Bekijk bestaande discussies";
 "Vim keys" = "Vim-toetsen";
 "Vim keys already assigned to other actions:\n%@" = "Vim-toetsen zijn al toegewezen aan andere acties:\n%@";
+"Visibility" = "Zichtbaarheid";
 "Visible Spaces" = "Zichtbare Spaces";
 "Website" = "Website";
 "What did you expect? What happened? Steps to reproduce…" = "Wat verwachtte je? Wat gebeurde er? Stappen om te reproduceren…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Venster is geminimaliseerd";
 "Window is on every Space" = "Venster op elke Space";
 "Window is on Space %d" = "Venster op Space %d";
+"Window organization" = "Vensterordening";
 "Window Title" = "Venstertitel";
 "Window title contains" = "Venstertitel bevat";
 "You can’t undo this action." = "Je kunt deze actie niet ongedaan maken.";

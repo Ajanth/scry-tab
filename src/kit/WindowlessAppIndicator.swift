@@ -39,7 +39,7 @@ class WindowlessAppIndicator: NSView {
     }
 
     static func getAppearanceParameter() -> AppearanceParameter {
-        let style = Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex)
+        let style = Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0))
         if style == .appIcons {
             if Appearance.resolvedSize == .large {
                 return AppearanceParameter(width: 12, height: 5, cornerRadius: 2)

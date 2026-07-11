@@ -331,6 +331,7 @@
 		F05E75000000000000000122 /* FocusSetPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000022 /* FocusSetPickerView.swift */; };
 		F05E75000000000000000123 /* FocusSetPickerPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000023 /* FocusSetPickerPanel.swift */; };
 		F05E75000000000000000124 /* FocusSetPresentationSnapshotBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000024 /* FocusSetPresentationSnapshotBuilder.swift */; };
+		F05E76000000000000000101 /* FocusSetsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E76000000000000000001 /* FocusSetsTab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -712,6 +713,7 @@
 		F05E75000000000000000022 /* FocusSetPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetPickerView.swift; sourceTree = "<group>"; };
 		F05E75000000000000000023 /* FocusSetPickerPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetPickerPanel.swift; sourceTree = "<group>"; };
 		F05E75000000000000000024 /* FocusSetPresentationSnapshotBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetPresentationSnapshotBuilder.swift; sourceTree = "<group>"; };
+		F05E76000000000000000001 /* FocusSetsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetsTab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -857,6 +859,14 @@
 				5F21C9E32C6E94700091F72F /* CustomizeStyleSheet.swift */,
 			);
 			path = appearance;
+			sourceTree = "<group>";
+		};
+		F05E76000000000000000010 /* focus-sets */ = {
+			isa = PBXGroup;
+			children = (
+				F05E76000000000000000001 /* FocusSetsTab.swift */,
+			);
+			path = "focus-sets";
 			sourceTree = "<group>";
 		};
 		6A7200000000000000000001 /* preview */ = {
@@ -1313,6 +1323,7 @@
 			children = (
 				5F21C9DE2C6E93F10091F72F /* appearance */,
 				5F21C9DD2C6E93E60091F72F /* controls */,
+				F05E76000000000000000010 /* focus-sets */,
 				D04BA4A26987F67DD94C827F /* AboutTab.swift */,
 				D04BACE22DC907F03D193075 /* GeneralTab.swift */,
 				D04BA788228BA86D9EFBD1ED /* AcknowledgmentsTab.swift */,
@@ -1978,6 +1989,7 @@
 				F05E75000000000000000122 /* FocusSetPickerView.swift in Sources */,
 				F05E75000000000000000123 /* FocusSetPickerPanel.swift in Sources */,
 				F05E75000000000000000124 /* FocusSetPresentationSnapshotBuilder.swift in Sources */,
+				F05E76000000000000000101 /* FocusSetsTab.swift in Sources */,
 				F05E75000000000000000106 /* FocusSetsStore.swift in Sources */,
 				D04BAC011A71E0418154F8CD /* Preferences.swift in Sources */,
 				D04BADCDA9F9A6C3D6499877 /* SystemPermissions.swift in Sources */,
