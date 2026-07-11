@@ -17,6 +17,7 @@ class Preferences {
             "quitAppShortcut": defaultShortcut("Q"),
             "hideShowAppShortcut": defaultShortcut("H"),
             "searchShortcut": defaultShortcut("S"),
+            "openFocusSetsShortcut": defaultShortcut(""),
             "arrowKeysEnabled": "true",
             "vimKeysEnabled": "false",
             "mouseHoverEnabled": "false",
@@ -71,6 +72,7 @@ class Preferences {
     static let staticShortcutKeys = [
         "focusWindowShortcut", "previousWindowShortcut", "cancelShortcut", "lockSearchShortcut", "closeWindowShortcut",
         "minDeminWindowShortcut", "toggleFullscreenWindowShortcut", "quitAppShortcut", "hideShowAppShortcut", "searchShortcut",
+        "openFocusSetsShortcut",
     ]
     static var allShortcutPreferenceKeys: [String] {
         staticShortcutKeys + (0..<maxShortcutCount).flatMap { [indexToName("holdShortcut", $0), indexToName("nextWindowShortcut", $0)] }
@@ -93,6 +95,7 @@ class Preferences {
     static var quitAppShortcut: Shortcut? { CachedUserDefaults.shortcut("quitAppShortcut") }
     static var hideShowAppShortcut: Shortcut? { CachedUserDefaults.shortcut("hideShowAppShortcut") }
     static var searchShortcut: Shortcut? { CachedUserDefaults.shortcut("searchShortcut") }
+    static var openFocusSetsShortcut: Shortcut? { CachedUserDefaults.shortcut("openFocusSetsShortcut") }
     // periphery:ignore
     static var arrowKeysEnabled: Bool { CachedUserDefaults.bool("arrowKeysEnabled") }
     // periphery:ignore
@@ -208,7 +211,8 @@ class Preferences {
         }
     }
 
-    static let ownedKeys: Set<String> = Set(defaultValues.keys)
+    static let focusSetsKey = "focusSets"
+    static let ownedKeys: Set<String> = Set(defaultValues.keys).union([focusSetsKey])
 
     /// `persistentDomain(forName:)` rebuilds a full snapshot dictionary on every call, which adds
     /// up: every `hasOverride` / `effectiveAppearanceStyle` consults `all`, and the switcher show

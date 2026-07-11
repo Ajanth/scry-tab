@@ -23,6 +23,19 @@ Optional title-based narrowing is a later enhancement. It must be chosen from an
 window and pre-filled from its visible title; users must not be asked to invent a matching rule or
 type a technical identifier.
 
+### V1 scope contract
+
+- A Focus Set persists application membership only. It never persists a Space ID, display ID, or
+  physical-monitor association.
+- One user-selected existing switcher profile supplies the child grid's current app, Space, screen,
+  hidden, minimized, fullscreen, tab, grouping, ordering, appearance, and search behavior.
+- The profile is persisted by the numbered shortcut's stable `shortcutIdentifier`, never its
+  mutable index. On profile deletion, Focus Sets rebinds to the first remaining numbered profile.
+- Space and screen filtering are evaluated dynamically when the Focus Sets shortcut is invoked.
+  Per-set profile overrides are deferred until evidence shows the shared profile is insufficient.
+- Focus Set membership is an additional AND condition. It never bypasses an exception or a selected
+  profile filter.
+
 ## Problem
 
 The normal ScryTab switcher is intentionally a flat list of real windows. That is ideal for a
@@ -47,7 +60,9 @@ focus, Spaces, search, or ordinary flat switching work.
 3. The editor presents a searchable, icon-and-name list of currently known applications:
    - selected applications first;
    - other open applications below;
-   - a count of currently matching windows;
+   - selected applications that are not currently running, shown by their saved display name with a
+     zero count and a generic icon;
+   - a count of child-grid candidates under the configured Focus Sets profile;
    - checkboxes or native multi-selection controls;
    - no bundle IDs or technical identity fields.
 4. The user selects apps and saves.
@@ -66,19 +81,25 @@ windows.
    - optionally **Unassigned Windows** when at least one open window matches no set.
 3. The user navigates with arrows, Vim keys when enabled, type-to-filter, mouse, and VoiceOver,
    then confirms a set.
-4. ScryTab opens its existing normal window grid as the second level, filtered to that set.
+4. ScryTab opens its existing normal window grid as the second level, filtered to that scope and
+   the configured Focus Sets profile.
 5. Selecting a child window uses the existing focus path unchanged.
-6. Escape from the child grid returns to the Focus Set picker; Escape there dismisses it.
+6. Escape first preserves existing search-exit behavior. Once search is inactive, Escape from the
+   child grid returns to the Focus Set picker; Escape there dismisses the entire flow.
 
 The ordinary ScryTab shortcuts keep opening the ordinary flat window grid. A Focus Set is a new
-entry path, not a replacement for current switching behavior.
+entry path, not a replacement for current switching behavior. Invoking an ordinary numbered
+shortcut or gesture while the picker is open dismisses the picker and opens the ordinary unfiltered
+grid. Invoking one while a Focus Set child grid is open clears the Focus Set scope and follows the
+ordinary cross-shortcut behavior.
 
 ### Example
 
 “Agentic coding” contains Cursor, Visual Studio Code, Terminal, Chrome, Codex, and Antigravity.
-Choosing it presents all currently open windows from those applications, including five separate
-VS Code windows. The user then selects the exact child window using the existing grid, search, and
-navigation behavior.
+With an all-windows Focus Sets profile, choosing it presents all currently open windows from those
+applications, including five separate VS Code windows. A profile configured to show only main
+windows keeps that existing grouping behavior. The user then selects the exact child window using
+the existing grid, search, and navigation behavior.
 
 ## Explicit non-goals
 
@@ -90,6 +111,9 @@ navigation behavior.
 - No agent-status integration in the first release.
 - No per-Focus-Set global hotkeys in the first release. One picker avoids shortcut conflicts and
   the existing shortcut-slot limit.
+- No persisted per-Space, per-display, or physical-monitor membership. Those are volatile topology
+  concerns, not durable project identity.
+- No per-Focus-Set switcher-profile override in the first release.
 
 ## Why app selection is the first release
 
@@ -143,17 +167,22 @@ src/switcher/focus-sets/
 └── FocusSetSettingsView.swift
 ```
 
-Persist a single JSON preference, for example `focusSets`, containing:
+Persist one versioned JSON preference, for example `focusSets`, containing:
 
 ```text
+FocusSetsConfiguration
+├── version: Int
+├── presentationShortcutIdentifier: String
+└── sets: [FocusSet]             // array order is display order
+
 FocusSet
 ├── id: UUID
 ├── name: String
-├── order: Int
 └── rules: [FocusSetRule]
 
 FocusSetRule
 ├── applicationBundleIdentifier: String
+├── cachedApplicationName: String
 └── titleContains: String?    // nil in the initial app-only release
 ```
 
@@ -161,9 +190,15 @@ Rules within a set use OR semantics. A window belongs to multiple Focus Sets whe
 rules in multiple sets; overlapping sets are intentional. All normal ScryTab filters then compose
 with the selected set using AND semantics.
 
+Bundle identifier matching is exact in v1. The cached name is presentation-only, lets an
+unavailable selected application remain editable, and is never used for matching. Apps without a
+stable bundle identifier are not selectable or matchable in persisted Focus Set membership.
+
 The decoder must be permissive for future optional fields and reject malformed individual rules
-without deleting valid sibling Focus Sets. It must not use a decode failure to erase the user’s
-entire configuration.
+without deleting valid sibling Focus Sets. Use a dedicated `FocusSetsStore` parser and setter; do
+not use the generic JSON preference accessor that resets a malformed value. A missing or deleted
+presentation profile resolves to the first remaining numbered shortcut and updates the stored
+reference safely.
 
 ## Architecture
 
@@ -175,48 +210,69 @@ accessibility, and focus action all assume a tile represents a real live window.
 
 Instead:
 
-- `FocusSetPickerPanel` owns only first-level set selection.
-- Confirming a set creates a normal `SwitcherSession` with an optional `focusSetID`.
+- One `SwitcherSession` owns the entire Focus Sets flow. It has a `phase` of
+  `focusSetPicker` or `windowGrid`; the picker and grid never have key panels simultaneously.
+- `FocusSetPickerPanel` owns only first-level visual selection. It does not create a parallel
+  session or input system.
+- Confirming a set changes the same session to `windowGrid` with a `FocusSetScope`.
 - The existing `TilesPanel`, `TilesView`, `Search`, selection resolver, ordering resolver, and
   `Window.focus()` remain the second-level window experience.
 - The normal focus path remains responsible for minimized windows, cross-Space windows, and
   application activation.
 
+The session owns a stable child shortcut-profile identifier and its resolved index. It records
+whether the child grid returns to the picker on cancellation and forces `forceDoNothingOnRelease`
+on every picker-to-grid transition. This preserves the current hold-key state machine without
+allowing a released opener modifier to focus a tile.
+
+The flow has four explicit lifecycle operations:
+
+1. `showFocusSetPicker()` creates a picker-phase session.
+2. `confirmFocusSet(scope)` hides the picker and shows the child grid.
+3. `returnToFocusSetPicker()` hides the child grid without destroying the session.
+4. `dismissSwitcherUi()` tears down either phase completely.
+
 This isolation prevents first-level selection from regressing the latency-sensitive real-window
-grid.
+grid while retaining existing session-gated keyboard, cursor, trackpad, refresh, and teardown
+behavior.
 
 ### Filter integration
 
 Add the selected Focus Set to the existing snapshot taken before a switcher display:
 
-1. Resolve the active Focus Set once at summon/refresh time.
-2. Compute a pure membership result from `WindowState`, `ApplicationState`, and the snapshot.
+1. Resolve the active `FocusSetScope` and profile once at the display-refresh boundary.
+2. Compile immutable exact-bundle-ID membership sets and per-application facts in memory.
 3. Pass a default-true `matchesFocusSet` fact into `WindowFilterResolver.shouldShow`.
-4. Keep every existing exception, app, Space, screen, hidden, minimized, fullscreen, tab, and
-   windowless-app rule intact.
+4. Keep every existing exception, app, Space, screen, hidden, minimized, fullscreen, tab,
+   windowless-app, and grouping rule intact.
 
 The membership check must be in-memory and allocation-light. It must not read UserDefaults,
 perform AX IPC, query Spaces, or inspect the filesystem inside a per-window loop.
 
-### Picker interaction state
+Membership is evaluated after the existing phantom and exception exclusions, before the
+windowless-app branch and the lazy screen predicate. This preserves every existing rule and avoids
+screen work for non-members. `FocusSetScope` has four cases:
 
-Keep picker state separate from the ordinary `SwitcherSession` until the user confirms a set.
-The picker needs only:
+- `allWindows`: membership always passes; normal profile filtering remains active.
+- `set(id)`: membership passes only for that set's exact application bundle IDs.
+- `unassigned`: membership passes only when an app belongs to no saved Focus Set.
+- `none`: used only for ordinary sessions and always passes.
 
-- an ordered snapshot of selectable sets;
-- a selected index;
-- a filter query;
-- whether the user arrived from the Focus Set shortcut.
+Selected windowless-app rows pass only when their application belongs to the active Focus Set and
+the profile allows windowless apps. `Unassigned Windows` is the inverse of all saved Focus Set
+app membership, then intersects with the normal profile filters.
 
-After confirmation, the child switcher stores:
+### Picker and child interaction state
 
-- `focusSetID`;
-- whether Cancel should return to the picker rather than immediately dismissing;
-- the originating shortcut index for existing appearance and filtering preferences.
+The picker phase stores an ordered scope snapshot, selected index, filter query, and the resolved
+profile. The grid phase stores the selected scope, profile index, and return-to-picker intent.
+`Windows.updatesBeforeShowing()` runs only in the grid phase; picker counts refresh through the
+same event-throttled flow without rebuilding tile UI.
 
-Deleting or editing a selected set while its child switcher is open must invalidate the stale
-selection safely: refresh to matching remaining windows when possible; otherwise return to the
-picker rather than attempting to focus a stale target.
+Deleting the selected set while its child grid is open returns to the picker. An existing set with
+zero current candidates shows a deliberate empty child state and returns to the picker on Escape.
+The existing selection resolver remains responsible for preserving a real selected window across
+asynchronous reordering; do not add a second selection implementation.
 
 ### Shortcut integration
 
@@ -226,6 +282,11 @@ user has selected a set.
 
 Do not repurpose `nextWindowShortcut`, alter the existing hold-key state machine, or require a
 Focus Set to occupy one of the existing numbered switcher shortcuts.
+
+The shortcut is a distinct global key-down action with a dedicated hotkey ID, conflict detection,
+and no synthetic numbered shortcut index. It participates in the normal disabled-shortcuts policy.
+Repeated invocation while the picker is open refreshes that picker; invocation while a child grid
+is open returns to the picker.
 
 ## Settings UI
 
@@ -238,6 +299,8 @@ The Focus Sets manager must use the checked-in design system:
 
 The manager contains:
 
+- a **Focus Sets profile** selector that presents existing numbered switcher shortcuts by their
+  normal user-facing label and key equivalent, while persisting only their stable identifier;
 - a list of Focus Sets with name, current matching-window count, and Edit/Delete actions;
 - **Add Focus Set**;
 - a set editor with Name and Included Applications sections;
@@ -249,15 +312,20 @@ The application picker reads the application inventory already maintained by Scr
 scan the disk for installed applications, launch applications to inspect them, or require network
 access.
 
+The matching-window count uses the configured Focus Sets profile and the same membership snapshot
+as the child grid, before child search. Its label makes that scope clear. It must not invoke the
+full filter pipeline once per set or mutate `Windows.shouldShowTheUser`.
+
 ## Implementation phases
 
 ### Phase 1: Pure model, persistence, and matching
 
-1. Define `FocusSet` and `FocusSetRule`.
-2. Add a tolerant JSON preference and focused migration/decoder tests.
-3. Implement `FocusSetResolver.matches`.
-4. Add specs and tests for app-only matching, no active set, overlapping sets, empty sets, and
-   title matching reserved for the later enhancement.
+1. Define `FocusSetsConfiguration`, `FocusSet`, `FocusSetRule`, and `FocusSetScope`.
+2. Add a versioned tolerant store, dedicated setter, profile-reference fallback, and focused
+   migration/decoder tests.
+3. Implement exact app-only matching plus `allWindows` and `unassigned` scope resolution.
+4. Add specs and tests for app-only matching, no active scope, overlapping sets, unavailable apps,
+   empty sets, windowless rows, and title matching reserved for the later enhancement.
 5. Add a default-true membership input to the window-filter kernel and prove it changes nothing
    when no Focus Set is active.
 
@@ -266,11 +334,14 @@ UserDefaults dependency.
 
 ### Phase 2: Settings manager and browse-and-select application picker
 
-1. Add the Controls → Advanced Focus Sets route.
+1. Add the Controls → Advanced Focus Sets route, third Advanced destination, and settings-search
+   descriptor.
 2. Build the list, editor, and application picker entirely with shared design-system primitives.
-3. Resolve the selected app’s stable identity internally when the user checks its name/icon row.
-4. Persist app-only rules and show the live matching-window count.
-5. Add localization for all new user-facing strings.
+3. Add the Focus Sets profile selector using stable shortcut identifiers.
+4. Resolve the selected app’s stable identity internally when the user checks its name/icon row,
+   retaining a presentation name for unavailable selected apps.
+5. Persist app-only rules and show the profile-scoped candidate count.
+6. Add localization for all new user-facing strings.
 
 **Gate:** a user can create, edit, reorder, and delete a set without ever encountering a technical
 identifier.
@@ -278,20 +349,23 @@ identifier.
 ### Phase 3: First-level picker and shortcut
 
 1. Add the Open Focus Sets shortcut and conflict handling.
-2. Implement an isolated picker panel/model with keyboard, mouse, VoiceOver, and search behavior.
-3. Add All Windows and conditionally add Unassigned Windows.
-4. Confirming a set launches the existing window switcher with that set as an additional scope.
-5. Make Escape return from the child grid to the picker, then dismiss from the picker.
+2. Implement picker and child-grid phases on the existing `SwitcherSession`, including exclusive
+   key-panel ownership, cursor containment, and external-event refresh routing.
+3. Implement the explicit dismiss, confirm, and return-to-picker lifecycle operations.
+4. Implement picker keyboard, mouse, VoiceOver, and search behavior.
+5. Add All Windows and conditionally add Unassigned Windows.
+6. Confirming a set launches the existing window switcher with that scope and profile.
+7. Preserve search Escape behavior, then return from child grid to picker, then dismiss from picker.
 
 **Gate:** ordinary ScryTab shortcuts continue to open the unfiltered grid exactly as before.
 
 ### Phase 4: Child-grid filtering and refresh behavior
 
-1. Snapshot the selected set once per display refresh.
+1. Snapshot the selected scope and profile once per display refresh.
 2. Apply membership before the existing normal grid renders.
-3. Preserve current selection by real window ID when asynchronous window events reorder matching
-   windows.
-4. Handle a deleted set, a set with zero open windows, renamed applications, minimized windows,
+3. Reuse the existing selection resolver to preserve a real selected window when asynchronous
+   events reorder matching windows.
+4. Handle a deleted set, a set with zero open windows, unavailable saved applications, minimized windows,
    and windows changing Spaces while the child grid is open.
 5. Keep normal search, ordering, window actions, and focus behavior unchanged inside the narrowed
    grid.
@@ -314,25 +388,33 @@ Only begin after usage validation confirms that app-level sets are insufficient.
 - No active Focus Set produces the exact pre-feature visibility result.
 - A selected app includes every matching window, including multiple VS Code windows.
 - A non-selected app is excluded only in a Focus Set child session.
-- Empty sets show no child windows without crashing or focusing the wrong window.
+- `allWindows` keeps normal profile filtering while clearing only Focus Set membership.
+- `unassigned` excludes apps included by any saved Focus Set.
+- Selected windowless apps obey Focus Set membership and the profile's windowless-app setting.
+- Empty sets show an empty child state without crashing or focusing the wrong window.
 - Overlapping sets include shared windows in each relevant set.
-- Hidden, minimized, fullscreen, tabbed, Space, screen, exception, and windowless rules retain
+- Hidden, minimized, fullscreen, tabbed, Space, screen, exception, windowless, and main-window
+  grouping rules retain
   their current semantics after Focus Set membership is applied.
 - Malformed persisted data preserves valid Focus Sets and fails safely.
 - A live `wid-*` or PID never appears in persisted data.
+- A deleted or reordered profile identifier resolves safely without changing an ordinary shortcut.
 
 ### Picker tests
 
 - Arrow, Vim, type-to-filter, mouse, Enter, and Escape all select or dismiss predictably.
 - VoiceOver announces the set name and current matching-window count.
-- All Windows behaves like an ordinary switcher summon.
+- All Windows behaves like the configured profile with no Focus Set membership constraint.
 - Unassigned Windows appears only when it has results.
 - A deleted set cannot be selected from stale picker or child-session state.
+- Picker and child grid never show simultaneously; ordinary shortcut, gesture, and repeated
+  Focus Sets shortcut re-entry follow the documented mutual-exclusion behavior.
 
 ### Regression tests
 
 - Normal numbered shortcuts remain unfiltered.
 - Existing hold-and-release shortcuts retain their focus behavior.
+- Releasing the Focus Sets opener after picker confirmation never focuses a child tile.
 - Search still ranks by application and window title inside a selected set.
 - Selection follows a real window across asynchronous reordering.
 - Cross-Space focus, minimize/deminimize, close, quit, hide/show, and fullscreen actions target
@@ -356,6 +438,10 @@ After implementation:
 
 Focus Sets are an opt-in, browse-and-select project scope feature. Users select familiar
 applications by icon and name; stable identifiers exist only in persistence. The initial release
-groups all windows of selected applications, uses a separate first-level picker, and funnels into
-the existing real-window switcher. It deliberately does not become a window manager or an
-agent-integration product.
+uses one existing user-selected switcher profile for all dynamic Space, screen, filtering,
+grouping, ordering, and appearance behavior. Focus Set membership is exact app identity and
+composes with that profile at runtime; it is never tied to volatile Space or monitor identity.
+
+The picker and child grid are two phases of one switcher session, preserving the app's existing
+keyboard, cursor, trackpad, refresh, and teardown invariants. The feature deliberately does not
+become a window manager, an agent-integration product, or a second topology model.
