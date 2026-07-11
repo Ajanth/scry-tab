@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%1$@ keer gewisseld, %2$@";
 "3-finger Horizontal Swipe" = "Horizontale veegbeweging met 3 vingers";
 "3-finger Vertical Swipe" = "Verticale veegbeweging met 3 vingers";
 "4-finger Horizontal Swipe" = "Horizontale veegbeweging met 4 vingers";
@@ -119,6 +120,9 @@
 "Order windows by" = "Vensters rangschikken op";
 "Ordering" = "Sortering";
 "Ordering & Grouping" = "Volgorde en groepering";
+"Past month" = "Afgelopen maand";
+"Past week" = "Afgelopen week";
+"Past year" = "Afgelopen jaar";
 "Pause preview animation" = "Voorvertoningsanimatie pauzeren";
 "Please drag ScryTab into the Applications folder manually." = "Sleep ScryTab handmatig naar de map Programma's.";
 "Please fill in the form" = "Vul het formulier in";
@@ -178,7 +182,6 @@
 "Size" = "Grootte";
 "Small" = "Klein";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Sommige sneltoetsen overschrijven deze instelling. Pas de nieuwe globale waarde toe op elke sneltoets door die overschrijvingen te verwijderen, of behoud ze.";
-"Source code" = "Broncode";
 "Space Order" = "Volgorde van Spaces";
 "Start" = "Start";
 "Start at login" = "Starten bij inloggen";

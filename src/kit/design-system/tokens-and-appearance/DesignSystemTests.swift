@@ -130,6 +130,15 @@ final class DesignSystemTests: XCTestCase {
         }
     }
 
+    func testFlatSurfaceViewUsesSharedControlChrome() {
+        let view = DesignSystemFlatSurfaceView()
+        XCTAssertTrue(view.wantsLayer)
+        XCTAssertEqual(view.layer?.cornerRadius, DesignSystem.Metrics.controlRadius)
+        XCTAssertEqual(view.layer?.borderWidth, 1)
+        XCTAssertNotNil(view.layer?.backgroundColor)
+        XCTAssertNotNil(view.layer?.borderColor)
+    }
+
     func testSegmentedControlUsesAppOwnedSurface() {
         let control = DesignSystemSegmentedControl(labels: ["One", "Two"], trackingMode: .selectOne, target: nil, action: nil)
         let appKitControl: NSSegmentedControl = control

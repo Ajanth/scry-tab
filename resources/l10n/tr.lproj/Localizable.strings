@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%1$@ geçiş, %2$@";
 "3-finger Horizontal Swipe" = "3 parmakla yatay kaydırma";
 "3-finger Vertical Swipe" = "3 parmakla dikey kaydırma";
 "4-finger Horizontal Swipe" = "4 parmakla yatay kaydırma";
@@ -119,6 +120,9 @@
 "Order windows by" = "Pencereleri sıralama ölçütü";
 "Ordering" = "Sıralama";
 "Ordering & Grouping" = "Sıralama ve Gruplama";
+"Past month" = "Geçen ay";
+"Past week" = "Geçen hafta";
+"Past year" = "Geçen yıl";
 "Pause preview animation" = "Önizleme animasyonunu duraklat";
 "Please drag ScryTab into the Applications folder manually." = "Lütfen ScryTab’ı el ile Uygulamalar klasörüne sürükleyin.";
 "Please fill in the form" = "Lütfen formu doldurun";
@@ -178,7 +182,6 @@
 "Size" = "Boyut";
 "Small" = "Küçük";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Bazı kestirmeler bu ayarı geçersiz kılıyor. Bu geçersiz kılmaları kaldırarak yeni genel değeri tüm kestirmelere uygulayın veya geçersiz kılmaları koruyun.";
-"Source code" = "Kaynak kodu";
 "Space Order" = "Alan sırası";
 "Start" = "Başlat";
 "Start at login" = "Oturum açıldığında başlat";

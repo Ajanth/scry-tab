@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%2$@：%1$@回の切り替え";
 "3-finger Horizontal Swipe" = "3 本指の水平スワイプ";
 "3-finger Vertical Swipe" = "3 本指の垂直スワイプ";
 "4-finger Horizontal Swipe" = "4 本指の水平スワイプ";
@@ -119,6 +120,9 @@
 "Order windows by" = "ウインドウの並び順";
 "Ordering" = "並べ替え";
 "Ordering & Grouping" = "並び順とグループ化";
+"Past month" = "過去1か月";
+"Past week" = "過去1週間";
+"Past year" = "過去1年";
 "Pause preview animation" = "プレビューアニメーションを一時停止";
 "Please drag ScryTab into the Applications folder manually." = "ScryTab を手動でアプリケーションフォルダにドラッグしてください。";
 "Please fill in the form" = "フォームを入力してください";
@@ -178,7 +182,6 @@
 "Size" = "サイズ";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "一部のショートカットではこの設定が上書きされています。上書きを削除して新しい全体設定をすべてのショートカットに適用するか、上書きを維持してください。";
-"Source code" = "ソースコード";
 "Space Order" = "Space 順";
 "Start" = "先頭";
 "Start at login" = "ログイン時に起動";

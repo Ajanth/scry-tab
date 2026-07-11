@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%2$@ 전환 %1$@회";
 "3-finger Horizontal Swipe" = "세 손가락 가로 스와이프";
 "3-finger Vertical Swipe" = "세 손가락 세로 스와이프";
 "4-finger Horizontal Swipe" = "네 손가락 가로 스와이프";
@@ -119,6 +120,9 @@
 "Order windows by" = "윈도우 정렬 기준";
 "Ordering" = "정렬";
 "Ordering & Grouping" = "정렬 및 그룹화";
+"Past month" = "지난달";
+"Past week" = "지난주";
+"Past year" = "지난해";
 "Pause preview animation" = "미리보기 애니메이션 일시 정지";
 "Please drag ScryTab into the Applications folder manually." = "ScryTab을 응용 프로그램 폴더로 직접 드래그해 주세요.";
 "Please fill in the form" = "양식을 작성해 주세요";
@@ -178,7 +182,6 @@
 "Size" = "크기";
 "Small" = "작게";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "일부 단축키가 이 설정을 재정의합니다. 해당 재정의를 제거하여 새 전역 값을 모든 단축키에 적용하거나 재정의를 유지하십시오.";
-"Source code" = "소스 코드";
 "Space Order" = "Space 순서";
 "Start" = "시작";
 "Start at login" = "로그인 시 시작";

@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%2$@切换了%1$@次";
 "3-finger Horizontal Swipe" = "三指水平滑动";
 "3-finger Vertical Swipe" = "三指垂直滑动";
 "4-finger Horizontal Swipe" = "四指水平滑动";
@@ -119,6 +120,9 @@
 "Order windows by" = "窗口排序方式";
 "Ordering" = "排序";
 "Ordering & Grouping" = "排序与分组";
+"Past month" = "过去一个月";
+"Past week" = "过去一周";
+"Past year" = "过去一年";
 "Pause preview animation" = "暂停预览动画";
 "Please drag ScryTab into the Applications folder manually." = "请手动将 ScryTab 拖动到应用程序文件夹。";
 "Please fill in the form" = "请填写表单";
@@ -178,7 +182,6 @@
 "Size" = "大小";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "部分快捷键覆盖了此设置。移除这些覆盖以将新的全局值应用到所有快捷键，或保留这些覆盖。";
-"Source code" = "源代码";
 "Space Order" = "桌面顺序";
 "Start" = "起始";
 "Start at login" = "登录时启动";

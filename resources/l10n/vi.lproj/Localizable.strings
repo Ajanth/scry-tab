@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%1$@ lần chuyển đổi, %2$@";
 "3-finger Horizontal Swipe" = "Vuốt ngang 3 ngón tay";
 "3-finger Vertical Swipe" = "Vuốt dọc 3 ngón tay";
 "4-finger Horizontal Swipe" = "Vuốt ngang 4 ngón tay";
@@ -119,6 +120,9 @@
 "Order windows by" = "Sắp xếp cửa sổ theo";
 "Ordering" = "Sắp xếp";
 "Ordering & Grouping" = "Sắp xếp & Nhóm";
+"Past month" = "Tháng qua";
+"Past week" = "Tuần qua";
+"Past year" = "Năm qua";
 "Pause preview animation" = "Tạm dừng hoạt ảnh xem trước";
 "Please drag ScryTab into the Applications folder manually." = "Vui lòng kéo ScryTab vào thư mục Ứng dụng theo cách thủ công.";
 "Please fill in the form" = "Vui lòng điền vào biểu mẫu";
@@ -178,7 +182,6 @@
 "Size" = "Kích cỡ";
 "Small" = "Nhỏ";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Một số phím tắt ghi đè cài đặt này. Hãy xóa các giá trị ghi đè để áp dụng giá trị chung mới cho mọi phím tắt, hoặc giữ nguyên các giá trị ghi đè.";
-"Source code" = "Mã nguồn";
 "Space Order" = "Thứ tự Không gian";
 "Start" = "Đầu";
 "Start at login" = "Khởi động khi đăng nhập";

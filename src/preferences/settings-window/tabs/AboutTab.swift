@@ -1,7 +1,7 @@
 import Cocoa
 
 class AboutTab {
-    private static weak var settingsUsageTextView: NSTextView?
+    private static weak var settingsUsageView: AboutUsageView?
 
     static func initTab() -> NSView {
         makeSettingsContentView(columnWidth: SettingsWindow.contentWidth)
@@ -9,98 +9,208 @@ class AboutTab {
 
     static func makeContentView(_ fitToContent: Bool = true, _ showFeedbackButton: Bool = true, _ centerHero: Bool = false) -> NSView {
         let appIcon = LightImageView()
+        let appIconSize = NSSize(width: 112, height: 112)
         appIcon.translatesAutoresizingMaskIntoConstraints = false
-        let appIconSize = NSSize(width: 128, height: 128)
         appIcon.updateContents(.cgImage(App.appIcon(for: appIconSize)), appIconSize)
-        appIcon.fit(128, 128)
-        let appText = StackView([
+        appIcon.fit(appIconSize.width, appIconSize.height)
+        let metadata = StackView([
             BoldLabel(App.name),
-            NSTextField(wrappingLabelWithString: NSLocalizedString("Version", comment: "") + " " + App.version),
-            NSTextField(wrappingLabelWithString: App.licence),
+            secondaryLabel(NSLocalizedString("Version", comment: "") + " " + App.version),
+            secondaryLabel(App.licence),
             HyperlinkLabel(NSLocalizedString("Website", comment: ""), Endpoints.website),
-            HyperlinkLabel(NSLocalizedString("Source code", comment: ""), App.repository),
         ], .vertical)
-        appText.spacing = GridView.interPadding / 2
-        let rowToSeparate = 3
-        appText.views[rowToSeparate].topAnchor.constraint(equalTo: appText.views[rowToSeparate - 1].bottomAnchor, constant: GridView.interPadding).isActive = true
-        let appInfo = NSStackView(views: [appIcon, appText])
-        appIcon.translatesAutoresizingMaskIntoConstraints = false
-        appInfo.spacing = GridView.interPadding
-        appInfo.alignment = .centerY
-        let rows = [[appInfo]]
-        let grid = GridView(rows, 0)
-        if centerHero {
-            grid.cell(atColumnIndex: 0, rowIndex: 0).xPlacement = .center
-        }
-        if fitToContent {
-            grid.fit()
-        }
-        return grid
+        metadata.spacing = DesignSystem.Metrics.headerFooterGap
+        metadata.setCustomSpacing(DesignSystem.Metrics.formOuterPadding, after: metadata.views[2])
+        let hero = NSStackView(views: [appIcon, metadata])
+        hero.translatesAutoresizingMaskIntoConstraints = false
+        hero.spacing = DesignSystem.Metrics.sectionGap
+        hero.alignment = .centerY
+        let view = centerHero ? centered(hero) : hero
+        if fitToContent { view.fit() }
+        return view
     }
 
     static func makeSettingsContentView(columnWidth: CGFloat) -> NSView {
         let contentWidth = columnWidth - 2 * TableGroupView.padding
-        let aboutView = makeContentView(false, false, false)
-        let usageTextView = makeUsageTextView(contentWidth)
-        let acknowledgmentsView = AcknowledgmentsTab.makeContentView(columnWidth: contentWidth, shouldFit: false, verticallyStacked: true)
+        let usageView = AboutUsageView(width: contentWidth)
         let table = TableGroupView(width: columnWidth)
-        settingsUsageTextView = usageTextView
-        table.addRow(leftViews: [aboutView], isAddSeparator: false)
-        table.addRow(leftViews: [usageTextView])
-        table.addRow(leftViews: [acknowledgmentsView])
-        refreshSettingsUsageStats()
+        settingsUsageView = usageView
+        table.addRow(leftViews: [makeContentView(false, false, false)], isAddSeparator: false)
+        table.addRow(leftViews: [usageView])
         return TableGroupSetView(originalViews: [table], padding: 0, bottomPadding: 0)
     }
 
     static func refreshSettingsUsageStats() {
-        guard let settingsUsageTextView else { return }
-        updateUsageStats(settingsUsageTextView)
+        settingsUsageView?.refresh(animated: true)
     }
 
-    private static func makeUsageTextView(_ columnWidth: CGFloat) -> NSTextView {
-        let textView = NSTextView()
-        textView.textContainer!.widthTracksTextView = true
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.drawsBackground = false
-        textView.isSelectable = true
-        textView.isEditable = false
-        textView.enabledTextCheckingTypes = 0
-        textView.frame.size.width = columnWidth
-        return textView
+    private static func secondaryLabel(_ text: String) -> NSTextField {
+        let label = NSTextField(wrappingLabelWithString: text)
+        label.textColor = .secondaryLabelColor
+        return label
     }
 
-    private static func updateUsageStats(_ textView: NSTextView) {
+    private static func centered(_ content: NSView) -> NSView {
+        let leading = NSView()
+        let trailing = NSView()
+        let row = NSStackView(views: [leading, content, trailing])
+        row.translatesAutoresizingMaskIntoConstraints = false
+        row.spacing = 0
+        leading.widthAnchor.constraint(equalTo: trailing.widthAnchor).isActive = true
+        return row
+    }
+}
+
+final class AboutUsageView: NSStackView {
+    private let badges: [AboutUsageBadgeView]
+    private var animationTimer: Timer?
+    private var animationStartedAt = CFAbsoluteTime(0)
+    private var targetCounts = [0, 0, 0]
+    private static let animationDuration = CFTimeInterval(0.55)
+
+    init(width: CGFloat) {
+        badges = [
+            AboutUsageBadgeView(period: NSLocalizedString("Past week", comment: "Usage period")),
+            AboutUsageBadgeView(period: NSLocalizedString("Past month", comment: "Usage period")),
+            AboutUsageBadgeView(period: NSLocalizedString("Past year", comment: "Usage period")),
+        ]
+        super.init(frame: .zero)
+        setup(width: width)
+    }
+
+    required init(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    deinit {
+        animationTimer?.invalidate()
+    }
+
+    func refresh(animated: Bool) {
         let now = Date()
-        let weekCount = UsageStats.count("triggers", since: now.addingTimeInterval(-7 * 24 * 3600))
-        let monthCount = UsageStats.count("triggers", since: now.addingTimeInterval(-30 * 24 * 3600))
-        let yearCount = UsageStats.count("triggers", since: now.addingTimeInterval(-365 * 24 * 3600))
-        let markdown = "## \(NSLocalizedString("Usage", comment: ""))\n\nYou have used ScryTab:\n\u{2022} **\(weekCount)** times in the past week\n\u{2022} **\(monthCount)** times in the past month\n\u{2022} **\(yearCount)** times in the past year"
-        textView.textStorage!.setAttributedString(Markdown.toAttributedString(markdown))
-        textView.layoutManager!.ensureLayout(for: textView.textContainer!)
-        let usedRect = textView.layoutManager!.usedRect(for: textView.textContainer!)
-        textView.invalidateIntrinsicContentSize()
-        textView.fit(usedRect.width, usedRect.height)
+        targetCounts = [
+            UsageStats.count("triggers", since: now.addingTimeInterval(-7 * 24 * 3600)),
+            UsageStats.count("triggers", since: now.addingTimeInterval(-30 * 24 * 3600)),
+            UsageStats.count("triggers", since: now.addingTimeInterval(-365 * 24 * 3600)),
+        ]
+        animationTimer?.invalidate()
+        guard animated && !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else {
+            display(targetCounts)
+            return
+        }
+        display([0, 0, 0])
+        animationStartedAt = CFAbsoluteTimeGetCurrent()
+        let timer = Timer(timeInterval: 1 / 30, repeats: true) { [weak self] timer in self?.advanceAnimation(timer) }
+        animationTimer = timer
+        RunLoop.main.add(timer, forMode: .common)
+    }
+
+    private func setup(width: CGFloat) {
+        orientation = .vertical
+        alignment = .leading
+        spacing = DesignSystem.Metrics.rowHorizontalPadding
+        translatesAutoresizingMaskIntoConstraints = false
+        widthAnchor.constraint(equalToConstant: width).isActive = true
+        let title = NSTextField(labelWithString: NSLocalizedString("Usage", comment: ""))
+        title.font = NSFont.systemFont(ofSize: 15, weight: .medium)
+        let badgeRow = NSStackView(views: badges)
+        badgeRow.translatesAutoresizingMaskIntoConstraints = false
+        badgeRow.spacing = DesignSystem.Metrics.rowHorizontalPadding
+        badgeRow.distribution = .fillEqually
+        addArrangedSubview(title)
+        addArrangedSubview(badgeRow)
+        badgeRow.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        badgeRow.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        display([0, 0, 0])
+    }
+
+    private func advanceAnimation(_ timer: Timer) {
+        let elapsed = CFAbsoluteTimeGetCurrent() - animationStartedAt
+        let progress = min(1, elapsed / Self.animationDuration)
+        let eased = 1 - pow(1 - progress, 3)
+        display(targetCounts.map { Int((Double($0) * eased).rounded()) })
+        guard progress >= 1 else { return }
+        timer.invalidate()
+        animationTimer = nil
+    }
+
+    private func display(_ counts: [Int]) {
+        zip(badges, counts).forEach { $0.update(count: $1) }
+    }
+}
+
+final class AboutUsageBadgeView: DesignSystemFlatSurfaceView {
+    private let countLabel = NSTextField(labelWithString: "0")
+    private let period: String
+    private static let formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 0
+        return formatter
+    }()
+
+    init(period: String) {
+        self.period = period
+        super.init(frame: .zero)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    func update(count: Int) {
+        countLabel.stringValue = Self.formatter.string(from: NSNumber(value: count)) ?? String(count)
+        setAccessibilityLabel(String(format: NSLocalizedString("%@ switches, %@", comment: "Usage badge accessibility label"), countLabel.stringValue, period))
+    }
+
+    private func setup() {
+        let periodLabel = NSTextField(labelWithString: period)
+        countLabel.font = NSFont.monospacedDigitSystemFont(ofSize: 22, weight: .semibold)
+        countLabel.textColor = .labelColor
+        countLabel.alignment = .center
+        periodLabel.font = NSFont.systemFont(ofSize: 11, weight: .medium)
+        periodLabel.textColor = .secondaryLabelColor
+        periodLabel.alignment = .center
+        periodLabel.lineBreakMode = .byWordWrapping
+        periodLabel.maximumNumberOfLines = 2
+        let stack = NSStackView(views: [countLabel, periodLabel])
+        stack.orientation = .vertical
+        stack.alignment = .centerX
+        stack.spacing = DesignSystem.Metrics.headerFooterGap
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stack)
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 72),
+            stack.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stack.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: DesignSystem.Metrics.rowVerticalPadding),
+            stack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DesignSystem.Metrics.rowHorizontalPadding),
+            stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DesignSystem.Metrics.rowHorizontalPadding),
+            stack.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -DesignSystem.Metrics.rowVerticalPadding),
+        ])
+        setAccessibilityElement(true)
+        setAccessibilityRole(.group)
     }
 }
 
 class AboutWindow: NSPanel {
-    private static let contentPadding = CGFloat(24)
+    private static let contentPadding = DesignSystem.Metrics.formOuterPadding
     static var shared: AboutWindow?
-    private var usageTextView: NSTextView!
+    private var usageView: AboutUsageView!
 
     static var canBecomeKey_ = true
     override var canBecomeKey: Bool { Self.canBecomeKey_ }
 
     convenience init() {
-        self.init(contentRect: NSRect(x: 0, y: 0, width: 380, height: 450), styleMask: [.titled, .closable, .fullSizeContentView], backing: .buffered, defer: false)
+        self.init(contentRect: NSRect(x: 0, y: 0, width: 380, height: 330), styleMask: [.titled, .closable, .fullSizeContentView], backing: .buffered, defer: false)
         setupWindow()
         setupView()
-        setFrameAutosaveNameSafely("AboutWindow2")
+        setFrameAutosaveNameSafely("AboutWindow3")
         Self.shared = self
     }
 
     override func makeKeyAndOrderFront(_ sender: Any?) {
-        updateUsageStats()
+        usageView.refresh(animated: true)
         super.makeKeyAndOrderFront(sender)
     }
 
@@ -122,60 +232,21 @@ class AboutWindow: NSPanel {
         let documentView = FlippedView(frame: .zero)
         documentView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.documentView = documentView
-        let stack = NSStackView()
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 30
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        let aboutView = AboutTab.makeContentView(false, false, true)
         let columnWidth = frame.width - 2 * Self.contentPadding
-        usageTextView = Self.makeUsageTextView(columnWidth)
-        let acknowledgmentsView = AcknowledgmentsTab.makeContentView(columnWidth: columnWidth, shouldFit: false, verticallyStacked: true)
-        acknowledgmentsView.translatesAutoresizingMaskIntoConstraints = false
-        stack.addArrangedSubview(aboutView)
-        stack.addArrangedSubview(usageTextView)
-        stack.addArrangedSubview(acknowledgmentsView)
-        stack.setCustomSpacing(15, after: usageTextView)
-        documentView.addSubview(stack)
-        contentView = scrollView
+        let contentWidth = columnWidth - 2 * TableGroupView.padding
+        let table = TableGroupView(width: columnWidth)
+        usageView = AboutUsageView(width: contentWidth)
+        table.addRow(leftViews: [AboutTab.makeContentView(false, false, false)], isAddSeparator: false)
+        table.addRow(leftViews: [usageView])
+        documentView.addSubview(table)
+        contentView = DesignSystemWindowContentView(content: scrollView, topPadding: 10)
         NSLayoutConstraint.activate([
-            stack.topAnchor.constraint(equalTo: documentView.topAnchor, constant: Self.contentPadding),
-            stack.leadingAnchor.constraint(equalTo: documentView.leadingAnchor, constant: Self.contentPadding),
-            stack.trailingAnchor.constraint(equalTo: documentView.trailingAnchor, constant: -Self.contentPadding),
-            stack.bottomAnchor.constraint(equalTo: documentView.bottomAnchor, constant: -Self.contentPadding),
+            table.topAnchor.constraint(equalTo: documentView.topAnchor, constant: Self.contentPadding),
+            table.leadingAnchor.constraint(equalTo: documentView.leadingAnchor, constant: Self.contentPadding),
+            table.trailingAnchor.constraint(equalTo: documentView.trailingAnchor, constant: -Self.contentPadding),
+            table.bottomAnchor.constraint(equalTo: documentView.bottomAnchor, constant: -Self.contentPadding),
             documentView.widthAnchor.constraint(equalTo: scrollView.contentView.widthAnchor),
-            aboutView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            aboutView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-            usageTextView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            usageTextView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-            acknowledgmentsView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            acknowledgmentsView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
         ])
-    }
-
-    private static func makeUsageTextView(_ columnWidth: CGFloat) -> NSTextView {
-        let textView = NSTextView()
-        textView.textContainer!.widthTracksTextView = true
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.drawsBackground = false
-        textView.isSelectable = true
-        textView.isEditable = false
-        textView.enabledTextCheckingTypes = 0
-        textView.frame.size.width = columnWidth
-        return textView
-    }
-
-    private func updateUsageStats() {
-        let now = Date()
-        let weekCount = UsageStats.count("triggers", since: now.addingTimeInterval(-7 * 24 * 3600))
-        let monthCount = UsageStats.count("triggers", since: now.addingTimeInterval(-30 * 24 * 3600))
-        let yearCount = UsageStats.count("triggers", since: now.addingTimeInterval(-365 * 24 * 3600))
-        let markdown = "## \(NSLocalizedString("Usage", comment: ""))\n\nYou have used ScryTab:\n\u{2022} **\(weekCount)** times in the past week\n\u{2022} **\(monthCount)** times in the past month\n\u{2022} **\(yearCount)** times in the past year"
-        usageTextView.textStorage!.setAttributedString(Markdown.toAttributedString(markdown))
-        usageTextView.layoutManager!.ensureLayout(for: usageTextView.textContainer!)
-        let usedRect = usageTextView.layoutManager!.usedRect(for: usageTextView.textContainer!)
-        usageTextView.invalidateIntrinsicContentSize()
-        usageTextView.fit(usedRect.width, usedRect.height)
     }
 
     override func close() {

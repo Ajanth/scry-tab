@@ -1,3 +1,4 @@
+"%@ switches, %@" = "สลับ %1$@ ครั้งใน%2$@";
 "3-finger Horizontal Swipe" = "ปัด 3 นิ้วในแนวนอน";
 "3-finger Vertical Swipe" = "ปัด 3 นิ้วในแนวตั้ง";
 "4-finger Horizontal Swipe" = "ปัด 4 นิ้วในแนวนอน";
@@ -119,6 +120,9 @@
 "Order windows by" = "เรียงหน้าต่างตาม";
 "Ordering" = "การเรียงลำดับ";
 "Ordering & Grouping" = "การเรียงและการจัดกลุ่ม";
+"Past month" = "เดือนที่ผ่านมา";
+"Past week" = "สัปดาห์ที่ผ่านมา";
+"Past year" = "ปีที่ผ่านมา";
 "Pause preview animation" = "หยุดภาพเคลื่อนไหวตัวอย่างชั่วคราว";
 "Please drag ScryTab into the Applications folder manually." = "โปรดลาก ScryTab ไปยังโฟลเดอร์ Applications ด้วยตนเอง";
 "Please fill in the form" = "โปรดกรอกแบบฟอร์ม";
@@ -178,7 +182,6 @@
 "Size" = "ขนาด";
 "Small" = "เล็ก";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "ปุ่มลัดบางรายการแทนที่การตั้งค่านี้ นำค่าที่แทนที่ออกเพื่อใช้ค่าส่วนกลางใหม่กับปุ่มลัดทั้งหมด หรือเก็บค่าที่แทนที่ไว้";
-"Source code" = "ซอร์สโค้ด";
 "Space Order" = "ลำดับพื้นที่ทำงาน";
 "Start" = "เริ่มต้น";
 "Start at login" = "เริ่มต้นเมื่อเข้าสู่ระบบ";

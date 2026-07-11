@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%2$@切換了%1$@次";
 "3-finger Horizontal Swipe" = "三指水平滑動";
 "3-finger Vertical Swipe" = "三指垂直滑動";
 "4-finger Horizontal Swipe" = "四指水平滑動";
@@ -119,6 +120,9 @@
 "Order windows by" = "視窗排序方式";
 "Ordering" = "排序";
 "Ordering & Grouping" = "排序與群組";
+"Past month" = "過去一個月";
+"Past week" = "過去一週";
+"Past year" = "過去一年";
 "Pause preview animation" = "暫停預覽動畫";
 "Please drag ScryTab into the Applications folder manually." = "請手動將 ScryTab 拖至「應用程式」檔案夾。";
 "Please fill in the form" = "請填寫表格";
@@ -178,7 +182,6 @@
 "Size" = "大小";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "部分快捷鍵覆寫了此設定。移除這些覆寫以將新的全域值套用至所有快捷鍵，或保留這些覆寫。";
-"Source code" = "原始碼";
 "Space Order" = "空間順序";
 "Start" = "開頭";
 "Start at login" = "登入時啟動";
