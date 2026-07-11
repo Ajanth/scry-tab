@@ -85,6 +85,7 @@ enum FocusSetSessionAction: Equatable {
     case showFocusSetPicker
     case refreshFocusSetPicker
     case showFocusSetGrid(scope: FocusSetScope)
+    case cycleFocusSetSelection
     case returnToFocusSetPicker
     case showOrdinaryGrid
     case dismissSwitcherUi
@@ -118,13 +119,25 @@ struct FocusSetSessionDecision: Equatable {
 /// Pure Phase 3 transition kernel. It does not route search keys, mutate a `SwitcherSession`, or
 /// create panels; App translates `FocusSetSessionDecision` into those effects.
 enum FocusSetSessionResolver {
+    static func shouldReplaceFocusSetFlow(state: FocusSetSessionState,
+                                          activeShortcutIndex: Int,
+                                          incomingShortcutIndex: Int) -> Bool {
+        switch state {
+            case .idle, .picker: return true
+            case .focusSetGrid, .directFocusSetGrid: return activeShortcutIndex != incomingShortcutIndex
+            case .ordinaryGrid: return false
+        }
+    }
+
     static func shouldFocusDirectSelectionOnRelease(state: FocusSetSessionState,
                                                     shortcutIdentifier: UUID,
                                                     forceDoNothingOnRelease: Bool,
-                                                    profileFocusesOnRelease: Bool) -> Bool {
+                                                    profileFocusesOnRelease: Bool,
+                                                    profileHoldModifierIsReleased: Bool) -> Bool {
         state.directFocusSetIdentifier == shortcutIdentifier
             && !forceDoNothingOnRelease
             && profileFocusesOnRelease
+            && profileHoldModifierIsReleased
     }
 
     static func resolve(_ input: FocusSetSessionInput) -> FocusSetSessionDecision {
@@ -156,6 +169,9 @@ enum FocusSetSessionResolver {
         guard availableScopes.contains(scope) else {
             guard state.directFocusSetIdentifier == identifier else { return unchanged(state) }
             return decision(.idle, .dismissSwitcherUi)
+        }
+        guard state.directFocusSetIdentifier != identifier else {
+            return decision(state, .cycleFocusSetSelection)
         }
         return decision(.directFocusSetGrid(identifier), .showFocusSetGrid(scope: .set(id: identifier)))
     }

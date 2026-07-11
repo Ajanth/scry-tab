@@ -29,7 +29,7 @@ extension Preferences {
             showHiddenWindows: CachedUserDefaults.macroPref(indexToName("showHiddenWindows", index), ShowHowPreference.allCases),
             showFullscreenWindows: CachedUserDefaults.macroPref(indexToName("showFullscreenWindows", index), ShowHowPreference.allCases),
             showWindowlessApps: CachedUserDefaults.macroPref(indexToName("showWindowlessApps", index), ShowHowPreference.allCases),
-            windowOrder: CachedUserDefaults.macroPref(indexToName("windowOrder", index), WindowOrderPreference.allCases),
+            windowOrder: windowOrder(index),
             shortcutStyle: CachedUserDefaults.macroPref(indexToName("shortcutStyle", index), ShortcutStylePreference.allCases)
         )
     }

@@ -31,14 +31,13 @@ struct FocusSetPickerBuiltInNames: Equatable {
 
 struct FocusSetPresentationSnapshot {
     let configuration: FocusSetsConfiguration
-    let profileIndex: Int
     let resolver: FocusSetResolver
     let candidates: [FocusSetCandidate]
-    let filters: FocusSetCandidateFilters
+    let visibility: FocusSetsVisibilitySnapshot
     let candidateCounts: [FocusSetScope: Int]
 
     var candidateCountsByBundleIdentifier: [String: Int] {
-        FocusSetCandidateCounter.countsByBundleIdentifier(candidates, filters: filters)
+        FocusSetCandidateCounter.countsByBundleIdentifier(candidates, visibility: visibility)
     }
 }
 

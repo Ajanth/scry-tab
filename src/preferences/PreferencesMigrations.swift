@@ -22,7 +22,51 @@ class PreferencesMigrations {
                 updateToNewPreferences(versionInPlist)
             }
         }
+        migrateSharedPresentationDefaults()
         Self.defaults.set(App.version, forKey: preferencesKey)
+    }
+
+    static func migrateSharedPresentationDefaults() {
+        let marker = "sharedPresentationDefaultsMigrated"
+        guard !Self.defaults.bool(forKey: marker) else { return }
+        migrateSharedPresentationDefault(
+            sharedKey: "sharedWindowOrder",
+            legacyBaseName: "windowOrder",
+            fallback: "0")
+        migrateSharedPresentationDefault(
+            sharedKey: "sharedGroupApps",
+            legacyBaseName: "showAppsOrWindows",
+            fallback: "1")
+        migrateSharedPresentationDefault(
+            sharedKey: "sharedGroupTabs",
+            legacyBaseName: "showTabsAsWindows",
+            fallback: "0",
+            normalize: normalizedLegacyTabGrouping)
+        Self.defaults.set("true", forKey: marker)
+    }
+
+    private static func migrateSharedPresentationDefault(sharedKey: String,
+                                                          legacyBaseName: String,
+                                                          fallback: String,
+                                                          normalize: (String) -> String = { $0 }) {
+        let firstKey = Preferences.indexToName(legacyBaseName, 0)
+        let sharedValue = normalize(Self.defaults.string(forKey: firstKey) ?? fallback)
+        Self.defaults.set(sharedValue, forKey: sharedKey)
+        for index in 0...Preferences.maxShortcutCount {
+            let key = Preferences.indexToName(legacyBaseName, index)
+            let legacyValue = normalize(Self.defaults.string(forKey: key) ?? fallback)
+            if legacyValue == sharedValue {
+                Self.defaults.removeObject(forKey: key)
+            } else {
+                Self.defaults.set(legacyValue, forKey: key)
+            }
+        }
+    }
+
+    private static func normalizedLegacyTabGrouping(_ value: String) -> String {
+        if value == "true" { return "1" }
+        if value == "false" { return "0" }
+        return value
     }
 
     static func updateToNewPreferences(_ versionInPlist: String) {

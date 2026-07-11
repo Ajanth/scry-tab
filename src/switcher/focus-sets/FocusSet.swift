@@ -1,19 +1,37 @@
 import Foundation
 
 struct FocusSetsConfiguration: Codable, Equatable {
-    static let currentVersion = 2
+    static let currentVersion = 3
 
     let version: Int
-    let presentationShortcutIdentifier: String
     let sets: [FocusSet]
 
     init(version: Int = FocusSetsConfiguration.currentVersion,
-         presentationShortcutIdentifier: String = "",
          sets: [FocusSet] = []) {
         self.version = version
-        self.presentationShortcutIdentifier = presentationShortcutIdentifier
         self.sets = sets
     }
+}
+
+/// Focus Sets uses one explicit visibility policy rather than inheriting a numbered shortcut.
+/// Normal safety exclusions and exception handling remain in `WindowFilterResolver`.
+struct FocusSetsPresentationPolicy: Equatable {
+    let hideHidden: Bool
+    let hideWindowless: Bool
+    let hideFullscreen: Bool
+    let hideMinimized: Bool
+    let onlyVisibleSpaces: Bool
+    let onlyNonVisibleSpaces: Bool
+    let onlyPreferredScreen: Bool
+
+    static let standard = FocusSetsPresentationPolicy(
+        hideHidden: false,
+        hideWindowless: false,
+        hideFullscreen: false,
+        hideMinimized: false,
+        onlyVisibleSpaces: false,
+        onlyNonVisibleSpaces: false,
+        onlyPreferredScreen: false)
 }
 
 struct FocusSet: Codable, Equatable, Identifiable {
