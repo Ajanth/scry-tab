@@ -46,6 +46,9 @@
 		5EA8E110000000000000DA02 /* DragAndDropResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA8E110000000000000DA01 /* DragAndDropResolver.swift */; };
 		5EA8E110000000000000DA03 /* DragAndDropResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA8E110000000000000DA01 /* DragAndDropResolver.swift */; };
 		5EA8E110000000000000DA12 /* DragAndDropResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA8E110000000000000DA11 /* DragAndDropResolverTests.swift */; };
+		7A5600000000000000000011 /* TilePresentationResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5600000000000000000001 /* TilePresentationResolver.swift */; };
+		7A5600000000000000000012 /* TilePresentationResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5600000000000000000001 /* TilePresentationResolver.swift */; };
+		7A5600000000000000000013 /* TilePresentationResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5600000000000000000002 /* TilePresentationResolverTests.swift */; };
 		5EA8E110000000000000F002 /* AxEventRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA8E110000000000000F001 /* AxEventRouting.swift */; };
 		5EA8E110000000000000F003 /* AxEventRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA8E110000000000000F001 /* AxEventRouting.swift */; };
 		5EA8E110000000000000F102 /* AxEventRoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA8E110000000000000F101 /* AxEventRoutingTests.swift */; };
@@ -384,6 +387,9 @@
 		5E7C0F70000000000000E101 /* ExceptionMatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExceptionMatcherTests.swift; sourceTree = "<group>"; };
 		5EA8E110000000000000DA01 /* DragAndDropResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragAndDropResolver.swift; sourceTree = "<group>"; };
 		5EA8E110000000000000DA11 /* DragAndDropResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragAndDropResolverTests.swift; sourceTree = "<group>"; };
+		7A5600000000000000000001 /* TilePresentationResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePresentationResolver.swift; sourceTree = "<group>"; };
+		7A5600000000000000000002 /* TilePresentationResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TilePresentationResolverTests.swift; sourceTree = "<group>"; };
+		7A5600000000000000000003 /* TilePresentationResolverSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TilePresentationResolverSpecs.md; sourceTree = "<group>"; };
 		5EA8E110000000000000F001 /* AxEventRouting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AxEventRouting.swift; sourceTree = "<group>"; };
 		5EA8E110000000000000F101 /* AxEventRoutingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxEventRoutingTests.swift; sourceTree = "<group>"; };
 		5EA8E110000000000000F201 /* SchedulingPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchedulingPolicy.swift; sourceTree = "<group>"; };
@@ -1421,6 +1427,9 @@
 				D04BAD1297730B191E96E7FE /* TileTitleView.swift */,
 				D04BA1DF8CAB2FAB7FE9244B /* TileFontIconView.swift */,
 				D04BA258B56193958D60978A /* TileView.swift */,
+				7A5600000000000000000001 /* TilePresentationResolver.swift */,
+				7A5600000000000000000002 /* TilePresentationResolverTests.swift */,
+				7A5600000000000000000003 /* TilePresentationResolverSpecs.md */,
 				6A7100000000000000000001 /* AnimatedSwitcherPresentationView.swift */,
 				5F7B6AFB2F3BAB98003E25E8 /* StatusIconsView.swift */,
 				D04BAA998119CAA8B70A2B67 /* TilesView.swift */,
@@ -1851,6 +1860,8 @@
 				5EA8E110000000000000F212 /* SchedulingPolicyTests.swift in Sources */,
 				5EA8E110000000000000DA03 /* DragAndDropResolver.swift in Sources */,
 				5EA8E110000000000000DA12 /* DragAndDropResolverTests.swift in Sources */,
+				7A5600000000000000000012 /* TilePresentationResolver.swift in Sources */,
+				7A5600000000000000000013 /* TilePresentationResolverTests.swift in Sources */,
 				5F4753072CEE5A2E002C6C5E /* AppearanceTestable.swift in Sources */,
 				BF0C8B787C76D9B961CC2F45 /* KeyboardEventsTests.swift in Sources */,
 				BF0CAAAA0000000000001001 /* SearchTests.swift in Sources */,
@@ -1983,6 +1994,7 @@
 				D04BA69D47B5E60A6AD9CBD9 /* TileTitleView.swift in Sources */,
 				D04BA1B133D53572D7B312C2 /* TileFontIconView.swift in Sources */,
 				D04BA1CEC6B9C8945FEC8740 /* TileView.swift in Sources */,
+				7A5600000000000000000011 /* TilePresentationResolver.swift in Sources */,
 				6A7100000000000000000002 /* AnimatedSwitcherPresentationView.swift in Sources */,
 				D04BA14D93726795A6937832 /* LabelAndControl.swift in Sources */,
 				5F791E4B2F1C65E100B6419C /* ApplicationDiscriminator.swift in Sources */,

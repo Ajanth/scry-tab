@@ -3,10 +3,12 @@
 ## Summary
 
 `FocusSetsConfiguration`, `FocusSet`, and `FocusSetRule` are Foundation-only Codable values for
-the separate Focus Sets persistence layer. `FocusSetResolver` compiles their application bundle
-identifiers into one immutable snapshot and decides whether an app belongs to a requested scope.
+the separate Focus Sets persistence layer. A Focus Set can carry an optional direct-shortcut key
+equivalent, and `FocusSetShortcutBindingResolver` maps it to an action identifier containing the
+exact stable set UUID. `FocusSetResolver` compiles application bundle identifiers into one
+immutable snapshot and decides whether an app belongs to a requested scope.
 
-V1 compares non-empty bundle identifiers exactly. Rule display names are presentation-only and
+V2 compares non-empty bundle identifiers exactly. Rule display names are presentation-only and
 `titleContains` remains stored but deliberately inert. There is no process, window, AppKit,
 Accessibility, or preference dependency.
 
@@ -21,6 +23,8 @@ Accessibility, or preference dependency.
 - Empty sets and stale set identifiers safely produce no selected membership.
 - Empty persisted rule identifiers are ignored by the resolver, protecting matching before the
   persistence store can reject malformed rules.
+- Direct shortcut bindings exist only for non-empty saved values. Their action identifier decodes
+  to the exact saved UUID, so a stale deleted identifier cannot alias a retained set.
 
 ---
 
@@ -53,3 +57,7 @@ Accessibility, or preference dependency.
 - **testUnknownSetProducesNoMembership** — a stale set identifier does not fall back to another saved set.
 - **testBlankRuleBundleIdentifierIsIgnored** — a blank persisted rule identifier creates no assigned membership.
 - **testResolverRetainsItsCompiledSnapshot** — previously compiled resolver facts remain independent of a later configuration snapshot.
+
+### F. Direct shortcut bindings
+- **testShortcutBindingsResolveSavedIdentifiersAndSkipMissingValues** — binding resolution emits only configured shortcuts with exact stable action identifiers.
+- **testShortcutActionIdentifierPreservesExactStableIdentifier** — action identifiers decode only their embedded UUID and malformed values cannot alias another set.

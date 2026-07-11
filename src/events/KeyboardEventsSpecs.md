@@ -25,6 +25,10 @@ the resulting actions.
   switcher is closed, Escape does nothing (ScryTab doesn't swallow it).
 - **Open Focus Sets**: the standalone global shortcut has a dedicated Carbon ID after the numbered
   press/release IDs and dispatches only on key-down.
+- Dynamic direct Focus Set IDs remain stable while configured and are never reused after deletion,
+  so a delayed stale Carbon event cannot target a different set.
+- Direct Focus Set bindings dispatch both press and release through their one registered action;
+  the App layer applies the selected profile's release style.
 
 ## Test scenarios
 
@@ -32,6 +36,10 @@ Mirrors `KeyboardEventsTests.swift` 1:1.
 
 - **testOpenFocusSetsShortcutUsesDedicatedHotkeyIdAndFiresOnlyOnKeyDown** — the static shortcut uses
   `2 * maxShortcutCount` and ignores its key-up event.
+- **testDynamicFocusSetHotkeyIdsAreStableAndNeverReusedAfterDeletion** — dynamic IDs remain stable
+  across reconciliation and a deleted ID is not assigned to a later Focus Set.
+- **testDirectFocusSetShortcutFiresOnPressAndRelease** — a direct Focus Set binding dispatches once
+  for its Carbon key-down and once for key-up.
 - **testPickerTextKeyPassesToSearchField** — ordinary picker text input, including Space, bypasses
   shortcut dispatch.
 - **testPickerVimKeyRunsRegisteredLocalShortcut** — an unmodified registered Vim key bypasses the

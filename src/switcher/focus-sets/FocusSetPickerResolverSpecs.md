@@ -31,6 +31,9 @@ names only to search built-in entries.
 - Confirmation requires the exact stable identifier to occur in the currently visible query
   results. A filtered-out, stale, or deleted Focus Set identifier returns no item or scope and
   never falls through to another set's index.
+- Picker panel ownership restores ordinary presentation state exactly once; removing an unowned
+  picker is a true no-op.
+- Picker rows stay out of key-view traversal so the shared search field remains the keyboard owner.
 
 ---
 
@@ -72,3 +75,8 @@ names only to search built-in entries.
   an exact stable identifier that is still visible under the active query.
 - **testStaleSetIdentifierNeverConfirmsAReplacementSet** — a deleted identifier never selects a
   replacement item that happens to occupy a similar position.
+
+### E. Presentation ownership and input
+- **testPanelRemovalRestoresOrdinaryStateExactlyOnce** — owned picker teardown restores ordinary
+  state once and repeated unowned teardown is a no-op.
+- **testPickerRowsStayOutOfKeyViewTraversal** — picker rows do not enter key-view traversal.

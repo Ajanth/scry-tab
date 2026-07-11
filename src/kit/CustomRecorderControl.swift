@@ -5,6 +5,7 @@ import ShortcutRecorder
 class CustomRecorderControl: RecorderControl {
     static let allowedModifiers = NSEvent.ModifierFlags(arrayLiteral: [.command, .control, .option, .shift])
     var clearable: Bool!
+    var transactionalCandidateHandler: ((Shortcut, ShortcutAcceptance) -> Bool)?
     /// The preference key this recorder edits. Derived from `identifier` (set in `init` and re-aimed
     /// by `TriggerBinding.bind` as the recycled editor switches shortcuts) so it can never drift out
     /// of sync with the key the write path (`controlWasChanged`) and the conflict detector key off.
@@ -62,21 +63,7 @@ class CustomRecorderControl: RecorderControl {
 
     func alertIfSameShortcutAlreadyAssigned(_ candidateShortcut: Shortcut, _ shortcutAlreadyAssigned: String) {
         let conflict = ShortcutConflict.classify(shortcutAlreadyAssigned)
-        // `conflictLabel` returns nil only for an id with no known action, which can't happen for a
-        // real detected conflict; keep the prior plain-string fallback (not a new l10n key).
-        let label = ControlsTab.conflictLabel(shortcutAlreadyAssigned) ?? "an unknown action"
-        let alert = NSAlert()
-        alert.alertStyle = .warning
-        alert.messageText = NSLocalizedString("Conflicting shortcut", comment: "")
-        alert.informativeText = String(format: NSLocalizedString("Shortcut already assigned to: %@", comment: ""),
-                                       label.replacingOccurrences(of: " ", with: "\u{00A0}"))
-        // Always offer to resolve it, including when editing a Hold: unassigning a conflicting Trigger
-        // clears its "and press" part (the hold itself is never the thing unassigned).
-        alert.addButton(withTitle: NSLocalizedString("Unassign existing shortcut and continue", comment: "")).setAccessibilityFocused(true)
-        let cancelButton = alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
-        cancelButton.keyEquivalent = "\u{1b}"
-        let userChoice = alert.runModal()
-        guard userChoice == .alertFirstButtonReturn else { return }
+        guard confirmUnassigningShortcut(shortcutAlreadyAssigned) else { return }
         switch conflict {
         case .arrow:
             if let cb = ControlsTab.arrowKeysCheckbox {
@@ -96,6 +83,24 @@ class CustomRecorderControl: RecorderControl {
         updateShortcut(self, candidateShortcut, self, id)
     }
 
+    func confirmUnassigningShortcut(_ shortcutAlreadyAssigned: String) -> Bool {
+        // `conflictLabel` returns nil only for an id with no known action, which can't happen for a
+        // real detected conflict; keep the prior plain-string fallback (not a new l10n key).
+        let label = ControlsTab.conflictLabel(shortcutAlreadyAssigned) ?? "an unknown action"
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = NSLocalizedString("Conflicting shortcut", comment: "")
+        alert.informativeText = String(format: NSLocalizedString("Shortcut already assigned to: %@", comment: ""),
+                                       label.replacingOccurrences(of: " ", with: "\u{00A0}"))
+        // Always offer to resolve it, including when editing a Hold: unassigning a conflicting Trigger
+        // clears its "and press" part (the hold itself is never the thing unassigned).
+        alert.addButton(withTitle: NSLocalizedString("Unassign existing shortcut and continue", comment: "")).setAccessibilityFocused(true)
+        let cancelButton = alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
+        cancelButton.keyEquivalent = "\u{1b}"
+        let userChoice = alert.runModal()
+        return userChoice == .alertFirstButtonReturn
+    }
+
     func updateShortcut(_ control: CustomRecorderControl, _ objectValue: Shortcut?, _ senderControl: NSControl, _ id: String) {
         control.objectValue = objectValue
         LabelAndControl.controlWasChanged(senderControl, id)
@@ -103,6 +108,12 @@ class CustomRecorderControl: RecorderControl {
     }
 
     func alertIfShortcutReservedByMacos(_ candidateShortcut: Shortcut, _ shortcutReservedByMacos: String) {
+        guard confirmUnassigningShortcutReservedByMacos(shortcutReservedByMacos) else { return }
+        ControlsTab.unassignShortcut(shortcutReservedByMacos)
+        updateShortcut(self, candidateShortcut, self, id)
+    }
+
+    func confirmUnassigningShortcutReservedByMacos(_ shortcutReservedByMacos: String) -> Bool {
         let label = ControlsTab.conflictLabel(shortcutReservedByMacos) ?? "an unknown action"
         let alert = NSAlert()
         alert.alertStyle = .warning
@@ -113,9 +124,7 @@ class CustomRecorderControl: RecorderControl {
         cancelButton.keyEquivalent = "\u{1b}"
         cancelButton.setAccessibilityFocused(true)
         let userChoice = alert.runModal()
-        guard userChoice == .alertFirstButtonReturn, id != shortcutReservedByMacos else { return }
-        ControlsTab.unassignShortcut(shortcutReservedByMacos)
-        updateShortcut(self, candidateShortcut, self, id)
+        return userChoice == .alertFirstButtonReturn && id != shortcutReservedByMacos
     }
 
     func save(_ candidateShortcut: Shortcut) {
@@ -127,9 +136,14 @@ class CustomRecorderControl: RecorderControl {
 
 extension CustomRecorderControl: RecorderControlDelegate {
     func recorderControl(_ control: RecorderControl, canRecord shortcut: Shortcut) -> Bool {
-        switch CustomRecorderControlTestable.isShortcutAcceptable(id, shortcut) {
+        let acceptance = CustomRecorderControlTestable.isShortcutAcceptable(id, shortcut)
+        if let transactionalCandidateHandler {
+            return transactionalCandidateHandler(shortcut, acceptance)
+        }
+        switch acceptance {
         case .accepted: save(shortcut)
         case .modifiersOnlyButContainsKeycode: return false
+        case .nonModifierKeyRequired: return false
         case .conflictWithExistingShortcut(let s): alertIfSameShortcutAlreadyAssigned(shortcut, s)
         case .reservedByMacos(let s): alertIfShortcutReservedByMacos(shortcut, s)
         }

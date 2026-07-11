@@ -1,4 +1,5 @@
 import Cocoa
+import ShortcutRecorder
 
 final class FocusSetSettingsView: NSView {
     static let searchableStrings = [
@@ -227,10 +228,10 @@ final class FocusSetSettingsView: NSView {
     private func makeSetControls(for focusSet: FocusSet, at index: Int) -> NSStackView {
         let edit = DesignSystemControlStyler.makeButton(NSLocalizedString("Edit", comment: ""), target: self, action: #selector(editFocusSet(_:)))
         edit.identifier = NSUserInterfaceItemIdentifier(focusSet.id.uuidString)
-        let delete = DesignSystemControlStyler.makeButton(NSLocalizedString("Delete", comment: ""), destructive: true, target: self, action: #selector(deleteFocusSet(_:)))
-        delete.identifier = NSUserInterfaceItemIdentifier(focusSet.id.uuidString)
+        let delete = DesignSystemControlStyler.makeButton(NSLocalizedString("Delete", comment: ""), destructive: true)
+        delete.onAction = { [weak self] _ in self?.deleteFocusSet(with: focusSet.id) }
         let move = makeReorderMenu(for: focusSet, at: index)
-        let controls = NSStackView(views: [edit, move, delete])
+        let controls = NSStackView(views: [move, edit, delete])
         controls.orientation = .horizontal
         controls.alignment = .centerY
         controls.spacing = TableGroupView.toolRowSpacing
@@ -351,12 +352,6 @@ final class FocusSetSettingsView: NSView {
         showFocusSetEditor(focusSet)
     }
 
-    @objc private func deleteFocusSet(_ sender: NSButton) {
-        guard let value = sender.identifier?.rawValue,
-              let identifier = UUID(uuidString: value) else { return }
-        deleteFocusSet(with: identifier)
-    }
-
     @objc private func moveFocusSet(_ sender: NSMenuItem) {
         guard let value = sender.representedObject as? String,
               let identifier = UUID(uuidString: value),
@@ -372,26 +367,50 @@ final class FocusSetSettingsView: NSView {
         let sheet = FocusSetEditorSheet(
             focusSet: focusSet,
             applications: liveApplications(),
-            onApply: { [weak self] focusSet in
-                self?.saveFocusSet(focusSet)
+            onApply: { [weak self] focusSet, conflictingShortcutIdentifier in
+                self?.saveFocusSet(focusSet, unassigningShortcut: conflictingShortcutIdentifier)
             }
         )
         SettingsWindow.shared.beginSheetWithSearchHighlight(sheet)
     }
 
-    private func saveFocusSet(_ focusSet: FocusSet) {
-        var sets = configuration.sets
-        if let existingIndex = sets.firstIndex(where: { $0.id == focusSet.id }) {
-            sets[existingIndex] = focusSet
-        } else {
-            sets.append(focusSet)
+    private func saveFocusSet(_ focusSet: FocusSet, unassigningShortcut actionIdentifier: String?) {
+        let next = FocusSetSettingsResolver.configurationBySavingFocusSet(
+            focusSet,
+            unassigningShortcutActionIdentifier: actionIdentifier,
+            in: configuration)
+        guard store.set(next, availableShortcutIdentifiers: availableShortcutIdentifiers()) else {
+            NSSound.beep()
+            return
         }
-        persist(sets)
+        if let actionIdentifier,
+           FocusSetShortcutBindingResolver.focusSetIdentifier(from: actionIdentifier) == nil {
+            ControlsTab.unassignShortcutConflict(actionIdentifier)
+        }
+        refresh()
+        App.refreshOpenUiAfterFocusSetConfigurationChange()
     }
 
     private func deleteFocusSet(with identifier: UUID) {
-        guard configuration.sets.contains(where: { $0.id == identifier }) else { return }
-        persist(configuration.sets.filter { $0.id != identifier })
+        guard let next = FocusSetSettingsResolver.configurationByDeletingFocusSet(identifier, from: configuration) else {
+            NSSound.beep()
+            refresh()
+            return
+        }
+        guard store.set(next, availableShortcutIdentifiers: availableShortcutIdentifiers()) else {
+            NSSound.beep()
+            return
+        }
+        let persisted = store.read(availableShortcutIdentifiers: availableShortcutIdentifiers())
+        guard persisted == next else {
+            NSSound.beep()
+            refresh()
+            return
+        }
+        configuration = persisted
+        refreshCandidateCounts()
+        rebuildContent()
+        App.refreshOpenUiAfterFocusSetConfigurationChange()
     }
 }
 
@@ -413,6 +432,7 @@ private struct FocusSetPickerEntry {
 
 private final class FocusSetEditorSheet: SheetWindow {
     private let nameField = NSTextField()
+    private let shortcutRecorder = CustomRecorderControl(nil, true, "focusSetShortcut:pending")
     private let searchField = NSSearchField()
     private let selectionCountLabel = NSTextField(labelWithString: "")
     private let rows = NSStackView()
@@ -425,8 +445,10 @@ private final class FocusSetEditorSheet: SheetWindow {
     private weak var resultsScrollView: NSScrollView?
     private var focusSet = FocusSet(name: "", rules: [])
     private var searchQuery = ""
+    private var shortcutKeyEquivalent: String?
+    private var conflictingShortcutActionIdentifier: String?
     private var textObserver: NSObjectProtocol?
-    private var onApply: ((FocusSet) -> Void)?
+    private var onApply: ((FocusSet, String?) -> Void)?
 
     deinit {
         if let textObserver {
@@ -436,7 +458,7 @@ private final class FocusSetEditorSheet: SheetWindow {
 
     convenience init(focusSet: FocusSet,
                      applications: [FocusSetPickerApplication],
-                     onApply: @escaping (FocusSet) -> Void) {
+                     onApply: @escaping (FocusSet, String?) -> Void) {
         self.init()
         self.focusSet = focusSet
         self.onApply = onApply
@@ -447,6 +469,7 @@ private final class FocusSetEditorSheet: SheetWindow {
             rules: currentRules
         ).filter(\.isSelected).map(\.identity))
         nameField.stringValue = focusSet.name
+        configureShortcutRecorder(focusSet)
         updateTitle()
         doneButton.title = NSLocalizedString("Apply", comment: "")
         doneButton.target = self
@@ -499,7 +522,48 @@ private final class FocusSetEditorSheet: SheetWindow {
     private func makeNameTable() -> TableGroupView {
         let table = TableGroupView(width: contentWidth)
         _ = table.addRow(leftText: NSLocalizedString("Name", comment: ""), rightViews: [nameField])
+        _ = table.addRow(leftText: NSLocalizedString("Shortcut", comment: ""), rightViews: [shortcutRecorder])
         return table
+    }
+
+    private func configureShortcutRecorder(_ focusSet: FocusSet) {
+        shortcutRecorder.identifier = NSUserInterfaceItemIdentifier(
+            FocusSetShortcutBindingResolver.actionIdentifier(for: focusSet.id))
+        shortcutRecorder.allowsModifierFlagsOnlyShortcut = false
+        shortcutKeyEquivalent = focusSet.shortcutKeyEquivalent
+        shortcutRecorder.objectValue = focusSet.shortcutKeyEquivalent.flatMap(Shortcut.init(keyEquivalent:))
+        shortcutRecorder.setAccessibilityLabel(NSLocalizedString("Shortcut", comment: ""))
+        shortcutRecorder.transactionalCandidateHandler = { [weak self] shortcut, acceptance in
+            self?.acceptShortcut(shortcut, acceptance: acceptance) ?? false
+        }
+        shortcutRecorder.onAction = { [weak self] _ in
+            guard let self, self.shortcutRecorder.objectValue == nil else { return }
+            self.shortcutKeyEquivalent = nil
+            self.conflictingShortcutActionIdentifier = nil
+        }
+    }
+
+    private func acceptShortcut(_ shortcut: Shortcut, acceptance: ShortcutAcceptance) -> Bool {
+        switch acceptance {
+        case .accepted:
+            shortcutKeyEquivalent = shortcut.keyEquivalent
+            conflictingShortcutActionIdentifier = nil
+            return true
+        case .modifiersOnlyButContainsKeycode:
+            return false
+        case .nonModifierKeyRequired:
+            return false
+        case .conflictWithExistingShortcut(let actionIdentifier):
+            guard shortcutRecorder.confirmUnassigningShortcut(actionIdentifier) else { return false }
+            shortcutKeyEquivalent = shortcut.keyEquivalent
+            conflictingShortcutActionIdentifier = actionIdentifier
+            return true
+        case .reservedByMacos(let actionIdentifier):
+            guard shortcutRecorder.confirmUnassigningShortcutReservedByMacos(actionIdentifier) else { return false }
+            shortcutKeyEquivalent = shortcut.keyEquivalent
+            conflictingShortcutActionIdentifier = actionIdentifier
+            return true
+        }
     }
 
     private func makeApplicationsTable(scroll: NSScrollView) -> TableGroupView {
@@ -508,7 +572,9 @@ private final class FocusSetEditorSheet: SheetWindow {
             subTitle: NSLocalizedString("Choose the applications whose windows belong to this Focus Set.", comment: ""),
             hasHeader: true,
             width: contentWidth)
-        table.addHeader(views: [makeSelectionCountHeader(for: table)])
+        let selectionCountHeader = makeSelectionCountHeader()
+        table.addHeader(views: [selectionCountHeader])
+        selectionCountHeader.widthAnchor.constraint(equalTo: table.widthAnchor).isActive = true
         _ = table.addRow(leftViews: [searchField])
         _ = table.addRow(leftViews: nil,
                          rightViews: nil,
@@ -517,7 +583,7 @@ private final class FocusSetEditorSheet: SheetWindow {
         return table
     }
 
-    private func makeSelectionCountHeader(for table: TableGroupView) -> NSStackView {
+    private func makeSelectionCountHeader() -> NSStackView {
         let spacer = NSView()
         spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
         spacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -525,7 +591,6 @@ private final class FocusSetEditorSheet: SheetWindow {
         header.orientation = .horizontal
         header.alignment = .centerY
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.widthAnchor.constraint(equalTo: table.widthAnchor).isActive = true
         return header
     }
 
@@ -593,7 +658,6 @@ private final class FocusSetEditorSheet: SheetWindow {
 
     private func rebuildRows(scrollToTop shouldScrollToTop: Bool = false) {
         let focusedIdentity = focusedApplicationIdentity()
-        let restoresSearchFocus = isSearchFieldFocused
         selectionCountLabel.stringValue = selectionCount()
         rows.arrangedSubviews.forEach {
             rows.removeArrangedSubview($0)
@@ -616,12 +680,7 @@ private final class FocusSetEditorSheet: SheetWindow {
             }
         }
         if shouldScrollToTop { scrollToTop() }
-        restoreFocus(searchWasFocused: restoresSearchFocus, applicationIdentity: focusedIdentity)
-    }
-
-    private var isSearchFieldFocused: Bool {
-        guard let responder = firstResponder else { return false }
-        return responder === searchField || responder === searchField.currentEditor()
+        restoreFocusedApplication(focusedIdentity)
     }
 
     private func focusedApplicationIdentity() -> FocusSetApplicationIdentity? {
@@ -629,12 +688,9 @@ private final class FocusSetEditorSheet: SheetWindow {
         return identityBySwitch[ObjectIdentifier(toggle)]
     }
 
-    private func restoreFocus(searchWasFocused: Bool, applicationIdentity: FocusSetApplicationIdentity?) {
-        if searchWasFocused {
-            makeFirstResponder(searchField)
-        } else if let applicationIdentity, let toggle = switchesByIdentity[applicationIdentity] {
-            makeFirstResponder(toggle)
-        }
+    private func restoreFocusedApplication(_ identity: FocusSetApplicationIdentity?) {
+        guard let identity, let toggle = switchesByIdentity[identity] else { return }
+        makeFirstResponder(toggle)
     }
 
     private func scrollToTop() {
@@ -751,7 +807,13 @@ private final class FocusSetEditorSheet: SheetWindow {
             makeFirstResponder(nameField)
             return
         }
-        onApply?(FocusSet(id: focusSet.id, name: name, rules: currentRules))
+        onApply?(
+            FocusSet(
+                id: focusSet.id,
+                name: name,
+                rules: currentRules,
+                shortcutKeyEquivalent: shortcutKeyEquivalent),
+            conflictingShortcutActionIdentifier)
         sheetParent?.endSheet(self)
     }
 }

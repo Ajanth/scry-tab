@@ -220,6 +220,30 @@ final class FocusSetPickerResolverTests: XCTestCase {
             .set(id: replacementID))
     }
 
+    // MARK: - E. Presentation ownership and input
+
+    /// Removing an unowned picker is a no-op, while one owned removal restores ordinary state once.
+    func testPanelRemovalRestoresOrdinaryStateExactlyOnce() {
+        let firstRemoval = FocusSetPickerPresentationPolicy.remove(.owned)
+        let repeatedRemoval = FocusSetPickerPresentationPolicy.remove(firstRemoval.nextOwnership)
+
+        XCTAssertEqual(
+            firstRemoval,
+            FocusSetPickerPanelRemovalDecision(
+                nextOwnership: .unowned,
+                shouldRestoreOrdinaryState: true))
+        XCTAssertEqual(
+            repeatedRemoval,
+            FocusSetPickerPanelRemovalDecision(
+                nextOwnership: .unowned,
+                shouldRestoreOrdinaryState: false))
+    }
+
+    /// Picker rows stay out of key-view traversal so the shared search field owns keyboard input.
+    func testPickerRowsStayOutOfKeyViewTraversal() {
+        XCTAssertFalse(FocusSetPickerPresentationPolicy.rowsParticipateInKeyViewLoop)
+    }
+
     private func makeResolver(sets: [FocusSet] = [],
                               counts: [FocusSetScope: Int] = [:],
                               builtInNames: FocusSetPickerBuiltInNames? = nil) -> FocusSetPickerResolver {

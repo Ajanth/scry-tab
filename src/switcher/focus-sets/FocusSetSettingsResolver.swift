@@ -60,6 +60,40 @@ enum FocusSetSettingsResolver {
         return reordered
     }
 
+    static func configurationByDeletingFocusSet(_ identifier: UUID,
+                                                from configuration: FocusSetsConfiguration) -> FocusSetsConfiguration? {
+        guard configuration.sets.contains(where: { $0.id == identifier }) else { return nil }
+        return FocusSetsConfiguration(
+            version: configuration.version,
+            presentationShortcutIdentifier: configuration.presentationShortcutIdentifier,
+            sets: configuration.sets.filter { $0.id != identifier })
+    }
+
+    static func configurationBySavingFocusSet(_ focusSet: FocusSet,
+                                              unassigningShortcutActionIdentifier actionIdentifier: String?,
+                                              in configuration: FocusSetsConfiguration) -> FocusSetsConfiguration {
+        let conflictingIdentifier = actionIdentifier.flatMap {
+            FocusSetShortcutBindingResolver.focusSetIdentifier(from: $0)
+        }
+        var sets = configuration.sets.map { existing in
+            guard existing.id == conflictingIdentifier, existing.id != focusSet.id else { return existing }
+            return FocusSet(
+                id: existing.id,
+                name: existing.name,
+                rules: existing.rules,
+                shortcutKeyEquivalent: nil)
+        }
+        if let existingIndex = sets.firstIndex(where: { $0.id == focusSet.id }) {
+            sets[existingIndex] = focusSet
+        } else {
+            sets.append(focusSet)
+        }
+        return FocusSetsConfiguration(
+            version: configuration.version,
+            presentationShortcutIdentifier: configuration.presentationShortcutIdentifier,
+            sets: sets)
+    }
+
     static func applicationPickerRows(applications: [FocusSetApplicationOption],
                                       rules: [FocusSetRule]) -> [FocusSetApplicationPickerRow] {
         let availableApplications = uniqueApplications(applications)

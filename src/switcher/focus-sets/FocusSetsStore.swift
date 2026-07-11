@@ -42,7 +42,12 @@ private struct FocusSetsStoreParser {
               let identifier = UUID(uuidString: identifierString),
               let name = object["name"] as? String,
               let rawRules = object["rules"] as? [Any] else { return nil }
-        return FocusSet(id: identifier, name: name, rules: rawRules.compactMap(decodedRule))
+        let shortcutKeyEquivalent = (object["shortcutKeyEquivalent"] as? String).flatMap { $0.isEmpty ? nil : $0 }
+        return FocusSet(
+            id: identifier,
+            name: name,
+            rules: rawRules.compactMap(decodedRule),
+            shortcutKeyEquivalent: shortcutKeyEquivalent)
     }
 
     static func decodedRule(_ value: Any) -> FocusSetRule? {
@@ -67,13 +72,16 @@ private struct FocusSetsStoreParser {
 
 final class FocusSetsStore {
     static var defaultKey: String { Preferences.focusSetsKey }
+    static let configurationDidChangeNotification = Notification.Name("ScryTab.focusSetsConfigurationDidChange")
 
     private let defaults: UserDefaults
     private let key: String
+    private let notifiesRuntimeChanges: Bool
 
     init(defaults: UserDefaults = .standard, key: String = Preferences.focusSetsKey) {
         self.defaults = defaults
         self.key = key
+        notifiesRuntimeChanges = defaults === UserDefaults.standard && key == Preferences.focusSetsKey
     }
 
     func read(availableShortcutIdentifiers: [String]) -> FocusSetsConfiguration {
@@ -94,12 +102,15 @@ final class FocusSetsStore {
               let string = String(data: data, encoding: .utf8) else { return false }
         defaults.set(string, forKey: key)
         Preferences.invalidateAllCache()
+        if notifiesRuntimeChanges {
+            NotificationCenter.default.post(name: Self.configurationDidChangeNotification, object: defaults)
+        }
         return true
     }
 
     private func normalized(_ configuration: FocusSetsConfiguration,
                             availableShortcutIdentifiers: [String]) -> FocusSetsConfiguration {
-        let version = configuration.version > 0 ? configuration.version : FocusSetsConfiguration.currentVersion
+        let version = max(configuration.version, FocusSetsConfiguration.currentVersion)
         let presentationShortcutIdentifier = normalizedPresentationShortcutIdentifier(
             configuration.presentationShortcutIdentifier,
             availableShortcutIdentifiers: availableShortcutIdentifiers
@@ -110,7 +121,8 @@ final class FocusSetsStore {
             return FocusSet(
                 id: focusSet.id,
                 name: focusSet.name,
-                rules: focusSet.rules.filter(valid)
+                rules: focusSet.rules.filter(valid),
+                shortcutKeyEquivalent: normalizedShortcut(focusSet.shortcutKeyEquivalent)
             )
         }
         return FocusSetsConfiguration(
@@ -129,6 +141,11 @@ final class FocusSetsStore {
 
     private func valid(_ rule: FocusSetRule) -> Bool {
         !rule.applicationBundleIdentifier.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func normalizedShortcut(_ keyEquivalent: String?) -> String? {
+        guard let keyEquivalent, !keyEquivalent.isEmpty else { return nil }
+        return keyEquivalent
     }
 
     private func encoded(_ configuration: FocusSetsConfiguration,
@@ -157,6 +174,11 @@ final class FocusSetsStore {
         object["id"] = focusSet.id.uuidString
         object["name"] = focusSet.name
         object["rules"] = encodedRules(focusSet.rules, preserving: rawSet)
+        if let shortcutKeyEquivalent = focusSet.shortcutKeyEquivalent {
+            object["shortcutKeyEquivalent"] = shortcutKeyEquivalent
+        } else {
+            object.removeValue(forKey: "shortcutKeyEquivalent")
+        }
         return object
     }
 

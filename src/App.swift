@@ -52,7 +52,7 @@ class App: AppCenterApplication {
             let snapshot = focusSetPickerSnapshot()
             updateFocusSetSession(snapshot, session: session)
             presentFocusSetPicker(snapshot, session: session)
-        case .focusSetGrid:
+        case .focusSetGrid, .directFocusSetGrid:
             refreshFocusSetGridAfterExternalEvent(session)
         case .idle, .ordinaryGrid:
             break
@@ -75,6 +75,10 @@ class App: AppCenterApplication {
             names: names,
             resolver: resolver,
             availableScopes: availableScopes)
+    }
+
+    private static func directFocusSetSnapshot() -> FocusSetPickerSnapshot {
+        focusSetPickerSnapshot(FocusSetPresentationSnapshotBuilder.make(countedScopes: []))
     }
 
     private static func updateFocusSetSession(_ snapshot: FocusSetPickerSnapshot,
@@ -294,6 +298,48 @@ class App: AppCenterApplication {
         applyFocusSetDecision(decision, snapshot: snapshot, session: session)
     }
 
+    static func handleDirectFocusSetShortcut(_ identifier: UUID, state: ShortcutState) {
+        guard state == .down else {
+            focusDirectFocusSetSelectionOnRelease(identifier)
+            return
+        }
+        let snapshot = directFocusSetSnapshot()
+        let currentState = SwitcherSession.current?.focusSetSessionState ?? .idle
+        let decision = FocusSetSessionResolver.resolve(
+            FocusSetSessionInput(
+                state: currentState,
+                event: .directFocusSetShortcut(identifier),
+                availableScopes: snapshot.availableScopes))
+        guard decision.action != .noOp else { return }
+        guard let session = SwitcherSession.current ?? makeSwitcherSession(for: decision) else { return }
+        NSScreen.updatePreferred()
+        if isVeryFirstSummon {
+            Windows.sortByLevel()
+            isVeryFirstSummon = false
+        }
+        session.forceDoNothingOnRelease = false
+        session.focusSetPickerSelectedIdentifier = .focusSet(identifier)
+        applyFocusSetDecision(decision, snapshot: snapshot, session: session)
+    }
+
+    private static func makeSwitcherSession(for decision: FocusSetSessionDecision) -> SwitcherSession? {
+        guard case .showFocusSetGrid = decision.action else { return nil }
+        let session = SwitcherSession()
+        SwitcherSession.current = session
+        return session
+    }
+
+    private static func focusDirectFocusSetSelectionOnRelease(_ identifier: UUID) {
+        guard let session = SwitcherSession.current,
+              FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
+                  state: session.focusSetSessionState,
+                  shortcutIdentifier: identifier,
+                  forceDoNothingOnRelease: session.forceDoNothingOnRelease,
+                  profileFocusesOnRelease: Preferences.effectiveShortcutStyle(session.shortcutIndex) == .focusOnRelease
+              ) else { return }
+        focusTarget()
+    }
+
     static func confirmFocusSetPickerSelection(_ item: FocusSetPickerItem? = nil) {
         guard let session = SwitcherSession.current,
               session.focusSetSessionState == .picker else { return }
@@ -385,7 +431,9 @@ class App: AppCenterApplication {
             presentFocusSetPicker(snapshot, session: session)
         case .showOrdinaryGrid:
             session.isFirstSummon = true
-            FocusSetPickerPanel.shared.remove()
+            if !FocusSetPickerPanel.shared.remove() {
+                Appearance.update()
+            }
         case .dismissSwitcherUi:
             hideUi()
         case .noOp:
@@ -395,7 +443,7 @@ class App: AppCenterApplication {
 
     private static func presentFocusSetPicker(_ snapshot: FocusSetPickerSnapshot,
                                               session: SwitcherSession) {
-        Appearance.update()
+        Appearance.update(style: .titles)
         FocusSetPickerPanel.shared.refreshAppearance()
         if let picker = FocusSetPickerPanel.shared.picker(),
            FocusSetPickerPanel.shared.isShowing {
@@ -443,10 +491,15 @@ class App: AppCenterApplication {
     private static func showFocusSetGrid(_ snapshot: FocusSetPickerSnapshot,
                                          session: SwitcherSession) {
         KeyRepeatTimer.stopCurrentTimer()
-        FocusSetPickerPanel.shared.remove()
+        if !FocusSetPickerPanel.shared.remove() {
+            Appearance.update()
+        }
         TilesPanel.shared.alphaValue = 0
         session.isFirstSummon = false
-        TilesView.startSearchSession(false)
+        let startsInSearch = !session.returnsToFocusSetPicker
+            && Preferences.effectiveShortcutStyle(session.shortcutIndex) == .searchOnRelease
+        TilesView.startSearchSession(startsInSearch)
+        if startsInSearch { session.forceDoNothingOnRelease = true }
         if !Windows.updatesBeforeShowing() {
             hideUi()
             return
@@ -480,7 +533,9 @@ class App: AppCenterApplication {
     }
 
     private static func refreshFocusSetGridAfterExternalEvent(_ session: SwitcherSession) {
-        let snapshot = focusSetPickerSnapshot()
+        let snapshot = session.focusSetSessionState.directFocusSetIdentifier == nil
+            ? focusSetPickerSnapshot()
+            : directFocusSetSnapshot()
         updateFocusSetSession(snapshot, session: session)
         if !Windows.updatesBeforeShowing() {
             let decision = FocusSetSessionResolver.resolve(
@@ -521,7 +576,7 @@ class App: AppCenterApplication {
                 updateFocusSetSession(snapshot, session: session)
                 presentFocusSetPicker(snapshot, session: session)
                 return
-            case .focusSetGrid:
+            case .focusSetGrid, .directFocusSetGrid:
                 refreshFocusSetGridAfterExternalEvent(session)
                 return
             case .idle, .ordinaryGrid:

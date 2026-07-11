@@ -22,8 +22,8 @@ final class SwitcherSession {
     var selectedTarget: String?
     var searchQuery: String = ""
 
-    /// `ordinaryGrid` preserves the legacy flow. Focus Sets transitions replace this state only
-    /// for the picker and its child grid, so a normal shortcut never inherits a Focus Set scope.
+    /// `ordinaryGrid` preserves the legacy flow. Focus Sets transitions replace this state for the
+    /// picker, its child grid, or a direct scoped grid, so normal shortcuts never inherit membership.
     var focusSetSessionState: FocusSetSessionState = .ordinaryGrid
     var focusSetPickerSelectedIdentifier: FocusSetPickerItemIdentifier?
     var focusSetPickerQuery: String = ""

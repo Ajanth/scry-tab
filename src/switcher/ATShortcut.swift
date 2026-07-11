@@ -19,10 +19,12 @@ class ATShortcut {
     }
 
     func matches(_ id: Int?, _ shortcutState: ShortcutState?, _ keyCode: UInt32?, _ modifiers: NSEvent.ModifierFlags?) -> Bool {
-        if let id, let shortcutState, let shortcutId = KeyboardEventsTestable.globalShortcutsIds.first(where: { $0.value == id })?.key {
+        if let id,
+           let shortcutState,
+           let shortcutId = KeyboardEventsTestable.actionIdentifier(forGlobalShortcutId: id) {
             if shortcutId == self.id {
                 state = shortcutState
-                if (triggerPhase == .down && state == .down) || (triggerPhase == .up && state == .up) {
+                if triggers(on: state) {
                     return true
                 }
             }
@@ -33,11 +35,17 @@ class ATShortcut {
             let flipped = state != newState
             state = newState
             // state == down is unambiguous; state == up is hard to match with a particular shortcut, unless it's been flipped
-            if (triggerPhase == .down && state == .down) || (triggerPhase == .up && state == .up && flipped) {
+            if (triggerPhase == .down && state == .down)
+                || ((triggerPhase == .up || triggerPhase == .both) && state == .up && flipped)
+                || (triggerPhase == .both && state == .down) {
                 return true
             }
         }
         return false
+    }
+
+    private func triggers(on state: ShortcutState) -> Bool {
+        triggerPhase == .both || (triggerPhase == .down && state == .down) || (triggerPhase == .up && state == .up)
     }
 
     private func modifiersMatch(_ modifiers: CarbonModifierFlags) -> Bool {
@@ -63,6 +71,9 @@ class ATShortcut {
     func shouldTrigger() -> Bool {
         let session = SwitcherSession.current
         if scope == .global {
+            if triggerPhase == .both {
+                return true
+            }
             if triggerPhase == .down, session == nil || index == nil || index == session?.shortcutIndex {
                 return true
             }
@@ -113,6 +124,7 @@ class ATShortcut {
 enum ShortcutTriggerPhase {
     case down
     case up
+    case both
 }
 
 enum ShortcutState {

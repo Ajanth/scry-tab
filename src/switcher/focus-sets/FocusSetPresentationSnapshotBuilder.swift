@@ -1,14 +1,15 @@
 import Cocoa
 
 enum FocusSetPresentationSnapshotBuilder {
-    static func make(configuration: FocusSetsConfiguration? = nil) -> FocusSetPresentationSnapshot {
+    static func make(configuration: FocusSetsConfiguration? = nil,
+                     countedScopes: [FocusSetScope]? = nil) -> FocusSetPresentationSnapshot {
         precondition(Thread.isMainThread, "Focus Set presentation snapshots require the main thread.")
         let configuration = configuration ?? readConfiguration()
         let profileIndex = Preferences.shortcutIndex(forIdentifier: configuration.presentationShortcutIdentifier) ?? 0
         let filters = makeFilters(profileIndex: profileIndex)
-        let candidates = makeCandidates(requiresPreferredScreen: filters.onlyPreferredScreen)
         let resolver = FocusSetResolver(configuration: configuration)
-        let scopes = [FocusSetScope.allWindows, .unassigned] + configuration.sets.map { .set(id: $0.id) }
+        let scopes = countedScopes ?? ([FocusSetScope.allWindows, .unassigned] + configuration.sets.map { .set(id: $0.id) })
+        let candidates = scopes.isEmpty ? [] : makeCandidates(requiresPreferredScreen: filters.onlyPreferredScreen)
         let candidateCounts = FocusSetCandidateCounter.counts(
             candidates,
             scopes: scopes,
