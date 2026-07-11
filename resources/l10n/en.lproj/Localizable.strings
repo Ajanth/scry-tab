@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%@ switches, %@";
 "3-finger Horizontal Swipe" = "3-finger Horizontal Swipe";
 "3-finger Vertical Swipe" = "3-finger Vertical Swipe";
 "4-finger Horizontal Swipe" = "4-finger Horizontal Swipe";
@@ -119,6 +120,9 @@
 "Order windows by" = "Order windows by";
 "Ordering" = "Ordering";
 "Ordering & Grouping" = "Ordering & Grouping";
+"Past month" = "Past month";
+"Past week" = "Past week";
+"Past year" = "Past year";
 "Pause preview animation" = "Pause preview animation";
 "Please drag ScryTab into the Applications folder manually." = "Please drag ScryTab into the Applications folder manually.";
 "Please fill in the form" = "Please fill in the form";
@@ -178,7 +182,6 @@
 "Size" = "Size";
 "Small" = "Small";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
-"Source code" = "Source code";
 "Space Order" = "Space Order";
 "Start" = "Start";
 "Start at login" = "Start at login";

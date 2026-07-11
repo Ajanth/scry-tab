@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%1$@ alternâncias, %2$@";
 "3-finger Horizontal Swipe" = "Deslizar horizontal com 3 dedos";
 "3-finger Vertical Swipe" = "Deslizar vertical com 3 dedos";
 "4-finger Horizontal Swipe" = "Deslizar horizontal com 4 dedos";
@@ -119,6 +120,9 @@
 "Order windows by" = "Ordenar janelas por";
 "Ordering" = "Ordenação";
 "Ordering & Grouping" = "Ordenação e agrupamento";
+"Past month" = "Último mês";
+"Past week" = "Última semana";
+"Past year" = "Último ano";
 "Pause preview animation" = "Pausar animação da prévia";
 "Please drag ScryTab into the Applications folder manually." = "Arraste o ScryTab para a pasta Aplicativos manualmente.";
 "Please fill in the form" = "Preencha o formulário";
@@ -178,7 +182,6 @@
 "Size" = "Tamanho";
 "Small" = "Pequeno";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Alguns atalhos substituem este ajuste. Aplique o novo valor global a todos os atalhos removendo essas substituições ou mantenha-as.";
-"Source code" = "Código-fonte";
 "Space Order" = "Ordem dos Espaços";
 "Start" = "Início";
 "Start at login" = "Abrir ao iniciar sessão";

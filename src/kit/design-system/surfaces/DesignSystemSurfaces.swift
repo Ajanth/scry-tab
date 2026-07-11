@@ -93,6 +93,49 @@ final class DesignSystemDividerView: NSView {
     }
 }
 
+class DesignSystemFlatSurfaceView: NSView {
+    private var accessibilityObserver: NSObjectProtocol?
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    deinit {
+        if let accessibilityObserver { NotificationCenter.default.removeObserver(accessibilityObserver) }
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if let accessibilityObserver { NotificationCenter.default.removeObserver(accessibilityObserver) }
+        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in self?.refresh() }
+        refresh()
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refresh()
+    }
+
+    private func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        wantsLayer = true
+        layer?.cornerRadius = DesignSystem.Metrics.controlRadius
+        layer?.borderWidth = 1
+        refresh()
+    }
+
+    private func refresh() {
+        layer?.backgroundColor = DesignSystem.semanticCGColor(.surfaceFlat, in: self)
+        layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: self)
+    }
+}
+
 final class DesignSystemWindowContentView: NSView {
     private let materialView = DesignSystemMaterialView()
     private let content: NSView

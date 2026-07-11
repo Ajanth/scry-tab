@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%1$@ переключений, %2$@";
 "3-finger Horizontal Swipe" = "Горизонтальный свайп тремя пальцами";
 "3-finger Vertical Swipe" = "Вертикальный свайп тремя пальцами";
 "4-finger Horizontal Swipe" = "Горизонтальный свайп четырьмя пальцами";
@@ -119,6 +120,9 @@
 "Order windows by" = "Сортировка окон";
 "Ordering" = "Порядок";
 "Ordering & Grouping" = "Сортировка и группировка";
+"Past month" = "За месяц";
+"Past week" = "За неделю";
+"Past year" = "За год";
 "Pause preview animation" = "Приостановить анимацию предпросмотра";
 "Please drag ScryTab into the Applications folder manually." = "Перетащите ScryTab в папку «Программы» вручную.";
 "Please fill in the form" = "Заполните форму";
@@ -178,7 +182,6 @@
 "Size" = "Размер";
 "Small" = "Маленький";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Некоторые сочетания клавиш переопределяют этот параметр. Удалите эти переопределения, чтобы применить новое общее значение ко всем сочетаниям клавиш, или сохраните их.";
-"Source code" = "Исходный код";
 "Space Order" = "Порядок пространств";
 "Start" = "Начало";
 "Start at login" = "Запускать при входе в систему";

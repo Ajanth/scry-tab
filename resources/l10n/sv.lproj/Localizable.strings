@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%1$@ växlingar, %2$@";
 "3-finger Horizontal Swipe" = "Horisontellt svep med 3 fingrar";
 "3-finger Vertical Swipe" = "Vertikalt svep med 3 fingrar";
 "4-finger Horizontal Swipe" = "Horisontellt svep med 4 fingrar";
@@ -119,6 +120,9 @@
 "Order windows by" = "Sortera fönster efter";
 "Ordering" = "Sortering";
 "Ordering & Grouping" = "Sortering och gruppering";
+"Past month" = "Senaste månaden";
+"Past week" = "Senaste veckan";
+"Past year" = "Senaste året";
 "Pause preview animation" = "Pausa förhandsvisningsanimation";
 "Please drag ScryTab into the Applications folder manually." = "Dra ScryTab till mappen Program manuellt.";
 "Please fill in the form" = "Fyll i formuläret";
@@ -178,7 +182,6 @@
 "Size" = "Storlek";
 "Small" = "Liten";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Vissa kortkommandon åsidosätter den här inställningen. Tillämpa det nya globala värdet på alla kortkommandon genom att ta bort åsidosättningarna, eller behåll dem.";
-"Source code" = "Källkod";
 "Space Order" = "Skrivbordsordning";
 "Start" = "Start";
 "Start at login" = "Starta vid inloggning";

@@ -1,3 +1,6 @@
+/* Usage badge accessibility label */
+"%@ switches, %@" = "%1$@ switches, %2$@";
+
 /* No comment provided by engineer. */
 "3-finger Horizontal Swipe" = "3-finger Horizontal Swipe";
 
@@ -361,6 +364,15 @@
 /* No comment provided by engineer. */
 "Ordering & Grouping" = "Ordering & Grouping";
 
+/* Usage period */
+"Past month" = "Past month";
+
+/* Usage period */
+"Past week" = "Past week";
+
+/* Usage period */
+"Past year" = "Past year";
+
 /* No comment provided by engineer. */
 "Pause preview animation" = "Pause preview animation";
 
@@ -537,9 +549,6 @@
 
 /* No comment provided by engineer. */
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
-
-/* No comment provided by engineer. */
-"Source code" = "Source code";
 
 /* No comment provided by engineer. */
 "Space Order" = "Space Order";

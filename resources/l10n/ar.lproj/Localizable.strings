@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%1$@ من عمليات التبديل، %2$@";
 "3-finger Horizontal Swipe" = "تمرير أفقي بثلاثة أصابع";
 "3-finger Vertical Swipe" = "تمرير عمودي بثلاثة أصابع";
 "4-finger Horizontal Swipe" = "تمرير أفقي بأربعة أصابع";
@@ -119,6 +120,9 @@
 "Order windows by" = "ترتيب النوافذ حسب";
 "Ordering" = "الترتيب";
 "Ordering & Grouping" = "الترتيب والتجميع";
+"Past month" = "الشهر الماضي";
+"Past week" = "الأسبوع الماضي";
+"Past year" = "العام الماضي";
 "Pause preview animation" = "إيقاف حركة المعاينة مؤقتًا";
 "Please drag ScryTab into the Applications folder manually." = "يرجى سحب ScryTab إلى مجلد التطبيقات يدويًا.";
 "Please fill in the form" = "يرجى ملء النموذج";
@@ -178,7 +182,6 @@
 "Size" = "الحجم";
 "Small" = "صغير";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "تتجاوز بعض الاختصارات هذا الإعداد. طبّق القيمة العامة الجديدة على جميع الاختصارات بإزالة تلك التجاوزات، أو احتفظ بها.";
-"Source code" = "الكود المصدري";
 "Space Order" = "ترتيب المساحات";
 "Start" = "البداية";
 "Start at login" = "البدء عند تسجيل الدخول";

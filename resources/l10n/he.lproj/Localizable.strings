@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%1$@ החלפות, %2$@";
 "3-finger Horizontal Swipe" = "החלקה אופקית ב-3 אצבעות";
 "3-finger Vertical Swipe" = "החלקה אנכית ב-3 אצבעות";
 "4-finger Horizontal Swipe" = "החלקה אופקית ב-4 אצבעות";
@@ -119,6 +120,9 @@
 "Order windows by" = "מיין חלונות לפי";
 "Ordering" = "סדר";
 "Ordering & Grouping" = "מיון וקיבוץ";
+"Past month" = "החודש האחרון";
+"Past week" = "השבוע האחרון";
+"Past year" = "השנה האחרונה";
 "Pause preview animation" = "השהה את הנפשת התצוגה המקדימה";
 "Please drag ScryTab into the Applications folder manually." = "גרור את ScryTab לתיקיית היישומים באופן ידני.";
 "Please fill in the form" = "מלא את הטופס";
@@ -178,7 +182,6 @@
 "Size" = "גודל";
 "Small" = "קטן";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "חלק מהקיצורים דורסים הגדרה זו. אפשר להסיר את הדריסות ולהחיל את הערך הכללי החדש על כל הקיצורים, או להשאיר את הדריסות.";
-"Source code" = "קוד מקור";
 "Space Order" = "סדר המרחבים";
 "Start" = "התחלה";
 "Start at login" = "הפעל בעת ההתחברות";

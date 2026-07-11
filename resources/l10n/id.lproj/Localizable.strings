@@ -1,3 +1,4 @@
+"%@ switches, %@" = "%1$@ kali beralih, %2$@";
 "3-finger Horizontal Swipe" = "Gesek Horizontal 3 Jari";
 "3-finger Vertical Swipe" = "Gesek Vertikal 3 Jari";
 "4-finger Horizontal Swipe" = "Gesek Horizontal 4 Jari";
@@ -119,6 +120,9 @@
 "Order windows by" = "Urutkan jendela berdasarkan";
 "Ordering" = "Pengurutan";
 "Ordering & Grouping" = "Pengurutan & Pengelompokan";
+"Past month" = "Sebulan terakhir";
+"Past week" = "Seminggu terakhir";
+"Past year" = "Setahun terakhir";
 "Pause preview animation" = "Jeda animasi pratinjau";
 "Please drag ScryTab into the Applications folder manually." = "Seret ScryTab ke folder Aplikasi secara manual.";
 "Please fill in the form" = "Isi formulir";
@@ -178,7 +182,6 @@
 "Size" = "Ukuran";
 "Small" = "Kecil";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Beberapa pintasan mengganti pengaturan ini. Terapkan nilai global baru ke semua pintasan dengan menghapus penggantian tersebut, atau pertahankan penggantiannya.";
-"Source code" = "Kode sumber";
 "Space Order" = "Urutan Ruang";
 "Start" = "Mulai";
 "Start at login" = "Jalankan saat masuk";
