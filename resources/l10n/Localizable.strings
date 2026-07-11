@@ -2,6 +2,12 @@
 "%@ switches, %@" = "%1$@ switches, %2$@";
 
 /* No comment provided by engineer. */
+"%d matching windows" = "%d matching windows";
+
+/* No comment provided by engineer. */
+"1 matching window" = "1 matching window";
+
+/* No comment provided by engineer. */
 "3-finger Horizontal Swipe" = "3-finger Horizontal Swipe";
 
 /* No comment provided by engineer. */
@@ -29,9 +35,6 @@
 "Accessibility" = "Accessibility";
 
 /* No comment provided by engineer. */
-"Acknowledgments" = "Acknowledgments";
-
-/* No comment provided by engineer. */
 "Active app" = "Active app";
 
 /* No comment provided by engineer. */
@@ -45,6 +48,9 @@
 
 /* No comment provided by engineer. */
 "Add an app from disk" = "Add an app from disk";
+
+/* No comment provided by engineer. */
+"Add Focus Set" = "Add Focus Set";
 
 /* No comment provided by engineer. */
 "Additional controls" = "Additional controls";
@@ -63,6 +69,9 @@
 
 /* No comment provided by engineer. */
 "All Spaces" = "All Spaces";
+
+/* No comment provided by engineer. */
+"All Windows" = "All Windows";
 
 /* No comment provided by engineer. */
 "Allowed" = "Allowed";
@@ -99,6 +108,9 @@
 
 /* No comment provided by engineer. */
 "Applies in other Appearances" = "Applies in other Appearances";
+
+/* No comment provided by engineer. */
+"Apply" = "Apply";
 
 /* No comment provided by engineer. */
 "Apply this change to all shortcuts?" = "Apply this change to all shortcuts?";
@@ -149,6 +161,12 @@
 "Check permissions…" = "Check permissions…";
 
 /* No comment provided by engineer. */
+"Choose a global shortcut to open the Focus Sets picker." = "Choose a global shortcut to open the Focus Sets picker.";
+
+/* No comment provided by engineer. */
+"Choose Applications…" = "Choose Applications…";
+
+/* No comment provided by engineer. */
 "Close window" = "Close window";
 
 /* No comment provided by engineer. */
@@ -167,6 +185,9 @@
 "Crash reports policy" = "Crash reports policy";
 
 /* No comment provided by engineer. */
+"Create a set to browse the applications you use together." = "Create a set to browse the applications you use together.";
+
+/* No comment provided by engineer. */
 "Create GitHub issue" = "Create GitHub issue";
 
 /* No comment provided by engineer. */
@@ -180,6 +201,9 @@
 
 /* Menubar option */
 "Debug tools" = "Debug tools";
+
+/* No comment provided by engineer. */
+"Delete" = "Delete";
 
 /* No comment provided by engineer. */
 "Disabled" = "Disabled";
@@ -206,6 +230,12 @@
 "e.g. Debug" = "e.g. Debug";
 
 /* No comment provided by engineer. */
+"Edit" = "Edit";
+
+/* No comment provided by engineer. */
+"Edit Focus Set" = "Edit Focus Set";
+
+/* No comment provided by engineer. */
 "End" = "End";
 
 /* No comment provided by engineer. */
@@ -225,6 +255,12 @@
 
 /* No comment provided by engineer. */
 "Focus selected window" = "Focus selected window";
+
+/* No comment provided by engineer. */
+"Focus Sets" = "Focus Sets";
+
+/* No comment provided by engineer. */
+"Focus Sets profile" = "Focus Sets profile";
 
 /* No comment provided by engineer. */
 "Fullscreen/Defullscreen window" = "Fullscreen/Defullscreen window";
@@ -281,6 +317,9 @@
 "Import settings…" = "Import settings…";
 
 /* No comment provided by engineer. */
+"Included Applications" = "Included Applications";
+
+/* No comment provided by engineer. */
 "Language" = "Language";
 
 /* No comment provided by engineer. */
@@ -313,6 +352,12 @@
 /* No comment provided by engineer. */
 "Miscellaneous" = "Miscellaneous";
 
+/* No comment provided by engineer. */
+"Move Focus Set Down" = "Move Focus Set Down";
+
+/* No comment provided by engineer. */
+"Move Focus Set Up" = "Move Focus Set Up";
+
 /* LetsMove replacement alert */
 "Move to Applications Folder" = "Move to Applications Folder";
 
@@ -323,6 +368,9 @@
 "Multiple screens" = "Multiple screens";
 
 /* No comment provided by engineer. */
+"Name" = "Name";
+
+/* No comment provided by engineer. */
 "Navigation & pointer" = "Navigation & pointer";
 
 /* No comment provided by engineer. */
@@ -330,6 +378,18 @@
 
 /* No comment provided by engineer. */
 "Never send crash reports" = "Never send crash reports";
+
+/* No comment provided by engineer. */
+"New Focus Set" = "New Focus Set";
+
+/* No comment provided by engineer. */
+"No applications selected." = "No applications selected.";
+
+/* No comment provided by engineer. */
+"No Focus Sets" = "No Focus Sets";
+
+/* No comment provided by engineer. */
+"No matching applications." = "No matching applications.";
 
 /* No comment provided by engineer. */
 "No Window" = "No Window";
@@ -344,6 +404,9 @@
 "Not allowed" = "Not allowed";
 
 /* No comment provided by engineer. */
+"Not currently open" = "Not currently open";
+
+/* No comment provided by engineer. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -351,6 +414,9 @@
 
 /* No comment provided by engineer. */
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
+
+/* No comment provided by engineer. */
+"Open Focus Sets" = "Open Focus Sets";
 
 /* No comment provided by engineer. */
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
@@ -419,6 +485,9 @@
 "Resume preview animation" = "Resume preview animation";
 
 /* No comment provided by engineer. */
+"Saved Focus Sets" = "Saved Focus Sets";
+
+/* No comment provided by engineer. */
 "Screen including menu bar" = "Screen including menu bar";
 
 /* No comment provided by engineer. */
@@ -438,6 +507,12 @@
 
 /* No comment provided by engineer. */
 "Search" = "Search";
+
+/* No comment provided by engineer. */
+"Search applications" = "Search applications";
+
+/* No comment provided by engineer. */
+"Search Focus Sets" = "Search Focus Sets";
 
 /* No comment provided by engineer. */
 "Select next window" = "Select next window";
@@ -608,6 +683,12 @@
 "Unassign existing shortcut and continue" = "Unassign existing shortcut and continue";
 
 /* No comment provided by engineer. */
+"Unassigned Windows" = "Unassigned Windows";
+
+/* No comment provided by engineer. */
+"Unavailable application" = "Unavailable application";
+
+/* No comment provided by engineer. */
 "Update now" = "Update now";
 
 /* No comment provided by engineer. */
@@ -615,6 +696,9 @@
 
 /* No comment provided by engineer. */
 "Usage" = "Usage";
+
+/* No comment provided by engineer. */
+"Uses this shortcut’s filters when counting and showing windows." = "Uses this shortcut’s filters when counting and showing windows.";
 
 /* No comment provided by engineer. */
 "Version" = "Version";
