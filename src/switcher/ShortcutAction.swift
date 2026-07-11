@@ -8,6 +8,7 @@ struct ShortcutAction {
 enum ShortcutActions {
     static let all: [ShortcutAction] = [
         ShortcutAction(id: "focusWindowShortcut", perform: { App.focusTarget() }),
+        ShortcutAction(id: "openFocusSetsShortcut", perform: { App.showFocusSetPicker() }),
         ShortcutAction(id: "previousWindowShortcut", perform: { App.previousWindowShortcutWithRepeatingKey() }),
         ShortcutAction(id: "→", perform: { App.cycleSelection(.right) }),
         ShortcutAction(id: "←", perform: { App.cycleSelection(.left) }),
@@ -17,23 +18,13 @@ enum ShortcutActions {
         ShortcutAction(id: "vimCycleLeft", perform: { App.cycleSelection(.left) }),
         ShortcutAction(id: "vimCycleUp", perform: { App.cycleSelection(.up) }),
         ShortcutAction(id: "vimCycleDown", perform: { App.cycleSelection(.down) }),
-        ShortcutAction(id: "cancelShortcut", perform: {
-            guard let session = SwitcherSession.current else { return }
-            let entry: SearchEntryStyle = Preferences.effectiveShortcutStyle(session.shortcutIndex) == .searchOnRelease ? .startedInSearch : .toggledMidSession
-            switch SearchModeResolver.escape(mode: TilesView.searchMode, entry: entry) {
-                case .exitSearch: TilesView.disableSearchMode()
-                case .closeSwitcher: App.hideUi()
-            }
-        }),
-        ShortcutAction(id: "closeWindowShortcut", perform: { Windows.selectedWindow()?.close() }),
-        ShortcutAction(id: "minDeminWindowShortcut", perform: { Windows.selectedWindow()?.minDemin() }),
-        ShortcutAction(id: "toggleFullscreenWindowShortcut", perform: { Windows.selectedWindow()?.toggleFullscreen() }),
-        ShortcutAction(id: "quitAppShortcut", perform: { Windows.selectedWindow()?.application.quit() }),
-        ShortcutAction(id: "hideShowAppShortcut", perform: { Windows.selectedWindow()?.application.hideOrShow() }),
-        ShortcutAction(id: "searchShortcut", perform: {
-            guard SwitcherSession.isActive else { return }
-            TilesView.toggleSearchModeFromShortcut()
-        }),
+        ShortcutAction(id: "cancelShortcut", perform: { App.handleCancelShortcut() }),
+        ShortcutAction(id: "closeWindowShortcut", perform: { selectedWindowForShortcutAction()?.close() }),
+        ShortcutAction(id: "minDeminWindowShortcut", perform: { selectedWindowForShortcutAction()?.minDemin() }),
+        ShortcutAction(id: "toggleFullscreenWindowShortcut", perform: { selectedWindowForShortcutAction()?.toggleFullscreen() }),
+        ShortcutAction(id: "quitAppShortcut", perform: { selectedWindowForShortcutAction()?.application.quit() }),
+        ShortcutAction(id: "hideShowAppShortcut", perform: { selectedWindowForShortcutAction()?.application.hideOrShow() }),
+        ShortcutAction(id: "searchShortcut", perform: { App.toggleSearchMode() }),
         ShortcutAction(id: "lockSearchShortcut", perform: {
             guard SwitcherSession.isActive, TilesView.isSearchModeOn else { return }
             TilesView.lockSearchMode()
@@ -52,11 +43,17 @@ enum ShortcutActions {
             return
         }
         if id.hasPrefix("holdShortcut") {
+            guard SwitcherSession.current?.focusSetSessionState != .picker else { return }
             App.focusTarget()
             return
         }
         if id.hasPrefix("nextWindowShortcut") {
             App.showUiOrCycleSelection(Preferences.nameToIndex(id), false)
         }
+    }
+
+    private static func selectedWindowForShortcutAction() -> Window? {
+        guard SwitcherSession.current?.focusSetSessionState != .picker else { return nil }
+        return Windows.selectedWindow()
     }
 }

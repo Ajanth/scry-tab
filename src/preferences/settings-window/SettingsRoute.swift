@@ -20,6 +20,7 @@ enum ControlsDestination: Equatable {
     case gesture
     case activeShortcuts
     case navigationPointer
+    case focusSets
 }
 
 enum ExceptionDestination: Equatable {

@@ -14,6 +14,13 @@ final class SettingsRouteTests: XCTestCase {
         XCTAssertEqual(navigation.previousNonSearchRoute, .controls(.gesture))
     }
 
+    func testFocusSetsDestinationIsPreserved() {
+        let navigation = SettingsNavigationController()
+        navigation.navigate(to: .controls(.focusSets))
+        XCTAssertEqual(navigation.selectedRoute, .controls(.focusSets))
+        XCTAssertEqual(navigation.previousNonSearchRoute, .controls(.focusSets))
+    }
+
     func testSearchPreservesPreviousNonSearchRoute() {
         let navigation = SettingsNavigationController(initialRoute: .general)
         navigation.updateSearch(query: "update")

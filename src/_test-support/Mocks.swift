@@ -195,6 +195,8 @@ enum ShortcutActions {
 class KeyRepeatTimer {
     static func stopTimerForRepeatingKey(_ shortcutName: String) {
     }
+    static func stopCurrentTimer() {
+    }
 }
 
 class Logger {

@@ -23,13 +23,30 @@ the resulting actions.
 - Switching directly from one shortcut slot to another is handled.
 - **Escape**: while the switcher is active (e.g. Option held), Escape fires the cancel shortcut; when the
   switcher is closed, Escape does nothing (ScryTab doesn't swallow it).
+- **Open Focus Sets**: the standalone global shortcut has a dedicated Carbon ID after the numbered
+  press/release IDs and dispatches only on key-down.
 
 ## Test scenarios
 
 Mirrors `KeyboardEventsTests.swift` 1:1.
 
+- **testOpenFocusSetsShortcutUsesDedicatedHotkeyIdAndFiresOnlyOnKeyDown** — the static shortcut uses
+  `2 * maxShortcutCount` and ignores its key-up event.
+- **testPickerTextKeyPassesToSearchField** — ordinary picker text input, including Space, bypasses
+  shortcut dispatch.
+- **testPickerVimKeyRunsRegisteredLocalShortcut** — an unmodified registered Vim key bypasses the
+  picker search field and dispatches its existing local cycle action; its key-up passes through
+  without a second action.
+- **testPickerModifiedVimKeysPassToSearchField** — shifted and Command-modified Vim letters retain
+  native picker search-field handling.
+- **testPickerModifierChangeWithoutEventBypassesShortcuts** — eventless modifier changes bypass
+  shortcut dispatch while the picker is key, preventing Shift-only shortcuts from firing during
+  typed search.
+- **testHidEscapeBypassesFocusSetPicker** — the HID Escape interception leaves the picker’s native
+  Escape and IME-composition behavior intact.
 - **testMostCommonSequence** — the canonical hold-modifier → next-window → release flow.
-- **testSecondMostCommonSequence** / **testSecondMostCommonSequenceVariation** — the next most common flows resolve correctly.
+- **testSecondMostCommonSequence** — the second-most-common hold-modifier flow resolves correctly.
+- **testSecondMostCommonSequenceVariation** — a variation of that flow resolves correctly.
 - **testSequenceWithMissingEventAndWeCanSaveTheDay** — a dropped event the machine can recover from.
 - **testSequenceWithMissingEventAndWeCanNotSaveTheDay** — a dropped event it can't recover from → predictable degradation.
 - **testOutOfOrderEvents** — events arriving out of order are handled.

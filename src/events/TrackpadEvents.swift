@@ -194,7 +194,7 @@ class NavigationSwipeDetector {
         let direction: Direction = maxIsX ? (averageDistance.x < 0 ? .left : .right) : (averageDistance.y < 0 ? .down : .up)
         DispatchQueue.main.async {
             performHapticFeedback()
-            App.cycleSelection(direction, allowWrap: false)
+            App.handleNavigationGesture(direction)
         }
     }
 

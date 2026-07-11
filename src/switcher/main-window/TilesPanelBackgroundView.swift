@@ -83,7 +83,7 @@ protocol EffectView: NSView {
     func updateAppearance()
 }
 
-enum EffectViewKind {
+enum EffectViewKind: Equatable {
     case frosted
     case liquidGlassRegular
     case liquidGlassClear

@@ -6,6 +6,7 @@ class CursorEvents {
     private static var shouldBeEnabled: Bool!
     private static var mouseDownTarget: AnyObject?
     private static var mouseDownInsideSearchField = false
+    private static var pickerMouseDownInside = false
     /// true once the tap has observed a leftMouseDown since the switcher showed (reset per gesture and on
     /// each show). A drag from another app started before the switcher showed, so its down was never seen —
     /// that is how `handleLeftMouseUp` recognizes a drop's up and yields it (see `DragAndDropResolver`).
@@ -22,6 +23,7 @@ class CursorEvents {
         shouldBeEnabled = enabled
         if !enabled {
             deadZoneInitialPosition = nil
+            pickerMouseDownInside = false
         } else {
             sawLeftMouseDown = false // fresh session: a drag in flight when we show has no down we saw
         }
@@ -74,6 +76,10 @@ class CursorEvents {
 
     private static func handleLeftMouseDown(_ cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
         sawLeftMouseDown = true // this gesture's down is ours; its up is a click, not a foreign drop
+        if isFocusSetPickerActive() {
+            pickerMouseDownInside = isPointerInsideUi()
+            return pickerMouseDownInside ? Unmanaged.passUnretained(cgEvent) : nil
+        }
         if TilesView.hasMarkedText() || ContextMenuEvents.isMenuOpen { return Unmanaged.passUnretained(cgEvent) }
         if isPointerInsideSearchField() {
             mouseDownInsideSearchField = true
@@ -94,6 +100,15 @@ class CursorEvents {
         // panel. Let AppKit / the source app conclude the drop (see DragAndDropResolver).
         if DragAndDropResolver.passesThroughMouseUp(mouseDownWasSeen: sawDown) {
             return Unmanaged.passUnretained(cgEvent)
+        }
+        if isFocusSetPickerActive() {
+            let mouseDownWasInside = pickerMouseDownInside
+            pickerMouseDownInside = false
+            let mouseUpIsInside = isPointerInsideUi()
+            if !mouseDownWasInside && !mouseUpIsInside {
+                App.dismissFocusSetPicker()
+            }
+            return mouseDownWasInside ? Unmanaged.passUnretained(cgEvent) : nil
         }
         if TilesView.hasMarkedText() || ContextMenuEvents.isMenuOpen { return Unmanaged.passUnretained(cgEvent) }
         if mouseDownInsideSearchField || isPointerInsideSearchField() {
@@ -141,6 +156,9 @@ class CursorEvents {
     }
 
     private static func handleMouseMoved(_ cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
+        if isFocusSetPickerActive() {
+            return Unmanaged.passUnretained(cgEvent)
+        }
         if isAllowedToReactToPointerMovement(cgEvent.location) {
             TilesView.overView.updateHover()
         }
@@ -163,6 +181,10 @@ class CursorEvents {
 
     private static func isPointerInsideUi() -> Bool {
         TilesPanel.shared.contentLayoutRect.contains(pointerLocationInWindow())
+    }
+
+    private static func isFocusSetPickerActive() -> Bool {
+        SwitcherSession.current?.focusSetSessionState == .picker
     }
 
     private static func isPointerInsideSearchField() -> Bool {

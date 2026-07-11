@@ -50,15 +50,18 @@ class ControlsTab {
     private static let gestureSelectionIndex = -1
     private static let activeShortcutsSelectionIndex = -2
     private static let navigationPointerSelectionIndex = -3
+    private static let focusSetsSelectionIndex = -4
     private static let shortcutsCategoryLabel = NSLocalizedString("Shortcuts", comment: "")
     private static let gesturesCategoryLabel = NSLocalizedString("Gestures", comment: "")
     private static let advancedCategoryLabel = NSLocalizedString("Advanced", comment: "")
     private static let staticManagedShortcutPreferences = [
         "focusWindowShortcut", "previousWindowShortcut", "cancelShortcut", "searchShortcut", "lockSearchShortcut",
         "closeWindowShortcut", "minDeminWindowShortcut", "toggleFullscreenWindowShortcut", "quitAppShortcut", "hideShowAppShortcut",
+        "openFocusSetsShortcut",
     ]
-    /// Canonical id → localized label for the always-active ("when active") shortcuts. Single source
-    /// of truth: `ShortcutsWhenActiveSheet` reads its row titles from here, and `conflictLabel(_:)`
+    private static let staticGlobalShortcutPreferences: Set<String> = ["openFocusSetsShortcut"]
+    /// Canonical id → localized label for fixed shortcuts. Single source of truth:
+    /// `ShortcutsWhenActiveSheet` reads its row titles from here, and `conflictLabel(_:)`
     /// uses it to name a conflicting shortcut without needing its (possibly-unbuilt) sheet control.
     static let staticShortcutLabels = [
         "focusWindowShortcut": NSLocalizedString("Focus selected window", comment: ""),
@@ -71,6 +74,7 @@ class ControlsTab {
         "toggleFullscreenWindowShortcut": NSLocalizedString("Fullscreen/Defullscreen window", comment: ""),
         "quitAppShortcut": NSLocalizedString("Quit app", comment: ""),
         "hideShowAppShortcut": NSLocalizedString("Hide/Show app", comment: ""),
+        "openFocusSetsShortcut": NSLocalizedString("Open Focus Sets", comment: ""),
     ]
     private static let removableShortcutPreferences = [
         "shortcutIdentifier",
@@ -97,6 +101,7 @@ class ControlsTab {
     private static var gestureEditorView: NSView?
     private static var activeShortcutsView: NSView?
     private static var navigationPointerView: NSView?
+    private static var focusSetsView: FocusSetSettingsView?
     private static var gestureEditorTabControl: NSSegmentedControl?
     /// Outer container of the gesture editor — used by `ensureGesturePaneBuilt` to append a pane
     /// to it the first time the user selects that segment. Kept weak via the static-let pattern
@@ -138,12 +143,14 @@ class ControlsTab {
         let gestureView = makeGestureEditor()
         let activeView = ShortcutsWhenActiveSheet.makeContentView(width: shortcutEditorContentWidth)
         let navigationView = AdditionalControlsSheet.makeContentView(width: shortcutEditorContentWidth)
+        let focusView = FocusSetSettingsView(width: shortcutEditorContentWidth)
         gestureEditorView = gestureView
         activeShortcutsView = activeView
         navigationPointerView = navigationView
+        focusSetsView = focusView
         let shortcutsPage = makeShortcutsView()
         let gesturesPage = makeCenteredDetailPage(gestureView)
-        let advancedPage = makeAdvancedPage(activeView: activeView, navigationView: navigationView)
+        let advancedPage = makeAdvancedPage(activeView: activeView, navigationView: navigationView, focusSetsView: focusView)
         shortcutsPageView = shortcutsPage
         gesturesPageView = gesturesPage
         advancedPageView = advancedPage
@@ -175,6 +182,7 @@ class ControlsTab {
         gestureEditorView = nil
         activeShortcutsView = nil
         navigationPointerView = nil
+        focusSetsView = nil
         gestureEditorTabControl = nil
         gestureEditorContainer = nil
         gestureFilteringPane = nil
@@ -246,15 +254,24 @@ class ControlsTab {
         advancedPageView?.isHidden = category != advancedCategoryIndex
         activeShortcutsView?.isHidden = selectedShortcutIndex != activeShortcutsSelectionIndex
         navigationPointerView?.isHidden = selectedShortcutIndex != navigationPointerSelectionIndex
-        advancedControl?.selectedSegment = selectedShortcutIndex == navigationPointerSelectionIndex ? 1 : 0
+        focusSetsView?.isHidden = selectedShortcutIndex != focusSetsSelectionIndex
+        advancedControl?.selectedSegment = advancedSegmentIndex()
         if category == gesturesCategoryIndex { syncGestureEditorTabSegment() }
     }
 
     private static func selectedCategoryIndex() -> Int {
         switch selectedShortcutIndex {
         case gestureSelectionIndex: return gesturesCategoryIndex
-        case activeShortcutsSelectionIndex, navigationPointerSelectionIndex: return advancedCategoryIndex
+        case activeShortcutsSelectionIndex, navigationPointerSelectionIndex, focusSetsSelectionIndex: return advancedCategoryIndex
         default: return shortcutsCategoryIndex
+        }
+    }
+
+    private static func advancedSegmentIndex() -> Int {
+        switch selectedShortcutIndex {
+        case navigationPointerSelectionIndex: return 1
+        case focusSetsSelectionIndex: return 2
+        default: return 0
         }
     }
 
@@ -304,34 +321,38 @@ class ControlsTab {
         tabSegmentSearchableStrings[ObjectIdentifier(control)] = [
             [shortcutsCategoryLabel, NSLocalizedString("Shortcut", comment: "")] + FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings,
             [gesturesCategoryLabel, gestureTitle()] + FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings,
-            [advancedCategoryLabel] + ShortcutsWhenActiveSheet.searchableStrings + AdditionalControlsSheet.searchableStrings,
+            [advancedCategoryLabel] + ShortcutsWhenActiveSheet.searchableStrings + AdditionalControlsSheet.searchableStrings + FocusSetSettingsView.searchableStrings,
         ]
         categoryControl = control
         return control
     }
 
-    private static func makeAdvancedPage(activeView: NSView, navigationView: NSView) -> NSView {
-        let labels = [activeShortcutsTitle(), navigationPointerTitle()]
+    private static func makeAdvancedPage(activeView: NSView, navigationView: NSView, focusSetsView: NSView) -> NSView {
+        let labels = [activeShortcutsTitle(), navigationPointerTitle(), focusSetsTitle()]
         let control = DesignSystemSegmentedControl(labels: labels, trackingMode: .selectOne, target: nil, action: nil)
-        control.selectedSegment = lastAdvancedSelectionIndex == navigationPointerSelectionIndex ? 1 : 0
+        control.selectedSegment = advancedSegmentIndex()
         LabelAndControl.applySystemSelectedSegmentStyle(control)
         control.widthAnchor.constraint(equalToConstant: shortcutEditorContentWidth).isActive = true
         let segmentWidth = shortcutEditorContentWidth / CGFloat(labels.count)
         for index in labels.indices { control.setWidth(segmentWidth, forSegment: index) }
         control.onAction = { [weak control] _ in
             guard let control else { return }
-            if control.selectedSegment == 0 {
+            switch control.selectedSegment {
+            case 0:
                 selectActiveShortcuts()
-            } else {
+            case 1:
                 selectNavigationPointer()
+            default:
+                selectFocusSets()
             }
         }
         tabSegmentSearchableStrings[ObjectIdentifier(control)] = [
             [activeShortcutsTitle()] + ShortcutsWhenActiveSheet.searchableStrings,
             [navigationPointerTitle()] + AdditionalControlsSheet.searchableStrings,
+            [focusSetsTitle()] + FocusSetSettingsView.searchableStrings,
         ]
         advancedControl = control
-        let content = NSStackView(views: [control, activeView, navigationView])
+        let content = NSStackView(views: [control, activeView, navigationView, focusSetsView])
         content.orientation = .vertical
         content.alignment = .leading
         content.spacing = TableGroupSetView.othersSpacing
@@ -543,7 +564,8 @@ class ControlsTab {
     }
 
     private static func isFixedDestinationSelection(_ index: Int) -> Bool {
-        index == gestureSelectionIndex || index == activeShortcutsSelectionIndex || index == navigationPointerSelectionIndex
+        index == gestureSelectionIndex || index == activeShortcutsSelectionIndex ||
+            index == navigationPointerSelectionIndex || index == focusSetsSelectionIndex
     }
 
     private static func refreshShortcutRows() {
@@ -617,7 +639,14 @@ class ControlsTab {
         case gesturesCategoryIndex:
             selectGesture()
         case advancedCategoryIndex:
-            lastAdvancedSelectionIndex == navigationPointerSelectionIndex ? selectNavigationPointer() : selectActiveShortcuts()
+            switch lastAdvancedSelectionIndex {
+            case navigationPointerSelectionIndex:
+                selectNavigationPointer()
+            case focusSetsSelectionIndex:
+                selectFocusSets()
+            default:
+                selectActiveShortcuts()
+            }
         default:
             break
         }
@@ -646,6 +675,15 @@ class ControlsTab {
         if syncRoute { syncSelectedDestinationRoute() }
     }
 
+    private static func selectFocusSets(syncRoute: Bool = true) {
+        selectedShortcutIndex = focusSetsSelectionIndex
+        lastAdvancedSelectionIndex = focusSetsSelectionIndex
+        focusSetsView?.refresh()
+        refreshShortcutSelection()
+        refreshShortcutCountButtons()
+        if syncRoute { syncSelectedDestinationRoute() }
+    }
+
     static func normalizedDestination(_ destination: ControlsDestination?) -> ControlsDestination? {
         guard case .shortcut(let id, let pane) = destination else { return destination }
         guard Preferences.shortcutIndex(forIdentifier: id) != nil else { return nil }
@@ -668,6 +706,8 @@ class ControlsTab {
             return .activeShortcuts
         case navigationPointerSelectionIndex:
             return .navigationPointer
+        case focusSetsSelectionIndex:
+            return .focusSets
         default:
             guard (0..<Preferences.shortcutCount).contains(selectedShortcutIndex) else { return nil }
             return .shortcut(id: Preferences.shortcutIdentifier(at: selectedShortcutIndex), pane: currentShortcutPane())
@@ -712,6 +752,8 @@ class ControlsTab {
             selectActiveShortcuts(syncRoute: false)
         case .navigationPointer:
             selectNavigationPointer(syncRoute: false)
+        case .focusSets:
+            selectFocusSets(syncRoute: false)
         }
     }
 
@@ -801,6 +843,7 @@ class ControlsTab {
     private static func gestureTitle() -> String { NSLocalizedString("Gesture", comment: "") }
     private static func activeShortcutsTitle() -> String { NSLocalizedString("Shortcuts When Active", comment: "") }
     private static func navigationPointerTitle() -> String { NSLocalizedString("Navigation & pointer", comment: "") }
+    private static func focusSetsTitle() -> String { NSLocalizedString("Focus Sets", comment: "") }
 
     /// Register the current shortcut rows into the active search-index builder. Invoked by
     /// `SettingsWindow.refreshSectionSearchContent("controls")`
@@ -876,6 +919,10 @@ class ControlsTab {
         return (0..<Preferences.maxShortcutCount).contains(where: { index in
             ["holdShortcut", "nextWindowShortcut"].contains { key == Preferences.indexToName($0, index) }
         })
+    }
+
+    private static func scopeForShortcutPreference(_ controlId: String) -> ShortcutScope {
+        return controlId.hasPrefix("nextWindowShortcut") || staticGlobalShortcutPreferences.contains(controlId) ? .global : .local
     }
 
     // MARK: - Shortcut registry (global keyboard binding — unchanged from the old code)
@@ -956,7 +1003,7 @@ class ControlsTab {
                 restrictModifiersOfHoldShortcut(controlId, [])
                 (sender as! CustomRecorderControl).objectValue = nil
             } else {
-                addShortcut(.down, controlId.hasPrefix("nextWindowShortcut") ? .global : .local, newShortcut!, controlId, nil)
+                addShortcut(.down, scopeForShortcutPreference(controlId), newShortcut!, controlId, nil)
                 restrictModifiersOfHoldShortcut(controlId, [(sender as! CustomRecorderControl).objectValue!.modifierFlags])
             }
         }
@@ -1135,7 +1182,7 @@ class ControlsTab {
             restrictModifiersOfHoldShortcut(controlId, [])
             return
         }
-        addShortcut(.down, controlId.hasPrefix("nextWindowShortcut") ? .global : .local, shortcut, controlId, nil)
+        addShortcut(.down, scopeForShortcutPreference(controlId), shortcut, controlId, nil)
         restrictModifiersOfHoldShortcut(controlId, [shortcut.modifierFlags])
     }
 
