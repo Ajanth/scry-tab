@@ -44,6 +44,22 @@ enum FocusSetSettingsResolver {
         return preferredIdentifier
     }
 
+    static func includedApplicationCount(_ rules: [FocusSetRule]) -> Int {
+        uniqueSavedApplications(rules).count
+    }
+
+    static func movedFocusSets(moving identifier: UUID,
+                               by offset: Int,
+                               in sets: [FocusSet]) -> [FocusSet]? {
+        guard offset != 0,
+              let source = sets.firstIndex(where: { $0.id == identifier }) else { return nil }
+        let destination = source + offset
+        guard sets.indices.contains(destination) else { return nil }
+        var reordered = sets
+        reordered.swapAt(source, destination)
+        return reordered
+    }
+
     static func applicationPickerRows(applications: [FocusSetApplicationOption],
                                       rules: [FocusSetRule]) -> [FocusSetApplicationPickerRow] {
         let availableApplications = uniqueApplications(applications)
@@ -73,6 +89,16 @@ enum FocusSetSettingsResolver {
                 isAvailable: true)
         }
         return (selectedRows + availableRows).sorted { isOrderedBefore($0, $1) }
+    }
+
+    static func filteredApplicationPickerRows(applications: [FocusSetApplicationOption],
+                                              rules: [FocusSetRule],
+                                              matching query: String) -> [FocusSetApplicationPickerRow] {
+        let query = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        return applicationPickerRows(applications: applications, rules: rules).filter {
+            query.isEmpty || $0.presentationName.range(of: query,
+                                                        options: [.caseInsensitive, .diacriticInsensitive]) != nil
+        }
     }
 
     static func rules(selectedApplicationIdentities: Set<FocusSetApplicationIdentity>,

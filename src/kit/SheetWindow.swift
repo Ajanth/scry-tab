@@ -24,6 +24,8 @@ class SheetWindow: NSWindow {
     static let width = CGFloat(500)
     let separator = DesignSystemDividerView()
     var doneButton: NSButton!
+    private let footer = NSStackView()
+    private let footerContainer = NSView()
     var contentWidth: CGFloat { SheetWindow.width }
 
     convenience init() {
@@ -46,9 +48,22 @@ class SheetWindow: NSWindow {
         separator.widthAnchor.constraint(equalToConstant: contentWidth + TableGroupSetView.leftRightPadding).isActive = true
         separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
         separator.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: TableGroupSetView.padding).isActive = true
-        view.addArrangedSubview(doneButton)
-        doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -TableGroupSetView.padding).isActive = true
-        doneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -TableGroupSetView.padding).isActive = true
+        footer.orientation = .horizontal
+        footer.alignment = .centerY
+        footer.spacing = TableGroupView.toolRowSpacing
+        footer.translatesAutoresizingMaskIntoConstraints = false
+        footer.addArrangedSubview(doneButton)
+        footerContainer.addSubview(footer)
+        footerContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addArrangedSubview(footerContainer)
+        NSLayoutConstraint.activate([
+            footerContainer.widthAnchor.constraint(equalTo: view.widthAnchor),
+            footerContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            footer.topAnchor.constraint(equalTo: footerContainer.topAnchor),
+            footer.leadingAnchor.constraint(greaterThanOrEqualTo: footerContainer.leadingAnchor, constant: TableGroupSetView.padding),
+            footer.trailingAnchor.constraint(equalTo: footerContainer.trailingAnchor, constant: -TableGroupSetView.padding),
+            footer.bottomAnchor.constraint(equalTo: footerContainer.bottomAnchor, constant: -TableGroupSetView.padding),
+        ])
         self.contentView = DesignSystemWindowContentView(content: view)
     }
 
@@ -56,11 +71,15 @@ class SheetWindow: NSWindow {
         return NSView()
     }
 
+    func addFooterButton(_ button: NSButton, beforeDoneButton: Bool = true) {
+        let index = beforeDoneButton ? max(footer.arrangedSubviews.count - 1, 0) : footer.arrangedSubviews.count
+        footer.insertArrangedSubview(button, at: index)
+    }
+
     private func makeDoneButton() {
         doneButton = NSButton(title: NSLocalizedString("Done", comment: ""), target: self, action: #selector(cancel))
         doneButton.keyEquivalent = "\r"
         DesignSystemControlStyler.styleButton(doneButton)
-        doneButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
         if #available(macOS 10.14, *) {
             doneButton.bezelColor = NSColor.controlAccentColor
         }

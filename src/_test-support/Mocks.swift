@@ -134,6 +134,15 @@ class TilesView {
     }
 }
 
+class FocusSetPickerPanel {
+    static let shared = FocusSetPickerPanel()
+    func picker() -> FocusSetPickerMock? { nil }
+}
+
+class FocusSetPickerMock {
+    func hasMarkedText() -> Bool { false }
+}
+
 class ControlsTab {
     // Fidelity gaps vs production — tests relying on this registry inherit them, so override
     // entries explicitly when they matter (two conflict-detector bugs hid behind them already):
@@ -211,6 +220,7 @@ class Preferences {
     static var holdShortcut = ["⌥", "⌥", "⌥"]
     static let minShortcutCount = 1
     static let maxShortcutCount = 9
+    static let focusSetsKey = "focusSets"
     // Matches `defaultShortcuts` (3 hold slots: holdShortcut / holdShortcut2 / holdShortcut3).
     static var shortcutCount = 3
 
@@ -226,6 +236,8 @@ class Preferences {
     static func effectiveShortcutStyle(_ index: Int) -> ShortcutStylePreference {
         return shortcutStyle
     }
+
+    static func invalidateAllCache() {}
 }
 
 enum ShortcutStylePreference: CaseIterable {

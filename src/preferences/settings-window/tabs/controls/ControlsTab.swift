@@ -825,7 +825,7 @@ class ControlsTab {
         return NSLocalizedString("Shortcut", comment: "") + " " + String(index + 1)
     }
 
-    private static func shortcutSummary(_ index: Int) -> String {
+    static func shortcutSummary(_ index: Int) -> String {
         let holdShortcut = Preferences.shortcut(Preferences.indexToName("holdShortcut", index))?.keyEquivalent ?? ""
         let nextWindowShortcut = Preferences.shortcut(Preferences.indexToName("nextWindowShortcut", index))?.keyEquivalent ?? ""
         if nextWindowShortcut.isEmpty { return holdShortcut }

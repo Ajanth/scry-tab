@@ -7,6 +7,9 @@
 - When possible, follow the triad pattern: specs in *Specs.md, unit-tests in *Tests.swift, and *swift for the implementation. Document features and their edge-cases this way
 - Favor low latency and responsiveness. Reuse objects, avoid wasting memory or I/O. Use observer APIs; don't poll.
 - Treat the checked-in System Settings-style design system as mandatory for app chrome. Reuse its material views, grouped panels, controls, metrics, and `DesignSystem.ColorRole` surface palette; extend the shared design system before adding a new visual behavior. Do not create feature-local replacements for panel, surface, material, tint, shared geometry, or control chrome.
+- Model Add/Edit flows as one transactional sheet with dependent choices inline; do not cascade or nest sheets. Keep a draft until the default action commits it, and let Cancel leave persisted state unchanged.
+- Use native sheet actions: a trailing cluster with the default commit action rightmost and Cancel immediately to its left; Return triggers the default action and Escape cancels. Use intrinsic or minimum label widths, never fixed widths that can clip localized text.
+- For incremental `NSSearchField` filtering, reuse a context-appropriate shared primitive and observe `NSControl.textDidChangeNotification`; preserve search-specific behavior when replacing its cell and preserve keyboard/VoiceOver focus through filtered-list rebuilds.
 
 # Required skills
 - Before implementing, modifying, refactoring, or debugging Swift/AppKit code, load and follow the `swift-appkit-development` skill in `.agents/skills/swift-appkit-development/SKILL.md`.
