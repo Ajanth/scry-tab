@@ -47,6 +47,10 @@ class ImageTextButtonView: NSStackView {
         override func hitTest(_ point: NSPoint) -> NSView? { nil }
     }
 
+    private final class ImageButtonContentView: NSView {
+        override func hitTest(_ point: NSPoint) -> NSView? { nil }
+    }
+
     static let spacing = CGFloat(7)
     static let cornerRadius = DesignSystem.Metrics.joinedOuterRowRadius
     static let tileCornerRadius = DesignSystem.Metrics.sectionRadius
@@ -61,8 +65,9 @@ class ImageTextButtonView: NSStackView {
     var label: NSTextField!
     fileprivate(set) var isPressed = false
     private var imageContainer: NSView!
-    private var imageView: NSImageView!
+    private var imageView: NSImageView?
     private var baseCornerRadius = ImageTextButtonView.cornerRadius
+    private var contentPreviewInset = ImageTextButtonView.previewInset
     private var windowObservers = [NSObjectProtocol]()
 
     var state: NSControl.StateValue = .off {
@@ -77,6 +82,28 @@ class ImageTextButtonView: NSStackView {
          spacing: CGFloat = ImageTextButtonView.spacing,
          cornerRadius: CGFloat = ImageTextButtonView.cornerRadius) {
         super.init(frame: .zero)
+        configureStack(spacing: spacing, cornerRadius: cornerRadius)
+        makeButton(rawName, state, image, cornerRadius: cornerRadius)
+        makeLabel(title)
+        self.state = state
+    }
+
+    init(title: String, rawName: String, preview: NSView, previewAspectRatio: CGFloat,
+         state: NSControl.StateValue = .off,
+         spacing: CGFloat = ImageTextButtonView.spacing,
+         previewInset: CGFloat = ImageTextButtonView.previewInset,
+         cornerRadius: CGFloat = ImageTextButtonView.cornerRadius) {
+        super.init(frame: .zero)
+        contentPreviewInset = max(0, previewInset)
+        configureStack(spacing: spacing, cornerRadius: cornerRadius)
+        makeButton(rawName, state, preview: preview, previewAspectRatio: previewAspectRatio,
+                   previewHeightAdjustment: 2 * contentPreviewInset * (1 - previewAspectRatio),
+                   cornerRadius: cornerRadius)
+        makeLabel(title)
+        self.state = state
+    }
+
+    private func configureStack(spacing: CGFloat, cornerRadius: CGFloat) {
         orientation = .vertical
         alignment = .centerX
         self.spacing = spacing
@@ -85,9 +112,6 @@ class ImageTextButtonView: NSStackView {
         layer?.cornerRadius = ImageTextButtonView.tileCornerRadius
         layer?.masksToBounds = false
         baseCornerRadius = cornerRadius
-        makeButton(rawName, state, image, cornerRadius: cornerRadius)
-        makeLabel(title)
-        self.state = state
     }
 
     required init?(coder: NSCoder) {
@@ -95,6 +119,17 @@ class ImageTextButtonView: NSStackView {
     }
 
     private func makeButton(_ rawName: String, _ state: NSControl.StateValue, _ image: WidthHeightImage,
+                            cornerRadius: CGFloat = ImageTextButtonView.cornerRadius) {
+        let imageView = NSImageView(image: NSImage(named: image.name + "_light")!)
+        self.imageView = imageView
+        makeButton(rawName, state, preview: imageView,
+                   previewAspectRatio: image.height / image.width, previewHeightAdjustment: 0,
+                   cornerRadius: cornerRadius)
+    }
+
+    private func makeButton(_ rawName: String, _ state: NSControl.StateValue, preview: NSView,
+                            previewAspectRatio: CGFloat,
+                            previewHeightAdjustment: CGFloat,
                             cornerRadius: CGFloat = ImageTextButtonView.cornerRadius) {
         button = ImageButton(radioButtonWithTitle: "", target: nil, action: nil)
         button.imagePosition = .imageOnly
@@ -105,35 +140,37 @@ class ImageTextButtonView: NSStackView {
         button.layer?.borderWidth = ImageTextButtonView.borderWidth
         button.state = state
         addArrangedSubview(button)
-        imageContainer = NSView()
+        imageContainer = ImageButtonContentView()
         imageContainer.translatesAutoresizingMaskIntoConstraints = false
         imageContainer.wantsLayer = true
         imageContainer.layer?.masksToBounds = true
         imageContainer.layer?.cornerRadius = previewCornerRadius
-        imageView = NSImageView(image: NSImage(named: image.name + "_light")!)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.imageScaling = .scaleProportionallyUpOrDown
-        imageView.wantsLayer = true
-        imageView.layer?.masksToBounds = true
-        imageView.layer?.cornerRadius = previewCornerRadius
-        imageContainer.addSubview(imageView)
+        preview.translatesAutoresizingMaskIntoConstraints = false
+        if let imageView {
+            imageView.imageScaling = .scaleProportionallyUpOrDown
+            imageView.wantsLayer = true
+            imageView.layer?.masksToBounds = true
+            imageView.layer?.cornerRadius = previewCornerRadius
+        }
+        imageContainer.addSubview(preview)
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: imageContainer.topAnchor),
-            imageView.bottomAnchor.constraint(equalTo: imageContainer.bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: imageContainer.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: imageContainer.trailingAnchor),
+            preview.topAnchor.constraint(equalTo: imageContainer.topAnchor),
+            preview.bottomAnchor.constraint(equalTo: imageContainer.bottomAnchor),
+            preview.leadingAnchor.constraint(equalTo: imageContainer.leadingAnchor),
+            preview.trailingAnchor.constraint(equalTo: imageContainer.trailingAnchor),
         ])
         button.addSubview(imageContainer)
-        let imageAspectRatio = image.height / image.width
         NSLayoutConstraint.activate([
-            imageContainer.topAnchor.constraint(equalTo: button.topAnchor, constant: ImageTextButtonView.previewInset),
-            imageContainer.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -ImageTextButtonView.previewInset),
-            imageContainer.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: ImageTextButtonView.previewInset),
-            imageContainer.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -ImageTextButtonView.previewInset),
+            imageContainer.topAnchor.constraint(equalTo: button.topAnchor, constant: contentPreviewInset),
+            imageContainer.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -contentPreviewInset),
+            imageContainer.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: contentPreviewInset),
+            imageContainer.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -contentPreviewInset),
             button.topAnchor.constraint(equalTo: topAnchor, constant: ImageTextButtonView.outerPadding),
             button.leadingAnchor.constraint(equalTo: leadingAnchor, constant: ImageTextButtonView.outerPadding),
             button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -ImageTextButtonView.outerPadding),
-            button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: imageAspectRatio),
+            button.heightAnchor.constraint(equalTo: button.widthAnchor,
+                                           multiplier: previewAspectRatio,
+                                           constant: previewHeightAdjustment),
         ])
         button.identifier = NSUserInterfaceItemIdentifier(rawName)
         button.onAction = { control in
@@ -200,7 +237,7 @@ class ImageTextButtonView: NSStackView {
     }
 
     private var previewCornerRadius: CGFloat {
-        return max(buttonCornerRadius - ImageTextButtonView.previewInset, DesignSystem.Metrics.controlRadius + 1)
+        return max(buttonCornerRadius - contentPreviewInset, DesignSystem.Metrics.controlRadius + 1)
     }
 
     private func mixedColor(_ base: NSColor, _ accent: NSColor, fraction: CGFloat) -> NSColor {
@@ -228,7 +265,7 @@ class ImageTextButtonView: NSStackView {
         button.layer?.borderColor = DesignSystem.resolvedCGColor(borderColor, in: self)
         button.layer?.borderWidth = isSelected ? ImageTextButtonView.selectedBorderWidth : ImageTextButtonView.borderWidth
         imageContainer.layer?.cornerRadius = previewCornerRadius
-        imageView.layer?.cornerRadius = previewCornerRadius
+        imageView?.layer?.cornerRadius = previewCornerRadius
         label.textColor = isSelected ? DesignSystem.color(.textPrimary, appearance: effectiveAppearance) : DesignSystem.color(.textSecondary, appearance: effectiveAppearance)
         label.font = NSFont.systemFont(ofSize: 12, weight: isSelected ? .semibold : .medium)
         alphaValue = isPressed ? 0.84 : (isKey ? 1.0 : 0.96)

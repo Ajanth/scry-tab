@@ -54,7 +54,7 @@ struct AnimatedSelectionContainerConfiguration {
 }
 
 final class AnimatedSelectionPlaybackController {
-    private(set) var isManuallyPaused = false
+    private(set) var isManuallyPaused: Bool
     var advanceInterval: TimeInterval
     var isWindowVisible: (() -> Bool)?
     var shouldAdvance: (() -> Bool)?
@@ -65,8 +65,9 @@ final class AnimatedSelectionPlaybackController {
     private var timer: Timer?
     private var accessibilityDisplayObserver: NSObjectProtocol?
 
-    init(advanceInterval: TimeInterval) {
+    init(advanceInterval: TimeInterval, startsPaused: Bool = false) {
         self.advanceInterval = advanceInterval
+        self.isManuallyPaused = startsPaused
     }
 
     deinit {
@@ -83,7 +84,12 @@ final class AnimatedSelectionPlaybackController {
     }
 
     func toggleManualPause() {
-        isManuallyPaused.toggle()
+        setManuallyPaused(!isManuallyPaused)
+    }
+
+    func setManuallyPaused(_ paused: Bool) {
+        guard isManuallyPaused != paused else { return }
+        isManuallyPaused = paused
         onPauseStateRefresh?()
     }
 

@@ -291,7 +291,7 @@ private final class AppearanceStylePreviewPane: NSView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         setupView()
-        updateStyle(AppearanceTab.selectedAppearanceStyle())
+        refreshAppearance()
     }
 
     required init?(coder: NSCoder) {
@@ -303,7 +303,10 @@ private final class AppearanceStylePreviewPane: NSView {
     }
 
     func refreshAppearance() {
-        updateStyle(AppearanceTab.selectedAppearanceStyle())
+        livePreviewView.updateAppearance(
+            style: AppearanceTab.selectedAppearanceStyle(),
+            size: AppearanceTab.selectedAppearanceSize(),
+            theme: AppearanceTab.selectedAppearanceTheme())
     }
 
     private func setupView() {
@@ -600,6 +603,18 @@ class AppearanceTab: NSObject {
         let index = CachedUserDefaults.intFromMacroPref("appearanceStyle", AppearanceStylePreference.allCases)
         guard AppearanceStylePreference.allCases.indices.contains(index) else { return .appIcons }
         return AppearanceStylePreference.allCases[index]
+    }
+
+    fileprivate static func selectedAppearanceSize() -> AppearanceSizePreference {
+        let index = CachedUserDefaults.intFromMacroPref("appearanceSize", AppearanceSizePreference.allCases)
+        guard AppearanceSizePreference.allCases.indices.contains(index) else { return .medium }
+        return AppearanceSizePreference.allCases[index]
+    }
+
+    fileprivate static func selectedAppearanceTheme() -> AppearanceThemePreference {
+        let index = CachedUserDefaults.intFromMacroPref("appearanceTheme", AppearanceThemePreference.allCases)
+        guard AppearanceThemePreference.allCases.indices.contains(index) else { return .system }
+        return AppearanceThemePreference.allCases[index]
     }
 
     private static func getCustomizeStyleButtonTitle() -> String {

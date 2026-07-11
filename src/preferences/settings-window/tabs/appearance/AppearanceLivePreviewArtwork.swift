@@ -78,26 +78,16 @@ enum AppearanceLivePreviewArtwork {
                  spaceNumber: 1),
     ]
 
-    static func demoPresentationItems() -> [SwitcherPresentationItem] {
-        demoItems.map { item in
-            let resolved = AppDisplayInfo.resolve(bundleId: item.bundleId)
-            return SwitcherPresentationItem(title: item.displayName,
-                                            icon: resolved.icon,
-                                            isFullscreen: item.isFullscreen,
-                                            spaceNumber: item.spaceNumber)
-        }
-    }
-
     static let illustratedPreviewItems = [
         IllustratedPreviewItem(bundleId: "com.apple.Safari",
                                appName: "Safari",
                                windowTitle: "AltTab",
-                               statusSymbol: Symbols.arrowUpBackwardAndArrowDownForwardRectangle.rawValue,
+                               statusSymbol: AppearancePreviewStatusSymbols.fullscreen,
                                spaceNumber: 2),
         IllustratedPreviewItem(bundleId: "com.apple.finder",
                                appName: "Finder",
                                windowTitle: "Music",
-                               statusSymbol: Symbols.arrowUpBackwardAndArrowDownForwardRectangle.rawValue,
+                               statusSymbol: AppearancePreviewStatusSymbols.fullscreen,
                                spaceNumber: 2),
         IllustratedPreviewItem(bundleId: "com.apple.Notes",
                                appName: "Note",
@@ -108,6 +98,11 @@ enum AppearanceLivePreviewArtwork {
 
     private static let wallpaperImage = loadWallpaperImage()
     private static var illustratedPreviewCache = [IllustratedPreviewState: NSImage]()
+    private static let symbolParagraphStyle: NSParagraphStyle = {
+        let style = NSMutableParagraphStyle()
+        style.lineHeightMultiple = 0.85
+        return style
+    }()
 
     static func illustratedPreviewImage(_ state: IllustratedPreviewState) -> NSImage {
         if let cached = illustratedPreviewCache[state] {
@@ -294,7 +289,7 @@ enum AppearanceLivePreviewArtwork {
                 x = statusRect.maxX + 10
             }
             if state.showsSpaceNumbers {
-                let spaceRect = drawSymbol(StatusIconsView.symbolForSpace(item.spaceNumber),
+                let spaceRect = drawSymbol(AppearancePreviewStatusSymbols.space(item.spaceNumber),
                                            font: font,
                                            color: Palette.titleStatusColor,
                                            origin: NSPoint(x: x, y: y))
@@ -311,10 +306,11 @@ enum AppearanceLivePreviewArtwork {
         private func drawTitleRowAccessories(_ item: IllustratedPreviewItem, in rect: NSRect, font: NSFont) {
             var cursorX = rect.maxX - 34
             if state.showsSpaceNumbers {
-                let spaceRect = drawSymbol(StatusIconsView.symbolForSpace(item.spaceNumber),
+                let symbol = AppearancePreviewStatusSymbols.space(item.spaceNumber)
+                let spaceRect = drawSymbol(symbol,
                                            font: font,
                                            color: Palette.titleStatusColor,
-                                           origin: NSPoint(x: cursorX - symbolWidth(StatusIconsView.symbolForSpace(item.spaceNumber), font: font),
+                                           origin: NSPoint(x: cursorX - symbolWidth(symbol, font: font),
                                                            y: rect.midY - font.capHeight / 2 - 4))
                 if state.highlight == .spaceNumbers {
                     drawHighlight(spaceRect.insetBy(dx: -8, dy: -6))
@@ -354,9 +350,17 @@ enum AppearanceLivePreviewArtwork {
         private func drawAppIcon(_ item: IllustratedPreviewItem, in rect: NSRect) {
             let info = AppDisplayInfo.resolve(bundleId: item.bundleId)
             NSGraphicsContext.saveGraphicsState()
-            TileView.makeAppIconShadow(NSColor.black.withAlphaComponent(0.45))?.set()
+            makeAppIconShadow().set()
             info.icon.draw(in: rect)
             NSGraphicsContext.restoreGraphicsState()
+        }
+
+        private func makeAppIconShadow() -> NSShadow {
+            let shadow = NSShadow()
+            shadow.shadowColor = NSColor.black.withAlphaComponent(0.18)
+            shadow.shadowOffset = NSSize(width: 0.1, height: 1)
+            shadow.shadowBlurRadius = 2
+            return shadow
         }
 
         private func drawText(_ text: String, in rect: NSRect, font: NSFont, alignment: NSTextAlignment) {
@@ -375,7 +379,7 @@ enum AppearanceLivePreviewArtwork {
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: font,
                 .foregroundColor: color,
-                .paragraphStyle: TileFontIconView.paragraphStyle,
+                .paragraphStyle: AppearanceLivePreviewArtwork.symbolParagraphStyle,
             ]
             let attributed = NSAttributedString(string: symbol, attributes: attributes)
             attributed.draw(at: origin)
@@ -385,7 +389,7 @@ enum AppearanceLivePreviewArtwork {
         private func symbolWidth(_ symbol: String, font: NSFont) -> CGFloat {
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: font,
-                .paragraphStyle: TileFontIconView.paragraphStyle,
+                .paragraphStyle: AppearanceLivePreviewArtwork.symbolParagraphStyle,
             ]
             return NSAttributedString(string: symbol, attributes: attributes).size().width
         }

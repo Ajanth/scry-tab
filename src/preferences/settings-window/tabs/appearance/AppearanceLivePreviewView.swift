@@ -6,9 +6,20 @@ final class AppearanceLivePreviewView: NSView {
     static let pauseAccessibilityLabel = NSLocalizedString("Pause preview animation", comment: "")
     static let resumeAccessibilityLabel = NSLocalizedString("Resume preview animation", comment: "")
     static let previewAccessibilityLabel = NSLocalizedString("Preview of the selected appearance style", comment: "")
+    private static let previewItems = PreviewArtwork.demoItems.map { item in
+        var statusSymbols = [String]()
+        if item.isFullscreen { statusSymbols.append(AppearancePreviewStatusSymbols.fullscreen) }
+        statusSymbols.append(AppearancePreviewStatusSymbols.space(item.spaceNumber))
+        return AppearancePreviewItem(
+            title: item.displayName,
+            icon: previewIcon(bundleId: item.bundleId),
+            statusSymbols: statusSymbols)
+    }
 
     private let wallpaperView = PreviewArtwork.WallpaperView()
-    private var switcherView: AnimatedSwitcherPresentationView?
+    private var switcherView: AppearancePreviewSwitcherView?
+    private let startsPaused: Bool
+    private let showsPauseButton: Bool
     private let pauseButton: ClickHoverImageView = {
         let glyph = AppearanceLivePreviewPauseGlyphView(symbol: .pause)
         glyph.translatesAutoresizingMaskIntoConstraints = false
@@ -17,11 +28,23 @@ final class AppearanceLivePreviewView: NSView {
         return button
     }()
 
-    private var currentStyle = AppearanceStylePreference.appIcons
+    private var currentAppearance: AppearancePreviewAppearanceSnapshot
     private var isPauseButtonHovered = false
 
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
+    init(style: AppearanceStylePreference = .appIcons,
+         size: AppearanceSizePreference = .medium,
+         theme: AppearanceThemePreference = .system,
+         startsPaused: Bool = false,
+         showsPauseButton: Bool = true) {
+        self.currentAppearance = AppearancePreviewAppearanceSnapshot(
+            style: style.previewStyle,
+            size: size.previewSize,
+            theme: theme.previewTheme,
+            systemIsDark: false)
+        self.startsPaused = startsPaused
+        self.showsPauseButton = showsPauseButton
+        super.init(frame: .zero)
+        resolveSystemTheme()
         setupView()
     }
 
@@ -37,27 +60,54 @@ final class AppearanceLivePreviewView: NSView {
     @available(macOS 10.14, *)
     override func viewDidChangeEffectiveAppearance() {
         super.viewDidChangeEffectiveAppearance()
-        switcherView?.update(style: currentStyle, items: PreviewArtwork.demoPresentationItems())
+        resolveSystemTheme()
+        refreshSwitcher()
         refreshColors()
     }
 
     override func accessibilityChildren() -> [Any]? {
-        [pauseButton]
+        showsPauseButton ? [pauseButton] : []
     }
 
     override func isAccessibilityElement() -> Bool { true }
 
     func updateStyle(_ style: AppearanceStylePreference) {
-        currentStyle = style
-        switcherView?.update(style: style, items: PreviewArtwork.demoPresentationItems())
+        currentAppearance = currentAppearance.updating(style: style.previewStyle)
+        refreshSwitcher()
         refreshColors()
+    }
+
+    func updateAppearance(style: AppearanceStylePreference,
+                          size: AppearanceSizePreference,
+                          theme: AppearanceThemePreference) {
+        currentAppearance = currentAppearance.updating(
+            style: style.previewStyle,
+            size: size.previewSize,
+            theme: theme.previewTheme)
+        resolveSystemTheme()
+        refreshSwitcher()
+        refreshColors()
+    }
+
+    func updateAppearance(size: AppearanceSizePreference,
+                          theme: AppearanceThemePreference) {
+        currentAppearance = currentAppearance.updating(
+            size: size.previewSize,
+            theme: theme.previewTheme)
+        resolveSystemTheme()
+        refreshSwitcher()
+        refreshColors()
+    }
+
+    func setAnimationPaused(_ paused: Bool) {
+        switcherView?.setPlaybackPaused(paused)
     }
 
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         setAccessibilityLabel(Self.previewAccessibilityLabel)
         configureWallpaper()
-        configureContainer(for: currentStyle)
+        configureContainer()
         configurePauseButton()
         activateConstraints()
         switcherView?.onPauseStateChange = { [weak self] in self?.refreshPauseButtonState() }
@@ -66,22 +116,47 @@ final class AppearanceLivePreviewView: NSView {
 
     private func configureWallpaper() {
         addSubview(wallpaperView)
-        wallpaperView.addSubview(pauseButton)
+        if showsPauseButton { wallpaperView.addSubview(pauseButton) }
     }
 
-    private func configureContainer(for style: AppearanceStylePreference) {
-        let view = AnimatedSwitcherPresentationView(
-            style: style,
-            items: PreviewArtwork.demoPresentationItems(),
+    private func configureContainer() {
+        let view = AppearancePreviewSwitcherView(
+            appearance: currentAppearance,
+            items: makePreviewItems(),
             advanceInterval: AppearanceLivePreviewResolver.advanceInterval,
-            maximumWidthRatio: 0.9,
-            maximumHeightRatio: 0.9,
-            shouldAdvance: { !SwitcherSession.isActive })
-        wallpaperView.addSubview(view, positioned: .below, relativeTo: pauseButton)
+            startsPaused: startsPaused)
+        if showsPauseButton {
+            wallpaperView.addSubview(view, positioned: .below, relativeTo: pauseButton)
+        } else {
+            wallpaperView.addSubview(view)
+        }
         switcherView = view
     }
 
+    private func resolveSystemTheme() {
+        currentAppearance = currentAppearance.updating(
+            systemIsDark: DesignSystem.isDark(effectiveAppearance))
+    }
+
+    private func refreshSwitcher() {
+        switcherView?.update(
+            appearance: currentAppearance,
+            items: makePreviewItems())
+    }
+
+    private func makePreviewItems() -> [AppearancePreviewItem] {
+        Self.previewItems
+    }
+
+    private static func previewIcon(bundleId: String) -> NSImage {
+        guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleId) else {
+            return NSWorkspace.shared.icon(forFileType: "app")
+        }
+        return NSWorkspace.shared.icon(forFile: url.path)
+    }
+
     private func configurePauseButton() {
+        guard showsPauseButton else { return }
         pauseButton.wantsLayer = true
         pauseButton.layer?.cornerRadius = PreviewArtwork.Metrics.pauseButtonDiameter / 2
         pauseButton.layer?.borderWidth = 1
@@ -103,7 +178,7 @@ final class AppearanceLivePreviewView: NSView {
 
     private func activateConstraints() {
         guard let switcherView else { return }
-        NSLayoutConstraint.activate([
+        var constraints = [
             wallpaperView.leadingAnchor.constraint(equalTo: leadingAnchor),
             wallpaperView.trailingAnchor.constraint(equalTo: trailingAnchor),
             wallpaperView.topAnchor.constraint(equalTo: topAnchor),
@@ -114,13 +189,18 @@ final class AppearanceLivePreviewView: NSView {
             switcherView.trailingAnchor.constraint(equalTo: wallpaperView.trailingAnchor),
             switcherView.topAnchor.constraint(equalTo: wallpaperView.topAnchor),
             switcherView.bottomAnchor.constraint(equalTo: wallpaperView.bottomAnchor),
+        ]
+        if showsPauseButton {
+            constraints += [
             pauseButton.topAnchor.constraint(equalTo: wallpaperView.topAnchor,
                                              constant: PreviewArtwork.Metrics.pauseButtonInset),
             pauseButton.trailingAnchor.constraint(equalTo: wallpaperView.trailingAnchor,
                                                   constant: -PreviewArtwork.Metrics.pauseButtonInset),
             pauseButton.widthAnchor.constraint(equalToConstant: PreviewArtwork.Metrics.pauseButtonDiameter),
             pauseButton.heightAnchor.constraint(equalToConstant: PreviewArtwork.Metrics.pauseButtonDiameter),
-        ])
+            ]
+        }
+        NSLayoutConstraint.activate(constraints)
     }
 
     private func setPauseButtonHovered(_ hovered: Bool) {
@@ -129,6 +209,7 @@ final class AppearanceLivePreviewView: NSView {
     }
 
     private func refreshPauseButtonState() {
+        guard showsPauseButton else { return }
         let isPaused = switcherView?.isManuallyPaused ?? false
         (pauseButton.infoCircle as? AppearanceLivePreviewPauseGlyphView)?.symbol = isPaused ? .play : .pause
         let label = isPaused ? Self.resumeAccessibilityLabel : Self.pauseAccessibilityLabel
@@ -137,6 +218,7 @@ final class AppearanceLivePreviewView: NSView {
     }
 
     private func refreshColors() {
+        guard showsPauseButton else { return }
         let increaseContrast = NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast
         pauseButton.layer?.backgroundColor = (isPauseButtonHovered
             ? PreviewArtwork.Palette.pauseHoverFill

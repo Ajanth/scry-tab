@@ -36,12 +36,12 @@ class ControlsTab {
 
     // MARK: - Layout constants
 
-    private static let shortcutSidebarWidth = CGFloat(196)
+    private static let shortcutSidebarWidth = CGFloat(184)
     private static let sidebarRowHeight = CGFloat(60)
     private static let shortcutSidebarSectionInset = CGFloat(8)
     private static let shortcutSidebarRowInset = CGFloat(8)
     private static let shortcutEditorTopBottomPadding = CGFloat(10)
-    private static let shortcutEditorHorizontalPadding = CGFloat(14)
+    private static let shortcutEditorHorizontalPadding = TableGroupView.padding
     private static var shortcutEditorWidth: CGFloat { SettingsWindow.contentWidth - shortcutSidebarWidth - DesignSystem.Metrics.sectionGap }
     static var shortcutEditorContentWidth: CGFloat { shortcutEditorWidth - 2 * shortcutEditorHorizontalPadding }
     private static let shortcutsCategoryIndex = 0
