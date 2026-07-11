@@ -33,8 +33,11 @@ class KeyboardEvents {
         case .keyDown:
             // Issue #5585. Esc only — absorb when ScryTab is using it and a shortcut binds it. cghid is
             // the earliest tap point; absorbing here preempts macOS 26 Game Overlay's hook on `⌘⎋`.
+            // The Focus Sets picker keeps Esc in AppKit so its text field can cancel IME composition.
             if cgEvent.getIntegerValueField(.keyboardEventKeycode) != Int64(kVK_Escape) ||
-                !anyShortcutUsesEscape || !SwitcherSession.isActive {
+                !KeyboardEventsTestable.shouldAbsorbEscapeAtHidTap(
+                    anyShortcutUsesEscape: anyShortcutUsesEscape,
+                    sessionState: SwitcherSession.current?.focusSetSessionState) {
                 return Unmanaged.passUnretained(cgEvent)
             }
             let modifiers = NSEvent.ModifierFlags(rawValue: UInt(cgEvent.flags.rawValue))

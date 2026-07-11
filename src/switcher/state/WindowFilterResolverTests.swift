@@ -5,8 +5,8 @@ import XCTest
 /// Each test starts from a plain visible real window + an all-permissive config and flips exactly one
 /// knob, so every filter dimension is isolated.
 ///
-/// Groups: A always-excluded · B app scope · C hidden apps · D windowless · E fullscreen ·
-/// F minimized · G spaces · H screens · I tabs · J combinations.
+/// Groups: A always-excluded · B Focus Set membership · C app scope · D hidden apps · E windowless ·
+/// F fullscreen · G minimized · H spaces · I screens · J tabs · K combinations.
 final class WindowFilterResolverTests: XCTestCase {
 
     private func ws(isPhantom: Bool = false, isWindowlessApp: Bool = false, isFullscreen: Bool = false,
@@ -38,7 +38,61 @@ final class WindowFilterResolverTests: XCTestCase {
                                                       exceptions: [except], isOnPreferredScreen: true))
     }
 
-    // MARK: - B. App scope (appsToShow)
+    func testPhantomSkipsFocusSetEvaluation() {
+        var evaluatedMembership = false
+        func membershipFact() -> Bool {
+            evaluatedMembership = true
+            return true
+        }
+        XCTAssertFalse(WindowFilterResolver.shouldShow(
+            ws(isPhantom: true), appState(), matchesFocusSet: membershipFact(),
+            isOnPreferredScreen: true))
+        XCTAssertFalse(evaluatedMembership)
+    }
+
+    func testHiddenExceptionSkipsFocusSetEvaluation() {
+        var evaluatedMembership = false
+        func membershipFact() -> Bool {
+            evaluatedMembership = true
+            return true
+        }
+        let except = ExceptionEntry(bundleIdentifier: "com.x", hide: .always, ignore: .none)
+        XCTAssertFalse(WindowFilterResolver.shouldShow(
+            ws(), appState(bundleIdentifier: "com.x.app"), exceptions: [except],
+            matchesFocusSet: membershipFact(), isOnPreferredScreen: true))
+        XCTAssertFalse(evaluatedMembership)
+    }
+
+    // MARK: - B. Focus Set membership
+
+    func testFocusSetDefaultsToMatching() {
+        XCTAssertTrue(WindowFilterResolver.shouldShow(ws(), appState(), onlyPreferredScreen: true,
+                                                      isOnPreferredScreen: true))
+    }
+
+    func testNonMatchingFocusSetHidesRealWindow() {
+        XCTAssertFalse(WindowFilterResolver.shouldShow(ws(), appState(), matchesFocusSet: false,
+                                                       isOnPreferredScreen: true))
+    }
+
+    func testNonMatchingFocusSetHidesWindowlessRow() {
+        XCTAssertFalse(WindowFilterResolver.shouldShow(ws(isWindowlessApp: true), appState(),
+                                                       matchesFocusSet: false, isOnPreferredScreen: true))
+    }
+
+    func testNonMatchingFocusSetSkipsPreferredScreenEvaluation() {
+        var evaluatedPreferredScreen = false
+        func preferredScreenFact() -> Bool {
+            evaluatedPreferredScreen = true
+            return true
+        }
+        XCTAssertFalse(WindowFilterResolver.shouldShow(
+            ws(), appState(), onlyPreferredScreen: true, matchesFocusSet: false,
+            isOnPreferredScreen: preferredScreenFact()))
+        XCTAssertFalse(evaluatedPreferredScreen)
+    }
+
+    // MARK: - C. App scope (appsToShow)
 
     func testOnlyFrontmostAppHidesNonFrontmost() {
         XCTAssertFalse(WindowFilterResolver.shouldShow(ws(), appState(pid: 100),
@@ -64,7 +118,7 @@ final class WindowFilterResolverTests: XCTestCase {
                                                       isOnPreferredScreen: true))
     }
 
-    // MARK: - C. Hidden apps (⌘H)
+    // MARK: - D. Hidden apps (⌘H)
 
     func testHideHiddenHidesHiddenApp() {
         XCTAssertFalse(WindowFilterResolver.shouldShow(ws(), appState(appIsHidden: true),
@@ -76,7 +130,7 @@ final class WindowFilterResolverTests: XCTestCase {
                                                       hideHidden: false, isOnPreferredScreen: true))
     }
 
-    // MARK: - D. Windowless apps
+    // MARK: - E. Windowless apps
 
     func testWindowlessShownByDefault() {
         XCTAssertTrue(WindowFilterResolver.shouldShow(ws(isWindowlessApp: true), appState(),
@@ -95,7 +149,7 @@ final class WindowFilterResolverTests: XCTestCase {
                                                       visibleSpaceIds: [1], isOnPreferredScreen: false))
     }
 
-    // MARK: - E. Fullscreen
+    // MARK: - F. Fullscreen
 
     func testHideFullscreenHidesFullscreen() {
         XCTAssertFalse(WindowFilterResolver.shouldShow(ws(isFullscreen: true), appState(),
@@ -107,7 +161,7 @@ final class WindowFilterResolverTests: XCTestCase {
                                                       hideFullscreen: false, isOnPreferredScreen: true))
     }
 
-    // MARK: - F. Minimized
+    // MARK: - G. Minimized
 
     func testHideMinimizedHidesMinimized() {
         XCTAssertFalse(WindowFilterResolver.shouldShow(ws(isMinimized: true), appState(),
@@ -119,7 +173,7 @@ final class WindowFilterResolverTests: XCTestCase {
                                                       hideMinimized: false, isOnPreferredScreen: true))
     }
 
-    // MARK: - G. Spaces
+    // MARK: - H. Spaces
 
     func testOnlyVisibleSpacesHidesWindowNotInVisibleSpace() {
         XCTAssertFalse(WindowFilterResolver.shouldShow(ws(spaceIds: [99]), appState(),
@@ -139,7 +193,7 @@ final class WindowFilterResolverTests: XCTestCase {
                                                        isOnPreferredScreen: true))
     }
 
-    // MARK: - H. Screens
+    // MARK: - I. Screens
 
     func testOnlyPreferredScreenHidesOffScreenWindow() {
         XCTAssertFalse(WindowFilterResolver.shouldShow(ws(), appState(),
@@ -151,7 +205,7 @@ final class WindowFilterResolverTests: XCTestCase {
                                                       onlyPreferredScreen: true, isOnPreferredScreen: true))
     }
 
-    // MARK: - I. Tabs (macOS native tabs)
+    // MARK: - J. Tabs (macOS native tabs)
 
     func testNonFrontmostTabHiddenWhenGrouping() {
         XCTAssertFalse(WindowFilterResolver.shouldShow(ws(isTabbed: true), appState(),
@@ -163,7 +217,7 @@ final class WindowFilterResolverTests: XCTestCase {
                                                       separateTabs: true, isOnPreferredScreen: true))
     }
 
-    // MARK: - J. Combinations
+    // MARK: - K. Combinations
 
     func testAllFiltersOnAndWindowPassesEachShows() {
         XCTAssertTrue(WindowFilterResolver.shouldShow(

@@ -47,11 +47,14 @@ class Windows {
     }
 
     static func voiceOverWindow(_ windowIndex: Int = (SwitcherSession.current?.selectedIndex ?? 0)) {
-        guard SwitcherSession.isActive && TilesPanel.shared.isKeyWindow else { return }
+        guard SwitcherSession.isActive,
+              SwitcherSession.current?.focusSetSessionState != .picker,
+              TilesPanel.shared.isKeyWindow else { return }
         if TilesView.isSearchEditing { return }
         // it seems that sometimes makeFirstResponder is called before the view is visible
         // and it creates a delay in showing the main window; calling it with some delay seems to work around this
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10)) {
+            if SwitcherSession.current?.focusSetSessionState == .picker { return }
             if TilesView.isSearchEditing { return }
             let window = TilesView.recycledViews[windowIndex]
             if window.window_ != nil && window.window != nil {
@@ -116,6 +119,7 @@ class Windows {
             frontmostPid: Applications.frontmostPid,
             visibleSpaceIds: Spaces.visibleSpaces,
             exceptions: f.exceptions,
+            matchesFocusSet: f.matchesFocusSet(window.application.bundleIdentifier),
             isOnPreferredScreen: window.isOnScreen(NSScreen.preferred))
     }
 
@@ -481,9 +485,14 @@ struct WindowFilters {
     let spacesToShow: SpacesToShowPreference
     let screensToShow: ScreensToShowPreference
     let groupTabs: GroupTabsPreference
+    let focusSetScope: FocusSetScope
+    let focusSetResolver: FocusSetResolver?
 
     static func snapshot() -> WindowFilters {
-        let i = SwitcherSession.current?.shortcutIndex ?? 0
+        let session = SwitcherSession.current
+        let i = session?.shortcutIndex ?? 0
+        let focusSetScope = session?.focusSetScope ?? .none
+        let focusSetResolver = focusSetScope == .none ? nil : session?.focusSetPickerSnapshot?.presentation.resolver
         return WindowFilters(
             exceptions: Preferences.exceptions,
             appsToShow: Preferences.appsToShow[i],
@@ -493,6 +502,12 @@ struct WindowFilters {
             showMinimizedWindows: Preferences.showMinimizedWindows[i],
             spacesToShow: Preferences.spacesToShow[i],
             screensToShow: Preferences.screensToShow[i],
-            groupTabs: Preferences.groupTabs(i))
+            groupTabs: Preferences.groupTabs(i),
+            focusSetScope: focusSetScope,
+            focusSetResolver: focusSetResolver)
+    }
+
+    func matchesFocusSet(_ bundleIdentifier: String?) -> Bool {
+        focusSetResolver?.matchesApp(bundleIdentifier: bundleIdentifier, scope: focusSetScope) ?? (focusSetScope == .none)
     }
 }

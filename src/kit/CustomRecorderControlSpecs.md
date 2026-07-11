@@ -36,6 +36,9 @@ Mirrors `CustomRecorderControlTests.swift` 1:1.
 - **testIsShortcutAcceptable_accepted** — a valid key+modifier combo is accepted.
 - **testIsShortcutAcceptable_modifiersOnlyButContainsKeycode** — modifiers-only flags but with a real keycode → accepted.
 - **testIsShortcutAcceptable_conflictWithExistingShortcut** — collides with an existing shortcut → rejected.
+- **testIsShortcutAcceptable_openFocusSetsShortcutReportsConflictId** — a chord that collides with the
+  static global Open Focus Sets action is rejected with that action's id, so the existing label and
+  unassign flow can name it.
 - **testIsShortcutAcceptable_holdChangeStripsOldHoldFromCombinedNextWindow** — changing a shortcut's hold (e.g. ⌘→⌥) so its chord now duplicates another shortcut is detected; the same-index nextWindow is stored COMBINED with the old hold, so the old hold is stripped before applying the new one (else ⌥⌘+Tab is compared instead of ⌥+Tab and the conflict is missed).
 - **testIsShortcutAcceptable_pressConflictsWithLocalShortcutsUnderItsOwnHold** — recording a press that collides with a local shortcut (arrow keys, statics like Space) under the SAME shortcut's hold is rejected. Regression: the old-combos exclusion dropped the candidate's own hold, so the collision was only caught when another shortcut happened to share the same hold modifiers — the default double-⌥ holds masked the bug (⌥+→ flagged by luck), while ⌃+→ recorded with no conflict dialog after the arrow-keys toggle had unassigned it.
 - **testIsShortcutAcceptable_reservedByMacos** — a macOS-reserved combo → rejected.

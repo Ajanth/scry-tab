@@ -31,6 +31,7 @@ Mirrors `SettingsRouteTests.swift` 1:1.
 
 - **testInitialSearchRouteNormalizesToAppearance** — a search route cannot be the initial restore route, so navigation starts on Appearance.
 - **testNavigateUpdatesPreviousNonSearchRoute** — navigating to a normal page updates the selected and previous non-search routes.
+- **testFocusSetsDestinationIsPreserved** — navigating to the Focus Sets Controls destination preserves it as the current and restore route.
 - **testSearchPreservesPreviousNonSearchRoute** — starting search stores the route that was active before search.
 - **testNavigateDuringSearchUpdatesRestoreRoute** — once search is active, navigating to a new non-search route makes that route the new restore target.
 - **testEmptySearchRestoresPreviousNonSearchRoute** — empty or whitespace search restores the previous non-search route.

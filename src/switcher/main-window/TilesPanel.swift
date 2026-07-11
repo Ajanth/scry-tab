@@ -6,6 +6,7 @@ class TilesPanel: NSPanel {
     static var shared: TilesPanel!
     private var frozenTopCenter: NSPoint?
     private var highWaterHeight: CGFloat = 0
+    var hasCustomContent = false
 
     convenience init() {
         self.init(contentRect: .zero, styleMask: .nonactivatingPanel, backing: .buffered, defer: false)
@@ -69,7 +70,9 @@ class TilesPanel: NSPanel {
     }
 
     override func orderOut(_ sender: Any?) {
-        TilesView.clearNeedsLayout()
+        if !hasCustomContent {
+            TilesView.clearNeedsLayout()
+        }
         // orderOut requires WindowServer. Let's hide before calling it, in case it lags
         alphaValue = 0
         super.orderOut(sender)
@@ -84,7 +87,9 @@ class TilesPanel: NSPanel {
         makeKeyAndOrderFront(nil)
         ContextMenuEvents.toggle(true)
         CursorEvents.toggle(true)
-        DispatchQueue.main.async { TilesView.scrollView.flashScrollers() }
+        if !hasCustomContent {
+            DispatchQueue.main.async { TilesView.scrollView.flashScrollers() }
+        }
     }
 
     static func maxRowWidth(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
@@ -132,7 +137,7 @@ extension TilesPanel: NSWindowDelegate {
         // this avoids command+q from quitting ScryTab itself, or command+p from printing
         DispatchQueue.main.async {
             MainMenu.toggle(false)
-            if TilesView.isSearchEditing {
+            if TilesView.isSearchEditing || TilesPanel.shared.hasCustomContent {
                 MainMenu.toggleEditMenu(true)
             }
         }

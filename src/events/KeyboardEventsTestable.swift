@@ -5,12 +5,16 @@ class KeyboardEventsTestable {
         var ids = [String: Int]()
         (0..<Preferences.maxShortcutCount).forEach { ids[Preferences.indexToName("nextWindowShortcut", $0)] = $0 }
         (0..<Preferences.maxShortcutCount).forEach { ids[Preferences.indexToName("holdShortcut", $0)] = Preferences.maxShortcutCount + $0 }
+        ids["openFocusSetsShortcut"] = 2 * Preferences.maxShortcutCount
         return ids
     }
 }
 
 @discardableResult
 func handleKeyboardEvent(_ globalId: Int?, _ shortcutState: ShortcutState?, _ keyCode: UInt32?, _ modifiers: NSEvent.ModifierFlags?, _ isARepeat: Bool, _ event: NSEvent? = nil) -> Bool {
+    if let handled = handleFocusSetPickerKeyboardEvent(globalId, shortcutState, keyCode, modifiers, isARepeat, event) {
+        return handled
+    }
     if let event, shouldAbsorbSearchEditingKeyDown(event) {
         switch TilesView.handleSearchEditingKeyDown(event) {
         case .handled: return true
@@ -21,6 +25,75 @@ func handleKeyboardEvent(_ globalId: Int?, _ shortcutState: ShortcutState?, _ ke
     logKeyboardEvent(globalId, shortcutState, keyCode, modifiers, isARepeat)
     let someShortcutTriggered = triggerMatchingShortcuts(globalId, shortcutState, keyCode, modifiers, isARepeat)
     return someShortcutTriggered
+}
+
+private func handleFocusSetPickerKeyboardEvent(_ globalId: Int?,
+                                               _ shortcutState: ShortcutState?,
+                                               _ keyCode: UInt32?,
+                                               _ modifiers: NSEvent.ModifierFlags?,
+                                               _ isARepeat: Bool,
+                                               _ event: NSEvent?) -> Bool? {
+    guard SwitcherSession.current?.focusSetSessionState == .picker,
+          TilesPanel.shared.isKeyWindow else { return nil }
+    guard let event else {
+        return globalId == nil && shortcutState == nil && keyCode == nil && modifiers != nil ? false : nil
+    }
+    guard event.type == .keyDown || event.type == .keyUp else { return nil }
+    if event.type == .keyDown, FocusSetPickerPanel.shared.picker()?.hasMarkedText() == true { return false }
+    if handleFocusSetPickerActionShortcut(event, isARepeat) { return true }
+    return handleFocusSetPickerVimKeyEvent(event, isARepeat) ?? false
+}
+
+private func handleFocusSetPickerActionShortcut(_ event: NSEvent, _ isARepeat: Bool) -> Bool {
+    let keyCode = event.type == .keyDown ? UInt32(event.keyCode) : nil
+    for id in ["cancelShortcut", "focusWindowShortcut"] {
+        guard let shortcut = ControlsTab.shortcuts[id] else { continue }
+        let matches = shortcut.matches(nil, nil, keyCode, event.modifierFlags)
+        guard matches, shortcut.shouldTrigger() else {
+            shortcut.redundantSafetyMeasures()
+            continue
+        }
+        shortcut.executeAction(isARepeat)
+        shortcut.redundantSafetyMeasures()
+        return true
+    }
+    return false
+}
+
+private func handleFocusSetPickerVimKeyEvent(_ event: NSEvent, _ isARepeat: Bool) -> Bool? {
+    guard let vimShortcut = focusSetPickerVimShortcut(for: event) else { return nil }
+    if event.type == .keyDown, vimShortcut.shouldTrigger() {
+        vimShortcut.state = .down
+        vimShortcut.executeAction(isARepeat)
+        return true
+    }
+    if event.type == .keyUp {
+        vimShortcut.state = .up
+        return false
+    }
+    return nil
+}
+
+private func focusSetPickerVimShortcut(for event: NSEvent) -> ATShortcut? {
+    guard SwitcherSession.current?.focusSetSessionState == .picker,
+          TilesPanel.shared.isKeyWindow,
+          event.type == .keyDown || event.type == .keyUp,
+          event.modifierFlags.cleaned().isEmpty else { return nil }
+    let keyCode = UInt32(event.keyCode)
+    return ControlsTab.shortcuts.values.first {
+        $0.id.starts(with: "vimCycle") &&
+        $0.scope == .local &&
+        $0.triggerPhase == .down &&
+        $0.shortcut.carbonModifierFlags.cleaned() == 0 &&
+        $0.shortcut.carbonKeyCode == keyCode
+    }
+}
+
+extension KeyboardEventsTestable {
+    static func shouldAbsorbEscapeAtHidTap(anyShortcutUsesEscape: Bool,
+                                           sessionState: FocusSetSessionState?) -> Bool {
+        anyShortcutUsesEscape && sessionState != nil && sessionState != .picker
+    }
 }
 
 private func logKeyboardEvent(_ globalId: Int?, _ shortcutState: ShortcutState?, _ keyCode: UInt32?, _ modifiers: NSEvent.ModifierFlags?, _ isARepeat: Bool) {

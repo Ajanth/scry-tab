@@ -39,6 +39,11 @@ class KeyRepeatTimer {
         }
     }
 
+    static func stopCurrentTimer() {
+        guard let currentTimerShortcutName else { return }
+        stopTimerForRepeatingKey(currentTimerShortcutName)
+    }
+
     private static func startTimerForRepeatingKey(_ atShortcut: ATShortcut, _ block: @escaping () -> Void) {
         guard timerIsSuspended && atShortcut.state != .up && (atShortcut.scope == .local || !holdModifierIsReleased()) else { return }
         currentTimerShortcutName = atShortcut.id

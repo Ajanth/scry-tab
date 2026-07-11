@@ -571,6 +571,7 @@ class SettingsWindow: NSWindow {
             ]),
             SettingsSearchDescriptor(id: "controls-active", route: .controls(.activeShortcuts), sectionID: "controls", title: NSLocalizedString("Shortcuts while ScryTab is active", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + ShortcutsWhenActiveSheet.searchableStrings),
             SettingsSearchDescriptor(id: "controls-navigation-pointer", route: .controls(.navigationPointer), sectionID: "controls", title: NSLocalizedString("Navigation & pointer", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + AdditionalControlsSheet.searchableStrings),
+            SettingsSearchDescriptor(id: "controls-focus-sets", route: .controls(.focusSets), sectionID: "controls", title: NSLocalizedString("Focus Sets", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + FocusSetSettingsView.searchableStrings),
             SettingsSearchDescriptor(id: "general", route: .general, sectionID: "general", title: NSLocalizedString("General", comment: ""), keywords: [
                 NSLocalizedString("Start at login", comment: ""),
                 NSLocalizedString("Language", comment: ""),
