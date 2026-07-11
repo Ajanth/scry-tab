@@ -54,7 +54,7 @@ class Appearance {
 // dragging in `AppearanceTab` (which `IllustratedImageThemeView` lives in) or the full
 // `SettingsWindow`. Tests never instantiate these — they only need the symbols to resolve.
 enum SettingsWindow {
-    static let contentWidth = CGFloat(700)
+    static let contentWidth = CGFloat(760)
 }
 
 class IllustratedImageThemeView: NSView {}

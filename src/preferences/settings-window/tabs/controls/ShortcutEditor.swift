@@ -444,7 +444,9 @@ final class AppearancePane {
         style = ShortcutOverrideRadios(
             baseName: "appearanceStyleOverride",
             cases: AppearanceStylePreference.allCases,
-            globalIndex: { Preferences.appearanceStyle.index })
+            globalIndex: { Preferences.appearanceStyle.index },
+            initialSize: Preferences.appearanceSize,
+            initialTheme: Preferences.appearanceTheme)
 
         size = ShortcutOverrideSegmented(
             baseName: "appearanceSizeOverride",
@@ -465,9 +467,11 @@ final class AppearancePane {
             segmentWidth: 100)
 
         let styleTable = TableGroupView(width: width)
+        styleTable.addRow(secondaryViews: [style.stack], secondaryViewsAlignment: .centerX)
+        style.stack.widthAnchor.constraint(equalTo: styleTable.widthAnchor,
+                                          constant: -2 * TableGroupView.rowHorizontalPadding).isActive = true
         style.stack.setContentHuggingPriority(.required, for: .horizontal)
         style.stack.setContentCompressionResistancePriority(.required, for: .horizontal)
-        styleTable.addRow(secondaryViews: [style.stack], secondaryViewsAlignment: .centerX)
 
         let overridesTable = TableGroupView(width: width)
         overridesTable.addRow(leftText: AppearanceTab.labelSize, rightViews: [size.segmented])
@@ -480,13 +484,22 @@ final class AppearancePane {
         container.spacing = TableGroupSetView.tableGroupSpacing
         container.translatesAutoresizingMaskIntoConstraints = false
         view = container
+        let weakStyle = WeakRef(style)
+        size.onDisplayedIndexChange = { index in
+            guard AppearanceSizePreference.allCases.indices.contains(index) else { return }
+            weakStyle.value?.updateSize(AppearanceSizePreference.allCases[index])
+        }
+        theme.onDisplayedIndexChange = { index in
+            guard AppearanceThemePreference.allCases.indices.contains(index) else { return }
+            weakStyle.value?.updateTheme(AppearanceThemePreference.allCases[index])
+        }
     }
 
     func bind(toShortcut index: Int) {
-        style.bind(toShortcut: index)
         size.bind(toShortcut: index)
         theme.bind(toShortcut: index)
         shortcutStyle.bind(toShortcut: index)
+        style.bind(toShortcut: index)
     }
 }
 
@@ -534,6 +547,8 @@ final class ShortcutOverrideSegmented {
     private let cases: [MacroPreference]
     private let globalIndex: () -> Int
     private var currentShortcutIndex: Int = 0
+    private(set) var displayedIndex = 0
+    var onDisplayedIndexChange: ((Int) -> Void)?
 
     init(baseName: String,
          cases: [MacroPreference],
@@ -564,6 +579,8 @@ final class ShortcutOverrideSegmented {
         }
         let clamped = max(0, min(displayedIndex, cases.count - 1))
         segmented.selectedSegment = clamped
+        self.displayedIndex = clamped
+        onDisplayedIndexChange?(clamped)
     }
 
     private func handleClick(_ control: NSSegmentedControl) {
@@ -583,6 +600,8 @@ final class ShortcutOverrideSegmented {
         case .write(let value):
             Preferences.set(key, value)
         }
+        displayedIndex = max(0, min(newIndex, cases.count - 1))
+        onDisplayedIndexChange?(displayedIndex)
     }
 }
 
@@ -592,33 +611,64 @@ final class ShortcutOverrideRadios {
     let stack: NSStackView
 
     private let baseName: String
-    private let cases: [MacroPreference]
+    private let cases: [AppearanceStylePreference]
     private let globalIndex: () -> Int
+    private var previews = [AppearanceLivePreviewView]()
     private var currentShortcutIndex: Int = 0
+    private var currentSize: AppearanceSizePreference
+    private var currentTheme: AppearanceThemePreference
 
     init(baseName: String,
-         cases: [MacroPreference],
-         globalIndex: @escaping () -> Int) {
+         cases: [AppearanceStylePreference],
+         globalIndex: @escaping () -> Int,
+         initialSize: AppearanceSizePreference,
+         initialTheme: AppearanceThemePreference) {
         self.baseName = baseName
         self.cases = cases
         self.globalIndex = globalIndex
+        self.currentSize = initialSize
+        self.currentTheme = initialTheme
 
-        stack = LabelAndControl.makeImageRadioButtons(
-            Preferences.indexToName(baseName, 0),
-            cases as! [ImageMacroPreference],
-            extraAction: nil,
-            buttonSpacing: 18)
+        var previews = [AppearanceLivePreviewView]()
+        let buttonViews = cases.map { style in
+            let preview = AppearanceLivePreviewView(
+                style: style,
+                size: initialSize,
+                theme: initialTheme,
+                startsPaused: true,
+                showsPauseButton: false)
+            previews.append(preview)
+            return ImageTextButtonView(
+                title: style.localizedString,
+                rawName: Preferences.indexToName(baseName, 0),
+                preview: preview,
+                previewAspectRatio: 1 / AppearanceLivePreviewArtwork.Metrics.wallpaperAspectRatio,
+                state: .off,
+                previewInset: 0)
+        }
+        stack = NSStackView(views: buttonViews)
+        stack.orientation = .horizontal
+        stack.distribution = .fillEqually
+        stack.spacing = TableGroupView.padding
+        stack.alignment = .centerY
+        stack.translatesAutoresizingMaskIntoConstraints = false
         stack.setContentHuggingPriority(.required, for: .horizontal)
         stack.setContentCompressionResistancePriority(.required, for: .horizontal)
-
+        self.previews = previews
         let weakSelf = WeakRef(self)
-        let buttonViews = stack.arrangedSubviews.compactMap { $0 as? ImageTextButtonView }
-        for (i, buttonView) in buttonViews.enumerated() {
-            buttonView.onClick = { [weak stack] _ in
-                guard let _ = stack else { return }
-                weakSelf.value?.handleClick(buttonIndex: i)
-            }
+        for (index, buttonView) in buttonViews.enumerated() {
+            buttonView.onClick = { _ in weakSelf.value?.handleClick(buttonIndex: index) }
         }
+    }
+
+    func updateSize(_ size: AppearanceSizePreference) {
+        currentSize = size
+        refreshPreviewAppearance()
+    }
+
+    func updateTheme(_ theme: AppearanceThemePreference) {
+        currentTheme = theme
+        refreshPreviewAppearance()
     }
 
     func bind(toShortcut index: Int) {
@@ -636,6 +686,7 @@ final class ShortcutOverrideRadios {
         for (i, b) in buttonViews.enumerated() {
             b.state = (i == displayedIndex) ? .on : .off
         }
+        applyPlayback(playingIndex: nil)
     }
 
     private func handleClick(buttonIndex i: Int) {
@@ -661,6 +712,22 @@ final class ShortcutOverrideRadios {
             onIndex = i
         }
         for (j, b) in buttonViews.enumerated() { b.state = (j == onIndex) ? .on : .off }
+        applyPlayback(playingIndex: onIndex)
+    }
+
+    private func applyPlayback(playingIndex: Int?) {
+        let states = AppearancePreviewStateResolver.pausedStates(
+            previewCount: previews.count,
+            playingIndex: playingIndex)
+        zip(previews, states).forEach { $0.setAnimationPaused($1) }
+    }
+
+    private func refreshPreviewAppearance() {
+        previews.forEach {
+            $0.updateAppearance(
+                size: currentSize,
+                theme: currentTheme)
+        }
     }
 }
 
