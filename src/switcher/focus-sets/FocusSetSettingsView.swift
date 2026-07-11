@@ -2,12 +2,22 @@ import Cocoa
 import ShortcutRecorder
 
 final class FocusSetSettingsView: NSView {
+    static let directShortcutReleaseSubtitle = NSLocalizedString("Applies to every direct Focus Set shortcut.", comment: "")
+    static let appearanceAndOrganizationSubtitle = NSLocalizedString("Direct Focus Set shortcuts use the standard appearance and window organization.", comment: "")
     static let searchableStrings = [
         NSLocalizedString("Focus Sets", comment: ""),
         NSLocalizedString("Open Focus Sets", comment: ""),
         NSLocalizedString("Choose a global shortcut to open the Focus Sets picker.", comment: ""),
-        NSLocalizedString("Focus Sets profile", comment: ""),
-        NSLocalizedString("Uses this shortcut’s filters when counting and showing windows.", comment: ""),
+        NSLocalizedString("After keys are released", comment: ""),
+        directShortcutReleaseSubtitle,
+        NSLocalizedString("Shortcuts while browsing", comment: ""),
+        NSLocalizedString("Focus Sets uses the shared active shortcuts. Change them in Controls.", comment: ""),
+        NSLocalizedString("Open Shortcuts When Active Settings", comment: ""),
+        NSLocalizedString("Visibility", comment: ""),
+        NSLocalizedString("Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows.", comment: ""),
+        NSLocalizedString("Appearance and organization", comment: ""),
+        appearanceAndOrganizationSubtitle,
+        NSLocalizedString("Open Appearance Settings", comment: ""),
         NSLocalizedString("Saved Focus Sets", comment: ""),
         NSLocalizedString("Add Focus Set", comment: ""),
         NSLocalizedString("No Focus Sets", comment: ""),
@@ -34,7 +44,7 @@ final class FocusSetSettingsView: NSView {
         NSLocalizedString("%d matching windows", comment: ""),
         NSLocalizedString("Cancel", comment: ""),
         NSLocalizedString("Apply", comment: ""),
-    ]
+    ] + ShortcutStylePreference.allCases.map(\.localizedString)
 
     private let store = FocusSetsStore()
     private let contentWidth: CGFloat
@@ -44,8 +54,6 @@ final class FocusSetSettingsView: NSView {
     private var content: NSView?
     private var contentConstraints = [NSLayoutConstraint]()
     private var candidateCountLabels = [UUID: NSTextField]()
-    private weak var profilePopup: PopupButtonLikeSystemSettings?
-    private weak var profileShortcutSummaryLabel: NSTextField?
     private let candidateCountRefreshThrottler = Throttler(delayInMs: 200)
     private var inventoryObserver: NSObjectProtocol?
 
@@ -75,7 +83,7 @@ final class FocusSetSettingsView: NSView {
     }
 
     func refresh() {
-        let refreshedConfiguration = store.read(availableShortcutIdentifiers: availableShortcutIdentifiers())
+        let refreshedConfiguration = store.read()
         let needsRebuild = content == nil ||
             configuration.sets != refreshedConfiguration.sets
         configuration = refreshedConfiguration
@@ -83,7 +91,6 @@ final class FocusSetSettingsView: NSView {
         if needsRebuild {
             rebuildContent()
         } else {
-            refreshProfilePopup()
             refreshCandidateCountLabels()
         }
     }
@@ -113,10 +120,8 @@ final class FocusSetSettingsView: NSView {
         contentConstraints.removeAll(keepingCapacity: true)
         content?.removeFromSuperview()
         content = nil
-        profilePopup = nil
-        profileShortcutSummaryLabel = nil
         candidateCountLabels.removeAll(keepingCapacity: true)
-        let views = [makeProfileTable(), makeFocusSetsTable()]
+        let views = [makePolicyTable(), makeFocusSetsTable()]
         let content = TableGroupSetView(originalViews: views, padding: 0)
         content.translatesAutoresizingMaskIntoConstraints = false
         addSubview(content)
@@ -131,7 +136,7 @@ final class FocusSetSettingsView: NSView {
         contentConstraints = constraints
     }
 
-    private func makeProfileTable() -> TableGroupView {
+    private func makePolicyTable() -> TableGroupView {
         let table = TableGroupView(title: NSLocalizedString("Focus Sets", comment: ""), width: contentWidth)
         let openPickerShortcut = LabelAndControl.makeLabelWithRecorder(
             NSLocalizedString("Open Focus Sets", comment: ""),
@@ -142,26 +147,30 @@ final class FocusSetSettingsView: NSView {
             leftText: NSLocalizedString("Open Focus Sets", comment: ""),
             rightViews: [openPickerShortcut],
             subText: NSLocalizedString("Choose a global shortcut to open the Focus Sets picker.", comment: ""))
-        let popup = PopupButtonLikeSystemSettings()
-        configureProfilePopup(popup)
-        popup.target = self
-        popup.action = #selector(profileChanged(_:))
-        DesignSystemControlStyler.stylePopupButton(popup)
-        let shortcutSummary = NSTextField(labelWithString: selectedShortcutSummary())
-        shortcutSummary.font = NSFont.systemFont(ofSize: 11)
-        shortcutSummary.textColor = .secondaryLabelColor
-        shortcutSummary.alignment = .left
-        shortcutSummary.lineBreakMode = .byTruncatingTail
-        let selection = NSStackView(views: [popup, shortcutSummary])
-        selection.orientation = .vertical
-        selection.alignment = .leading
-        selection.spacing = 1
-        selection.translatesAutoresizingMaskIntoConstraints = false
-        profilePopup = popup
-        profileShortcutSummaryLabel = shortcutSummary
-        _ = table.addRow(leftText: NSLocalizedString("Focus Sets profile", comment: ""),
-                         rightViews: [selection],
-                         subText: NSLocalizedString("Uses this shortcut’s filters when counting and showing windows.", comment: ""))
+        let releaseStyle = LabelAndControl.makeDropdown("focusSetsShortcutStyle", ShortcutStylePreference.allCases)
+        _ = table.addRow(
+            leftText: NSLocalizedString("After keys are released", comment: ""),
+            rightViews: [releaseStyle],
+            subText: Self.directShortcutReleaseSubtitle)
+        let activeShortcutsButton = DesignSystemControlStyler.makeButton(
+            NSLocalizedString("Open Shortcuts When Active Settings", comment: ""),
+            target: self,
+            action: #selector(openActiveShortcutsSettings(_:)))
+        _ = table.addRow(
+            leftText: NSLocalizedString("Shortcuts while browsing", comment: ""),
+            rightViews: [activeShortcutsButton],
+            subText: NSLocalizedString("Focus Sets uses the shared active shortcuts. Change them in Controls.", comment: ""))
+        _ = table.addRow(
+            leftText: NSLocalizedString("Visibility", comment: ""),
+            subText: NSLocalizedString("Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows.", comment: ""))
+        let appearanceButton = DesignSystemControlStyler.makeButton(
+            NSLocalizedString("Open Appearance Settings", comment: ""),
+            target: self,
+            action: #selector(openAppearanceSettings(_:)))
+        _ = table.addRow(
+            leftText: NSLocalizedString("Appearance and organization", comment: ""),
+            rightViews: [appearanceButton],
+            subText: Self.appearanceAndOrganizationSubtitle)
         return table
     }
 
@@ -186,24 +195,6 @@ final class FocusSetSettingsView: NSView {
         let add = DesignSystemControlStyler.makeButton(NSLocalizedString("Add Focus Set", comment: ""), target: self, action: #selector(addFocusSet(_:)))
         _ = table.addRow(leftText: nil, rightViews: [add])
         return table
-    }
-
-    private func configureProfilePopup(_ popup: PopupButtonLikeSystemSettings) {
-        popup.removeAllItems()
-        for index in 0..<Preferences.shortcutCount {
-            let identifier = Preferences.shortcutIdentifier(at: index)
-            popup.addItem(withTitle: shortcutTitle(index))
-            popup.item(at: popup.numberOfItems - 1)?.representedObject = identifier
-            if identifier == configuration.presentationShortcutIdentifier {
-                popup.selectItem(at: popup.numberOfItems - 1)
-            }
-        }
-    }
-
-    private func refreshProfilePopup() {
-        guard let profilePopup else { return }
-        configureProfilePopup(profilePopup)
-        profileShortcutSummaryLabel?.stringValue = selectedShortcutSummary()
     }
 
     private func makeCandidateCountLabel(for focusSet: FocusSet) -> NSTextField {
@@ -260,24 +251,6 @@ final class FocusSetSettingsView: NSView {
         return button
     }
 
-    private func availableShortcutIdentifiers() -> [String] {
-        (0..<Preferences.shortcutCount).map { Preferences.shortcutIdentifier(at: $0) }
-    }
-
-    private func shortcutTitle(_ index: Int) -> String {
-        NSLocalizedString("Shortcut", comment: "") + " " + String(index + 1)
-    }
-
-    private func shortcutSummary(_ index: Int) -> String {
-        ControlsTab.shortcutSummary(index)
-    }
-
-    private func selectedShortcutSummary() -> String {
-        let identifier = configuration.presentationShortcutIdentifier
-        let index = Preferences.shortcutIndex(forIdentifier: identifier) ?? 0
-        return shortcutSummary(index)
-    }
-
     private func refreshCandidateCounts() {
         let snapshot = FocusSetPresentationSnapshotBuilder.make(configuration: configuration)
         candidateCounts = Dictionary(uniqueKeysWithValues: configuration.sets.map {
@@ -317,22 +290,8 @@ final class FocusSetSettingsView: NSView {
 
     private func persist(_ sets: [FocusSet]) {
         let next = FocusSetsConfiguration(version: configuration.version,
-                                          presentationShortcutIdentifier: configuration.presentationShortcutIdentifier,
                                           sets: sets)
-        guard store.set(next, availableShortcutIdentifiers: availableShortcutIdentifiers()) else {
-            NSSound.beep()
-            return
-        }
-        refresh()
-        App.refreshOpenUiAfterFocusSetConfigurationChange()
-    }
-
-    @objc private func profileChanged(_ sender: NSPopUpButton) {
-        guard let identifier = sender.selectedItem?.representedObject as? String else { return }
-        let next = FocusSetsConfiguration(version: configuration.version,
-                                          presentationShortcutIdentifier: identifier,
-                                          sets: configuration.sets)
-        guard store.set(next, availableShortcutIdentifiers: availableShortcutIdentifiers()) else {
+        guard store.set(next) else {
             NSSound.beep()
             return
         }
@@ -379,7 +338,7 @@ final class FocusSetSettingsView: NSView {
             focusSet,
             unassigningShortcutActionIdentifier: actionIdentifier,
             in: configuration)
-        guard store.set(next, availableShortcutIdentifiers: availableShortcutIdentifiers()) else {
+        guard store.set(next) else {
             NSSound.beep()
             return
         }
@@ -397,11 +356,11 @@ final class FocusSetSettingsView: NSView {
             refresh()
             return
         }
-        guard store.set(next, availableShortcutIdentifiers: availableShortcutIdentifiers()) else {
+        guard store.set(next) else {
             NSSound.beep()
             return
         }
-        let persisted = store.read(availableShortcutIdentifiers: availableShortcutIdentifiers())
+        let persisted = store.read()
         guard persisted == next else {
             NSSound.beep()
             refresh()
@@ -411,6 +370,14 @@ final class FocusSetSettingsView: NSView {
         refreshCandidateCounts()
         rebuildContent()
         App.refreshOpenUiAfterFocusSetConfigurationChange()
+    }
+
+    @objc private func openAppearanceSettings(_ sender: NSButton) {
+        SettingsWindow.shared.navigate(to: .appearance)
+    }
+
+    @objc private func openActiveShortcutsSettings(_ sender: NSButton) {
+        SettingsWindow.shared.navigate(to: .controls(.activeShortcuts))
     }
 }
 

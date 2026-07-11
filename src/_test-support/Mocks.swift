@@ -113,6 +113,11 @@ class App {
     }
     static let app = AppMock()
     static let bundleIdentifier = "com.perpro.scry-tab"
+    static var directFocusSetChordReleases = [UUID]()
+
+    static func handleDirectFocusSetChordRelease(_ identifier: UUID) {
+        directFocusSetChordReleases.append(identifier)
+    }
 }
 
 class TilesPanel {
@@ -188,7 +193,7 @@ class ControlsTab {
                 SwitcherSession.current = new
                 return new
             }()
-            session.shortcutIndex = Preferences.nameToIndex(action)
+            session.presentationSource = .shortcut(Preferences.nameToIndex(action))
         }
     }
 
@@ -217,6 +222,7 @@ class Logger {
 
 class Preferences {
     static var shortcutStyle: ShortcutStylePreference = .focusOnRelease
+    static var focusSetsShortcutStyle: ShortcutStylePreference = .focusOnRelease
     static var holdShortcut = ["⌥", "⌥", "⌥"]
     static let minShortcutCount = 1
     static let maxShortcutCount = 9
@@ -235,6 +241,13 @@ class Preferences {
 
     static func effectiveShortcutStyle(_ index: Int) -> ShortcutStylePreference {
         return shortcutStyle
+    }
+
+    static func shortcutStyle(_ source: SwitcherPresentationSource) -> ShortcutStylePreference {
+        switch source {
+        case .shortcut: return shortcutStyle
+        case .focusSets: return focusSetsShortcutStyle
+        }
     }
 
     static func invalidateAllCache() {}

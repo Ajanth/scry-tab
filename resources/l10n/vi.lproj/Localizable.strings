@@ -14,7 +14,6 @@
 "About" = "Giới thiệu";
 "About %@" = "Giới thiệu về %@";
 "Accessibility" = "Trợ năng";
-"Actions" = "Tác vụ";
 "Active app" = "Ứng dụng đang hoạt động";
 "Active screen" = "Màn hình đang hoạt động";
 "Add a pattern" = "Thêm một mẫu";
@@ -37,9 +36,11 @@
 "App is hidden" = "Ứng dụng đang ẩn";
 "App is running but has no open window" = "Ứng dụng đang chạy nhưng không có cửa sổ mở";
 "Appearance" = "Giao diện";
+"Appearance and organization" = "Giao diện và sắp xếp";
 "Application Name" = "Tên ứng dụng";
 "Application Name - Window Title" = "Tên ứng dụng - Tiêu đề cửa sổ";
 "Applies in other Appearances" = "Áp dụng trong các Giao diện khác";
+"Applies to every direct Focus Set shortcut." = "Áp dụng cho mọi phím tắt trực tiếp của Nhóm tập trung.";
 "Apply" = "Áp dụng";
 "Apply this change to all shortcuts?" = "Áp dụng thay đổi này cho tất cả phím tắt?";
 "Apply to All Shortcuts" = "Áp dụng cho tất cả phím tắt";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Hủy";
 "Change Global Only" = "Chỉ thay đổi giá trị chung";
-"Changes are saved automatically." = "Các thay đổi được lưu tự động.";
 "Check for updates now…" = "Kiểm tra cập nhật ngay…";
 "Check for updates periodically" = "Kiểm tra cập nhật định kỳ";
 "Check for updates…" = "Kiểm tra cập nhật…";
 "Check permissions…" = "Kiểm tra quyền…";
 "Choose a global shortcut to open the Focus Sets picker." = "Chọn phím tắt toàn cục để mở bộ chọn bộ tập trung.";
-"Choose Applications…" = "Chọn ứng dụng…";
 "Choose the applications whose windows belong to this Focus Set." = "Chọn các ứng dụng có cửa sổ thuộc Bộ tập trung này.";
 "Close window" = "Đóng cửa sổ";
 "Conflicting shortcut" = "Phím tắt xung đột";
@@ -74,6 +73,7 @@
 "Dark" = "Tối";
 "Debug tools" = "Công cụ gỡ lỗi";
 "Delete" = "Xóa";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Các phím tắt trực tiếp của Nhóm tập trung sử dụng giao diện và cách sắp xếp cửa sổ tiêu chuẩn.";
 "Disabled" = "Đã tắt";
 "Do Not Move" = "Không di chuyển";
 "Don't hide" = "Không ẩn";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "ví dụ: com.example.app";
 "e.g. Debug" = "ví dụ: Debug";
 "Edit" = "Sửa";
-"Editing" = "Đang sửa";
 "Editing “%@”" = "Đang sửa “%@”";
 "End" = "Cuối";
 "Exceptions" = "Ngoại lệ";
@@ -93,7 +92,7 @@
 "Focus" = "Tiêu điểm";
 "Focus selected window" = "Đặt tiêu điểm cửa sổ đã chọn";
 "Focus Sets" = "Nhóm tập trung";
-"Focus Sets profile" = "Hồ sơ nhóm tập trung";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Bộ tập trung sử dụng các phím tắt dùng chung khi hoạt động. Hãy thay đổi chúng trong Điều khiển.";
 "Fullscreen/Defullscreen window" = "Bật/Tắt toàn màn hình cửa sổ";
 "General" = "Tổng quát";
 "Gesture" = "Cử chỉ";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Không bao giờ gửi báo cáo sự cố";
 "New Focus Set" = "Nhóm tập trung mới";
 "No applications selected" = "Chưa chọn ứng dụng";
-"No applications selected." = "Chưa chọn ứng dụng nào.";
 "No Focus Sets" = "Không có nhóm tập trung";
 "No matching applications." = "Không có ứng dụng phù hợp.";
 "No Window" = "Không có cửa sổ";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Chỉ trên màn hình khác";
 "Open Accessibility Settings…" = "Mở Cài đặt Trợ năng…";
+"Open Appearance Settings" = "Mở cài đặt Giao diện";
 "Open Focus Sets" = "Mở bộ tập trung";
+"Open Shortcuts When Active Settings" = "Mở cài đặt Phím tắt khi hoạt động";
 "Open Trackpad Settings…" = "Mở Cài đặt Trackpad…";
 "Order windows by" = "Sắp xếp cửa sổ theo";
 "Ordering" = "Sắp xếp";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Phím tắt đã được gán cho: %@";
 "Shortcuts" = "Phím tắt";
 "Shortcuts When Active" = "Phím tắt khi hoạt động";
+"Shortcuts while browsing" = "Phím tắt khi duyệt";
 "Shortcuts while ScryTab is active" = "Phím tắt khi ScryTab đang hoạt động";
 "Show" = "Hiển thị";
 "Show all windows" = "Hiển thị tất cả cửa sổ";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Hiển thị cửa sổ từ các ứng dụng";
 "Show windows from screens" = "Hiển thị cửa sổ từ các màn hình";
 "Show windows from Spaces" = "Hiển thị cửa sổ từ các Không gian";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Hiển thị ứng dụng từ tất cả Spaces và màn hình, với cách xử lý tiêu chuẩn cho mục bị ẩn, thu nhỏ, toàn màn hình và không có cửa sổ.";
 "Size" = "Kích cỡ";
 "Small" = "Nhỏ";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Một số phím tắt ghi đè cài đặt này. Hãy xóa các giá trị ghi đè để áp dụng giá trị chung mới cho mọi phím tắt, hoặc giữ nguyên các giá trị ghi đè.";
@@ -242,11 +244,11 @@
 "Update now" = "Cập nhật ngay";
 "Updates policy" = "Chính sách cập nhật";
 "Usage" = "Sử dụng";
-"Uses this shortcut’s filters when counting and showing windows." = "Dùng bộ lọc của phím tắt này khi đếm và hiển thị cửa sổ.";
 "Version" = "Phiên bản";
 "View existing discussions" = "Xem các thảo luận hiện có";
 "Vim keys" = "Phím Vim";
 "Vim keys already assigned to other actions:\n%@" = "Phím Vim đã được gán cho các hành động khác:\n%@";
+"Visibility" = "Khả năng hiển thị";
 "Visible Spaces" = "Không gian hiển thị";
 "Website" = "Trang web";
 "What did you expect? What happened? Steps to reproduce…" = "Bạn mong đợi điều gì? Đã xảy ra chuyện gì? Các bước tái hiện…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Cửa sổ đang được thu nhỏ";
 "Window is on every Space" = "Cửa sổ ở trên mọi Không gian";
 "Window is on Space %d" = "Cửa sổ ở trên Không gian %d";
+"Window organization" = "Sắp xếp cửa sổ";
 "Window Title" = "Tiêu đề cửa sổ";
 "Window title contains" = "Tiêu đề cửa sổ chứa";
 "You can’t undo this action." = "Bạn không thể hoàn tác hành động này.";

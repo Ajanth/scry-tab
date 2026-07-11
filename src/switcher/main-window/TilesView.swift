@@ -239,8 +239,9 @@ class TilesView {
     }
 
     private static func stopKeyRepeatTimers() {
-        let shortcutIndex = SwitcherSession.current?.shortcutIndex ?? 0
-        KeyRepeatTimer.stopTimerForRepeatingKey(Preferences.indexToName("nextWindowShortcut", shortcutIndex))
+        if let shortcutIndex = SwitcherSession.current?.presentationSource.shortcutIndex {
+            KeyRepeatTimer.stopTimerForRepeatingKey(Preferences.indexToName("nextWindowShortcut", shortcutIndex))
+        }
         KeyRepeatTimer.stopTimerForRepeatingKey("previousWindowShortcut")
     }
 
@@ -269,8 +270,10 @@ class TilesView {
     private static func matchesShortcut(_ event: NSEvent, _ shortcutId: String) -> Bool {
         guard let shortcut = ControlsTab.shortcuts[shortcutId]?.shortcut else { return false }
         if shortcut.keyCode == .none || shortcut.carbonKeyCode != UInt32(event.keyCode) { return false }
-        let shortcutIndex = SwitcherSession.current?.shortcutIndex ?? 0
-        let holdModifiers = ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", shortcutIndex)]?.shortcut.carbonModifierFlags.cleaned() ?? 0
+        let shortcutIndex = SwitcherSession.current?.presentationSource.shortcutIndex
+        let holdModifiers = shortcutIndex.flatMap {
+            ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", $0)]?.shortcut.carbonModifierFlags.cleaned()
+        } ?? 0
         let eventModifiers = cocoaToCarbonFlags(event.modifierFlags).cleaned()
         let shortcutModifiers = shortcut.carbonModifierFlags.cleaned()
         return eventModifiers == shortcutModifiers || eventModifiers == (shortcutModifiers | holdModifiers)
@@ -439,7 +442,7 @@ class TilesView {
 
     static func updateItemsAndLayout(_ preservedScrollOrigin: CGPoint?) {
         var widthMax = TilesPanel.maxRowWidth().rounded()
-        if Preferences.effectiveAppearanceSize(SwitcherSession.activeShortcutIndex) == .auto {
+        if Preferences.appearanceSize(SwitcherSession.current?.presentationSource ?? .shortcut(0)) == .auto {
             resolveAutoSize(widthMax)
             Self.updateCachedSizes()
             widthMax = TilesPanel.maxRowWidth().rounded()
@@ -613,7 +616,7 @@ class TilesView {
         var frameHeight = TilesView.rowHeight + Appearance.windowPadding * 2 + searchReservedHeight
         let originX = Appearance.windowPadding
         var originY = Appearance.windowPadding
-        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons {
+        if Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0)) == .appIcons {
             // If there is title under the icon on the last line, the height of the title needs to be subtracted.
             frameHeight = frameHeight - Appearance.intraCellPadding - labelHeight
             originY = originY - Appearance.intraCellPadding - labelHeight
@@ -664,7 +667,7 @@ class TilesView {
     }
 
     private static func appIconsBottomViewportPadding(_ maxY: CGFloat, _ heightMax: CGFloat, _ labelHeight: CGFloat) -> CGFloat {
-        guard Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons, maxY > heightMax else { return 0 }
+        guard Preferences.appearanceStyle(SwitcherSession.current?.presentationSource ?? .shortcut(0)) == .appIcons, maxY > heightMax else { return 0 }
         return max(0, Appearance.windowPadding - labelHeight)
     }
 

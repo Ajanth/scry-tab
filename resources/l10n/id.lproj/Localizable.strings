@@ -14,7 +14,6 @@
 "About" = "Tentang";
 "About %@" = "Tentang %@";
 "Accessibility" = "Aksesibilitas";
-"Actions" = "Tindakan";
 "Active app" = "Aplikasi aktif";
 "Active screen" = "Layar aktif";
 "Add a pattern" = "Tambah pola";
@@ -37,9 +36,11 @@
 "App is hidden" = "Aplikasi disembunyikan";
 "App is running but has no open window" = "Aplikasi berjalan tetapi tidak memiliki jendela terbuka";
 "Appearance" = "Tampilan";
+"Appearance and organization" = "Tampilan dan pengaturan";
 "Application Name" = "Nama Aplikasi";
 "Application Name - Window Title" = "Nama Aplikasi - Judul Jendela";
 "Applies in other Appearances" = "Berlaku pada Tampilan lain";
+"Applies to every direct Focus Set shortcut." = "Berlaku untuk setiap pintasan langsung Set Fokus.";
 "Apply" = "Terapkan";
 "Apply this change to all shortcuts?" = "Terapkan perubahan ini ke semua pintasan?";
 "Apply to All Shortcuts" = "Terapkan ke Semua Pintasan";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Batal";
 "Change Global Only" = "Ubah Global Saja";
-"Changes are saved automatically." = "Perubahan disimpan secara otomatis.";
 "Check for updates now…" = "Periksa pembaruan sekarang…";
 "Check for updates periodically" = "Periksa pembaruan secara berkala";
 "Check for updates…" = "Periksa pembaruan…";
 "Check permissions…" = "Periksa izin…";
 "Choose a global shortcut to open the Focus Sets picker." = "Pilih pintasan global untuk membuka pemilih Set Fokus.";
-"Choose Applications…" = "Pilih aplikasi…";
 "Choose the applications whose windows belong to this Focus Set." = "Pilih aplikasi yang jendelanya termasuk dalam Set Fokus ini.";
 "Close window" = "Tutup jendela";
 "Conflicting shortcut" = "Pintasan bertentangan";
@@ -74,6 +73,7 @@
 "Dark" = "Gelap";
 "Debug tools" = "Alat debug";
 "Delete" = "Hapus";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Pintasan langsung Set Fokus menggunakan tampilan standar dan pengaturan jendela standar.";
 "Disabled" = "Dinonaktifkan";
 "Do Not Move" = "Jangan Pindahkan";
 "Don't hide" = "Jangan sembunyikan";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "mis. com.example.app";
 "e.g. Debug" = "mis. Debug";
 "Edit" = "Edit";
-"Editing" = "Mengedit";
 "Editing “%@”" = "Mengedit “%@”";
 "End" = "Akhir";
 "Exceptions" = "Pengecualian";
@@ -93,7 +92,7 @@
 "Focus" = "Fokus";
 "Focus selected window" = "Fokuskan jendela terpilih";
 "Focus Sets" = "Set fokus";
-"Focus Sets profile" = "Profil set fokus";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Kumpulan Fokus menggunakan pintasan bersama saat aktif. Ubah di Kontrol.";
 "Fullscreen/Defullscreen window" = "Jendela layar penuh/Keluar dari layar penuh";
 "General" = "Umum";
 "Gesture" = "Gestur";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Jangan pernah kirim laporan kerusakan";
 "New Focus Set" = "Set fokus baru";
 "No applications selected" = "Tidak ada aplikasi yang dipilih";
-"No applications selected." = "Tidak ada aplikasi yang dipilih.";
 "No Focus Sets" = "Tidak ada set fokus";
 "No matching applications." = "Tidak ada aplikasi yang cocok.";
 "No Window" = "Tanpa Jendela";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Hanya pada layar berbeda";
 "Open Accessibility Settings…" = "Buka Pengaturan Aksesibilitas…";
+"Open Appearance Settings" = "Buka Pengaturan Tampilan";
 "Open Focus Sets" = "Buka Set Fokus";
+"Open Shortcuts When Active Settings" = "Buka pengaturan Pintasan Saat Aktif";
 "Open Trackpad Settings…" = "Buka Pengaturan Trackpad…";
 "Order windows by" = "Urutkan jendela berdasarkan";
 "Ordering" = "Pengurutan";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Pintasan sudah ditetapkan untuk: %@";
 "Shortcuts" = "Pintasan";
 "Shortcuts When Active" = "Pintasan Saat Aktif";
+"Shortcuts while browsing" = "Pintasan saat menelusuri";
 "Shortcuts while ScryTab is active" = "Pintasan saat ScryTab aktif";
 "Show" = "Tampilkan";
 "Show all windows" = "Tampilkan semua jendela";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Tampilkan jendela dari aplikasi";
 "Show windows from screens" = "Tampilkan jendela dari layar";
 "Show windows from Spaces" = "Tampilkan jendela dari Ruang";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Menampilkan app dari semua Spaces dan layar, dengan penanganan standar untuk item tersembunyi, diminimalkan, layar penuh, dan tanpa jendela.";
 "Size" = "Ukuran";
 "Small" = "Kecil";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Beberapa pintasan mengganti pengaturan ini. Terapkan nilai global baru ke semua pintasan dengan menghapus penggantian tersebut, atau pertahankan penggantiannya.";
@@ -242,11 +244,11 @@
 "Update now" = "Perbarui sekarang";
 "Updates policy" = "Kebijakan pembaruan";
 "Usage" = "Penggunaan";
-"Uses this shortcut’s filters when counting and showing windows." = "Menggunakan filter pintasan ini saat menghitung dan menampilkan jendela.";
 "Version" = "Versi";
 "View existing discussions" = "Lihat diskusi yang ada";
 "Vim keys" = "Tombol Vim";
 "Vim keys already assigned to other actions:\n%@" = "Tombol Vim sudah ditetapkan untuk tindakan lain:\n%@";
+"Visibility" = "Visibilitas";
 "Visible Spaces" = "Ruang terlihat";
 "Website" = "Situs web";
 "What did you expect? What happened? Steps to reproduce…" = "Apa yang Anda harapkan? Apa yang terjadi? Langkah-langkah untuk mereproduksi…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Jendela diminimalkan";
 "Window is on every Space" = "Jendela ada di setiap Ruang";
 "Window is on Space %d" = "Jendela ada di Ruang %d";
+"Window organization" = "Pengaturan jendela";
 "Window Title" = "Judul Jendela";
 "Window title contains" = "Judul jendela mengandung";
 "You can’t undo this action." = "Anda tidak dapat membatalkan tindakan ini.";

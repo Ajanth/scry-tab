@@ -14,7 +14,6 @@
 "About" = "אודות";
 "About %@" = "אודות %@";
 "Accessibility" = "נגישות";
-"Actions" = "פעולות";
 "Active app" = "יישום פעיל";
 "Active screen" = "מסך פעיל";
 "Add a pattern" = "הוסף תבנית";
@@ -37,9 +36,11 @@
 "App is hidden" = "יישום מוסתר";
 "App is running but has no open window" = "יישום פועל אך אין לו חלון פתוח";
 "Appearance" = "מראה";
+"Appearance and organization" = "מראה וארגון";
 "Application Name" = "שם היישום";
 "Application Name - Window Title" = "שם היישום - כותרת החלון";
 "Applies in other Appearances" = "חל במראים אחרים";
+"Applies to every direct Focus Set shortcut." = "חל על כל קיצור מקשים ישיר של קבוצת מיקוד.";
 "Apply" = "החל";
 "Apply this change to all shortcuts?" = "להחיל את השינוי הזה על כל הקיצורים?";
 "Apply to All Shortcuts" = "החלה על כל הקיצורים";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "ביטול";
 "Change Global Only" = "שינוי הערך הכללי בלבד";
-"Changes are saved automatically." = "השינויים נשמרים באופן אוטומטי.";
 "Check for updates now…" = "חפש עדכונים כעת…";
 "Check for updates periodically" = "חפש עדכונים מעת לעת";
 "Check for updates…" = "חפש עדכונים…";
 "Check permissions…" = "בדוק הרשאות…";
 "Choose a global shortcut to open the Focus Sets picker." = "בחר קיצור מקשים כללי כדי לפתוח את בורר ערכות המיקוד.";
-"Choose Applications…" = "בחר יישומים…";
 "Choose the applications whose windows belong to this Focus Set." = "יש לבחור את היישומים שהחלונות שלהם שייכים לערכת המיקוד הזו.";
 "Close window" = "סגור חלון";
 "Conflicting shortcut" = "קיצור דרך מתנגש";
@@ -74,6 +73,7 @@
 "Dark" = "כהה";
 "Debug tools" = "כלי איתור באגים";
 "Delete" = "מחק";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "קיצורי מקשים ישירים של קבוצות מיקוד משתמשים במראה ובארגון החלונות הרגילים.";
 "Disabled" = "מושבת";
 "Do Not Move" = "אל תעביר";
 "Don't hide" = "אל תסתיר";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "לדוגמה: com.example.app";
 "e.g. Debug" = "לדוגמה: Debug";
 "Edit" = "ערוך";
-"Editing" = "בעריכה";
 "Editing “%@”" = "עריכת „%@”";
 "End" = "סוף";
 "Exceptions" = "חריגים";
@@ -93,7 +92,7 @@
 "Focus" = "מיקוד";
 "Focus selected window" = "מקד את החלון הנבחר";
 "Focus Sets" = "קבוצות מיקוד";
-"Focus Sets profile" = "פרופיל קבוצות מיקוד";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "ערכות מיקוד משתמשות בקיצורי הדרך המשותפים כשהן פעילות. שנה אותם בפקדים.";
 "Fullscreen/Defullscreen window" = "מסך מלא/יציאה ממסך מלא של חלון";
 "General" = "כללי";
 "Gesture" = "מחווה";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "אל תשלח דיווחי קריסה אף פעם";
 "New Focus Set" = "קבוצת מיקוד חדשה";
 "No applications selected" = "לא נבחרו יישומים";
-"No applications selected." = "לא נבחרו יישומים.";
 "No Focus Sets" = "אין קבוצות מיקוד";
 "No matching applications." = "אין יישומים תואמים.";
 "No Window" = "אין חלון";
@@ -148,7 +146,9 @@
 "OK" = "אישור";
 "Only on different screen" = "רק במסך אחר";
 "Open Accessibility Settings…" = "פתח הגדרות נגישות…";
+"Open Appearance Settings" = "פתיחת הגדרות המראה";
 "Open Focus Sets" = "פתח ערכות מיקוד";
+"Open Shortcuts When Active Settings" = "פתיחת הגדרות קיצורי הדרך כאשר פעיל";
 "Open Trackpad Settings…" = "פתח הגדרות משטח מגע…";
 "Order windows by" = "מיין חלונות לפי";
 "Ordering" = "סדר";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "קיצור הדרך כבר משויך: %@";
 "Shortcuts" = "קיצורי דרך";
 "Shortcuts When Active" = "קיצורי דרך כאשר פעיל";
+"Shortcuts while browsing" = "קיצורי דרך במהלך עיון";
 "Shortcuts while ScryTab is active" = "קיצורי דרך בזמן ש-ScryTab פעיל";
 "Show" = "הצג";
 "Show all windows" = "הצג את כל החלונות";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "הצג חלונות מיישומים";
 "Show windows from screens" = "הצג חלונות ממסכים";
 "Show windows from Spaces" = "הצג חלונות ממרחבים";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "הצגת יישומים מכל ה‑Spaces והמסכים, עם טיפול רגיל בפריטים מוסתרים, ממוזערים, במסך מלא וללא חלון.";
 "Size" = "גודל";
 "Small" = "קטן";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "חלק מהקיצורים דורסים הגדרה זו. אפשר להסיר את הדריסות ולהחיל את הערך הכללי החדש על כל הקיצורים, או להשאיר את הדריסות.";
@@ -242,11 +244,11 @@
 "Update now" = "עדכן כעת";
 "Updates policy" = "מדיניות עדכונים";
 "Usage" = "שימוש";
-"Uses this shortcut’s filters when counting and showing windows." = "משתמש במסננים של קיצור זה בעת ספירה והצגה של חלונות.";
 "Version" = "גרסה";
 "View existing discussions" = "צפה בדיונים קיימים";
 "Vim keys" = "מקשי Vim";
 "Vim keys already assigned to other actions:\n%@" = "מקשי Vim כבר משויכים לפעולות אחרות:\n%@";
+"Visibility" = "נראות";
 "Visible Spaces" = "מרחבים נראים";
 "Website" = "אתר אינטרנט";
 "What did you expect? What happened? Steps to reproduce…" = "מה ציפית? מה קרה? שלבים לשחזור…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "חלון ממוזער";
 "Window is on every Space" = "חלון נמצא בכל מרחב";
 "Window is on Space %d" = "חלון נמצא במרחב %d";
+"Window organization" = "ארגון חלונות";
 "Window Title" = "כותרת חלון";
 "Window title contains" = "כותרת החלון מכילה";
 "You can’t undo this action." = "לא ניתן לבטל פעולה זו.";

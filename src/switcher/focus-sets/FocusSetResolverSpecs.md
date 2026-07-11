@@ -8,7 +8,7 @@ equivalent, and `FocusSetShortcutBindingResolver` maps it to an action identifie
 exact stable set UUID. `FocusSetResolver` compiles application bundle identifiers into one
 immutable snapshot and decides whether an app belongs to a requested scope.
 
-V2 compares non-empty bundle identifiers exactly. Rule display names are presentation-only and
+V3 compares non-empty bundle identifiers exactly. Rule display names are presentation-only and
 `titleContains` remains stored but deliberately inert. There is no process, window, AppKit,
 Accessibility, or preference dependency.
 
@@ -31,7 +31,7 @@ Accessibility, or preference dependency.
 ## Test scenarios
 
 ### A. Model persistence
-- **testConfigurationDefaultsToCurrentVersionAndEmptyValues** — a default configuration uses the current version with no profile or sets.
+- **testConfigurationDefaultsToCurrentVersionAndEmptyValues** — a default configuration uses the current version with no saved sets.
 - **testConfigurationRoundTripsThroughJSONForPersistence** — every model field survives JSON encoding and decoding.
 - **testConfigurationEncodingContainsOnlyStableFocusSetFields** — encoded configuration contains only stable Focus Set fields.
 

@@ -5,8 +5,8 @@ final class FocusSetCandidateCounterTests: XCTestCase {
 
     // MARK: - A. Scope membership
 
-    /// All Windows retains normal filtering while including assigned and unassigned applications.
-    func testAllWindowsScopeAppliesProfileFiltersWithoutMembershipRestriction() {
+    /// All Windows retains the Focus Sets safety policy while including assigned and unassigned applications.
+    func testAllWindowsScopeAppliesPolicyWithoutMembershipRestriction() {
         let setID = UUID()
         let resolver = makeResolver([focusSet(setID, bundles: ["com.example.editor"])])
         let candidates = [
@@ -16,12 +16,15 @@ final class FocusSetCandidateCounterTests: XCTestCase {
         ]
 
         XCTAssertEqual(
-            count(candidates, scope: .allWindows, resolver: resolver, filters: FocusSetCandidateFilters(hideHidden: true)),
+            count(candidates, scope: .allWindows, resolver: resolver),
+            3)
+        XCTAssertEqual(
+            count(candidates, scope: .allWindows, resolver: resolver, visibility: visibility(hideHidden: true)),
             2)
     }
 
-    /// Multiple scope previews share one normal-profile pass while resolving membership independently.
-    func testCountsResolveMultipleScopesFromOneProfileSnapshot() {
+    /// Multiple scope previews share one policy snapshot while resolving membership independently.
+    func testCountsResolveMultipleScopesFromOnePolicySnapshot() {
         let firstSetID = UUID()
         let secondSetID = UUID()
         let resolver = makeResolver([
@@ -37,7 +40,7 @@ final class FocusSetCandidateCounterTests: XCTestCase {
             candidates,
             scopes: [.allWindows, .set(id: firstSetID), .set(id: secondSetID), .unassigned],
             resolver: resolver,
-            filters: FocusSetCandidateFilters(hideHidden: true))
+            visibility: visibility(hideHidden: true))
 
         XCTAssertEqual(counts[.allWindows], 2)
         XCTAssertEqual(counts[.set(id: firstSetID)], 1)
@@ -45,8 +48,8 @@ final class FocusSetCandidateCounterTests: XCTestCase {
         XCTAssertEqual(counts[.unassigned], 0)
     }
 
-    /// No scope leaves saved membership inactive while retaining the supplied profile filters.
-    func testNoScopeAppliesProfileFiltersWithoutMembershipRestriction() {
+    /// No scope leaves saved membership inactive while retaining the supplied Focus Sets policy.
+    func testNoScopeAppliesPolicyWithoutMembershipRestriction() {
         let setID = UUID()
         let resolver = makeResolver([focusSet(setID, bundles: ["com.example.editor"])])
         let candidates = [
@@ -69,8 +72,8 @@ final class FocusSetCandidateCounterTests: XCTestCase {
         XCTAssertEqual(count(candidates, scope: .set(id: setID), resolver: resolver), 1)
     }
 
-    /// Selected-set membership and normal profile filters are conjunctive rather than overriding each other.
-    func testSetScopeConjoinsMembershipWithNormalProfileFilters() {
+    /// Selected-set membership and the Focus Sets policy are conjunctive rather than overriding each other.
+    func testSetScopeConjoinsMembershipWithPolicy() {
         let setID = UUID()
         let resolver = makeResolver([focusSet(setID, bundles: ["com.example.editor"])])
         let candidates = [
@@ -84,7 +87,7 @@ final class FocusSetCandidateCounterTests: XCTestCase {
                 candidates,
                 scope: .set(id: setID),
                 resolver: resolver,
-                filters: FocusSetCandidateFilters(hideHidden: true)),
+                visibility: visibility(hideHidden: true)),
             1)
     }
 
@@ -103,73 +106,38 @@ final class FocusSetCandidateCounterTests: XCTestCase {
         XCTAssertEqual(count(candidates, scope: .unassigned, resolver: resolver), 1)
     }
 
-    // MARK: - B. Profile filters
+    // MARK: - B. Focus Sets visibility policy
 
-    /// Every normal filter fact is applied before the candidate contributes to the count.
-    func testNormalFilterFactsAreAppliedBeforeCounting() {
+    /// Standard policy includes all app states, Spaces, and screens while safety exclusions still apply.
+    func testStandardPolicyIncludesAllVisibilityStatesWhileKeepingSafetyExclusions() {
+        XCTAssertTrue(FocusSetsPresentationPolicy.standard.windowlessAtEnd)
         let exception = ExceptionEntry(bundleIdentifier: "com.example.exception", hide: .always, ignore: .none)
         let candidates = [
             candidate(application: app(1, "com.example.pass"), id: "pass", spaceIds: [1]),
             candidate(application: app(1, "com.example.exception"), id: "exception", spaceIds: [1]),
-            candidate(application: app(2, "com.example.non-frontmost"), id: "non-frontmost", spaceIds: [1]),
+            candidate(application: app(2, "com.example.other-app"), id: "other-app", spaceIds: [1]),
             candidate(application: app(1, "com.example.hidden", isHidden: true), id: "hidden", spaceIds: [1]),
             candidate(application: app(1, "com.example.windowless"), id: "windowless", isWindowlessApp: true, spaceIds: [1]),
             candidate(application: app(1, "com.example.fullscreen"), id: "fullscreen", isFullscreen: true, spaceIds: [1]),
             candidate(application: app(1, "com.example.minimized"), id: "minimized", isMinimized: true, spaceIds: [1]),
-            candidate(application: app(1, "com.example.other-space"), id: "other-space", spaceIds: [2]),
-            candidate(application: app(1, "com.example.other-screen"), id: "other-screen", spaceIds: [1], isOnPreferredScreen: false),
+            candidate(application: app(1, "com.example.other-space"), id: "other-space", spaceIds: [999]),
             candidate(application: app(1, "com.example.tab"), id: "tab", isTabbed: true, spaceIds: [1]),
             candidate(application: app(1, "com.example.phantom"), id: "phantom", isPhantom: true, spaceIds: [1])
         ]
-        let filters = FocusSetCandidateFilters(
-            onlyFrontmostApp: true,
-            hideHidden: true,
-            hideWindowless: true,
-            hideFullscreen: true,
-            hideMinimized: true,
-            onlyVisibleSpaces: true,
-            onlyPreferredScreen: true,
-            frontmostPid: 1,
-            visibleSpaceIds: [1],
-            exceptions: [exception])
+        let visibility = FocusSetsVisibilitySnapshot(exceptions: [exception])
 
-        XCTAssertEqual(count(candidates, filters: filters), 1)
+        XCTAssertEqual(count(candidates, visibility: visibility), 7)
     }
 
-    /// Non-active and non-visible-space filters use the supplied frontmost and Space facts.
-    func testExcludeFrontmostAndNonVisibleSpaceFiltersAreApplied() {
+    /// Shared tab grouping controls whether secondary tab candidates remain visible.
+    func testSharedTabGroupingControlsTabbedCandidates() {
         let candidates = [
-            candidate(application: app(1, "com.example.frontmost"), id: "frontmost", spaceIds: [2]),
-            candidate(application: app(2, "com.example.visible-space"), id: "visible-space", spaceIds: [1]),
-            candidate(application: app(2, "com.example.other-space"), id: "other-space", spaceIds: [2])
-        ]
-        let filters = FocusSetCandidateFilters(
-            excludeFrontmostApp: true,
-            onlyNonVisibleSpaces: true,
-            frontmostPid: 1,
-            visibleSpaceIds: [1])
-
-        XCTAssertEqual(count(candidates, filters: filters), 1)
-    }
-
-    /// The precomputed preferred-screen fact excludes an off-screen candidate when requested.
-    func testPreferredScreenFactFiltersCandidates() {
-        let candidates = [
-            candidate(application: app(1, "com.example.on-screen"), id: "on-screen", isOnPreferredScreen: true),
-            candidate(application: app(2, "com.example.off-screen"), id: "off-screen", isOnPreferredScreen: false)
-        ]
-
-        XCTAssertEqual(count(candidates, filters: FocusSetCandidateFilters(onlyPreferredScreen: true)), 1)
-    }
-
-    /// A windowless candidate follows the profile's windowless-app setting.
-    func testWindowlessCandidatesObeyProfileFilter() {
-        let candidates = [
-            candidate(application: app(1, "com.example.windowless"), id: "windowless", isWindowlessApp: true)
+            candidate(application: app(1, "com.example.editor"), id: "main"),
+            candidate(application: app(1, "com.example.editor"), id: "tab", isTabbed: true)
         ]
 
         XCTAssertEqual(count(candidates), 1)
-        XCTAssertEqual(count(candidates, filters: FocusSetCandidateFilters(hideWindowless: true)), 0)
+        XCTAssertEqual(count(candidates, visibility: FocusSetsVisibilitySnapshot(separateTabs: true)), 2)
     }
 
     // MARK: - C. Grouping
@@ -182,7 +150,7 @@ final class FocusSetCandidateCounterTests: XCTestCase {
             candidate(application: app(2, "com.example.terminal"), id: "terminal")
         ]
 
-        XCTAssertEqual(count(candidates, filters: FocusSetCandidateFilters(onlyMainWindowPerApplication: true)), 2)
+        XCTAssertEqual(count(candidates, visibility: FocusSetsVisibilitySnapshot(onlyMainWindowPerApplication: true)), 2)
     }
 
     /// All-windows grouping retains each visible child candidate from the same application.
@@ -226,8 +194,21 @@ final class FocusSetCandidateCounterTests: XCTestCase {
     private func count(_ candidates: [FocusSetCandidate],
                        scope: FocusSetScope = .none,
                        resolver: FocusSetResolver = FocusSetResolver(configuration: FocusSetsConfiguration()),
-                       filters: FocusSetCandidateFilters = FocusSetCandidateFilters()) -> Int {
-        FocusSetCandidateCounter.count(candidates, scope: scope, resolver: resolver, filters: filters)
+                       visibility: FocusSetsVisibilitySnapshot = FocusSetsVisibilitySnapshot()) -> Int {
+        FocusSetCandidateCounter.count(candidates, scope: scope, resolver: resolver, visibility: visibility)
+    }
+
+    private func visibility(hideHidden: Bool = false) -> FocusSetsVisibilitySnapshot {
+        let policy = FocusSetsPresentationPolicy(
+            hideHidden: hideHidden,
+            hideWindowless: false,
+            windowlessAtEnd: true,
+            hideFullscreen: false,
+            hideMinimized: false,
+            onlyVisibleSpaces: false,
+            onlyNonVisibleSpaces: false,
+            onlyPreferredScreen: false)
+        return FocusSetsVisibilitySnapshot(policy: policy)
     }
 
     private func candidate(application: ApplicationState,
@@ -237,8 +218,7 @@ final class FocusSetCandidateCounterTests: XCTestCase {
                            isFullscreen: Bool = false,
                            isMinimized: Bool = false,
                            isTabbed: Bool = false,
-                           spaceIds: [UInt64] = [],
-                           isOnPreferredScreen: Bool = true) -> FocusSetCandidate {
+                           spaceIds: [UInt64] = []) -> FocusSetCandidate {
         let window = WindowState(
             id: id,
             isPhantom: isPhantom,
@@ -254,8 +234,7 @@ final class FocusSetCandidateCounterTests: XCTestCase {
             title: "Title")
         return FocusSetCandidate(
             window: window,
-            application: application,
-            isOnPreferredScreen: isOnPreferredScreen)
+            application: application)
     }
 
     private func app(_ pid: pid_t, _ bundleIdentifier: String, isHidden: Bool = false) -> ApplicationState {

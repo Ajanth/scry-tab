@@ -27,8 +27,13 @@ the resulting actions.
   press/release IDs and dispatches only on key-down.
 - Dynamic direct Focus Set IDs remain stable while configured and are never reused after deletion,
   so a delayed stale Carbon event cannot target a different set.
-- Direct Focus Set bindings dispatch both press and release through their one registered action;
-  the App layer applies the selected profile's release style.
+- Direct Focus Set bindings dispatch only on non-modifier key-down. Their shared chord lifecycle
+  watches the same modifier path as Controls and applies release behavior only after the final
+  bound modifier is released.
+- While a direct Focus Set chord is held, local controls accept its modifiers just as they accept
+  a numbered shortcut's held modifiers, so Search and Escape remain available.
+- Focus Sets use their own persisted release setting, never a numbered shortcut override or the
+  ordinary global shortcut setting.
 
 ## Test scenarios
 
@@ -38,8 +43,14 @@ Mirrors `KeyboardEventsTests.swift` 1:1.
   `2 * maxShortcutCount` and ignores its key-up event.
 - **testDynamicFocusSetHotkeyIdsAreStableAndNeverReusedAfterDeletion** — dynamic IDs remain stable
   across reconciliation and a deleted ID is not assigned to a later Focus Set.
-- **testDirectFocusSetShortcutFiresOnPressAndRelease** — a direct Focus Set binding dispatches once
-  for its Carbon key-down and once for key-up.
+- **testDirectFocusSetShortcutFiresOnlyOnKeyDown** — a direct Focus Set binding ignores its Carbon
+  key-up, preserving repeated press-key cycling while modifiers remain held.
+- **testFocusSetsPresentationUsesDedicatedReleaseBehavior** — Focus Sets resolves Focus, Hold, and
+  Search from its dedicated setting rather than the numbered-shortcut base setting.
+- **testDirectFocusSetChordReleaseWaitsForFinalModifier** — a direct Focus Set chord stays armed
+  while a bound modifier remains held, then reports its exact release once.
+- **testDirectFocusSetChordKeepsLocalShortcutsActive** — local Search and Cancel continue to match
+  while a direct Focus Set chord’s modifiers are held.
 - **testPickerTextKeyPassesToSearchField** — ordinary picker text input, including Space, bypasses
   shortcut dispatch.
 - **testPickerVimKeyRunsRegisteredLocalShortcut** — an unmodified registered Vim key bypasses the

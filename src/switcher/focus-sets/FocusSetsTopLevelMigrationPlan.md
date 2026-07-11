@@ -2,8 +2,9 @@
 
 ## Status and scope
 
-This is the canonical plan for the remaining Focus Sets architecture and Settings information
-architecture work. It supersedes the shortcut-profile decisions in
+Implementation is complete through the automated verification stages. Manual runtime visual,
+keyboard, VoiceOver, and multi-Space/multi-screen checks remain. This document is the canonical
+record of the Focus Sets architecture and Settings information architecture work. It supersedes the shortcut-profile decisions in
 [`../FocusSetsPlan.md`](../FocusSetsPlan.md), while retaining that document's completed
 membership, picker, persistence, and child-grid foundations.
 
@@ -61,6 +62,10 @@ passing an empty `FocusSetCandidateFilters` value that would bypass exceptions.
 - Appearance uses the existing app-wide base values:
   `Preferences.appearanceStyle`, `appearanceSize`, and `appearanceTheme`, never a numbered
   shortcut override.
+- Direct Focus Set shortcuts must not derive release behavior from the app-wide
+  `Preferences.shortcutStyle`, a numbered shortcut override, or a selected profile. Their
+  independent Focus Sets-global release setting is specified in
+  [the unresolved correction below](#unresolved-correction-direct-focus-set-chord-release-behavior).
 - Add feature-neutral shared defaults for window ordering and app/tab grouping. Their initial
   values match the current normal defaults; Focus Sets reads them through a typed resolver.
 - Numbered shortcut behavior remains unchanged. Existing per-shortcut ordering/grouping values
@@ -73,11 +78,76 @@ passing an empty `FocusSetCandidateFilters` value that would bypass exceptions.
 
 - **Open Focus Sets** opens or refreshes the picker on key down and never focuses a window on key
   release.
-- A direct Focus Set shortcut opens/cycles its set using Focus Sets behavior, not
-  `focusOnRelease` or `searchOnRelease` from a numbered profile.
+- A direct Focus Set shortcut opens/cycles its set using a two-part chord lifecycle: pressing its
+  non-modifier key cycles, and releasing its final modifier applies the Focus Sets-global release
+  setting. The exact ownership and implementation are specified in
+  [the unresolved correction below](#unresolved-correction-direct-focus-set-chord-release-behavior).
 - Existing numbered shortcuts and gestures retain their current profile-specific behavior.
 - Existing picker/direct-grid lifecycle and repeat-cycling behavior remain; only the presentation
   source changes.
+
+### Unresolved correction: direct Focus Set chord-release behavior
+
+**Status: implemented; manual runtime verification remains before merging.** The shared chord
+lifecycle replaces both prior failure modes: a disabled release path and a premature direct key-up
+release. Direct shortcuts now observe final modifier release through the Controls keyboard path.
+
+#### The path this correction replaces
+
+- The prior working-tree attempt in [`App.handleDirectFocusSetShortcut`](../../App.swift) treated
+  any direct shortcut `.up` event as the release action. For a direct `⌘B` binding, Carbon emits
+  that event when `B` is released even while `⌘` remains held, so it focuses too early and prevents
+  repeated `B` presses from cycling.
+- [`ControlsTab.applyFocusSetShortcutPreferences`](../../preferences/settings-window/tabs/controls/ControlsTab.swift)
+  installed the direct binding with trigger phase `.both`, which made that premature
+  `B` key-up reachable.
+- [`Preferences.shortcutStyle(_:)`](../../preferences/Preferences.swift) resolved `.focusSets`
+  from the app-wide base setting. That was also the wrong owner: numbered shortcut
+  profiles can override **After keys are released** independently, and Focus Sets must not choose
+  or copy one of those profiles.
+
+#### Controls behavior that Focus Sets must share
+
+Controls models a shortcut as two roles: a modifier **Hold** and a non-modifier **and press**
+trigger. The trigger opens or cycles; the release behavior runs only after the hold modifiers are
+all released. [`ATShortcut`](../ATShortcut.swift) and the keyboard event path own this lifecycle.
+
+For a direct Focus Set shortcut `⌘B`, the required sequence is:
+
+```text
+hold ⌘ + press B  -> open or cycle the Focus Set
+release B         -> no release action; ⌘ remains held
+press B again     -> cycle again
+release ⌘         -> apply Focus / Hold / Search exactly once
+```
+
+#### Recommended ownership and design
+
+1. Add one persisted **Focus Sets — After keys are released** preference, using the existing
+   `ShortcutStylePreference` values. It belongs on the top-level Focus Sets Settings page and
+   applies to every *direct* Focus Set shortcut; it is not a per-set field in the editor.
+2. Store that preference as a distinct global user preference, not in a numbered shortcut profile
+   and not as a copied profile value. The recommended default is **Focus**.
+3. Extract the press-key/final-modifier-release state transition into a shared chord-lifecycle
+   resolver used by both Controls shortcuts and direct Focus Set shortcuts. A direct binding's
+   non-modifier press must be key-down only; its final-modifier release must be observed and
+   recovered through the same keyboard path as Controls.
+4. Resolve numbered shortcut release behavior from its effective profile override and Focus Set
+   release behavior from the new Focus Sets-global preference. The two sources must be explicit in
+   `SwitcherPresentationSource`/its resolver, never inferred from each other.
+5. Keep **Open Focus Sets** key-down only. It opens a picker with no window target, so releasing it
+   cannot focus a window or enter direct-set Search behavior.
+
+#### Required regression coverage
+
+- `⌘B` opens/cycles on each `B` press while `⌘` remains held.
+- While `⌘` remains held, local controls such as `⌘S` and `⌘Esc` resolve exactly as they do for a
+  numbered shortcut’s Hold modifier.
+- Releasing `B` before `⌘` does not focus, hold, or enter Search.
+- Releasing the final modifier applies the Focus Sets-global Focus, Hold, or Search choice once.
+- A different active Focus Set, an ordinary shortcut session, a picker session, deleted sets, and
+  dropped/out-of-order key events cannot cause a stale direct binding to act.
+- Existing Controls profile-specific release behavior remains byte-for-byte unchanged.
 
 ## Target design
 

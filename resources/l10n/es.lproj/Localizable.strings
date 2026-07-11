@@ -14,7 +14,6 @@
 "About" = "Acerca de";
 "About %@" = "Acerca de %@";
 "Accessibility" = "Accesibilidad";
-"Actions" = "Acciones";
 "Active app" = "App activa";
 "Active screen" = "Pantalla activa";
 "Add a pattern" = "Añadir un patrón";
@@ -37,9 +36,11 @@
 "App is hidden" = "App oculta";
 "App is running but has no open window" = "La app se está ejecutando pero no tiene ventanas abiertas";
 "Appearance" = "Apariencia";
+"Appearance and organization" = "Apariencia y organización";
 "Application Name" = "Nombre de la aplicación";
 "Application Name - Window Title" = "Nombre de la aplicación - Título de la ventana";
 "Applies in other Appearances" = "Se aplica en otras Apariencias";
+"Applies to every direct Focus Set shortcut." = "Se aplica a cada atajo directo de Conjuntos de enfoque.";
 "Apply" = "Aplicar";
 "Apply this change to all shortcuts?" = "¿Aplicar este cambio a todos los atajos?";
 "Apply to All Shortcuts" = "Aplicar a todos los atajos";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Cancelar";
 "Change Global Only" = "Cambiar solo el valor global";
-"Changes are saved automatically." = "Los cambios se guardan automáticamente.";
 "Check for updates now…" = "Buscar actualizaciones ahora…";
 "Check for updates periodically" = "Buscar actualizaciones periódicamente";
 "Check for updates…" = "Buscar actualizaciones…";
 "Check permissions…" = "Comprobar permisos…";
 "Choose a global shortcut to open the Focus Sets picker." = "Elige un atajo global para abrir el selector de conjuntos de enfoque.";
-"Choose Applications…" = "Elegir aplicaciones…";
 "Choose the applications whose windows belong to this Focus Set." = "Elige las aplicaciones cuyas ventanas pertenecen a este Focus Set.";
 "Close window" = "Cerrar ventana";
 "Conflicting shortcut" = "Atajo en conflicto";
@@ -74,6 +73,7 @@
 "Dark" = "Oscuro";
 "Debug tools" = "Herramientas de depuración";
 "Delete" = "Eliminar";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Los atajos directos de Conjuntos de enfoque usan la apariencia estándar y la organización estándar de las ventanas.";
 "Disabled" = "Desactivado";
 "Do Not Move" = "No mover";
 "Don't hide" = "No ocultar";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "p. ej. com.example.app";
 "e.g. Debug" = "p. ej. Debug";
 "Edit" = "Editar";
-"Editing" = "Editando";
 "Editing “%@”" = "Editando «%@»";
 "End" = "Fin";
 "Exceptions" = "Excepciones";
@@ -93,7 +92,7 @@
 "Focus" = "Foco";
 "Focus selected window" = "Enfocar la ventana seleccionada";
 "Focus Sets" = "Conjuntos de enfoque";
-"Focus Sets profile" = "Perfil de conjuntos de enfoque";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Los conjuntos de enfoque usan los atajos compartidos cuando están activos. Cámbialos en Controles.";
 "Fullscreen/Defullscreen window" = "Activar/desactivar pantalla completa de la ventana";
 "General" = "General";
 "Gesture" = "Gesto";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "No enviar nunca los informes de problema";
 "New Focus Set" = "Nuevo conjunto de enfoque";
 "No applications selected" = "Ninguna aplicación seleccionada";
-"No applications selected." = "No hay aplicaciones seleccionadas.";
 "No Focus Sets" = "No hay conjuntos de enfoque";
 "No matching applications." = "No hay aplicaciones coincidentes.";
 "No Window" = "Sin ventana";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Solo en otra pantalla";
 "Open Accessibility Settings…" = "Abrir Ajustes de Accesibilidad…";
+"Open Appearance Settings" = "Abrir ajustes de apariencia";
 "Open Focus Sets" = "Abrir conjuntos de enfoque";
+"Open Shortcuts When Active Settings" = "Abrir los ajustes de atajos cuando está activo";
 "Open Trackpad Settings…" = "Abrir Ajustes de Trackpad…";
 "Order windows by" = "Ordenar ventanas por";
 "Ordering" = "Orden";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Atajo ya asignado a: %@";
 "Shortcuts" = "Atajos";
 "Shortcuts When Active" = "Atajos cuando está activo";
+"Shortcuts while browsing" = "Atajos durante la navegación";
 "Shortcuts while ScryTab is active" = "Atajos mientras ScryTab está activo";
 "Show" = "Mostrar";
 "Show all windows" = "Mostrar todas las ventanas";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Mostrar ventanas de las aplicaciones";
 "Show windows from screens" = "Mostrar ventanas de las pantallas";
 "Show windows from Spaces" = "Mostrar ventanas de los Espacios";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Muestra aplicaciones de todos los Spaces y pantallas, con el tratamiento estándar de ventanas ocultas, minimizadas, a pantalla completa y aplicaciones sin ventanas.";
 "Size" = "Tamaño";
 "Small" = "Pequeño";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Algunos atajos anulan este ajuste. Aplica el nuevo valor global a todos los atajos eliminando esas anulaciones, o consérvalas.";
@@ -242,11 +244,11 @@
 "Update now" = "Actualizar ahora";
 "Updates policy" = "Política de actualizaciones";
 "Usage" = "Uso";
-"Uses this shortcut’s filters when counting and showing windows." = "Usa los filtros de este atajo al contar y mostrar ventanas.";
 "Version" = "Versión";
 "View existing discussions" = "Ver discusiones existentes";
 "Vim keys" = "Teclas Vim";
 "Vim keys already assigned to other actions:\n%@" = "Teclas Vim ya asignadas a otras acciones:\n%@";
+"Visibility" = "Visibilidad";
 "Visible Spaces" = "Espacios visibles";
 "Website" = "Sitio web";
 "What did you expect? What happened? Steps to reproduce…" = "¿Qué esperabas? ¿Qué ha pasado? Pasos para reproducir…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Ventana minimizada";
 "Window is on every Space" = "Ventana en todos los Espacios";
 "Window is on Space %d" = "Ventana en el Espacio %d";
+"Window organization" = "Organización de ventanas";
 "Window Title" = "Título de la ventana";
 "Window title contains" = "El título de la ventana contiene";
 "You can’t undo this action." = "No puedes deshacer esta acción.";

@@ -14,7 +14,6 @@
 "About" = "О программе";
 "About %@" = "О программе %@";
 "Accessibility" = "Универсальный доступ";
-"Actions" = "Действия";
 "Active app" = "Активное приложение";
 "Active screen" = "Активный экран";
 "Add a pattern" = "Добавить шаблон";
@@ -37,9 +36,11 @@
 "App is hidden" = "Приложение скрыто";
 "App is running but has no open window" = "Приложение запущено, но не имеет открытых окон";
 "Appearance" = "Оформление";
+"Appearance and organization" = "Внешний вид и организация";
 "Application Name" = "Название приложения";
 "Application Name - Window Title" = "Название приложения — Заголовок окна";
 "Applies in other Appearances" = "Применяется в других оформлениях";
+"Applies to every direct Focus Set shortcut." = "Применяется к каждому прямому сочетанию клавиш набора фокуса.";
 "Apply" = "Применить";
 "Apply this change to all shortcuts?" = "Применить это изменение ко всем сочетаниям клавиш?";
 "Apply to All Shortcuts" = "Применить ко всем сочетаниям клавиш";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Отмена";
 "Change Global Only" = "Изменить только общее значение";
-"Changes are saved automatically." = "Изменения сохраняются автоматически.";
 "Check for updates now…" = "Проверить обновления сейчас…";
 "Check for updates periodically" = "Периодически проверять обновления";
 "Check for updates…" = "Проверить обновления…";
 "Check permissions…" = "Проверить разрешения…";
 "Choose a global shortcut to open the Focus Sets picker." = "Выберите глобальное сочетание клавиш, чтобы открыть средство выбора наборов фокусировки.";
-"Choose Applications…" = "Выбрать приложения…";
 "Choose the applications whose windows belong to this Focus Set." = "Выберите приложения, окна которых относятся к этому набору фокуса.";
 "Close window" = "Закрыть окно";
 "Conflicting shortcut" = "Конфликт сочетания клавиш";
@@ -74,6 +73,7 @@
 "Dark" = "Тёмная";
 "Debug tools" = "Инструменты отладки";
 "Delete" = "Удалить";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Прямые сочетания клавиш набора фокуса используют стандартный внешний вид и организацию окон.";
 "Disabled" = "Отключено";
 "Do Not Move" = "Не перемещать";
 "Don't hide" = "Не скрывать";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "напр. com.example.app";
 "e.g. Debug" = "напр. Debug";
 "Edit" = "Изменить";
-"Editing" = "Редактируется";
 "Editing “%@”" = "Редактируется «%@»";
 "End" = "Конец";
 "Exceptions" = "Исключения";
@@ -93,7 +92,7 @@
 "Focus" = "Фокус";
 "Focus selected window" = "Сфокусировать выбранное окно";
 "Focus Sets" = "Наборы фокуса";
-"Focus Sets profile" = "Профиль наборов фокуса";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Наборы фокусировки используют общие сочетания клавиш при активном переключателе. Измените их в разделе «Управление».";
 "Fullscreen/Defullscreen window" = "Развернуть/свернуть окно на весь экран";
 "General" = "Основные";
 "Gesture" = "Жест";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Никогда не отправлять отчёты о сбоях";
 "New Focus Set" = "Новый набор фокуса";
 "No applications selected" = "Приложения не выбраны";
-"No applications selected." = "Приложения не выбраны.";
 "No Focus Sets" = "Нет наборов фокуса";
 "No matching applications." = "Нет подходящих приложений.";
 "No Window" = "Без окна";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Только на другом экране";
 "Open Accessibility Settings…" = "Открыть настройки Универсального доступа…";
+"Open Appearance Settings" = "Открыть настройки внешнего вида";
 "Open Focus Sets" = "Открыть наборы фокусировки";
+"Open Shortcuts When Active Settings" = "Открыть настройки сочетаний клавиш при активном переключателе";
 "Open Trackpad Settings…" = "Открыть настройки Трекпада…";
 "Order windows by" = "Сортировка окон";
 "Ordering" = "Порядок";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Сочетание клавиш уже назначено: %@";
 "Shortcuts" = "Сочетания клавиш";
 "Shortcuts When Active" = "Сочетания клавиш при активном переключателе";
+"Shortcuts while browsing" = "Сочетания клавиш при просмотре";
 "Shortcuts while ScryTab is active" = "Сочетания клавиш, когда ScryTab активен";
 "Show" = "Показать";
 "Show all windows" = "Показать все окна";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Показывать окна приложений";
 "Show windows from screens" = "Показывать окна с экранов";
 "Show windows from Spaces" = "Показывать окна с пространств";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Показывает приложения со всех Spaces и экранов со стандартной обработкой скрытых, свёрнутых, полноэкранных элементов и приложений без окон.";
 "Size" = "Размер";
 "Small" = "Маленький";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Некоторые сочетания клавиш переопределяют этот параметр. Удалите эти переопределения, чтобы применить новое общее значение ко всем сочетаниям клавиш, или сохраните их.";
@@ -242,11 +244,11 @@
 "Update now" = "Обновить сейчас";
 "Updates policy" = "Политика обновлений";
 "Usage" = "Использование";
-"Uses this shortcut’s filters when counting and showing windows." = "Использует фильтры этой комбинации клавиш при подсчете и показе окон.";
 "Version" = "Версия";
 "View existing discussions" = "Просмотр существующих обсуждений";
 "Vim keys" = "Клавиши Vim";
 "Vim keys already assigned to other actions:\n%@" = "Клавиши Vim уже назначены другим действиям:\n%@";
+"Visibility" = "Видимость";
 "Visible Spaces" = "Видимые пространства";
 "Website" = "Сайт";
 "What did you expect? What happened? Steps to reproduce…" = "Что вы ожидали? Что произошло? Шаги для воспроизведения…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Окно свёрнуто";
 "Window is on every Space" = "Окно на всех пространствах";
 "Window is on Space %d" = "Окно в пространстве %d";
+"Window organization" = "Организация окон";
 "Window Title" = "Заголовок окна";
 "Window title contains" = "Заголовок окна содержит";
 "You can’t undo this action." = "Это действие нельзя отменить.";

@@ -33,7 +33,7 @@ final class KeyboardEventsUtilsTests: XCTestCase {
         KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([])
     }
 
-    func testDirectFocusSetShortcutFiresOnPressAndRelease() throws {
+    func testDirectFocusSetShortcutFiresOnlyOnKeyDown() throws {
         let originalShortcuts = ControlsTab.shortcuts
         defer {
             ControlsTab.shortcuts = originalShortcuts
@@ -47,12 +47,87 @@ final class KeyboardEventsUtilsTests: XCTestCase {
             Shortcut(keyEquivalent: "⌃1")!,
             shortcutId,
             .global,
-            .both)
+            .down)
 
         handleKeyboardEvent(hotkeyId, .down, nil, nil, false)
         handleKeyboardEvent(hotkeyId, .up, nil, nil, false)
 
-        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [shortcutId, shortcutId])
+        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [shortcutId])
+    }
+
+    /// Focus Sets uses its own release setting rather than the numbered-shortcut base setting.
+    func testFocusSetsPresentationUsesDedicatedReleaseBehavior() {
+        resetState()
+        Preferences.shortcutStyle = .doNothingOnRelease
+        Preferences.focusSetsShortcutStyle = .focusOnRelease
+        XCTAssertEqual(Preferences.shortcutStyle(.focusSets), .focusOnRelease)
+        Preferences.focusSetsShortcutStyle = .doNothingOnRelease
+        XCTAssertEqual(Preferences.shortcutStyle(.focusSets), .doNothingOnRelease)
+        Preferences.focusSetsShortcutStyle = .searchOnRelease
+        XCTAssertEqual(Preferences.shortcutStyle(.focusSets), .searchOnRelease)
+    }
+
+    func testDirectFocusSetChordReleaseWaitsForFinalModifier() throws {
+        let originalShortcuts = ControlsTab.shortcuts
+        defer {
+            ControlsTab.shortcuts = originalShortcuts
+            KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([])
+        }
+        resetState()
+        let identifier = UUID()
+        let shortcutId = FocusSetShortcutBindingResolver.actionIdentifier(for: identifier)
+        KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([shortcutId])
+        let hotkeyId = try XCTUnwrap(KeyboardEventsTestable.globalShortcutsIds[shortcutId])
+        ControlsTab.shortcuts[shortcutId] = ATShortcut(
+            Shortcut(keyEquivalent: "⌘1")!,
+            shortcutId,
+            .global,
+            .down)
+        let session = SwitcherSession()
+        session.presentationSource = .focusSets
+        session.focusSetSessionState = .directFocusSetGrid(identifier)
+        SwitcherSession.current = session
+        ModifierFlags.current = [.command]
+
+        handleKeyboardEvent(hotkeyId, .down, nil, nil, false)
+        handleKeyboardEvent(nil, nil, nil, [.command], false)
+        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [shortcutId])
+        XCTAssertEqual(App.directFocusSetChordReleases, [])
+
+        ModifierFlags.current = []
+        handleKeyboardEvent(nil, nil, nil, [], false)
+        handleKeyboardEvent(nil, nil, nil, [], false)
+
+        XCTAssertEqual(App.directFocusSetChordReleases, [identifier])
+    }
+
+    func testDirectFocusSetChordKeepsLocalShortcutsActive() throws {
+        let originalShortcuts = ControlsTab.shortcuts
+        defer {
+            ControlsTab.shortcuts = originalShortcuts
+            KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([])
+        }
+        resetState()
+        let identifier = UUID()
+        let shortcutId = FocusSetShortcutBindingResolver.actionIdentifier(for: identifier)
+        KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([shortcutId])
+        let hotkeyId = try XCTUnwrap(KeyboardEventsTestable.globalShortcutsIds[shortcutId])
+        ControlsTab.shortcuts[shortcutId] = ATShortcut(
+            Shortcut(keyEquivalent: "⌘1")!,
+            shortcutId,
+            .global,
+            .down)
+        let session = SwitcherSession()
+        session.presentationSource = .focusSets
+        session.focusSetSessionState = .directFocusSetGrid(identifier)
+        SwitcherSession.current = session
+        ModifierFlags.current = [.command]
+
+        handleKeyboardEvent(hotkeyId, .down, nil, nil, false)
+        XCTAssertTrue(handleKeyboardEvent(nil, nil, keycodeMap["s"], [.command], false))
+        XCTAssertTrue(handleKeyboardEvent(nil, nil, escapeKeycode, [.command], false))
+
+        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [shortcutId, "searchShortcut", "cancelShortcut"])
     }
 
     func testPickerTextKeyPassesToSearchField() throws {
@@ -329,7 +404,10 @@ final class KeyboardEventsUtilsTests: XCTestCase {
     private func resetState() {
         SwitcherSession.current = nil
         Preferences.shortcutStyle = .focusOnRelease
+        Preferences.focusSetsShortcutStyle = .focusOnRelease
+        ModifierFlags.current = []
         TilesPanel.shared.isKeyWindow = false
+        App.directFocusSetChordReleases = []
         ControlsTab.shortcuts.values.forEach { $0.state = .up }
         ControlsTab.shortcutsActionsTriggered = []
     }

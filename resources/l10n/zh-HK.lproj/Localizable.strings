@@ -14,7 +14,6 @@
 "About" = "關於";
 "About %@" = "關於 %@";
 "Accessibility" = "輔助使用";
-"Actions" = "操作";
 "Active app" = "使用中的 App";
 "Active screen" = "使用中的螢幕";
 "Add a pattern" = "加入規則";
@@ -37,9 +36,11 @@
 "App is hidden" = "App 已隱藏";
 "App is running but has no open window" = "App 正在執行但沒有開啟視窗";
 "Appearance" = "外觀";
+"Appearance and organization" = "外觀與整理";
 "Application Name" = "應用程式名稱";
 "Application Name - Window Title" = "應用程式名稱 - 視窗標題";
 "Applies in other Appearances" = "套用至其他外觀";
+"Applies to every direct Focus Set shortcut." = "適用於每個直接專注組合快捷鍵。";
 "Apply" = "套用";
 "Apply this change to all shortcuts?" = "要將此變更套用至所有快捷鍵嗎？";
 "Apply to All Shortcuts" = "套用至所有快捷鍵";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "取消";
 "Change Global Only" = "只更改全域設定";
-"Changes are saved automatically." = "更改會自動儲存。";
 "Check for updates now…" = "立即檢查更新…";
 "Check for updates periodically" = "定期檢查更新";
 "Check for updates…" = "檢查更新…";
 "Check permissions…" = "檢查權限…";
 "Choose a global shortcut to open the Focus Sets picker." = "選擇全域快捷鍵以開啟專注組合選擇器。";
-"Choose Applications…" = "選擇應用程式…";
 "Choose the applications whose windows belong to this Focus Set." = "選擇視窗要歸入此專注組合的應用程式。";
 "Close window" = "關閉視窗";
 "Conflicting shortcut" = "快捷鍵衝突";
@@ -74,6 +73,7 @@
 "Dark" = "深色";
 "Debug tools" = "除錯工具";
 "Delete" = "刪除";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "直接專注組合快捷鍵會使用標準外觀和視窗整理方式。";
 "Disabled" = "已停用";
 "Do Not Move" = "不要移動";
 "Don't hide" = "不要隱藏";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "例如:com.example.app";
 "e.g. Debug" = "例如:Debug";
 "Edit" = "編輯";
-"Editing" = "正在編輯";
 "Editing “%@”" = "正在編輯「%@」";
 "End" = "結尾";
 "Exceptions" = "例外";
@@ -93,7 +92,7 @@
 "Focus" = "聚焦";
 "Focus selected window" = "聚焦選取的視窗";
 "Focus Sets" = "專注組合";
-"Focus Sets profile" = "專注組合設定檔";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "專注組合會使用作用中時的共用快捷鍵。請在「控制項」中變更。";
 "Fullscreen/Defullscreen window" = "視窗全螢幕/取消全螢幕";
 "General" = "一般";
 "Gesture" = "手勢";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "永不傳送當機報告";
 "New Focus Set" = "新增專注組合";
 "No applications selected" = "未選擇應用程式";
-"No applications selected." = "未選擇應用程式。";
 "No Focus Sets" = "沒有專注組合";
 "No matching applications." = "沒有相符的應用程式。";
 "No Window" = "沒有視窗";
@@ -148,7 +146,9 @@
 "OK" = "好";
 "Only on different screen" = "僅在不同螢幕上";
 "Open Accessibility Settings…" = "打開「輔助使用」設定…";
+"Open Appearance Settings" = "開啟「外觀」設定";
 "Open Focus Sets" = "開啟專注組合";
+"Open Shortcuts When Active Settings" = "打開「作用中時的快捷鍵」設定";
 "Open Trackpad Settings…" = "打開「觸控板」設定…";
 "Order windows by" = "視窗排序方式";
 "Ordering" = "排序";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "快捷鍵已指派給:%@";
 "Shortcuts" = "快捷鍵";
 "Shortcuts When Active" = "作用中時的快捷鍵";
+"Shortcuts while browsing" = "瀏覽時的快捷鍵";
 "Shortcuts while ScryTab is active" = "ScryTab 啟用時的快捷鍵";
 "Show" = "顯示";
 "Show all windows" = "顯示所有視窗";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "顯示來自應用程式的視窗";
 "Show windows from screens" = "顯示來自螢幕的視窗";
 "Show windows from Spaces" = "顯示來自空間的視窗";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "顯示所有 Spaces 和螢幕中的應用程式，並以標準方式處理隱藏、縮小、全螢幕和沒有視窗的項目。";
 "Size" = "大小";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "部分快捷鍵覆寫了此設定。移除這些覆寫以將新的全域值套用至所有快捷鍵，或保留這些覆寫。";
@@ -242,11 +244,11 @@
 "Update now" = "立即更新";
 "Updates policy" = "更新政策";
 "Usage" = "使用情況";
-"Uses this shortcut’s filters when counting and showing windows." = "計算及顯示視窗時使用此快捷鍵的篩選條件。";
 "Version" = "版本";
 "View existing discussions" = "查看現有討論";
 "Vim keys" = "Vim 按鍵";
 "Vim keys already assigned to other actions:\n%@" = "Vim 按鍵已指派給其他動作:\n%@";
+"Visibility" = "顯示範圍";
 "Visible Spaces" = "可見的空間";
 "Website" = "網站";
 "What did you expect? What happened? Steps to reproduce…" = "您期望什麼?發生了什麼?重現步驟…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "視窗已縮到最小";
 "Window is on every Space" = "視窗位於每個空間";
 "Window is on Space %d" = "視窗位於空間 %d";
+"Window organization" = "視窗整理";
 "Window Title" = "視窗標題";
 "Window title contains" = "視窗標題包含";
 "You can’t undo this action." = "您無法復原此動作。";

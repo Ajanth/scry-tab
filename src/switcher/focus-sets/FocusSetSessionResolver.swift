@@ -116,28 +116,26 @@ struct FocusSetSessionDecision: Equatable {
     }
 }
 
+enum FocusSetDirectShortcutReleaseAction: Equatable {
+    case none
+    case focus
+    case search
+}
+
 /// Pure Phase 3 transition kernel. It does not route search keys, mutate a `SwitcherSession`, or
 /// create panels; App translates `FocusSetSessionDecision` into those effects.
 enum FocusSetSessionResolver {
-    static func shouldReplaceFocusSetFlow(state: FocusSetSessionState,
-                                          activeShortcutIndex: Int,
-                                          incomingShortcutIndex: Int) -> Bool {
-        switch state {
-            case .idle, .picker: return true
-            case .focusSetGrid, .directFocusSetGrid: return activeShortcutIndex != incomingShortcutIndex
-            case .ordinaryGrid: return false
+    static func directFocusSetReleaseAction(state: FocusSetSessionState,
+                                             shortcutIdentifier: UUID,
+                                             forceDoNothingOnRelease: Bool,
+                                             shortcutStyle: ShortcutStylePreference) -> FocusSetDirectShortcutReleaseAction {
+        guard state.directFocusSetIdentifier == shortcutIdentifier,
+              !forceDoNothingOnRelease else { return .none }
+        switch shortcutStyle {
+        case .focusOnRelease: return .focus
+        case .doNothingOnRelease: return .none
+        case .searchOnRelease: return .search
         }
-    }
-
-    static func shouldFocusDirectSelectionOnRelease(state: FocusSetSessionState,
-                                                    shortcutIdentifier: UUID,
-                                                    forceDoNothingOnRelease: Bool,
-                                                    profileFocusesOnRelease: Bool,
-                                                    profileHoldModifierIsReleased: Bool) -> Bool {
-        state.directFocusSetIdentifier == shortcutIdentifier
-            && !forceDoNothingOnRelease
-            && profileFocusesOnRelease
-            && profileHoldModifierIsReleased
     }
 
     static func resolve(_ input: FocusSetSessionInput) -> FocusSetSessionDecision {

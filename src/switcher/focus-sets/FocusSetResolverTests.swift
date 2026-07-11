@@ -5,19 +5,17 @@ final class FocusSetResolverTests: XCTestCase {
 
     // MARK: - A. Model persistence
 
-    /// A new configuration starts at the current format version with no selected profile or sets.
+    /// A new configuration starts at the current format version with no saved sets.
     func testConfigurationDefaultsToCurrentVersionAndEmptyValues() {
         let configuration = FocusSetsConfiguration()
 
         XCTAssertEqual(configuration.version, FocusSetsConfiguration.currentVersion)
-        XCTAssertEqual(configuration.presentationShortcutIdentifier, "")
         XCTAssertEqual(configuration.sets, [])
     }
 
     /// Every model field round-trips through JSON for a separate persistence store.
     func testConfigurationRoundTripsThroughJSONForPersistence() throws {
         let configuration = FocusSetsConfiguration(
-            presentationShortcutIdentifier: "shortcut-1",
             sets: [
                 FocusSet(
                     name: "Coding",
@@ -40,7 +38,6 @@ final class FocusSetResolverTests: XCTestCase {
     /// Encoded configuration retains only stable Focus Set fields.
     func testConfigurationEncodingContainsOnlyStableFocusSetFields() throws {
         let configuration = FocusSetsConfiguration(
-            presentationShortcutIdentifier: "shortcut-1",
             sets: [
                 FocusSet(
                     name: "Coding",
@@ -62,7 +59,7 @@ final class FocusSetResolverTests: XCTestCase {
 
         XCTAssertEqual(
             Set(configurationObject.keys),
-            Set(["version", "presentationShortcutIdentifier", "sets"]))
+            Set(["version", "sets"]))
         XCTAssertEqual(Set(setObject.keys), Set(["id", "name", "rules", "shortcutKeyEquivalent"]))
         XCTAssertEqual(
             Set(ruleObject.keys),
@@ -294,10 +291,7 @@ final class FocusSetResolverTests: XCTestCase {
     }
 
     private func makeResolver(sets: [FocusSet] = []) -> FocusSetResolver {
-        FocusSetResolver(
-            configuration: FocusSetsConfiguration(
-                presentationShortcutIdentifier: "shortcut-1",
-                sets: sets))
+        FocusSetResolver(configuration: FocusSetsConfiguration(sets: sets))
     }
 
     private func makeSet(id: UUID, rules: [FocusSetRule]) -> FocusSet {

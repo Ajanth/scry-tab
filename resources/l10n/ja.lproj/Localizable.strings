@@ -14,7 +14,6 @@
 "About" = "情報";
 "About %@" = "%@ について";
 "Accessibility" = "アクセシビリティ";
-"Actions" = "アクション";
 "Active app" = "アクティブな App";
 "Active screen" = "アクティブな画面";
 "Add a pattern" = "パターンを追加";
@@ -37,9 +36,11 @@
 "App is hidden" = "App は非表示";
 "App is running but has no open window" = "App は実行中ですが開いているウインドウはありません";
 "Appearance" = "外観";
+"Appearance and organization" = "表示と整理";
 "Application Name" = "アプリケーション名";
 "Application Name - Window Title" = "アプリケーション名 - ウインドウタイトル";
 "Applies in other Appearances" = "他の外観にも適用されます";
+"Applies to every direct Focus Set shortcut." = "すべての直接フォーカスセットショートカットに適用されます。";
 "Apply" = "適用";
 "Apply this change to all shortcuts?" = "この変更をすべてのショートカットに適用しますか？";
 "Apply to All Shortcuts" = "すべてのショートカットに適用";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "キャンセル";
 "Change Global Only" = "全体設定のみ変更";
-"Changes are saved automatically." = "変更は自動的に保存されます。";
 "Check for updates now…" = "今すぐアップデートを確認…";
 "Check for updates periodically" = "アップデートを定期的に確認";
 "Check for updates…" = "アップデートを確認…";
 "Check permissions…" = "権限を確認…";
 "Choose a global shortcut to open the Focus Sets picker." = "フォーカスセットの選択画面を開くグローバルショートカットを選択してください。";
-"Choose Applications…" = "アプリケーションを選択…";
 "Choose the applications whose windows belong to this Focus Set." = "このフォーカスセットに含めるウインドウのアプリケーションを選択します。";
 "Close window" = "ウインドウを閉じる";
 "Conflicting shortcut" = "ショートカットの競合";
@@ -74,6 +73,7 @@
 "Dark" = "ダーク";
 "Debug tools" = "デバッグツール";
 "Delete" = "削除";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "直接フォーカスセットショートカットでは、標準の外観とウインドウの整理方法が使用されます。";
 "Disabled" = "無効";
 "Do Not Move" = "移動しない";
 "Don't hide" = "非表示にしない";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "例: com.example.app";
 "e.g. Debug" = "例: Debug";
 "Edit" = "編集";
-"Editing" = "編集中";
 "Editing “%@”" = "「%@」を編集中";
 "End" = "末尾";
 "Exceptions" = "例外";
@@ -93,7 +92,7 @@
 "Focus" = "フォーカス";
 "Focus selected window" = "選択したウインドウにフォーカス";
 "Focus Sets" = "フォーカスセット";
-"Focus Sets profile" = "フォーカスセットのプロファイル";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "フォーカスセットでは共通のアクティブ時のショートカットを使用します。これらは「コントロール」で変更できます。";
 "Fullscreen/Defullscreen window" = "ウインドウのフルスクリーン切り替え";
 "General" = "一般";
 "Gesture" = "ジェスチャ";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "クラッシュレポートを送信しない";
 "New Focus Set" = "新規フォーカスセット";
 "No applications selected" = "アプリケーションが選択されていません";
-"No applications selected." = "アプリケーションが選択されていません。";
 "No Focus Sets" = "フォーカスセットがありません";
 "No matching applications." = "一致するアプリケーションがありません。";
 "No Window" = "ウインドウなし";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "別の画面のときのみ";
 "Open Accessibility Settings…" = "アクセシビリティ設定を開く…";
+"Open Appearance Settings" = "「外観」設定を開く";
 "Open Focus Sets" = "フォーカスセットを開く";
+"Open Shortcuts When Active Settings" = "「アクティブ時のショートカット」設定を開く";
 "Open Trackpad Settings…" = "トラックパッド設定を開く…";
 "Order windows by" = "ウインドウの並び順";
 "Ordering" = "並べ替え";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "ショートカットはすでに割り当てられています: %@";
 "Shortcuts" = "ショートカット";
 "Shortcuts When Active" = "アクティブ時のショートカット";
+"Shortcuts while browsing" = "閲覧中のショートカット";
 "Shortcuts while ScryTab is active" = "ScryTabがアクティブなときのショートカット";
 "Show" = "表示";
 "Show all windows" = "すべてのウインドウを表示";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "対象のアプリケーション";
 "Show windows from screens" = "対象の画面";
 "Show windows from Spaces" = "対象の Space";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "すべてのSpacesと画面のアプリを表示し、非表示、最小化、フルスクリーン、およびウインドウのない項目を標準設定で処理します。";
 "Size" = "サイズ";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "一部のショートカットではこの設定が上書きされています。上書きを削除して新しい全体設定をすべてのショートカットに適用するか、上書きを維持してください。";
@@ -242,11 +244,11 @@
 "Update now" = "今すぐアップデート";
 "Updates policy" = "アップデートのポリシー";
 "Usage" = "使用状況";
-"Uses this shortcut’s filters when counting and showing windows." = "ウインドウを数えて表示するときに、このショートカットのフィルタを使用します。";
 "Version" = "バージョン";
 "View existing discussions" = "既存のディスカッションを表示";
 "Vim keys" = "Vim キー";
 "Vim keys already assigned to other actions:\n%@" = "Vim キーはすでに他のアクションに割り当てられています:\n%@";
+"Visibility" = "表示範囲";
 "Visible Spaces" = "表示中の Space";
 "Website" = "Web サイト";
 "What did you expect? What happened? Steps to reproduce…" = "期待した動作、実際に起きたこと、再現手順…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "最小化されたウインドウ";
 "Window is on every Space" = "すべての Space にあるウインドウ";
 "Window is on Space %d" = "Space %d にあるウインドウ";
+"Window organization" = "ウインドウの整理";
 "Window Title" = "ウインドウタイトル";
 "Window title contains" = "ウインドウタイトルに含まれる";
 "You can’t undo this action." = "この操作は取り消せません。";

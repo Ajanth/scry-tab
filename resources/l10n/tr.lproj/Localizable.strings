@@ -14,7 +14,6 @@
 "About" = "Hakkında";
 "About %@" = "%@ hakkında";
 "Accessibility" = "Erişilebilirlik";
-"Actions" = "Eylemler";
 "Active app" = "Etkin uygulama";
 "Active screen" = "Etkin ekran";
 "Add a pattern" = "Desen ekle";
@@ -37,9 +36,11 @@
 "App is hidden" = "Uygulama gizli";
 "App is running but has no open window" = "Uygulama çalışıyor ancak açık penceresi yok";
 "Appearance" = "Görünüm";
+"Appearance and organization" = "Görünüm ve düzen";
 "Application Name" = "Uygulama Adı";
 "Application Name - Window Title" = "Uygulama Adı - Pencere Başlığı";
 "Applies in other Appearances" = "Diğer Görünümlerde uygulanır";
+"Applies to every direct Focus Set shortcut." = "Her doğrudan Odak Kümesi kısayolu için geçerlidir.";
 "Apply" = "Uygula";
 "Apply this change to all shortcuts?" = "Bu değişiklik tüm kestirmelere uygulansın mı?";
 "Apply to All Shortcuts" = "Tüm kestirmelere uygula";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "İptal";
 "Change Global Only" = "Yalnızca genel değeri değiştir";
-"Changes are saved automatically." = "Değişiklikler otomatik olarak kaydedilir.";
 "Check for updates now…" = "Şimdi güncellemeleri denetle…";
 "Check for updates periodically" = "Güncellemeleri düzenli olarak denetle";
 "Check for updates…" = "Güncellemeleri denetle…";
 "Check permissions…" = "İzinleri denetle…";
 "Choose a global shortcut to open the Focus Sets picker." = "Odak Kümeleri seçicisini açmak için genel bir klavye kısayolu seçin.";
-"Choose Applications…" = "Uygulamaları seç…";
 "Choose the applications whose windows belong to this Focus Set." = "Pencereleri bu Odak Kümesine ait olan uygulamaları seçin.";
 "Close window" = "Pencereyi kapat";
 "Conflicting shortcut" = "Çakışan kısayol";
@@ -74,6 +73,7 @@
 "Dark" = "Karanlık";
 "Debug tools" = "Hata ayıklama araçları";
 "Delete" = "Sil";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Doğrudan Odak Kümesi kısayolları standart görünümü ve pencere düzenini kullanır.";
 "Disabled" = "Devre dışı";
 "Do Not Move" = "Taşıma";
 "Don't hide" = "Gizleme";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "örn. com.example.app";
 "e.g. Debug" = "örn. Debug";
 "Edit" = "Düzenle";
-"Editing" = "Düzenleniyor";
 "Editing “%@”" = "“%@” düzenleniyor";
 "End" = "Son";
 "Exceptions" = "İstisnalar";
@@ -93,7 +92,7 @@
 "Focus" = "Odak";
 "Focus selected window" = "Seçili pencereye odaklan";
 "Focus Sets" = "Odak kümeleri";
-"Focus Sets profile" = "Odak kümeleri profili";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Odak Kümeleri etkin durumdaki paylaşılan kısayolları kullanır. Bunları Denetimler'de değiştirin.";
 "Fullscreen/Defullscreen window" = "Pencereyi tam ekran yap/tam ekrandan çıkar";
 "General" = "Genel";
 "Gesture" = "Hareket";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Çökme raporlarını asla gönderme";
 "New Focus Set" = "Yeni odak kümesi";
 "No applications selected" = "Hiçbir uygulama seçilmedi";
-"No applications selected." = "Uygulama seçilmedi.";
 "No Focus Sets" = "Odak kümesi yok";
 "No matching applications." = "Eşleşen uygulama yok.";
 "No Window" = "Pencere Yok";
@@ -148,7 +146,9 @@
 "OK" = "Tamam";
 "Only on different screen" = "Yalnızca farklı ekranda";
 "Open Accessibility Settings…" = "Erişilebilirlik ayarlarını aç…";
+"Open Appearance Settings" = "Görünüm Ayarları’nı aç";
 "Open Focus Sets" = "Odak Kümelerini Aç";
+"Open Shortcuts When Active Settings" = "Etkin Kullanılan Kısayollar ayarlarını aç";
 "Open Trackpad Settings…" = "Trackpad ayarlarını aç…";
 "Order windows by" = "Pencereleri sıralama ölçütü";
 "Ordering" = "Sıralama";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Kısayol zaten şuna atanmış: %@";
 "Shortcuts" = "Kısayollar";
 "Shortcuts When Active" = "Etkinken Kullanılan Kısayollar";
+"Shortcuts while browsing" = "Göz atarken kullanılan kısayollar";
 "Shortcuts while ScryTab is active" = "ScryTab etkinken kestirmeler";
 "Show" = "Göster";
 "Show all windows" = "Tüm pencereleri göster";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Şu uygulamalardan pencereleri göster";
 "Show windows from screens" = "Şu ekranlardan pencereleri göster";
 "Show windows from Spaces" = "Şu Alanlardan pencereleri göster";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Tüm Spaces ve ekranlardaki uygulamaları; gizli, küçültülmüş, tam ekran ve penceresiz öğeler için standart davranışla gösterir.";
 "Size" = "Boyut";
 "Small" = "Küçük";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Bazı kestirmeler bu ayarı geçersiz kılıyor. Bu geçersiz kılmaları kaldırarak yeni genel değeri tüm kestirmelere uygulayın veya geçersiz kılmaları koruyun.";
@@ -242,11 +244,11 @@
 "Update now" = "Şimdi güncelle";
 "Updates policy" = "Güncelleme ilkesi";
 "Usage" = "Kullanım";
-"Uses this shortcut’s filters when counting and showing windows." = "Pencereleri sayarken ve gösterirken bu kestirmenin filtrelerini kullanır.";
 "Version" = "Sürüm";
 "View existing discussions" = "Mevcut tartışmaları görüntüle";
 "Vim keys" = "Vim tuşları";
 "Vim keys already assigned to other actions:\n%@" = "Vim tuşları zaten başka eylemlere atanmış:\n%@";
+"Visibility" = "Görünürlük";
 "Visible Spaces" = "Görünen Alanlar";
 "Website" = "Web sitesi";
 "What did you expect? What happened? Steps to reproduce…" = "Ne bekliyordunuz? Ne oldu? Yeniden oluşturma adımları…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Pencere küçültülmüş";
 "Window is on every Space" = "Pencere her Alanda";
 "Window is on Space %d" = "Pencere %d numaralı Alanda";
+"Window organization" = "Pencere düzeni";
 "Window Title" = "Pencere Başlığı";
 "Window title contains" = "Pencere başlığı şunu içeriyor";
 "You can’t undo this action." = "Bu eylemi geri alamazsınız.";

@@ -531,6 +531,7 @@ class SettingsWindow: NSWindow {
         [
             SettingsSectionDefinition(id: "appearance", title: NSLocalizedString("Appearance", comment: ""), symbol: .paintpalette, route: .appearance, builder: AppearanceTab.initTab, registerDynamicSearchContent: nil),
             SettingsSectionDefinition(id: "controls", title: NSLocalizedString("Controls", comment: ""), symbol: .command, route: .controls(nil), builder: ControlsTab.initTab, registerDynamicSearchContent: ControlsTab.registerSidebarRowsSearchContent),
+            SettingsSectionDefinition(id: "focusSets", title: NSLocalizedString("Focus Sets", comment: ""), symbol: .circledStar, route: .focusSets, builder: FocusSetsTab.initTab, registerDynamicSearchContent: nil),
             SettingsSectionDefinition(id: "general", title: NSLocalizedString("General", comment: ""), symbol: .gearshape, route: .general, builder: GeneralTab.initTab, registerDynamicSearchContent: nil),
             SettingsSectionDefinition(id: "exceptions", title: NSLocalizedString("Exceptions", comment: ""), symbol: .handRaised, route: .exceptions(nil), builder: ExceptionsTab.initTab, registerDynamicSearchContent: nil),
             SettingsSectionDefinition(id: "about", title: NSLocalizedString("About", comment: ""), symbol: .circledInfo, route: .about, builder: AboutTab.initTab, registerDynamicSearchContent: nil),
@@ -555,11 +556,18 @@ class SettingsWindow: NSWindow {
                 NSLocalizedString("Size", comment: ""),
                 NSLocalizedString("Theme", comment: ""),
                 NSLocalizedString("After keys are released", comment: ""),
+                NSLocalizedString("Window organization", comment: ""),
+                AppearanceTab.labelGroupApps,
+                AppearanceTab.labelGroupTabs,
+                AppearanceTab.labelWindowOrder,
                 NSLocalizedString("Show on", comment: ""),
             ] + AppearanceStylePreference.allCases.map(\.localizedString)
               + AppearanceSizePreference.allCases.map(\.localizedString)
               + AppearanceThemePreference.allCases.map(\.localizedString)
               + ShortcutStylePreference.allCases.map(\.localizedString)
+              + GroupAppsPreference.allCases.map(\.localizedString)
+              + GroupTabsPreference.allCases.map(\.localizedString)
+              + WindowOrderPreference.allCases.map(\.localizedString)
               + ShowOnScreenPreference.allCases.map(\.localizedString)
               + CustomizeStyleSheet.searchableStrings),
             SettingsSearchDescriptor(id: "controls-gesture", route: .controls(.gesture), sectionID: "controls", title: NSLocalizedString("Gesture", comment: ""), keywords: [
@@ -571,7 +579,7 @@ class SettingsWindow: NSWindow {
             ]),
             SettingsSearchDescriptor(id: "controls-active", route: .controls(.activeShortcuts), sectionID: "controls", title: NSLocalizedString("Shortcuts while ScryTab is active", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + ShortcutsWhenActiveSheet.searchableStrings),
             SettingsSearchDescriptor(id: "controls-navigation-pointer", route: .controls(.navigationPointer), sectionID: "controls", title: NSLocalizedString("Navigation & pointer", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + AdditionalControlsSheet.searchableStrings),
-            SettingsSearchDescriptor(id: "controls-focus-sets", route: .controls(.focusSets), sectionID: "controls", title: NSLocalizedString("Focus Sets", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + FocusSetSettingsView.searchableStrings),
+            SettingsSearchDescriptor(id: "focus-sets", route: .focusSets, sectionID: "focusSets", title: NSLocalizedString("Focus Sets", comment: ""), keywords: FocusSetSettingsView.searchableStrings),
             SettingsSearchDescriptor(id: "general", route: .general, sectionID: "general", title: NSLocalizedString("General", comment: ""), keywords: [
                 NSLocalizedString("Start at login", comment: ""),
                 NSLocalizedString("Language", comment: ""),
@@ -1216,6 +1224,7 @@ class SettingsWindow: NSWindow {
         navigationController.navigate(to: route)
         _ = section(for: definition)
         if page == .about { AboutTab.refreshSettingsUsageStats() }
+        if page == .focusSets { FocusSetsTab.refresh() }
         sections.forEach { $0.container.isHidden = $0.id != definition.id }
         selectedSectionId = definition.id
         contentHeaderView.configure(title: definition.title, icon: sidebarImage(definition))
@@ -1365,6 +1374,7 @@ extension SettingsWindow: NSWindowDelegate {
         DispatchQueue.main.async {
             AppearanceTab.cleanup()
             ControlsTab.cleanup()
+            FocusSetsTab.cleanup()
             GeneralTab.cleanup()
             ExceptionsTab.cleanup()
             SettingsWindow.shared = nil

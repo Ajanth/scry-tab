@@ -14,7 +14,6 @@
 "About" = "Informazioni";
 "About %@" = "Informazioni su %@";
 "Accessibility" = "Accessibilità";
-"Actions" = "Azioni";
 "Active app" = "App attiva";
 "Active screen" = "Schermo attivo";
 "Add a pattern" = "Aggiungi un pattern";
@@ -37,9 +36,11 @@
 "App is hidden" = "App nascosta";
 "App is running but has no open window" = "App in esecuzione ma senza finestre aperte";
 "Appearance" = "Aspetto";
+"Appearance and organization" = "Aspetto e organizzazione";
 "Application Name" = "Nome dell'applicazione";
 "Application Name - Window Title" = "Nome dell'applicazione - Titolo della finestra";
 "Applies in other Appearances" = "Si applica negli altri Aspetti";
+"Applies to every direct Focus Set shortcut." = "Si applica a ogni scorciatoia diretta dei set di concentrazione.";
 "Apply" = "Applica";
 "Apply this change to all shortcuts?" = "Applicare questa modifica a tutte le scorciatoie?";
 "Apply to All Shortcuts" = "Applica a tutte le scorciatoie";
@@ -53,13 +54,11 @@
 "Bundle ID" = "Bundle ID";
 "Cancel" = "Annulla";
 "Change Global Only" = "Modifica solo il valore globale";
-"Changes are saved automatically." = "Le modifiche vengono salvate automaticamente.";
 "Check for updates now…" = "Cerca aggiornamenti ora…";
 "Check for updates periodically" = "Cerca aggiornamenti periodicamente";
 "Check for updates…" = "Cerca aggiornamenti…";
 "Check permissions…" = "Controlla i permessi…";
 "Choose a global shortcut to open the Focus Sets picker." = "Scegli una scorciatoia globale per aprire il selettore dei set di concentrazione.";
-"Choose Applications…" = "Scegli applicazioni…";
 "Choose the applications whose windows belong to this Focus Set." = "Scegli le app le cui finestre appartengono a questo Focus Set.";
 "Close window" = "Chiudi finestra";
 "Conflicting shortcut" = "Scorciatoia in conflitto";
@@ -74,6 +73,7 @@
 "Dark" = "Scuro";
 "Debug tools" = "Strumenti di debug";
 "Delete" = "Elimina";
+"Direct Focus Set shortcuts use the standard appearance and window organization." = "Le scorciatoie dirette dei set di concentrazione usano l’aspetto standard e l’organizzazione standard delle finestre.";
 "Disabled" = "Disattivato";
 "Do Not Move" = "Non spostare";
 "Don't hide" = "Non nascondere";
@@ -83,7 +83,6 @@
 "e.g. com.example.app" = "es. com.example.app";
 "e.g. Debug" = "es. Debug";
 "Edit" = "Modifica";
-"Editing" = "Modifica";
 "Editing “%@”" = "Modifica di “%@”";
 "End" = "Fine";
 "Exceptions" = "Eccezioni";
@@ -93,7 +92,7 @@
 "Focus" = "Focus";
 "Focus selected window" = "Metti a fuoco la finestra selezionata";
 "Focus Sets" = "Set di concentrazione";
-"Focus Sets profile" = "Profilo dei set di concentrazione";
+"Focus Sets uses the shared active shortcuts. Change them in Controls." = "I set di messa a fuoco usano le scorciatoie condivise quando attivi. Modificale in Controlli.";
 "Fullscreen/Defullscreen window" = "Attiva/disattiva schermo intero";
 "General" = "Generali";
 "Gesture" = "Gesto";
@@ -137,7 +136,6 @@
 "Never send crash reports" = "Non inviare mai i resoconti di arresti anomali";
 "New Focus Set" = "Nuovo set di concentrazione";
 "No applications selected" = "Nessuna app selezionata";
-"No applications selected." = "Nessuna applicazione selezionata.";
 "No Focus Sets" = "Nessun set di concentrazione";
 "No matching applications." = "Nessuna applicazione corrispondente.";
 "No Window" = "Nessuna finestra";
@@ -148,7 +146,9 @@
 "OK" = "OK";
 "Only on different screen" = "Solo su schermo diverso";
 "Open Accessibility Settings…" = "Apri Impostazioni di Accessibilità…";
+"Open Appearance Settings" = "Apri impostazioni Aspetto";
 "Open Focus Sets" = "Apri set di concentrazione";
+"Open Shortcuts When Active Settings" = "Apri le impostazioni delle scorciatoie quando attivo";
 "Open Trackpad Settings…" = "Apri Impostazioni del Trackpad…";
 "Order windows by" = "Ordina finestre per";
 "Ordering" = "Ordinamento";
@@ -197,6 +197,7 @@
 "Shortcut already assigned to: %@" = "Scorciatoia già assegnata a: %@";
 "Shortcuts" = "Scorciatoie";
 "Shortcuts When Active" = "Scorciatoie quando attivo";
+"Shortcuts while browsing" = "Scorciatoie durante la navigazione";
 "Shortcuts while ScryTab is active" = "Abbreviazioni mentre ScryTab è attivo";
 "Show" = "Mostra";
 "Show all windows" = "Mostra tutte le finestre";
@@ -215,6 +216,7 @@
 "Show windows from applications" = "Mostra finestre dalle applicazioni";
 "Show windows from screens" = "Mostra finestre dagli schermi";
 "Show windows from Spaces" = "Mostra finestre dagli Spazi";
+"Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows." = "Mostra le app di tutti gli Spaces e schermi, con la gestione standard di finestre nascoste, ridotte a icona, a schermo intero e app senza finestre.";
 "Size" = "Dimensione";
 "Small" = "Piccolo";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Alcune scorciatoie sostituiscono questa impostazione. Applica il nuovo valore globale a tutte le scorciatoie rimuovendo tali sostituzioni oppure mantienile.";
@@ -242,11 +244,11 @@
 "Update now" = "Aggiorna ora";
 "Updates policy" = "Politica degli aggiornamenti";
 "Usage" = "Utilizzo";
-"Uses this shortcut’s filters when counting and showing windows." = "Usa i filtri di questa scorciatoia per contare e mostrare le finestre.";
 "Version" = "Versione";
 "View existing discussions" = "Visualizza discussioni esistenti";
 "Vim keys" = "Tasti Vim";
 "Vim keys already assigned to other actions:\n%@" = "Tasti Vim già assegnati ad altre azioni:\n%@";
+"Visibility" = "Visibilità";
 "Visible Spaces" = "Spazi visibili";
 "Website" = "Sito web";
 "What did you expect? What happened? Steps to reproduce…" = "Cosa ti aspettavi? Cosa è successo? Passaggi per riprodurre…";
@@ -256,6 +258,7 @@
 "Window is minimized" = "Finestra ridotta a icona";
 "Window is on every Space" = "Finestra in ogni Spazio";
 "Window is on Space %d" = "Finestra nello Spazio %d";
+"Window organization" = "Organizzazione delle finestre";
 "Window Title" = "Titolo finestra";
 "Window title contains" = "Il titolo della finestra contiene";
 "You can’t undo this action." = "Non puoi annullare questa azione.";

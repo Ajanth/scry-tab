@@ -18,6 +18,7 @@ struct FocusSetsConfiguration: Codable, Equatable {
 struct FocusSetsPresentationPolicy: Equatable {
     let hideHidden: Bool
     let hideWindowless: Bool
+    let windowlessAtEnd: Bool
     let hideFullscreen: Bool
     let hideMinimized: Bool
     let onlyVisibleSpaces: Bool
@@ -27,6 +28,7 @@ struct FocusSetsPresentationPolicy: Equatable {
     static let standard = FocusSetsPresentationPolicy(
         hideHidden: false,
         hideWindowless: false,
+        windowlessAtEnd: true,
         hideFullscreen: false,
         hideMinimized: false,
         onlyVisibleSpaces: false,

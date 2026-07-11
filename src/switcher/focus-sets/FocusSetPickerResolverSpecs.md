@@ -3,7 +3,7 @@
 ## Summary
 
 `FocusSetPickerResolver` is a Foundation-only picker-state kernel. It snapshots a
-`FocusSetsConfiguration`, profile-scoped candidate counts, and caller-provided built-in display
+`FocusSetsConfiguration`, policy-scoped candidate counts, and caller-provided built-in display
 names, then exposes stable Focus Sets picker items without accessing AppKit, localization storage,
 preferences, or live window state.
 
@@ -15,7 +15,7 @@ names only to search built-in entries.
 
 - Every snapshot starts with an `All Windows` item, then retains unique saved Focus Sets in their
   persisted configuration order, and finally appends `Unassigned Windows` only when its supplied
-  profile-scoped count is positive.
+  policy-scoped count is positive.
 - `availableScopes` is derived from the same unfiltered snapshot rows that the picker renders.
   `isScopeAvailable` lets an active child grid validate only its scope: All Windows and configured
   saved sets remain available, while Unassigned requires a visible candidate.
@@ -44,8 +44,8 @@ names only to search built-in entries.
   unfiltered All Windows item and its count.
 - **testItemsKeepAllWindowsThenSavedSetsInConfigurationOrder** — All Windows precedes saved sets,
   whose persisted order, scopes, semantic names, identifiers, and counts remain intact.
-- **testUnassignedWindowsAppearsOnlyWithPositiveProfileScopedCount** — Unassigned Windows appears
-  last only when the profile-scoped input count is positive, and absent rows do not become
+- **testUnassignedWindowsAppearsOnlyWithPositivePolicyScopedCount** — Unassigned Windows appears
+  last only when the policy-scoped input count is positive, and absent rows do not become
   available scopes.
 - **testActiveScopeAvailabilityMatchesPickerRows** — active-grid validation follows the same row
   rules: All Windows and configured sets remain available, while Unassigned requires a candidate.
