@@ -225,7 +225,56 @@ final class FocusSetsStoreTests: XCTestCase {
         XCTAssertEqual(configuration.sets.first?.rules.first?.applicationBundleIdentifier, "com.cursor.Cursor")
     }
 
+    func testMalformedShortcutValueIsIgnoredWithoutDroppingSet() throws {
+        let store = try makeStore()
+        let identifier = UUID()
+        try seed([
+            "version": FocusSetsConfiguration.currentVersion,
+            "presentationShortcutIdentifier": "profile-1",
+            "sets": [
+                [
+                    "id": identifier.uuidString,
+                    "name": "Project",
+                    "rules": [],
+                    "shortcutKeyEquivalent": ["not", "a", "shortcut"],
+                ],
+            ],
+        ])
+
+        let configuration = store.read(availableShortcutIdentifiers: ["profile-1"])
+
+        XCTAssertEqual(configuration.sets.map(\.id), [identifier])
+        XCTAssertNil(configuration.sets.first?.shortcutKeyEquivalent)
+    }
+
     // MARK: - B. Forward compatibility
+
+    func testReadMigratesV1WhilePreservingUnknownFields() throws {
+        let store = try makeStore()
+        let identifier = UUID()
+        try seed([
+            "version": 1,
+            "presentationShortcutIdentifier": "profile-1",
+            "futureRoot": ["enabled": true],
+            "sets": [
+                [
+                    "id": identifier.uuidString,
+                    "name": "Legacy",
+                    "futureSet": "retained",
+                    "rules": [],
+                ],
+            ],
+        ])
+
+        let configuration = store.read(availableShortcutIdentifiers: ["profile-1"])
+        let root = try storedRoot()
+        let storedSet = try XCTUnwrap((root["sets"] as? [[String: Any]])?.first)
+
+        XCTAssertEqual(configuration.version, FocusSetsConfiguration.currentVersion)
+        XCTAssertEqual(root["version"] as? Int, FocusSetsConfiguration.currentVersion)
+        XCTAssertEqual((root["futureRoot"] as? [String: Any])?["enabled"] as? Bool, true)
+        XCTAssertEqual(storedSet["futureSet"] as? String, "retained")
+    }
 
     func testWritePreservesUnknownFieldsAndOptionalTitle() throws {
         let store = try makeStore()
@@ -239,6 +288,7 @@ final class FocusSetsStoreTests: XCTestCase {
                     "id": identifier.uuidString,
                     "name": "Project",
                     "futureSet": ["alpha", "beta"],
+                    "shortcutKeyEquivalent": "⌃1",
                     "rules": [
                         [
                             "applicationBundleIdentifier": "com.cursor.Cursor",
@@ -253,6 +303,7 @@ final class FocusSetsStoreTests: XCTestCase {
 
         let configuration = store.read(availableShortcutIdentifiers: ["profile-1", "profile-2"])
         XCTAssertEqual(configuration.version, 3)
+        XCTAssertEqual(configuration.sets.first?.shortcutKeyEquivalent, "⌃1")
         XCTAssertEqual(configuration.sets.first?.rules.first?.titleContains, "scry-tab")
         XCTAssertTrue(store.set(configuration, availableShortcutIdentifiers: ["profile-1", "profile-2"]))
 
@@ -344,7 +395,8 @@ final class FocusSetsStoreTests: XCTestCase {
                     rules: [
                         FocusSetRule(applicationBundleIdentifier: "com.cursor.Cursor", cachedApplicationName: "Cursor"),
                         FocusSetRule(applicationBundleIdentifier: "com.apple.Terminal", cachedApplicationName: "Terminal"),
-                    ]
+                    ],
+                    shortcutKeyEquivalent: "⌃1"
                 ),
                 FocusSet(
                     name: "Browser",

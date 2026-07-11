@@ -123,6 +123,9 @@ class ControlsTab {
     private static var shortcutCountButtons: NSSegmentedControl?
     private static var shortcutRowsScrollView: NSScrollView?
     private static var shortcutRowsScrollObserver: NSObjectProtocol?
+    private static var focusSetConfigurationObserver: NSObjectProtocol?
+    private static var focusSetShortcutLabels = [String: String]()
+    private static var isApplyingFocusSetShortcuts = false
 
     // MARK: - Initialization / teardown
 
@@ -131,6 +134,8 @@ class ControlsTab {
         staticManagedShortcutPreferences.forEach { applyShortcutPreference($0) }
         applyArrowKeysPreferenceWithoutDialogs()
         applyVimKeysPreferenceWithoutDialogs()
+        observeFocusSetConfiguration()
+        applyFocusSetShortcutPreferences()
     }
 
     static func initTab() -> NSView {
@@ -207,6 +212,7 @@ class ControlsTab {
             (0..<Preferences.shortcutCount).forEach { initializeShortcutRecorderState($0) }
             refreshShortcutUi()
             syncSelectedDestinationRoute()
+            applyFocusSetShortcutPreferences()
         case let k where isShortcutPreferenceKey(k):
             let i = Preferences.nameToIndex(k)
             if i < Preferences.shortcutCount {
@@ -219,8 +225,10 @@ class ControlsTab {
                 removeShortcutIfExists(k)
             }
             refreshShortcutRows()
+            applyFocusSetShortcutPreferences()
         case let k where staticManagedShortcutPreferences.contains(k):
             applyShortcutPreference(k)
+            applyFocusSetShortcutPreferences()
         case "appearanceStyle", "appearanceSize", "appearanceTheme", "shortcutStyle":
             refreshAppearanceControls()
         case let k where isOverrideKey(k):
@@ -940,6 +948,44 @@ class ControlsTab {
         }
     }
 
+    private static func observeFocusSetConfiguration() {
+        guard focusSetConfigurationObserver == nil else { return }
+        focusSetConfigurationObserver = NotificationCenter.default.addObserver(
+            forName: FocusSetsStore.configurationDidChangeNotification,
+            object: UserDefaults.standard,
+            queue: .main
+        ) { _ in
+            ControlsTab.applyFocusSetShortcutPreferences()
+        }
+    }
+
+    private static func applyFocusSetShortcutPreferences() {
+        guard !isApplyingFocusSetShortcuts else { return }
+        isApplyingFocusSetShortcuts = true
+        defer { isApplyingFocusSetShortcuts = false }
+        shortcuts.keys
+            .filter { FocusSetShortcutBindingResolver.focusSetIdentifier(from: $0) != nil }
+            .forEach(removeShortcutIfExists)
+        let identifiers = (0..<Preferences.shortcutCount).map { Preferences.shortcutIdentifier(at: $0) }
+        let configuration = FocusSetsStore().read(availableShortcutIdentifiers: identifiers)
+        let bindings = FocusSetShortcutBindingResolver.bindings(in: configuration)
+        KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds(bindings.map(\.actionIdentifier))
+        focusSetShortcutLabels = Dictionary(uniqueKeysWithValues: bindings.map {
+            ($0.actionIdentifier, $0.name + " - " + NSLocalizedString("Shortcut", comment: ""))
+        })
+        for binding in bindings {
+            guard let shortcut = Shortcut(keyEquivalent: binding.keyEquivalent) else {
+                Logger.warning { "Invalid Focus Set shortcut for \(binding.focusSetIdentifier)" }
+                continue
+            }
+            guard CustomRecorderControlTestable.isShortcutAcceptable(binding.actionIdentifier, shortcut) == .accepted else {
+                Logger.warning { "Conflicting Focus Set shortcut for \(binding.focusSetIdentifier)" }
+                continue
+            }
+            addShortcut(.both, .global, shortcut, binding.actionIdentifier, nil)
+        }
+    }
+
     @objc static func showShortcutsSettings() {
         if shortcutsWhenActiveSheet == nil { shortcutsWhenActiveSheet = ShortcutsWhenActiveSheet() }
         SettingsWindow.shared.beginSheetWithSearchHighlight(shortcutsWhenActiveSheet)
@@ -1122,6 +1168,7 @@ class ControlsTab {
         if id.hasPrefix("holdShortcut") || id.hasPrefix("nextWindowShortcut") {
             return shortcutTitle(Preferences.nameToIndex(id)) + " - " + ShortcutEditor.triggerLabel
         }
+        if let focusSetShortcutLabel = focusSetShortcutLabels[id] { return focusSetShortcutLabel }
         return staticShortcutLabels[id]
     }
 
@@ -1134,11 +1181,50 @@ class ControlsTab {
     /// press" (nextWindowShortcut) part — e.g. ⌥+Tab becomes ⌥+(unassigned) — whether the conflict
     /// was reported against the hold or the press.
     static func unassignShortcut(_ id: String) {
+        if let focusSetIdentifier = FocusSetShortcutBindingResolver.focusSetIdentifier(from: id) {
+            unassignFocusSetShortcut(focusSetIdentifier)
+            return
+        }
         let keyToClear = (id.hasPrefix("holdShortcut") || id.hasPrefix("nextWindowShortcut"))
             ? Preferences.indexToName("nextWindowShortcut", Preferences.nameToIndex(id))
             : id
         Preferences.setShortcut(keyToClear, nil)
         shortcutControls[keyToClear]?.0.objectValue = nil
+    }
+
+    static func unassignShortcutConflict(_ id: String) {
+        if arrowKeys.contains(id) {
+            arrowKeysCheckbox?.state = .off
+            Preferences.set("arrowKeysEnabled", "false")
+            arrowKeys.forEach(removeShortcutIfExists)
+            applyFocusSetShortcutPreferences()
+            return
+        }
+        if vimKeyActions.values.contains(id) {
+            vimKeysCheckbox?.state = .off
+            Preferences.set("vimKeysEnabled", "false")
+            vimKeyActions.values.forEach(removeShortcutIfExists)
+            applyFocusSetShortcutPreferences()
+            return
+        }
+        unassignShortcut(id)
+    }
+
+    private static func unassignFocusSetShortcut(_ focusSetIdentifier: UUID) {
+        let identifiers = (0..<Preferences.shortcutCount).map { Preferences.shortcutIdentifier(at: $0) }
+        let store = FocusSetsStore()
+        let configuration = store.read(availableShortcutIdentifiers: identifiers)
+        guard configuration.sets.contains(where: { $0.id == focusSetIdentifier }) else { return }
+        let sets = configuration.sets.map { focusSet in
+            guard focusSet.id == focusSetIdentifier else { return focusSet }
+            return FocusSet(id: focusSet.id, name: focusSet.name, rules: focusSet.rules, shortcutKeyEquivalent: nil)
+        }
+        _ = store.set(
+            FocusSetsConfiguration(
+                version: configuration.version,
+                presentationShortcutIdentifier: configuration.presentationShortcutIdentifier,
+                sets: sets),
+            availableShortcutIdentifiers: identifiers)
     }
 
     private static func shouldClearConflictingShortcuts(_ conflicts: [String], _ messageFormat: String) -> Bool {

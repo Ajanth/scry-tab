@@ -93,17 +93,29 @@ class TilesPanel: NSPanel {
     }
 
     static func maxRowWidth(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {
-        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .titles,
+        maxRowWidth(
+            style: Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex),
+            screen: screen)
+    }
+
+    static func maxRowWidth(style: AppearanceStylePreference,
+                            screen: NSScreen = NSScreen.preferred) -> CGFloat {
+        if style == .titles,
            let readableWidth = TilesView.layoutCache.comfortableReadabilityWidth {
-            return (
-                min(
-                    screen.frame.width * Appearance.maxWidthOnScreen,
-                    readableWidth + Appearance.intraCellPadding * 2 + Appearance.appIconLabelSpacing + Appearance.iconSize
-                    // widthOfLongestTitle + Appearance.intraCellPadding * 2 + Appearance.appIconLabelSpacing + Appearance.iconSize
-                ) - Appearance.windowPadding * 2
-            ).rounded()
+            return titleMaxRowWidth(readableWidth: readableWidth, screen: screen)
         }
         return (screen.frame.width * Appearance.maxWidthOnScreen - Appearance.windowPadding * 2).rounded()
+    }
+
+    static func titleMaxRowWidth(readableWidth: CGFloat,
+                                 screen: NSScreen = NSScreen.preferred) -> CGFloat {
+        return (
+            min(
+                screen.frame.width * Appearance.maxWidthOnScreen,
+                readableWidth + Appearance.intraCellPadding * 2 + Appearance.appIconLabelSpacing + Appearance.iconSize
+                // widthOfLongestTitle + Appearance.intraCellPadding * 2 + Appearance.appIconLabelSpacing + Appearance.iconSize
+            ) - Appearance.windowPadding * 2
+        ).rounded()
     }
 
     static func maxRowHeight(_ screen: NSScreen = NSScreen.preferred) -> CGFloat {

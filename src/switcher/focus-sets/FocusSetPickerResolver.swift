@@ -54,6 +54,33 @@ enum FocusSetPickerNavigationDirection: Equatable {
     case next
 }
 
+enum FocusSetPickerPanelOwnership: Equatable {
+    case unowned
+    case owned
+}
+
+struct FocusSetPickerPanelRemovalDecision: Equatable {
+    let nextOwnership: FocusSetPickerPanelOwnership
+    let shouldRestoreOrdinaryState: Bool
+}
+
+enum FocusSetPickerPresentationPolicy {
+    static let rowsParticipateInKeyViewLoop = false
+
+    static func remove(_ ownership: FocusSetPickerPanelOwnership) -> FocusSetPickerPanelRemovalDecision {
+        switch ownership {
+        case .unowned:
+            return FocusSetPickerPanelRemovalDecision(
+                nextOwnership: .unowned,
+                shouldRestoreOrdinaryState: false)
+        case .owned:
+            return FocusSetPickerPanelRemovalDecision(
+                nextOwnership: .unowned,
+                shouldRestoreOrdinaryState: true)
+        }
+    }
+}
+
 struct FocusSetPickerResolver {
     private let allItems: [FocusSetPickerItem]
     private let builtInNames: FocusSetPickerBuiltInNames

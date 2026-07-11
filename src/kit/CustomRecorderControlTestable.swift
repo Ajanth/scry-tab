@@ -16,6 +16,10 @@ class CustomRecorderControlTestable {
 
     static func isShortcutAcceptable(_ candidateId: String, _ candidateShortcut: Shortcut) -> ShortcutAcceptance {
         assert(isWellFormedCandidateId(candidateId), "malformed candidateId '\(candidateId)' reached the conflict check — recycled editor id/identifier drift?")
+        if FocusSetShortcutBindingResolver.focusSetIdentifier(from: candidateId) != nil,
+           candidateShortcut.keyCode == .none {
+            return .nonModifierKeyRequired
+        }
         if let currentShortcutWithSameId = ControlsTab.shortcuts[candidateId]?.shortcut,
            candidateShortcut.carbonKeyCode == currentShortcutWithSameId.carbonKeyCode && candidateShortcut.carbonModifierFlags == currentShortcutWithSameId.carbonModifierFlags {
             return .accepted
@@ -150,6 +154,7 @@ class CustomRecorderControlTestable {
 enum ShortcutAcceptance: Equatable {
     case accepted
     case modifiersOnlyButContainsKeycode
+    case nonModifierKeyRequired
     case conflictWithExistingShortcut(shortcutAlreadyAssigned: String)
     case reservedByMacos(shortcutUsingEscape: String)
 
@@ -157,6 +162,7 @@ enum ShortcutAcceptance: Equatable {
         switch (lhs, rhs) {
         case (.accepted, .accepted),
              (.modifiersOnlyButContainsKeycode, .modifiersOnlyButContainsKeycode),
+             (.nonModifierKeyRequired, .nonModifierKeyRequired),
              (.reservedByMacos, .reservedByMacos),
              (.conflictWithExistingShortcut, .conflictWithExistingShortcut):
             return true

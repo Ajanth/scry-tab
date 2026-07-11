@@ -26,7 +26,8 @@ final class FocusSetResolverTests: XCTestCase {
                             applicationBundleIdentifier: "com.example.editor",
                             cachedApplicationName: "Example Editor",
                             titleContains: "scry-tab")
-                    ])
+                    ],
+                    shortcutKeyEquivalent: "⌃1")
             ])
 
         let decoded = try JSONDecoder().decode(
@@ -48,7 +49,8 @@ final class FocusSetResolverTests: XCTestCase {
                             applicationBundleIdentifier: "com.example.editor",
                             cachedApplicationName: "Example Editor",
                             titleContains: "scry-tab")
-                    ])
+                    ],
+                    shortcutKeyEquivalent: "⌃1")
             ])
 
         let data = try JSONEncoder().encode(configuration)
@@ -61,7 +63,7 @@ final class FocusSetResolverTests: XCTestCase {
         XCTAssertEqual(
             Set(configurationObject.keys),
             Set(["version", "presentationShortcutIdentifier", "sets"]))
-        XCTAssertEqual(Set(setObject.keys), Set(["id", "name", "rules"]))
+        XCTAssertEqual(Set(setObject.keys), Set(["id", "name", "rules", "shortcutKeyEquivalent"]))
         XCTAssertEqual(
             Set(ruleObject.keys),
             Set(["applicationBundleIdentifier", "cachedApplicationName", "titleContains"]))
@@ -252,6 +254,43 @@ final class FocusSetResolverTests: XCTestCase {
 
         XCTAssertTrue(original.matchesApp(bundleIdentifier: "com.example.editor", scope: .set(id: setID)))
         XCTAssertFalse(replacement.matchesApp(bundleIdentifier: "com.example.editor", scope: .set(id: setID)))
+    }
+
+    // MARK: - F. Direct shortcut bindings
+
+    /// Binding resolution emits only saved sets with non-empty direct shortcuts and stable UUID action identifiers.
+    func testShortcutBindingsResolveSavedIdentifiersAndSkipMissingValues() {
+        let bound = FocusSet(id: UUID(), name: "Coding", rules: [], shortcutKeyEquivalent: "⌃1")
+        let unbound = FocusSet(id: UUID(), name: "Writing", rules: [])
+
+        let bindings = FocusSetShortcutBindingResolver.bindings(
+            in: FocusSetsConfiguration(sets: [bound, unbound]))
+
+        XCTAssertEqual(bindings, [
+            FocusSetShortcutBinding(
+                focusSetIdentifier: bound.id,
+                actionIdentifier: FocusSetShortcutBindingResolver.actionIdentifier(for: bound.id),
+                keyEquivalent: "⌃1",
+                name: "Coding")
+        ])
+        XCTAssertEqual(
+            FocusSetShortcutBindingResolver.focusSetIdentifier(from: bindings[0].actionIdentifier),
+            bound.id)
+    }
+
+    /// A deleted action identifier cannot decode as another Focus Set identifier.
+    func testShortcutActionIdentifierPreservesExactStableIdentifier() {
+        let deletedIdentifier = UUID()
+        let retainedIdentifier = UUID()
+        let deletedAction = FocusSetShortcutBindingResolver.actionIdentifier(for: deletedIdentifier)
+
+        XCTAssertEqual(
+            FocusSetShortcutBindingResolver.focusSetIdentifier(from: deletedAction),
+            deletedIdentifier)
+        XCTAssertNotEqual(
+            FocusSetShortcutBindingResolver.focusSetIdentifier(from: deletedAction),
+            retainedIdentifier)
+        XCTAssertNil(FocusSetShortcutBindingResolver.focusSetIdentifier(from: "focusSetShortcut:not-a-uuid"))
     }
 
     private func makeResolver(sets: [FocusSet] = []) -> FocusSetResolver {

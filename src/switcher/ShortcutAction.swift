@@ -38,6 +38,11 @@ enum ShortcutActions {
     }
 
     static func execute(_ id: String) {
+        if let focusSetIdentifier = FocusSetShortcutBindingResolver.focusSetIdentifier(from: id),
+           let shortcut = ControlsTab.shortcuts[id] {
+            App.handleDirectFocusSetShortcut(focusSetIdentifier, state: shortcut.state)
+            return
+        }
         if let action = find(id) {
             action.perform()
             return

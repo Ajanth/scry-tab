@@ -171,7 +171,39 @@ final class FocusSetSettingsResolverTests: XCTestCase {
                 cachedApplicationName: "Cursor")])
     }
 
-    // MARK: - C. Focus Set reordering
+    // MARK: - C. Focus Set deletion
+
+    /// Deletion removes only the requested stable UUID and the next picker snapshot cannot expose it.
+    func testDeletingFocusSetRemovesOnlyRequestedStableIdentifier() throws {
+        let retained = focusSet("Same name")
+        let deleted = focusSet("Same name", shortcutKeyEquivalent: "⌃1")
+        let trailing = focusSet("Trailing")
+        let configuration = FocusSetsConfiguration(
+            version: 3,
+            presentationShortcutIdentifier: "profile-2",
+            sets: [retained, deleted, trailing])
+
+        let next = try XCTUnwrap(FocusSetSettingsResolver.configurationByDeletingFocusSet(deleted.id, from: configuration))
+        let picker = FocusSetPickerResolver(
+            configuration: next,
+            candidateCounts: [:],
+            builtInNames: FocusSetPickerBuiltInNames(allWindows: "All", unassignedWindows: "Unassigned"))
+
+        XCTAssertEqual(next.version, configuration.version)
+        XCTAssertEqual(next.presentationShortcutIdentifier, configuration.presentationShortcutIdentifier)
+        XCTAssertEqual(next.sets.map(\.id), [retained.id, trailing.id])
+        XCTAssertFalse(FocusSetShortcutBindingResolver.bindings(in: next).contains { $0.focusSetIdentifier == deleted.id })
+        XCTAssertFalse(picker.visibleItems().contains { $0.identifier == .focusSet(deleted.id) })
+    }
+
+    /// An unknown stable UUID cannot produce a deletion configuration.
+    func testDeletingFocusSetRejectsUnknownStableIdentifier() {
+        let configuration = FocusSetsConfiguration(sets: [focusSet("Retained")])
+
+        XCTAssertNil(FocusSetSettingsResolver.configurationByDeletingFocusSet(UUID(), from: configuration))
+    }
+
+    // MARK: - D. Focus Set reordering
 
     /// Moving a saved Focus Set swaps it with its adjacent destination.
     func testMovedFocusSetsSwapsAdjacentSets() {
@@ -204,7 +236,7 @@ final class FocusSetSettingsResolverTests: XCTestCase {
         XCTAssertNil(FocusSetSettingsResolver.movedFocusSets(moving: second.id, by: 1, in: sets))
     }
 
-    // MARK: - D. Focus Set selection
+    // MARK: - E. Focus Set selection
 
     /// A selected focus set remains selected when another set is removed.
     func testSelectedFocusSetIdentifierKeepsExistingSet() {
@@ -241,6 +273,54 @@ final class FocusSetSettingsResolverTests: XCTestCase {
         XCTAssertNil(identifier)
     }
 
+    // MARK: - F. Transactional editor decisions
+
+    /// Applying an edit replaces name, applications, and shortcut together while preserving configuration metadata and order.
+    func testSavingFocusSetCommitsCompleteDraftAtomically() {
+        let original = FocusSet(
+            name: "Original",
+            rules: [rule("com.example.old", "Old")],
+            shortcutKeyEquivalent: "⌃1")
+        let trailing = focusSet("Trailing")
+        let draft = FocusSet(
+            id: original.id,
+            name: "Updated",
+            rules: [rule("com.example.new", "New")],
+            shortcutKeyEquivalent: "⌃2")
+        let configuration = FocusSetsConfiguration(
+            version: 4,
+            presentationShortcutIdentifier: "profile-2",
+            sets: [original, trailing])
+
+        let next = FocusSetSettingsResolver.configurationBySavingFocusSet(
+            draft,
+            unassigningShortcutActionIdentifier: nil,
+            in: configuration)
+
+        XCTAssertEqual(next.version, 4)
+        XCTAssertEqual(next.presentationShortcutIdentifier, "profile-2")
+        XCTAssertEqual(next.sets, [draft, trailing])
+    }
+
+    /// Applying a conflicting direct shortcut clears only the other set's binding in the same configuration decision.
+    func testSavingFocusSetUnassignsConflictingDirectBindingWithoutChangingMembership() {
+        let conflicting = FocusSet(
+            name: "Existing",
+            rules: [rule("com.example.existing", "Existing")],
+            shortcutKeyEquivalent: "⌃1")
+        let draft = FocusSet(name: "New", rules: [], shortcutKeyEquivalent: "⌃1")
+        let configuration = FocusSetsConfiguration(sets: [conflicting])
+
+        let next = FocusSetSettingsResolver.configurationBySavingFocusSet(
+            draft,
+            unassigningShortcutActionIdentifier: FocusSetShortcutBindingResolver.actionIdentifier(for: conflicting.id),
+            in: configuration)
+
+        XCTAssertEqual(next.sets[0].rules, conflicting.rules)
+        XCTAssertNil(next.sets[0].shortcutKeyEquivalent)
+        XCTAssertEqual(next.sets[1], draft)
+    }
+
     private func application(_ bundleIdentifier: String,
                              _ presentationName: String) -> FocusSetApplicationOption {
         FocusSetApplicationOption(
@@ -248,8 +328,10 @@ final class FocusSetSettingsResolverTests: XCTestCase {
             presentationName: presentationName)
     }
 
-    private func focusSet(_ name: String, id: UUID = UUID()) -> FocusSet {
-        FocusSet(id: id, name: name, rules: [])
+    private func focusSet(_ name: String,
+                          id: UUID = UUID(),
+                          shortcutKeyEquivalent: String? = nil) -> FocusSet {
+        FocusSet(id: id, name: name, rules: [], shortcutKeyEquivalent: shortcutKeyEquivalent)
     }
 
     private func rule(_ bundleIdentifier: String,

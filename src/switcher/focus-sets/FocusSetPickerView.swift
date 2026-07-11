@@ -1,12 +1,48 @@
 import Cocoa
 
-private final class FocusSetPickerRow: SidebarListRow {
-    var onAccessibilityPress: (() -> Bool)?
+private final class FocusSetPickerTileView: TileView {
     var itemIndex: Int?
     var itemIdentifier: FocusSetPickerItemIdentifier?
+    var onHover: ((FocusSetPickerTileView?) -> Void)?
+    var onPress: (() -> Bool)?
+
+    override var canBecomeKeyView: Bool {
+        FocusSetPickerPresentationPolicy.rowsParticipateInKeyViewLoop
+    }
+
+    override var acceptsFirstResponder: Bool {
+        FocusSetPickerPresentationPolicy.rowsParticipateInKeyViewLoop
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        onHover?(self)
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        onHover?(nil)
+    }
+
+    func installClickRecognizer() {
+        addGestureRecognizer(NSClickGestureRecognizer(target: self, action: #selector(performClick(_:))))
+    }
+
+    override func updateTrackingAreas() {
+        super.updateTrackingAreas()
+        trackingAreas.forEach(removeTrackingArea)
+        addTrackingArea(NSTrackingArea(
+            rect: .zero,
+            options: [.mouseEnteredAndExited, .activeInKeyWindow, .inVisibleRect],
+            owner: self,
+            userInfo: nil))
+    }
 
     override func accessibilityPerformPress() -> Bool {
-        onAccessibilityPress?() ?? false
+        onPress?() ?? false
+    }
+
+    @objc private func performClick(_ sender: NSClickGestureRecognizer) {
+        guard sender.state == .ended else { return }
+        _ = onPress?()
     }
 }
 
@@ -16,6 +52,7 @@ private final class FocusSetPickerDocumentView: NSView {
 
 final class FocusSetPickerView: NSView {
     typealias CandidateCountSummary = (Int) -> String
+    private static let rowIcon = NSImage(named: NSImage.applicationIconName) ?? NSImage(size: .zero)
 
     var onSelectionChange: ((FocusSetPickerItemIdentifier?) -> Void)?
     var onQueryChange: ((String) -> Void)?
@@ -45,20 +82,19 @@ final class FocusSetPickerView: NSView {
 
     private let builtInNames: FocusSetPickerBuiltInNames
     private let candidateCountSummary: CandidateCountSummary
-    private let searchField = NSSearchField()
-    private let contentStack = NSStackView()
-    private let listContainer = SidebarListContainer()
-    private let rowsScrollView = NSScrollView()
+    private let searchPlaceholder: String?
+    private let searchAccessibilityLabel: String?
+    private let rowsScrollView = ScrollView()
     private let rowsDocumentView = FocusSetPickerDocumentView()
-    private let rowsStack = NSStackView()
+    private let underLayer = TileUnderLayer()
     private var resolverStorage: FocusSetPickerResolver
     private var selectedIdentifierStorage: FocusSetPickerItemIdentifier?
     private var queryStorage: String
     private var visibleItems = [FocusSetPickerItem]()
-    private var rowViews = [FocusSetPickerRow]()
-    private var separatorViews = [NSView]()
-    private weak var hoveredRow: FocusSetPickerRow?
-    private var textObserver: NSObjectProtocol?
+    private var rowViews = [FocusSetPickerTileView]()
+    private weak var hoveredRow: FocusSetPickerTileView?
+    private var titleRowWidth = CGFloat(0)
+    private var titleRowHeight = CGFloat(0)
 
     init(resolver: FocusSetPickerResolver,
          selectedIdentifier: FocusSetPickerItemIdentifier? = nil,
@@ -72,8 +108,10 @@ final class FocusSetPickerView: NSView {
         queryStorage = query ?? ""
         self.builtInNames = builtInNames
         self.candidateCountSummary = candidateCountSummary
+        self.searchPlaceholder = searchPlaceholder
+        self.searchAccessibilityLabel = searchAccessibilityLabel
         super.init(frame: .zero)
-        configure(searchPlaceholder: searchPlaceholder, searchAccessibilityLabel: searchAccessibilityLabel)
+        configure()
         reloadRows(notifySelectionChange: false)
     }
 
@@ -81,32 +119,56 @@ final class FocusSetPickerView: NSView {
         fatalError("Class only supports programmatic initialization")
     }
 
-    deinit {
-        if let textObserver {
-            NotificationCenter.default.removeObserver(textObserver)
-        }
-    }
-
     override var acceptsFirstResponder: Bool { true }
 
     override func becomeFirstResponder() -> Bool {
-        guard let window else { return super.becomeFirstResponder() }
-        return window.makeFirstResponder(searchField)
+        focusSearchField()
     }
 
     override func cancelOperation(_ sender: Any?) {
         handleEscape()
     }
 
-    override func viewDidMoveToWindow() {
-        super.viewDidMoveToWindow()
-        DesignSystemControlStyler.refreshSearchField(searchField)
+    override func layout() {
+        super.layout()
+        layoutContent()
     }
 
-    @available(macOS 10.14, *)
-    override func viewDidChangeEffectiveAppearance() {
-        super.viewDidChangeEffectiveAppearance()
-        DesignSystemControlStyler.refreshSearchField(searchField)
+    func activateSearchField() {
+        requireMainThread()
+        let searchField = TilesView.searchField
+        TilesView.beginFocusSetPickerSearchSession(
+            queryStorage,
+            placeholder: searchPlaceholder,
+            accessibilityLabel: searchAccessibilityLabel)
+        searchField.delegate = self
+        if searchField.superview !== self {
+            addSubview(searchField)
+        }
+        needsLayout = true
+    }
+
+    func detachSearchField() {
+        requireMainThread()
+        TilesView.endFocusSetPickerSearchSession()
+    }
+
+    func preferredPanelSize() -> NSSize {
+        let width = titleRowWidth + Appearance.windowPadding * 2
+        let rowContentHeight = rowsContentHeight()
+        let desiredHeight = rowContentHeight
+            + searchBarHeight()
+            + 10
+            + Appearance.windowPadding * 2
+        let maxHeight = NSScreen.preferred.frame.height * Appearance.maxHeightOnScreen
+        return NSSize(width: width.rounded(), height: min(desiredHeight, maxHeight).rounded())
+    }
+
+    func refreshAppearance() {
+        requireMainThread()
+        refreshTitleMetrics()
+        updateRows()
+        needsLayout = true
     }
 
     func update(resolver: FocusSetPickerResolver,
@@ -159,7 +221,7 @@ final class FocusSetPickerView: NSView {
             currentIndex,
             direction: direction,
             itemCount: visibleItems.count) else {
-            updateSelection(identifier: nil, index: nil)
+            updateSelection(identifier: nil)
             return nil
         }
         return selectRow(at: nextIndex)
@@ -170,9 +232,7 @@ final class FocusSetPickerView: NSView {
         requireMainThread()
         guard let item = resolverStorage.confirmedItem(
             selectedIdentifier: selectedIdentifierStorage,
-            matching: queryStorage) else {
-            return nil
-        }
+            matching: queryStorage) else { return nil }
         onConfirm?(item)
         return item
     }
@@ -189,6 +249,7 @@ final class FocusSetPickerView: NSView {
     @discardableResult
     func focusSearchField() -> Bool {
         requireMainThread()
+        let searchField = TilesView.searchField
         guard let window else { return false }
         if let editor = searchField.currentEditor(), window.firstResponder === editor {
             return true
@@ -200,96 +261,19 @@ final class FocusSetPickerView: NSView {
     }
 
     func hasMarkedText() -> Bool {
-        (searchField.currentEditor() as? NSTextView)?.hasMarkedText() == true
+        TilesView.hasMarkedText()
     }
 
-    private func configure(searchPlaceholder: String?, searchAccessibilityLabel: String?) {
+    private func configure() {
         requireMainThread()
-        translatesAutoresizingMaskIntoConstraints = false
-        configureSearchField(searchPlaceholder: searchPlaceholder, searchAccessibilityLabel: searchAccessibilityLabel)
-        configureRows()
-        configureContent()
-        textObserver = NotificationCenter.default.addObserver(
-            forName: NSControl.textDidChangeNotification,
-            object: searchField,
-            queue: .main) { [weak self] _ in
-                self?.searchTextDidChange()
-            }
-    }
-
-    private func configureSearchField(searchPlaceholder: String?, searchAccessibilityLabel: String?) {
-        searchField.stringValue = queryStorage
-        searchField.placeholderString = searchPlaceholder
-        searchField.sendsSearchStringImmediately = true
-        searchField.sendsWholeSearchString = true
-        searchField.delegate = self
-        if let searchAccessibilityLabel = searchAccessibilityLabel ?? searchPlaceholder {
-            searchField.setAccessibilityLabel(searchAccessibilityLabel)
-        }
-        DesignSystemControlStyler.styleSearchField(searchField)
-    }
-
-    private func configureRows() {
-        rowsStack.orientation = .vertical
-        rowsStack.alignment = .leading
-        rowsStack.spacing = 0
-        rowsStack.translatesAutoresizingMaskIntoConstraints = false
-
-        rowsScrollView.translatesAutoresizingMaskIntoConstraints = false
-        rowsScrollView.drawsBackground = false
-        rowsScrollView.hasVerticalScroller = true
-        rowsScrollView.verticalScrollElasticity = .none
-        rowsScrollView.hasHorizontalScroller = false
-        rowsScrollView.scrollerStyle = .overlay
-        rowsScrollView.usesPredominantAxisScrolling = true
+        wantsLayer = true
+        refreshTitleMetrics()
         rowsScrollView.documentView = rowsDocumentView
-
-        rowsDocumentView.translatesAutoresizingMaskIntoConstraints = false
+        rowsDocumentView.wantsLayer = true
         rowsDocumentView.setAccessibilityElement(true)
         rowsDocumentView.setAccessibilityRole(.list)
-        rowsDocumentView.addSubview(rowsStack)
-        listContainer.onArrowKey = { [weak self] direction in
-            switch direction {
-            case .up: _ = self?.selectPrevious()
-            case .down: _ = self?.selectNext()
-            }
-        }
-        listContainer.addSubview(rowsScrollView)
-        NSLayoutConstraint.activate([
-            rowsDocumentView.widthAnchor.constraint(equalTo: rowsScrollView.contentView.widthAnchor),
-            rowsDocumentView.heightAnchor.constraint(greaterThanOrEqualTo: rowsScrollView.contentView.heightAnchor),
-            rowsStack.topAnchor.constraint(equalTo: rowsDocumentView.topAnchor),
-            rowsStack.leadingAnchor.constraint(equalTo: rowsDocumentView.leadingAnchor),
-            rowsStack.trailingAnchor.constraint(equalTo: rowsDocumentView.trailingAnchor),
-            rowsStack.bottomAnchor.constraint(equalTo: rowsDocumentView.bottomAnchor),
-            rowsScrollView.topAnchor.constraint(equalTo: listContainer.topAnchor),
-            rowsScrollView.leadingAnchor.constraint(equalTo: listContainer.leadingAnchor),
-            rowsScrollView.trailingAnchor.constraint(equalTo: listContainer.trailingAnchor),
-            rowsScrollView.bottomAnchor.constraint(equalTo: listContainer.bottomAnchor),
-        ])
-    }
-
-    private func configureContent() {
-        contentStack.orientation = .vertical
-        contentStack.alignment = .leading
-        contentStack.spacing = DesignSystem.Metrics.headerFooterGap
-        contentStack.translatesAutoresizingMaskIntoConstraints = false
-        contentStack.addArrangedSubview(searchField)
-        contentStack.addArrangedSubview(listContainer)
-        addSubview(contentStack)
-        NSLayoutConstraint.activate([
-            searchField.widthAnchor.constraint(equalTo: contentStack.widthAnchor),
-            listContainer.widthAnchor.constraint(equalTo: contentStack.widthAnchor),
-            contentStack.topAnchor.constraint(equalTo: topAnchor),
-            contentStack.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentStack.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-    }
-
-    private func searchTextDidChange() {
-        requireMainThread()
-        setQuery(searchField.stringValue)
+        rowsDocumentView.layer?.insertSublayer(underLayer, at: 0)
+        addSubview(rowsScrollView)
     }
 
     private func reloadRows(notifySelectionChange: Bool = true) {
@@ -322,76 +306,54 @@ final class FocusSetPickerView: NSView {
                 row.itemIndex = nil
                 row.itemIdentifier = nil
                 row.isHidden = true
+                row.frame = .zero
                 continue
             }
             configureRow(row, item: visibleItems[index], index: index)
             row.isHidden = false
         }
-        for (index, separator) in separatorViews.enumerated() {
-            separator.isHidden = index >= visibleItems.count - 1
-        }
         let visibleRows = Array(rowViews.prefix(visibleItems.count))
         rowsDocumentView.setAccessibilityChildren(visibleRows)
         setHoveredRow(visibleRows.first { $0.itemIdentifier == hoveredIdentifier })
-        invalidateIntrinsicContentSize()
+        needsLayout = true
     }
 
     private func rebuildRowPoolIfNeeded() {
         guard rowViews.count != resolverStorage.itemCount else { return }
         setHoveredRow(nil)
-        rowsStack.arrangedSubviews.forEach {
-            rowsStack.removeArrangedSubview($0)
-            $0.removeFromSuperview()
-        }
+        rowViews.forEach { $0.removeFromSuperview() }
         rowViews.removeAll(keepingCapacity: true)
-        separatorViews.removeAll(keepingCapacity: true)
-        for index in 0..<resolverStorage.itemCount {
+        for _ in 0..<resolverStorage.itemCount {
             let row = makeRow()
-            rowsStack.addArrangedSubview(row)
-            row.widthAnchor.constraint(equalTo: rowsStack.widthAnchor).isActive = true
-            row.heightAnchor.constraint(greaterThanOrEqualToConstant: DesignSystem.Metrics.standardControlMinHeight).isActive = true
+            rowsDocumentView.addSubview(row)
             rowViews.append(row)
-            if index < resolverStorage.itemCount - 1 {
-                let separator = sidebarSeparatorView()
-                rowsStack.addArrangedSubview(separator)
-                separator.leadingAnchor.constraint(equalTo: rowsStack.leadingAnchor, constant: TableGroupView.padding).isActive = true
-                separator.trailingAnchor.constraint(equalTo: rowsStack.trailingAnchor, constant: -TableGroupView.padding).isActive = true
-                separator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth).isActive = true
-                separatorViews.append(separator)
-            }
         }
     }
 
-    private func makeRow() -> FocusSetPickerRow {
-        let row = FocusSetPickerRow()
+    private func makeRow() -> FocusSetPickerTileView {
+        let row = FocusSetPickerTileView()
+        row.installClickRecognizer()
         row.setAccessibilityElement(true)
         row.setAccessibilityRole(.row)
-        row.onClick = { [weak self, weak row] _, _ in
-            guard let row, let index = row.itemIndex else { return }
-            self?.selectAndConfirmRow(at: index)
+        row.onHover = { [weak self, weak row] hovered in
+            guard let self, let row else { return }
+            if hovered == nil, self.hoveredRow !== row { return }
+            self.setHoveredRow(hovered)
         }
-        row.onMouseEntered = { [weak self, weak row] _, _ in
-            self?.setHoveredRow(row)
-        }
-        row.onMouseExited = { [weak self, weak row] _, _ in
-            guard self?.hoveredRow === row else { return }
-            self?.setHoveredRow(nil)
-        }
-        row.onAccessibilityPress = { [weak self, weak row] in
+        row.onPress = { [weak self, weak row] in
             guard let row, let index = row.itemIndex else { return false }
             return self?.selectAndConfirmRow(at: index) != nil
         }
         return row
     }
 
-    private func configureRow(_ row: FocusSetPickerRow,
+    private func configureRow(_ row: FocusSetPickerTileView,
                               item: FocusSetPickerItem,
                               index: Int) {
         let title = displayName(for: item.name)
         let summary = candidateCountSummary(max(item.candidateCount, 0))
         row.itemIndex = index
         row.itemIdentifier = item.identifier
-        row.setContent(title, summary)
         row.setAccessibilityLabel(title)
         row.setAccessibilityValue(summary)
         row.setAccessibilityHelp(summary)
@@ -405,11 +367,10 @@ final class FocusSetPickerView: NSView {
         }
     }
 
-    private func setHoveredRow(_ row: FocusSetPickerRow?) {
+    private func setHoveredRow(_ row: FocusSetPickerTileView?) {
         guard hoveredRow !== row else { return }
-        hoveredRow?.setHovered(false)
         hoveredRow = row
-        row?.setHovered(true)
+        updateHighlightLayers()
     }
 
     private func selectedVisibleIndex() -> Int? {
@@ -420,11 +381,12 @@ final class FocusSetPickerView: NSView {
     @discardableResult
     private func selectRow(at index: Int) -> FocusSetPickerItemIdentifier? {
         guard visibleItems.indices.contains(index) else {
-            updateSelection(identifier: nil, index: nil)
+            updateSelection(identifier: nil)
             return nil
         }
         let identifier = visibleItems[index].identifier
-        updateSelection(identifier: identifier, index: index)
+        updateSelection(identifier: identifier)
+        layoutSubtreeIfNeeded()
         rowViews[index].scrollToVisible(rowViews[index].bounds)
         return identifier
     }
@@ -435,7 +397,7 @@ final class FocusSetPickerView: NSView {
         return confirmSelection()
     }
 
-    private func updateSelection(identifier: FocusSetPickerItemIdentifier?, index: Int?) {
+    private func updateSelection(identifier: FocusSetPickerItemIdentifier?) {
         let previousIdentifier = selectedIdentifierStorage
         selectedIdentifierStorage = identifier
         updateSelectionAppearance()
@@ -447,12 +409,76 @@ final class FocusSetPickerView: NSView {
     private func updateSelectionAppearance() {
         let selectedIndex = selectedVisibleIndex()
         rowViews.enumerated().forEach {
-            let selected = $0 == selectedIndex
-            $1.setSelected(selected)
-            $1.setAccessibilitySelected(selected)
+            $1.setAccessibilitySelected($0 == selectedIndex)
         }
         let selectedChildren = selectedIndex.map { [rowViews[$0] as Any] }
         rowsDocumentView.setAccessibilitySelectedChildren(selectedChildren)
+        updateHighlightLayers()
+    }
+
+    private func updateHighlightLayers() {
+        let selectedRow = selectedVisibleIndex().flatMap { index in
+            rowViews.indices.contains(index) && !rowViews[index].isHidden ? rowViews[index] : nil
+        }
+        let hovered = hoveredRow !== selectedRow ? hoveredRow : nil
+        underLayer.updateHighlight(focusedView: selectedRow, hoveredView: hovered)
+    }
+
+    private func layoutContent() {
+        let padding = Appearance.windowPadding
+        let searchHeight = searchBarHeight()
+        let searchReservedHeight = searchHeight + 10
+        let scrollHeight = max(0, bounds.height - padding * 2 - searchReservedHeight)
+        let searchWidth = min(max(0, bounds.width - padding * 2), 320)
+        let searchField = TilesView.searchField
+        searchField.frame = NSRect(
+            x: ((bounds.width - searchWidth) * 0.5).rounded(),
+            y: bounds.height - padding - searchHeight,
+            width: searchWidth,
+            height: searchHeight)
+        rowsScrollView.frame = NSRect(
+            x: padding,
+            y: padding,
+            width: max(0, bounds.width - padding * 2),
+            height: scrollHeight)
+        let documentHeight = max(rowsContentHeight(), scrollHeight)
+        rowsDocumentView.frame.size = NSSize(width: rowsScrollView.contentView.bounds.width, height: documentHeight)
+        let rowHeight = titleRowHeight
+        let rowWidth = max(0, rowsDocumentView.frame.width - Appearance.interCellPadding * 2)
+        for (index, row) in rowViews.prefix(visibleItems.count).enumerated() {
+            let y = Appearance.interCellPadding + CGFloat(index) * (rowHeight + Appearance.interCellPadding)
+            row.frame = NSRect(x: Appearance.interCellPadding, y: y, width: rowWidth, height: rowHeight)
+            let item = visibleItems[index]
+            let title = displayName(for: item.name)
+            let summary = candidateCountSummary(max(item.candidateCount, 0))
+            row.updateFocusSetPickerCell(
+                title: "\(title) — \(summary)",
+                icon: Self.rowIcon,
+                frameSize: row.frame.size,
+                rowWidth: rowWidth)
+        }
+        underLayer.frame = rowsDocumentView.bounds
+        updateHighlightLayers()
+    }
+
+    private func rowsContentHeight() -> CGFloat {
+        let count = max(1, visibleItems.count)
+        return Appearance.interCellPadding
+            + CGFloat(count) * (titleRowHeight + Appearance.interCellPadding)
+    }
+
+    private func refreshTitleMetrics() {
+        let title = TileTitleView(font: Appearance.font)
+        let labelHeight = title.cell?.cellSize.height ?? Appearance.fontHeight
+        titleRowHeight = max(Appearance.iconSize, labelHeight) + Appearance.edgeInsetsSize * 2
+        let readableWidth = TileView.widthOfComfortableReadability() ?? 0
+        titleRowWidth = TilesPanel.titleMaxRowWidth(readableWidth: readableWidth)
+    }
+
+    private func searchBarHeight() -> CGFloat {
+        let searchField = TilesView.searchField
+        let fitting = searchField.fittingSize.height
+        return fitting > 0 ? ceil(fitting) : ceil(searchField.cell?.cellSize.height ?? 30)
     }
 
     private func handleEscape() {
@@ -465,6 +491,7 @@ final class FocusSetPickerView: NSView {
     }
 
     private func setSearchFieldStringValueIfNeeded(_ query: String) {
+        let searchField = TilesView.searchField
         guard searchField.stringValue != query else { return }
         let selectedRange = searchField.currentEditor()?.selectedRange
         searchField.stringValue = query
@@ -486,7 +513,7 @@ final class FocusSetPickerView: NSView {
 
 extension FocusSetPickerView: NSSearchFieldDelegate {
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        guard control === searchField else { return false }
+        guard control === TilesView.searchField else { return false }
         switch commandSelector {
         case #selector(NSResponder.insertNewline):
             confirmSelection()
@@ -503,15 +530,5 @@ extension FocusSetPickerView: NSSearchFieldDelegate {
         default:
             return false
         }
-    }
-
-    func controlTextDidBeginEditing(_ notification: Notification) {
-        guard let field = notification.object as? NSSearchField, field === searchField else { return }
-        DesignSystemControlStyler.refreshSearchField(searchField)
-    }
-
-    func controlTextDidEndEditing(_ notification: Notification) {
-        guard let field = notification.object as? NSSearchField, field === searchField else { return }
-        DesignSystemControlStyler.refreshSearchField(searchField)
     }
 }

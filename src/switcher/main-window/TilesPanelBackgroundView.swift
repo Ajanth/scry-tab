@@ -90,8 +90,12 @@ enum EffectViewKind: Equatable {
 }
 
 func requiredEffectViewKind() -> EffectViewKind {
+    requiredEffectViewKind(style: Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex))
+}
+
+func requiredEffectViewKind(style: AppearanceStylePreference) -> EffectViewKind {
     if #available(macOS 26.0, *) {
-        if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons,
+        if style == .appIcons,
            LiquidGlassEffectView.canUsePrivateLiquidGlassLook() {
             return .liquidGlassClear
         }
@@ -101,13 +105,19 @@ func requiredEffectViewKind() -> EffectViewKind {
 }
 
 func makeEffectView(for kind: EffectViewKind) -> EffectView {
+    makeEffectView(
+        for: kind,
+        style: Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex))
+}
+
+func makeEffectView(for kind: EffectViewKind, style: AppearanceStylePreference) -> EffectView {
     if #available(macOS 26.0, *) {
         switch kind {
             case .liquidGlassClear:
                 Logger.debug { "Creating LiquidGlassEffectView(true)" }
                 return LiquidGlassEffectView(true)
             case .liquidGlassRegular:
-                if Preferences.effectiveAppearanceStyle(SwitcherSession.activeShortcutIndex) == .appIcons {
+                if style == .appIcons {
                     Logger.error {
                         let os = ProcessInfo.processInfo.operatingSystemVersion
                         let version = "\(os.majorVersion).\(os.minorVersion).\(os.patchVersion)"

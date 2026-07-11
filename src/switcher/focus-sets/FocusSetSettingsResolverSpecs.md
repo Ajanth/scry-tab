@@ -5,8 +5,7 @@
 `FocusSetSettingsResolver` is a Foundation-only adapter between the live selectable-application
 inventory and persisted `FocusSetRule` values. It exposes an opaque stable identity for selection
 state while picker rows carry only presentation names, selection, and availability for settings UI.
-It also reconciles the selected Focus Set identifier after model changes so settings never retains
-a deleted selection.
+It also resolves Focus Set deletion, reordering, and selection after model changes.
 
 ## Behavior & edge cases
 
@@ -22,8 +21,14 @@ a deleted selection.
 - Rewritten rules use the current live presentation name when possible, otherwise retain the saved
   cached name. They are app-only rules: `titleContains` is always `nil`.
 - Included-application totals count unique non-blank stable identities rather than rule records.
+- Deletion requires an existing stable Focus Set UUID, preserves configuration metadata and the
+  order of every other set, and cannot leave the removed UUID in a subsequent picker or direct
+  shortcut binding snapshot.
 - A saved Focus Set can move by a nonzero offset only when its destination exists; an unknown set,
   zero offset, or out-of-range destination leaves the saved order unchanged.
+- Applying an editor draft replaces name, application rules, and optional shortcut in one immutable
+  configuration decision. If the user approved replacing another Focus Set's shortcut, that
+  conflicting binding is cleared in the same decision without changing its membership.
 
 ---
 
@@ -43,11 +48,19 @@ a deleted selection.
 - **testRulesRetainSavedNameForSelectedUnavailableApplication** — a selected unavailable application retains its previously saved presentation name.
 - **testRulesDropDeselectedApplications** — deselecting an existing application removes only that app from the rewritten rules.
 
-### C. Focus Set reordering
+### C. Focus Set deletion
+- **testDeletingFocusSetRemovesOnlyRequestedStableIdentifier** — deletion removes only the requested stable UUID and the next picker snapshot cannot expose it.
+- **testDeletingFocusSetRejectsUnknownStableIdentifier** — an unknown stable UUID cannot produce a deletion configuration.
+
+### D. Focus Set reordering
 - **testMovedFocusSetsSwapsAdjacentSets** — moving a saved Focus Set swaps it with the adjacent destination.
 - **testMovedFocusSetsRejectsMissingOrInvalidDestinations** — unknown, zero-offset, and out-of-range moves preserve the saved order.
 
-### D. Focus Set selection
+### E. Focus Set selection
 - **testSelectedFocusSetIdentifierKeepsExistingSet** — an existing selection remains selected instead of falling back to the first set.
 - **testSelectedFocusSetIdentifierFallsBackToFirstRemainingSet** — deleting the selected set selects the first remaining set.
 - **testSelectedFocusSetIdentifierClearsAfterDeletingLastSet** — deleting the final set produces no selection.
+
+### F. Transactional editor decisions
+- **testSavingFocusSetCommitsCompleteDraftAtomically** — Apply replaces name, applications, and shortcut together while preserving metadata and ordering.
+- **testSavingFocusSetUnassignsConflictingDirectBindingWithoutChangingMembership** — an approved direct-shortcut conflict is cleared on the other set without changing its rules.

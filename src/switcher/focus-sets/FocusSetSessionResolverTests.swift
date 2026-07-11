@@ -269,6 +269,95 @@ final class FocusSetSessionResolverTests: XCTestCase {
             decision(.ordinaryGrid, .noOp))
     }
 
+    // MARK: - G. Direct Focus Set shortcuts
+
+    /// A configured direct shortcut opens an ordinary grid carrying only that set's membership scope.
+    func testDirectShortcutShowsScopedGridWithoutPickerReturnIntent() {
+        let identifier = UUID()
+        let scope = FocusSetPickerScope.set(id: identifier)
+
+        let result = resolve(.idle, .directFocusSetShortcut(identifier), scopes: [scope])
+
+        XCTAssertEqual(
+            result,
+            decision(.directFocusSetGrid(identifier), .showFocusSetGrid(scope: .set(id: identifier))))
+        XCTAssertEqual(result.focusSetScope, .set(id: identifier))
+        XCTAssertFalse(result.returnsToFocusSetPicker)
+        XCTAssertFalse(result.suppressFocusOnRelease)
+    }
+
+    /// A stale direct shortcut from idle is a no-op and cannot fall back to another available set.
+    func testStaleDirectShortcutDoesNotSelectAnotherSet() {
+        let staleIdentifier = UUID()
+        let retainedIdentifier = UUID()
+
+        XCTAssertEqual(
+            resolve(
+                .idle,
+                .directFocusSetShortcut(staleIdentifier),
+                scopes: [.set(id: retainedIdentifier)]),
+            decision(.idle, .noOp))
+    }
+
+    /// Deleting the set owned by an active direct session dismisses that session safely.
+    func testDeletedActiveDirectSetDismissesSwitcher() {
+        let identifier = UUID()
+        let state = FocusSetSessionState.directFocusSetGrid(identifier)
+
+        XCTAssertEqual(
+            resolve(state, .availableScopesChanged, scopes: [.set(id: UUID())]),
+            decision(.idle, .dismissSwitcherUi))
+        XCTAssertEqual(
+            resolve(state, .directFocusSetShortcut(identifier), scopes: []),
+            decision(.idle, .dismissSwitcherUi))
+    }
+
+    /// Opening the Focus Sets browser from a direct grid starts the picker instead of treating it as a child grid.
+    func testOpenFocusSetsFromDirectGridShowsPicker() {
+        XCTAssertEqual(
+            resolve(.directFocusSetGrid(UUID()), .openFocusSets),
+            decision(.picker, .showFocusSetPicker))
+    }
+
+    /// Escape and ordinary shortcuts both leave a direct grid without any return-to-picker state.
+    func testDirectGridUsesOrdinaryExitAndReplacementBehavior() {
+        let state = FocusSetSessionState.directFocusSetGrid(UUID())
+
+        XCTAssertEqual(
+            resolve(state, .escape(searchConsumesEscape: false)),
+            decision(.idle, .dismissSwitcherUi))
+        XCTAssertEqual(
+            resolve(state, .ordinaryShortcutOrGesture),
+            decision(.ordinaryGrid, .showOrdinaryGrid))
+    }
+
+    /// Release focuses only the exact active direct set under a focus-on-release profile without suppression.
+    func testDirectShortcutReleaseRequiresExactActiveSetAndProfilePermission() {
+        let identifier = UUID()
+        let state = FocusSetSessionState.directFocusSetGrid(identifier)
+
+        XCTAssertTrue(FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
+            state: state,
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: false,
+            profileFocusesOnRelease: true))
+        XCTAssertFalse(FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
+            state: state,
+            shortcutIdentifier: UUID(),
+            forceDoNothingOnRelease: false,
+            profileFocusesOnRelease: true))
+        XCTAssertFalse(FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
+            state: state,
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: true,
+            profileFocusesOnRelease: true))
+        XCTAssertFalse(FocusSetSessionResolver.shouldFocusDirectSelectionOnRelease(
+            state: state,
+            shortcutIdentifier: identifier,
+            forceDoNothingOnRelease: false,
+            profileFocusesOnRelease: false))
+    }
+
     private func resolve(_ state: FocusSetSessionState,
                          _ event: FocusSetSessionEvent,
                          scopes: Set<FocusSetPickerScope> = []) -> FocusSetSessionDecision {

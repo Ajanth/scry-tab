@@ -25,28 +25,38 @@ enum FocusSetPickerScope: Equatable, Hashable {
     }
 }
 
-/// Session state as seen by Focus Sets orchestration. A Focus Sets child grid always returns to the
-/// picker; an ordinary grid can never carry Focus Set state.
+/// Session state as seen by Focus Sets orchestration. Picker child grids return to the picker,
+/// direct grids carry one saved-set scope without picker ownership, and ordinary grids have none.
 enum FocusSetSessionState: Equatable {
     case idle
     case picker
     case focusSetGrid(FocusSetPickerScope)
+    case directFocusSetGrid(UUID)
     case ordinaryGrid
 
     var focusSetScope: FocusSetScope? {
-        guard case let .focusSetGrid(scope) = self else { return nil }
-        return scope.focusSetScope
+        switch self {
+            case let .focusSetGrid(scope): return scope.focusSetScope
+            case let .directFocusSetGrid(identifier): return .set(id: identifier)
+            case .idle, .picker, .ordinaryGrid: return nil
+        }
     }
 
     var returnsToFocusSetPicker: Bool {
         if case .focusSetGrid(_) = self { return true }
         return false
     }
+
+    var directFocusSetIdentifier: UUID? {
+        guard case let .directFocusSetGrid(identifier) = self else { return nil }
+        return identifier
+    }
 }
 
 /// Facts supplied by App after search routing and picker-scope snapshotting.
 enum FocusSetSessionEvent: Equatable {
     case openFocusSets
+    case directFocusSetShortcut(UUID)
     case confirm(scope: FocusSetPickerScope?)
     case escape(searchConsumesEscape: Bool)
     case dismiss
@@ -108,9 +118,20 @@ struct FocusSetSessionDecision: Equatable {
 /// Pure Phase 3 transition kernel. It does not route search keys, mutate a `SwitcherSession`, or
 /// create panels; App translates `FocusSetSessionDecision` into those effects.
 enum FocusSetSessionResolver {
+    static func shouldFocusDirectSelectionOnRelease(state: FocusSetSessionState,
+                                                    shortcutIdentifier: UUID,
+                                                    forceDoNothingOnRelease: Bool,
+                                                    profileFocusesOnRelease: Bool) -> Bool {
+        state.directFocusSetIdentifier == shortcutIdentifier
+            && !forceDoNothingOnRelease
+            && profileFocusesOnRelease
+    }
+
     static func resolve(_ input: FocusSetSessionInput) -> FocusSetSessionDecision {
         switch input.event {
             case .openFocusSets: return openFocusSets(from: input.state)
+            case let .directFocusSetShortcut(identifier):
+                return directFocusSetShortcut(identifier, from: input.state, availableScopes: input.availableScopes)
             case let .confirm(scope): return confirm(scope, from: input.state, availableScopes: input.availableScopes)
             case let .escape(searchConsumesEscape): return escape(from: input.state, searchConsumesEscape: searchConsumesEscape)
             case .dismiss: return dismiss(input.state)
@@ -124,7 +145,19 @@ enum FocusSetSessionResolver {
             case .idle, .ordinaryGrid: return decision(.picker, .showFocusSetPicker)
             case .picker: return decision(.picker, .refreshFocusSetPicker)
             case .focusSetGrid: return decision(.picker, .returnToFocusSetPicker)
+            case .directFocusSetGrid: return decision(.picker, .showFocusSetPicker)
         }
+    }
+
+    private static func directFocusSetShortcut(_ identifier: UUID,
+                                               from state: FocusSetSessionState,
+                                               availableScopes: Set<FocusSetPickerScope>) -> FocusSetSessionDecision {
+        let scope = FocusSetPickerScope.set(id: identifier)
+        guard availableScopes.contains(scope) else {
+            guard state.directFocusSetIdentifier == identifier else { return unchanged(state) }
+            return decision(.idle, .dismissSwitcherUi)
+        }
+        return decision(.directFocusSetGrid(identifier), .showFocusSetGrid(scope: .set(id: identifier)))
     }
 
     private static func confirm(_ scope: FocusSetPickerScope?,
@@ -139,7 +172,7 @@ enum FocusSetSessionResolver {
         guard !searchConsumesEscape else { return unchanged(state) }
         switch state {
             case .idle: return unchanged(state)
-            case .picker, .ordinaryGrid: return decision(.idle, .dismissSwitcherUi)
+            case .picker, .directFocusSetGrid, .ordinaryGrid: return decision(.idle, .dismissSwitcherUi)
             case .focusSetGrid: return decision(.picker, .returnToFocusSetPicker)
         }
     }
@@ -155,10 +188,16 @@ enum FocusSetSessionResolver {
 
     private static func validateActiveScope(_ state: FocusSetSessionState,
                                             availableScopes: Set<FocusSetPickerScope>) -> FocusSetSessionDecision {
-        guard case let .focusSetGrid(scope) = state, !availableScopes.contains(scope) else {
-            return unchanged(state)
+        switch state {
+            case let .focusSetGrid(scope):
+                guard !availableScopes.contains(scope) else { return unchanged(state) }
+                return decision(.picker, .returnToFocusSetPicker)
+            case let .directFocusSetGrid(identifier):
+                guard !availableScopes.contains(.set(id: identifier)) else { return unchanged(state) }
+                return decision(.idle, .dismissSwitcherUi)
+            case .idle, .picker, .ordinaryGrid:
+                return unchanged(state)
         }
-        return decision(.picker, .returnToFocusSetPicker)
     }
 
     private static func unchanged(_ state: FocusSetSessionState) -> FocusSetSessionDecision {

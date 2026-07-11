@@ -69,6 +69,25 @@ final class FocusSetCandidateCounterTests: XCTestCase {
         XCTAssertEqual(count(candidates, scope: .set(id: setID), resolver: resolver), 1)
     }
 
+    /// Selected-set membership and normal profile filters are conjunctive rather than overriding each other.
+    func testSetScopeConjoinsMembershipWithNormalProfileFilters() {
+        let setID = UUID()
+        let resolver = makeResolver([focusSet(setID, bundles: ["com.example.editor"])])
+        let candidates = [
+            candidate(application: app(1, "com.example.editor"), id: "visible-member"),
+            candidate(application: app(2, "com.example.editor", isHidden: true), id: "hidden-member"),
+            candidate(application: app(3, "com.example.browser"), id: "visible-nonmember"),
+        ]
+
+        XCTAssertEqual(
+            count(
+                candidates,
+                scope: .set(id: setID),
+                resolver: resolver,
+                filters: FocusSetCandidateFilters(hideHidden: true)),
+            1)
+    }
+
     /// Unassigned excludes the union of every saved Focus Set's application membership.
     func testUnassignedScopeExcludesMembershipInEverySet() {
         let resolver = makeResolver([

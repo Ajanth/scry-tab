@@ -44,44 +44,47 @@ class Appearance {
         return theme == .system ? NSAppearance.current.getThemeName() : theme
     }
 
-    static func update() {
-        updateSize()
-        updateTheme()
+    static func update(style: AppearanceStylePreference? = nil) {
+        let style = style ?? currentStyle
+        updateSize(style)
+        updateTheme(style)
     }
 
-    private static func updateSize() {
+    private static func updateSize(_ style: AppearanceStylePreference) {
         let isHorizontalScreen = NSScreen.preferred.isHorizontal()
         maxWidthOnScreen = AppearanceTestable.comfortableWidth(NSScreen.preferred.physicalSize().map { $0.width })
         let sizeToApply: AppearanceSizePreference = currentSize == .auto ? .large : currentSize
         resolvedSize = sizeToApply
-        applyConcreteSize(sizeToApply, isHorizontalScreen)
-        updateFont()
+        applyConcreteSize(sizeToApply, isHorizontalScreen, style)
+        updateFont(style)
     }
 
     static func applySize(_ size: AppearanceSizePreference) {
         let isHorizontalScreen = NSScreen.preferred.isHorizontal()
         resolvedSize = size
-        applyConcreteSize(size, isHorizontalScreen)
-        updateFont()
+        applyConcreteSize(size, isHorizontalScreen, currentStyle)
+        updateFont(currentStyle)
     }
 
-    private static func applyConcreteSize(_ size: AppearanceSizePreference, _ isHorizontalScreen: Bool) {
-        if currentStyle == .appIcons {
+    private static func applyConcreteSize(_ size: AppearanceSizePreference,
+                                          _ isHorizontalScreen: Bool,
+                                          _ style: AppearanceStylePreference) {
+        if style == .appIcons {
             appIconsSize(size)
         } else {
             titlesSize(isHorizontalScreen, size)
         }
     }
 
-    private static func updateTheme() {
-        highlightBorderWidth = currentStyle == .titles ? 2 : DesignSystem.Metrics.focusIndicatorBorderWidth
+    private static func updateTheme(_ style: AppearanceStylePreference) {
+        highlightBorderWidth = style == .titles ? 2 : DesignSystem.Metrics.focusIndicatorBorderWidth
         if currentTheme == .dark {
             darkTheme()
         } else {
             lightTheme()
         }
         // for Liquid Glass, we don't want a shadow around the panel
-        if #available(macOS 26.0, *), currentStyle == .appIcons && LiquidGlassEffectView.canUsePrivateLiquidGlassLook() {
+        if #available(macOS 26.0, *), style == .appIcons && LiquidGlassEffectView.canUsePrivateLiquidGlassLook() {
             enablePanelShadow = false
         } else {
             enablePanelShadow = true
@@ -146,9 +149,9 @@ class Appearance {
         }
     }
 
-    private static func updateFont() {
+    private static func updateFont(_ style: AppearanceStylePreference) {
         if #available(macOS 26.0, *) {
-            font = NSFont.systemFont(ofSize: fontHeight, weight: currentStyle == .appIcons ? .semibold : .medium)
+            font = NSFont.systemFont(ofSize: fontHeight, weight: style == .appIcons ? .semibold : .medium)
         } else {
             font = NSFont.systemFont(ofSize: fontHeight)
         }

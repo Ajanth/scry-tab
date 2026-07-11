@@ -15,6 +15,46 @@ final class KeyboardEventsUtilsTests: XCTestCase {
         XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [shortcutId])
     }
 
+    func testDynamicFocusSetHotkeyIdsAreStableAndNeverReusedAfterDeletion() throws {
+        let first = FocusSetShortcutBindingResolver.actionIdentifier(for: UUID())
+        let second = FocusSetShortcutBindingResolver.actionIdentifier(for: UUID())
+        KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([first])
+        let firstId = try XCTUnwrap(KeyboardEventsTestable.globalShortcutsIds[first])
+
+        KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([first])
+        XCTAssertEqual(KeyboardEventsTestable.globalShortcutsIds[first], firstId)
+        KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([])
+        XCTAssertNil(KeyboardEventsTestable.globalShortcutsIds[first])
+        KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([second])
+
+        let secondId = try XCTUnwrap(KeyboardEventsTestable.globalShortcutsIds[second])
+        XCTAssertNotEqual(secondId, firstId)
+        XCTAssertGreaterThan(secondId, firstId)
+        KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([])
+    }
+
+    func testDirectFocusSetShortcutFiresOnPressAndRelease() throws {
+        let originalShortcuts = ControlsTab.shortcuts
+        defer {
+            ControlsTab.shortcuts = originalShortcuts
+            KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([])
+        }
+        resetState()
+        let shortcutId = FocusSetShortcutBindingResolver.actionIdentifier(for: UUID())
+        KeyboardEventsTestable.reconcileDynamicGlobalShortcutIds([shortcutId])
+        let hotkeyId = try XCTUnwrap(KeyboardEventsTestable.globalShortcutsIds[shortcutId])
+        ControlsTab.shortcuts[shortcutId] = ATShortcut(
+            Shortcut(keyEquivalent: "⌃1")!,
+            shortcutId,
+            .global,
+            .both)
+
+        handleKeyboardEvent(hotkeyId, .down, nil, nil, false)
+        handleKeyboardEvent(hotkeyId, .up, nil, nil, false)
+
+        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [shortcutId, shortcutId])
+    }
+
     func testPickerTextKeyPassesToSearchField() throws {
         resetState()
         let session = SwitcherSession()

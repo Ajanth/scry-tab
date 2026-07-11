@@ -14,6 +14,8 @@ existing ScryTab shortcut or a macOS-reserved one.
 - A normal key+modifier combo is **accepted**.
 - A "modifiers only" recording is rejected — *unless* it actually carries a keycode (the
   modifiers-only-but-contains-keycode case is accepted).
+- Direct Focus Set shortcuts require a non-modifier key. Modifier-only chords are rejected before
+  conflict resolution, while ordinary hold and active-switcher recorders retain existing behavior.
 - A combo that **conflicts** with an already-bound ScryTab shortcut is rejected.
 - A press (`nextWindowShortcut`) candidate is checked against the local shortcuts (arrow keys, vim
   keys, statics like Space) combined with its **own** hold — not just the other shortcuts' holds.
@@ -35,6 +37,7 @@ Mirrors `CustomRecorderControlTests.swift` 1:1.
 ### isShortcutAcceptable
 - **testIsShortcutAcceptable_accepted** — a valid key+modifier combo is accepted.
 - **testIsShortcutAcceptable_modifiersOnlyButContainsKeycode** — modifiers-only flags but with a real keycode → accepted.
+- **testIsShortcutAcceptable_directFocusSetRequiresNonModifierKey** — a direct Focus Set binding rejects modifier-only input, accepts a chord with a real key, and leaves ordinary recorder acceptance unchanged.
 - **testIsShortcutAcceptable_conflictWithExistingShortcut** — collides with an existing shortcut → rejected.
 - **testIsShortcutAcceptable_openFocusSetsShortcutReportsConflictId** — a chord that collides with the
   static global Open Focus Sets action is rejected with that action's id, so the existing label and

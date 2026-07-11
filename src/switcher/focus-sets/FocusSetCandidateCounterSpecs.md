@@ -32,6 +32,7 @@ AppKit state.
 - **testCountsResolveMultipleScopesFromOneProfileSnapshot** — multiple scopes reuse one normal-profile snapshot while applying membership independently.
 - **testNoScopeAppliesProfileFiltersWithoutMembershipRestriction** — ordinary no-scope counting ignores saved membership.
 - **testSetScopeCountsOnlyIncludedApplications** — a selected set excludes an otherwise visible non-member.
+- **testSetScopeConjoinsMembershipWithNormalProfileFilters** — a selected set keeps only candidates that pass both exact app membership and the normal profile filters.
 - **testUnassignedScopeExcludesMembershipInEverySet** — unassigned keeps only apps outside the union of saved sets.
 
 ### B. Profile filters
