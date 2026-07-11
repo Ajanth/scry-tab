@@ -1,0 +1,205 @@
+import Foundation
+import XCTest
+
+final class FocusSetSettingsResolverTests: XCTestCase {
+
+    // MARK: - A. Application picker rows
+
+    /// Selected applications precede other available applications while both groups remain alphabetical.
+    func testPickerRowsPlaceSelectedAppsBeforeOtherAvailableApps() {
+        let applications = [
+            application("com.example.safari", "Safari"),
+            application("com.example.terminal", "Terminal"),
+            application("com.example.cursor", "Cursor"),
+        ]
+
+        let rows = FocusSetSettingsResolver.applicationPickerRows(
+            applications: applications,
+            rules: [
+                rule("com.example.terminal", "Terminal"),
+                rule("com.example.cursor", "Cursor"),
+            ])
+
+        XCTAssertEqual(rows.map(\.presentationName), ["Cursor", "Terminal", "Safari"])
+        XCTAssertEqual(rows.map(\.isSelected), [true, true, false])
+        XCTAssertEqual(rows.map(\.isAvailable), [true, true, true])
+    }
+
+    /// A selected saved application remains editable when it is no longer available live.
+    func testPickerRowsKeepUnavailableSavedApplicationsSelected() {
+        let rows = FocusSetSettingsResolver.applicationPickerRows(
+            applications: [application("com.example.terminal", "Terminal")],
+            rules: [rule("com.example.cursor", "Saved Cursor")])
+
+        XCTAssertEqual(rows.map(\.presentationName), ["Saved Cursor", "Terminal"])
+        XCTAssertEqual(rows.map(\.isSelected), [true, false])
+        XCTAssertEqual(rows.map(\.isAvailable), [false, true])
+    }
+
+    /// Duplicate identities retain the first live name while blank live and saved identities disappear.
+    func testPickerRowsDeduplicateIdentitiesAndIgnoreBlankIdentifiers() {
+        let applications = [
+            application("com.example.terminal", "Terminal"),
+            application("com.example.terminal", "Renamed Terminal"),
+            application(" \n", "Ignored Live Application"),
+            application("com.example.browser", "Browser"),
+        ]
+        let rows = FocusSetSettingsResolver.applicationPickerRows(
+            applications: applications,
+            rules: [
+                rule("com.example.terminal", "Old Terminal"),
+                rule("com.example.terminal", "Older Terminal"),
+                rule("\t", "Ignored Saved Application"),
+            ])
+        let convertedRules = FocusSetSettingsResolver.rules(
+            selectedApplicationIdentities: Set([applications[0].identity, applications[2].identity]),
+            applications: applications,
+            existingRules: [
+                rule("com.example.terminal", "Old Terminal"),
+                rule("\t", "Ignored Saved Application"),
+            ])
+
+        XCTAssertEqual(rows.map(\.presentationName), ["Terminal", "Browser"])
+        XCTAssertEqual(rows.map(\.isSelected), [true, false])
+        XCTAssertEqual(convertedRules.map(\.applicationBundleIdentifier), ["com.example.terminal"])
+    }
+
+    /// A legacy cached fallback that equals its stable identity remains unavailable without becoming a picker name.
+    func testPickerRowsOmitFallbackBundleIdentifierAsPresentationName() {
+        let rows = FocusSetSettingsResolver.applicationPickerRows(
+            applications: [],
+            rules: [rule("com.example.cursor", "com.example.cursor")])
+
+        XCTAssertEqual(rows.map(\.presentationName), [""])
+        XCTAssertEqual(rows.map(\.isAvailable), [false])
+    }
+
+    /// Localized-standard names and stable identities make the picker order reproducible.
+    func testPickerRowsUseDeterministicLocalizedStandardOrder() {
+        let applications = [
+            application("com.example.same-z", "Same"),
+            application("com.example.same-a", "Same"),
+            application("com.example.app-10", "App 10"),
+            application("com.example.app-2", "App 2"),
+        ]
+
+        let rows = FocusSetSettingsResolver.applicationPickerRows(applications: applications, rules: [])
+
+        XCTAssertEqual(rows.map(\.presentationName), ["App 2", "App 10", "Same", "Same"])
+        XCTAssertEqual(Array(rows.suffix(2).map(\.identity)), [applications[1].identity, applications[0].identity])
+    }
+
+    // MARK: - B. Rule conversion
+
+    /// A live presentation-name change refreshes the cached name and emits an app-only rule.
+    func testRulesUseLiveNameAndRemainAppOnly() {
+        let applications = [application("com.example.cursor", "Cursor Nightly")]
+        let rules = FocusSetSettingsResolver.rules(
+            selectedApplicationIdentities: Set([applications[0].identity]),
+            applications: applications,
+            existingRules: [
+                rule(
+                    "com.example.cursor",
+                    "Cursor",
+                    titleContains: "project")
+            ])
+
+        XCTAssertEqual(
+            rules,
+            [FocusSetRule(
+                applicationBundleIdentifier: "com.example.cursor",
+                cachedApplicationName: "Cursor Nightly")])
+    }
+
+    /// A selected unavailable application retains its previously saved presentation name.
+    func testRulesRetainSavedNameForSelectedUnavailableApplication() {
+        let existingRules = [rule("com.example.terminal", "Saved Terminal")]
+        let rows = FocusSetSettingsResolver.applicationPickerRows(
+            applications: [],
+            rules: existingRules)
+        let rules = FocusSetSettingsResolver.rules(
+            selectedApplicationIdentities: Set(rows.map(\.identity)),
+            applications: [],
+            existingRules: existingRules)
+
+        XCTAssertEqual(rules, existingRules)
+    }
+
+    /// Deselecting an existing application removes only that app from the rewritten rules.
+    func testRulesDropDeselectedApplications() {
+        let applications = [
+            application("com.example.cursor", "Cursor"),
+            application("com.example.terminal", "Terminal"),
+        ]
+        let rules = FocusSetSettingsResolver.rules(
+            selectedApplicationIdentities: Set([applications[0].identity]),
+            applications: applications,
+            existingRules: [
+                rule("com.example.cursor", "Old Cursor"),
+                rule("com.example.terminal", "Old Terminal"),
+            ])
+
+        XCTAssertEqual(
+            rules,
+            [FocusSetRule(
+                applicationBundleIdentifier: "com.example.cursor",
+                cachedApplicationName: "Cursor")])
+    }
+
+    // MARK: - C. Focus set selection
+
+    /// A selected focus set remains selected when another set is removed.
+    func testSelectedFocusSetIdentifierKeepsExistingSet() {
+        let first = focusSet("First")
+        let selected = focusSet("Selected")
+
+        let identifier = FocusSetSettingsResolver.selectedFocusSetIdentifier(
+            preferredIdentifier: selected.id,
+            sets: [first, selected])
+
+        XCTAssertEqual(identifier, selected.id)
+    }
+
+    /// Deleting the selected focus set chooses the first remaining set.
+    func testSelectedFocusSetIdentifierFallsBackToFirstRemainingSet() {
+        let deleted = focusSet("Deleted")
+        let remaining = focusSet("Remaining")
+
+        let identifier = FocusSetSettingsResolver.selectedFocusSetIdentifier(
+            preferredIdentifier: deleted.id,
+            sets: [remaining])
+
+        XCTAssertEqual(identifier, remaining.id)
+    }
+
+    /// Deleting the last focus set clears selection instead of retaining a stale identifier.
+    func testSelectedFocusSetIdentifierClearsAfterDeletingLastSet() {
+        let deleted = focusSet("Deleted")
+
+        let identifier = FocusSetSettingsResolver.selectedFocusSetIdentifier(
+            preferredIdentifier: deleted.id,
+            sets: [])
+
+        XCTAssertNil(identifier)
+    }
+
+    private func application(_ bundleIdentifier: String,
+                             _ presentationName: String) -> FocusSetApplicationOption {
+        FocusSetApplicationOption(
+            bundleIdentifier: bundleIdentifier,
+            presentationName: presentationName)
+    }
+
+    private func focusSet(_ name: String, id: UUID = UUID()) -> FocusSet {
+        FocusSet(id: id, name: name, rules: [])
+    }
+
+    private func rule(_ bundleIdentifier: String,
+                      _ cachedApplicationName: String,
+                      titleContains: String? = nil) -> FocusSetRule {
+        FocusSetRule(
+            applicationBundleIdentifier: bundleIdentifier,
+            cachedApplicationName: cachedApplicationName,
+            titleContains: titleContains)
+    }
+}
