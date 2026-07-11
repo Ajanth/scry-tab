@@ -1104,6 +1104,20 @@ enum DesignSystemControlStyler {
         ensureMinimumHeight(field)
     }
 
+    static func styleMainSearchField(_ field: NSSearchField) {
+        field.sendsSearchStringImmediately = true
+        field.sendsWholeSearchString = true
+        field.bezelStyle = .roundedBezel
+        if #available(macOS 26.0, *) {
+            field.controlSize = .extraLarge
+        } else if #available(macOS 13.0, *) {
+            field.controlSize = .large
+        } else {
+            field.controlSize = .regular
+        }
+        field.usesSingleLineMode = true
+    }
+
     static func styleSurface(_ view: NSView, radius: CGFloat = DesignSystem.Metrics.sectionRadius) {
         view.wantsLayer = true
         view.layer?.cornerRadius = radius

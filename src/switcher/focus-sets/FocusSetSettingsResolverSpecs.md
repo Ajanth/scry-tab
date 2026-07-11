@@ -16,10 +16,14 @@ a deleted selection.
   an unmatched saved rule remains selected with its cached name and `isAvailable == false`.
 - Selected rows precede unselected available rows. Each group uses localized-standard name ordering,
   with the stable identity as a deterministic tie-breaker.
+- Picker search trims its query and matches presentation names case- and diacritic-insensitively.
 - Blank stable identities never produce rows or rewritten rules. A selected identity unknown to
   both the live inventory and saved rules cannot produce a user-presentable rule.
 - Rewritten rules use the current live presentation name when possible, otherwise retain the saved
   cached name. They are app-only rules: `titleContains` is always `nil`.
+- Included-application totals count unique non-blank stable identities rather than rule records.
+- A saved Focus Set can move by a nonzero offset only when its destination exists; an unknown set,
+  zero offset, or out-of-range destination leaves the saved order unchanged.
 
 ---
 
@@ -31,13 +35,19 @@ a deleted selection.
 - **testPickerRowsDeduplicateIdentitiesAndIgnoreBlankIdentifiers** — duplicate identities retain the first live name while blank live and saved identities disappear.
 - **testPickerRowsOmitFallbackBundleIdentifierAsPresentationName** — a cached fallback that is only the stable identity cannot become a picker label.
 - **testPickerRowsUseDeterministicLocalizedStandardOrder** — localized-standard names and stable identities make the picker order reproducible.
+- **testPickerRowsFilterNamesCaseAndDiacriticInsensitively** — picker search trims its query and matches presentation names regardless of case or diacritics.
+- **testIncludedApplicationCountDeduplicatesRulesAndIgnoresBlankIdentifiers** — included-app totals count each valid stable identity once.
 
 ### B. Rule conversion
 - **testRulesUseLiveNameAndRemainAppOnly** — a live presentation-name change refreshes the cached name and emits an app-only rule.
 - **testRulesRetainSavedNameForSelectedUnavailableApplication** — a selected unavailable application retains its previously saved presentation name.
 - **testRulesDropDeselectedApplications** — deselecting an existing application removes only that app from the rewritten rules.
 
-### C. Focus Set selection
+### C. Focus Set reordering
+- **testMovedFocusSetsSwapsAdjacentSets** — moving a saved Focus Set swaps it with the adjacent destination.
+- **testMovedFocusSetsRejectsMissingOrInvalidDestinations** — unknown, zero-offset, and out-of-range moves preserve the saved order.
+
+### D. Focus Set selection
 - **testSelectedFocusSetIdentifierKeepsExistingSet** — an existing selection remains selected instead of falling back to the first set.
 - **testSelectedFocusSetIdentifierFallsBackToFirstRemainingSet** — deleting the selected set selects the first remaining set.
 - **testSelectedFocusSetIdentifierClearsAfterDeletingLastSet** — deleting the final set produces no selection.

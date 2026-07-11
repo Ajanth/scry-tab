@@ -43,6 +43,14 @@ Make the smallest coherent change that preserves the repository's behavior and v
 - Keep the compact System Settings hierarchy: quiet material background, grouped plateau sections, flat controls, short labels, secondary explanations, and no decorative or nested cards.
 - Localize user-facing text and register settings content with the existing search infrastructure.
 
+## Sheets, Search, and Dynamic Lists
+
+- Put Add/Edit flows in one transactional sheet: keep all dependent selection controls inline, retain a draft locally, commit it only from the default action, and discard it on Cancel. Never stack or cascade sheets.
+- Put the default commit action at the bottom trailing edge, with Cancel immediately to its left; map Return to the default action and Escape to Cancel. Preserve AppKit’s intrinsic button widths or use localization-safe minimums—never force a fixed label width.
+- Reuse a named, context-appropriate search primitive instead of reproducing its visual or behavioral setup. If styling replaces an `NSSearchFieldCell`, preserve its search-specific state; for live filtering, observe `NSControl.textDidChangeNotification` in addition to any target/action configuration.
+- Filter from one query source of truth and extract matching logic into a deterministic resolver when practical. Test blank, case-insensitive, diacritic-insensitive, and unavailable-item behavior.
+- A list reload triggered by search or selection must preserve a valid keyboard/VoiceOver focus target and selection where possible; do not leave the first responder pointing at a removed view.
+
 ## Specs and Verification
 
 - For changed decision logic, create or update the co-located `Foo.swift`, `FooSpecs.md`, and `FooTests.swift` triad. AppKit-only glue may omit a test only when no deterministic decision can be extracted.

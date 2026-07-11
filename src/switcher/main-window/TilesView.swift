@@ -155,17 +155,7 @@ class TilesView {
 
     private static func configureSearchField() {
         searchField.placeholderString = NSLocalizedString("Search", comment: "")
-        searchField.sendsSearchStringImmediately = true
-        searchField.sendsWholeSearchString = true
-        searchField.bezelStyle = .roundedBezel
-        if #available(macOS 26.0, *) {
-            searchField.controlSize = .extraLarge
-        } else if #available(macOS 13.0, *) {
-            searchField.controlSize = .large
-        } else {
-            searchField.controlSize = .regular
-        }
-        searchField.usesSingleLineMode = true
+        DesignSystemControlStyler.styleMainSearchField(searchField)
         searchField.target = Self.self
         searchField.action = #selector(Self.searchFieldChanged(_:))
         NotificationCenter.default.addObserver(forName: NSControl.textDidChangeNotification, object: searchField, queue: .main) { _ in

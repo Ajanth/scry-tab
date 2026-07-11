@@ -14,6 +14,7 @@ Owns shared AppKit visual tokens used by production surfaces.
 - Shared Settings disclosure sections center their action within the content width, use the shared compact chevron geometry and title gap, reveal their content in place, and skip animation when Reduce Motion is enabled.
 - Shared Settings popup buttons draw through the app-owned flat surface instead of stock popup chrome, expand while their native menu is open, and spring back after dismissal when Reduce Motion is off.
 - Shared Settings search fields use the flat bordered sidebar surface, app-owned padding, and app-owned focus chrome instead of the stock rounded bezel and exterior ring.
+- The switcher search treatment is reusable without duplicating its immediate query delivery, stock rounded bezel, platform control size, or single-line behavior.
 - Shared flat surface views give read-only widgets the same appearance-aware control chrome without imitating editable controls.
 - Shared Settings chip selects compose app-owned flat choice buttons, clamp selection to valid choices, keep peer chip widths stable across selection changes, and use the same selected-value indicator as segmented controls.
 - Dark-mode Settings surfaces use opaque matte grays instead of translucent white overlays so cards and controls stay dense against the window background.
@@ -35,6 +36,7 @@ Mirrors `DesignSystemTests.swift` 1:1.
 - **testPopupButtonUsesAppOwnedSurface** — Settings popup buttons keep native menu behavior while drawing through the app-owned flat surface and are layer-backed for compositor-only press feedback.
 - **testTextFieldUsesFlatSurfaceAndHorizontalPadding** — editable text fields keep the shared flat control chrome while preserving deliberate horizontal content padding.
 - **testSearchFieldUsesFlatSurfaceWithoutStockBezel** — sidebar search styling strips the stock rounded bezel and exterior focus ring, then replaces them with the shared flat field treatment and padded layout.
+- **testMainSearchFieldUsesSwitcherChrome** — shared switcher-search styling retains immediate query delivery, the native rounded bezel, and single-line editing.
 - **testFlatSurfaceViewUsesSharedControlChrome** — read-only widgets use the shared flat surface, border, and control radius.
 - **testSegmentedControlUsesAppOwnedSurface** — segmented choices keep `NSSegmentedControl` behavior while drawing through the app-owned design-system surface.
 - **testSegmentedControlUsesCompositorSelectionIndicator** — select-one segments update one layer-backed selection outline after native actions so it follows the selected segment without redrawing their chrome and begins with the switcher's app-icon border width.

@@ -2,7 +2,19 @@
 "%@ switches, %@" = "%1$@ switches, %2$@";
 
 /* No comment provided by engineer. */
+"%d applications selected" = "%d applications selected";
+
+/* No comment provided by engineer. */
+"%d included applications" = "%d included applications";
+
+/* No comment provided by engineer. */
 "%d matching windows" = "%d matching windows";
+
+/* No comment provided by engineer. */
+"1 application selected" = "1 application selected";
+
+/* No comment provided by engineer. */
+"1 included application" = "1 included application";
 
 /* No comment provided by engineer. */
 "1 matching window" = "1 matching window";
@@ -33,6 +45,9 @@
 
 /* No comment provided by engineer. */
 "Accessibility" = "Accessibility";
+
+/* No comment provided by engineer. */
+"Actions" = "Actions";
 
 /* No comment provided by engineer. */
 "Active app" = "Active app";
@@ -149,6 +164,9 @@
 "Change Global Only" = "Change Global Only";
 
 /* No comment provided by engineer. */
+"Changes are saved automatically." = "Changes are saved automatically.";
+
+/* No comment provided by engineer. */
 "Check for updates now…" = "Check for updates now…";
 
 /* No comment provided by engineer. */
@@ -165,6 +183,9 @@
 
 /* No comment provided by engineer. */
 "Choose Applications…" = "Choose Applications…";
+
+/* No comment provided by engineer. */
+"Choose the applications whose windows belong to this Focus Set." = "Choose the applications whose windows belong to this Focus Set.";
 
 /* No comment provided by engineer. */
 "Close window" = "Close window";
@@ -233,7 +254,10 @@
 "Edit" = "Edit";
 
 /* No comment provided by engineer. */
-"Edit Focus Set" = "Edit Focus Set";
+"Editing" = "Editing";
+
+/* No comment provided by engineer. */
+"Editing “%@”" = "Editing “%@”";
 
 /* No comment provided by engineer. */
 "End" = "End";
@@ -353,6 +377,9 @@
 "Miscellaneous" = "Miscellaneous";
 
 /* No comment provided by engineer. */
+"Move Down" = "Move Down";
+
+/* No comment provided by engineer. */
 "Move Focus Set Down" = "Move Focus Set Down";
 
 /* No comment provided by engineer. */
@@ -363,6 +390,9 @@
 
 /* LetsMove replacement alert */
 "Move to Applications folder?" = "Move to Applications folder?";
+
+/* No comment provided by engineer. */
+"Move Up" = "Move Up";
 
 /* No comment provided by engineer. */
 "Multiple screens" = "Multiple screens";
@@ -381,6 +411,9 @@
 
 /* No comment provided by engineer. */
 "New Focus Set" = "New Focus Set";
+
+/* No comment provided by engineer. */
+"No applications selected" = "No applications selected";
 
 /* No comment provided by engineer. */
 "No applications selected." = "No applications selected.";

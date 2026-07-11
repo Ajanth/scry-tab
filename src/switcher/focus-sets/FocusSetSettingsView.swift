@@ -12,32 +12,39 @@ final class FocusSetSettingsView: NSView {
         NSLocalizedString("No Focus Sets", comment: ""),
         NSLocalizedString("Create a set to browse the applications you use together.", comment: ""),
         NSLocalizedString("Edit", comment: ""),
+        NSLocalizedString("Editing “%@”", comment: ""),
         NSLocalizedString("Move Focus Set Up", comment: ""),
         NSLocalizedString("Move Focus Set Down", comment: ""),
+        NSLocalizedString("Move Up", comment: ""),
+        NSLocalizedString("Move Down", comment: ""),
         NSLocalizedString("Delete", comment: ""),
-        NSLocalizedString("Edit Focus Set", comment: ""),
         NSLocalizedString("Name", comment: ""),
         NSLocalizedString("Included Applications", comment: ""),
-        NSLocalizedString("Choose Applications…", comment: ""),
-        NSLocalizedString("No applications selected.", comment: ""),
+        NSLocalizedString("1 included application", comment: ""),
+        NSLocalizedString("%d included applications", comment: ""),
         NSLocalizedString("Search applications", comment: ""),
+        NSLocalizedString("Choose the applications whose windows belong to this Focus Set.", comment: ""),
+        NSLocalizedString("No applications selected", comment: ""),
+        NSLocalizedString("1 application selected", comment: ""),
+        NSLocalizedString("%d applications selected", comment: ""),
         NSLocalizedString("No matching applications.", comment: ""),
         NSLocalizedString("Not currently open", comment: ""),
         NSLocalizedString("1 matching window", comment: ""),
         NSLocalizedString("%d matching windows", comment: ""),
+        NSLocalizedString("Cancel", comment: ""),
+        NSLocalizedString("Apply", comment: ""),
     ]
 
     private let store = FocusSetsStore()
     private let contentWidth: CGFloat
     private var configuration = FocusSetsConfiguration()
-    private var selectedSetIdentifier: UUID?
     private var candidateCounts = [UUID: Int]()
     private var candidateCountsByBundleIdentifier = [String: Int]()
     private var content: NSView?
     private var contentConstraints = [NSLayoutConstraint]()
     private var candidateCountLabels = [UUID: NSTextField]()
-    private weak var nameField: NSTextField?
     private weak var profilePopup: PopupButtonLikeSystemSettings?
+    private weak var profileShortcutSummaryLabel: NSTextField?
     private let candidateCountRefreshThrottler = Throttler(delayInMs: 200)
     private var inventoryObserver: NSObjectProtocol?
 
@@ -68,14 +75,9 @@ final class FocusSetSettingsView: NSView {
 
     func refresh() {
         let refreshedConfiguration = store.read(availableShortcutIdentifiers: availableShortcutIdentifiers())
-        let refreshedSelection = FocusSetSettingsResolver.selectedFocusSetIdentifier(
-            preferredIdentifier: selectedSetIdentifier,
-            sets: refreshedConfiguration.sets)
         let needsRebuild = content == nil ||
-            configuration.sets != refreshedConfiguration.sets ||
-            selectedSetIdentifier != refreshedSelection
+            configuration.sets != refreshedConfiguration.sets
         configuration = refreshedConfiguration
-        selectedSetIdentifier = refreshedSelection
         refreshCandidateCounts()
         if needsRebuild {
             rebuildContent()
@@ -102,14 +104,7 @@ final class FocusSetSettingsView: NSView {
         guard window?.isVisible == true,
               window?.attachedSheet == nil,
               !isHiddenOrHasHiddenAncestor else { return false }
-        return !isEditingName
-    }
-
-    private var isEditingName: Bool {
-        guard let nameField, let firstResponder = window?.firstResponder else { return false }
-        if firstResponder === nameField { return true }
-        guard let editor = nameField.currentEditor() else { return false }
-        return firstResponder === editor
+        return true
     }
 
     private func rebuildContent() {
@@ -117,10 +112,10 @@ final class FocusSetSettingsView: NSView {
         contentConstraints.removeAll(keepingCapacity: true)
         content?.removeFromSuperview()
         content = nil
-        nameField = nil
         profilePopup = nil
+        profileShortcutSummaryLabel = nil
         candidateCountLabels.removeAll(keepingCapacity: true)
-        let views = [makeProfileTable(), makeFocusSetsTable()] + (selectedFocusSet.map { [makeEditorTable(for: $0)] } ?? [])
+        let views = [makeProfileTable(), makeFocusSetsTable()]
         let content = TableGroupSetView(originalViews: views, padding: 0)
         content.translatesAutoresizingMaskIntoConstraints = false
         addSubview(content)
@@ -151,9 +146,20 @@ final class FocusSetSettingsView: NSView {
         popup.target = self
         popup.action = #selector(profileChanged(_:))
         DesignSystemControlStyler.stylePopupButton(popup)
+        let shortcutSummary = NSTextField(labelWithString: selectedShortcutSummary())
+        shortcutSummary.font = NSFont.systemFont(ofSize: 11)
+        shortcutSummary.textColor = .secondaryLabelColor
+        shortcutSummary.alignment = .left
+        shortcutSummary.lineBreakMode = .byTruncatingTail
+        let selection = NSStackView(views: [popup, shortcutSummary])
+        selection.orientation = .vertical
+        selection.alignment = .leading
+        selection.spacing = 1
+        selection.translatesAutoresizingMaskIntoConstraints = false
         profilePopup = popup
+        profileShortcutSummaryLabel = shortcutSummary
         _ = table.addRow(leftText: NSLocalizedString("Focus Sets profile", comment: ""),
-                         rightViews: [popup],
+                         rightViews: [selection],
                          subText: NSLocalizedString("Uses this shortcut’s filters when counting and showing windows.", comment: ""))
         return table
     }
@@ -169,7 +175,7 @@ final class FocusSetSettingsView: NSView {
             return table
         }
         for (index, focusSet) in configuration.sets.enumerated() {
-            let controls = makeSetControls(focusSet, index: index)
+            let controls = makeSetControls(for: focusSet, at: index)
             let candidateCountLabel = makeCandidateCountLabel(for: focusSet)
             candidateCountLabels[focusSet.id] = candidateCountLabel
             _ = table.addRow(leftViews: [TableGroupView.makeText(focusSet.name)],
@@ -185,7 +191,7 @@ final class FocusSetSettingsView: NSView {
         popup.removeAllItems()
         for index in 0..<Preferences.shortcutCount {
             let identifier = Preferences.shortcutIdentifier(at: index)
-            popup.addItem(withTitle: shortcutLabel(index))
+            popup.addItem(withTitle: shortcutTitle(index))
             popup.item(at: popup.numberOfItems - 1)?.representedObject = identifier
             if identifier == configuration.presentationShortcutIdentifier {
                 popup.selectItem(at: popup.numberOfItems - 1)
@@ -196,6 +202,7 @@ final class FocusSetSettingsView: NSView {
     private func refreshProfilePopup() {
         guard let profilePopup else { return }
         configureProfilePopup(profilePopup)
+        profileShortcutSummaryLabel?.stringValue = selectedShortcutSummary()
     }
 
     private func makeCandidateCountLabel(for focusSet: FocusSet) -> NSTextField {
@@ -217,25 +224,13 @@ final class FocusSetSettingsView: NSView {
         }
     }
 
-    private func makeSetControls(_ focusSet: FocusSet, index: Int) -> NSStackView {
+    private func makeSetControls(for focusSet: FocusSet, at index: Int) -> NSStackView {
         let edit = DesignSystemControlStyler.makeButton(NSLocalizedString("Edit", comment: ""), target: self, action: #selector(editFocusSet(_:)))
         edit.identifier = NSUserInterfaceItemIdentifier(focusSet.id.uuidString)
-        edit.isEnabled = focusSet.id != selectedSetIdentifier
-        let up = makeIconButton(symbol: .caretUp,
-                                label: NSLocalizedString("Move Focus Set Up", comment: ""),
-                                identifier: focusSet.id,
-                                action: #selector(moveFocusSet(_:)))
-        up.tag = -1
-        up.isEnabled = index > 0
-        let down = makeIconButton(symbol: .caretDown,
-                                  label: NSLocalizedString("Move Focus Set Down", comment: ""),
-                                  identifier: focusSet.id,
-                                  action: #selector(moveFocusSet(_:)))
-        down.tag = 1
-        down.isEnabled = index < configuration.sets.count - 1
         let delete = DesignSystemControlStyler.makeButton(NSLocalizedString("Delete", comment: ""), destructive: true, target: self, action: #selector(deleteFocusSet(_:)))
         delete.identifier = NSUserInterfaceItemIdentifier(focusSet.id.uuidString)
-        let controls = NSStackView(views: [edit, up, down, delete])
+        let move = makeReorderMenu(for: focusSet, at: index)
+        let controls = NSStackView(views: [edit, move, delete])
         controls.orientation = .horizontal
         controls.alignment = .centerY
         controls.spacing = TableGroupView.toolRowSpacing
@@ -243,53 +238,43 @@ final class FocusSetSettingsView: NSView {
         return controls
     }
 
-    private func makeIconButton(symbol: Symbols,
-                                label: String,
-                                identifier: UUID,
-                                action: Selector) -> NSButton {
-        let button = NSButton()
-        button.image = NSImage.fromSymbol(symbol, pointSize: 11)
-        button.target = self
-        button.action = action
-        button.identifier = NSUserInterfaceItemIdentifier(identifier.uuidString)
+    private func makeReorderMenu(for focusSet: FocusSet, at index: Int) -> PopupButtonLikeSystemSettings {
+        let button = PopupButtonLikeSystemSettings(frame: .zero, pullsDown: true)
+        button.addItem(withTitle: "↕")
+        let label = NSLocalizedString("Move Up", comment: "") + " / " + NSLocalizedString("Move Down", comment: "")
         button.toolTip = label
         button.setAccessibilityLabel(label)
-        DesignSystemControlStyler.styleIconButton(button, size: 24)
+        button.isEnabled = configuration.sets.count > 1
+        guard let menu = button.menu else { return button }
+        let up = menu.addItem(withTitle: NSLocalizedString("Move Up", comment: ""), action: #selector(moveFocusSet(_:)), keyEquivalent: "")
+        up.target = self
+        up.representedObject = focusSet.id.uuidString
+        up.tag = -1
+        up.isEnabled = index > 0
+        let down = menu.addItem(withTitle: NSLocalizedString("Move Down", comment: ""), action: #selector(moveFocusSet(_:)), keyEquivalent: "")
+        down.target = self
+        down.representedObject = focusSet.id.uuidString
+        down.tag = 1
+        down.isEnabled = index < configuration.sets.count - 1
         return button
-    }
-
-    private func makeEditorTable(for focusSet: FocusSet) -> TableGroupView {
-        let table = TableGroupView(title: NSLocalizedString("Edit Focus Set", comment: ""), width: contentWidth)
-        let nameField = NSTextField(string: focusSet.name)
-        nameField.delegate = self
-        nameField.target = self
-        nameField.action = #selector(commitName(_:))
-        nameField.widthAnchor.constraint(equalToConstant: max(240, contentWidth * 0.55)).isActive = true
-        DesignSystemControlStyler.styleTextField(nameField)
-        self.nameField = nameField
-        _ = table.addRow(leftText: NSLocalizedString("Name", comment: ""), rightViews: [nameField])
-        let applicationsButton = DesignSystemControlStyler.makeButton(NSLocalizedString("Choose Applications…", comment: ""), target: self, action: #selector(chooseApplications(_:)))
-        _ = table.addRow(leftText: NSLocalizedString("Included Applications", comment: ""),
-                         rightViews: [applicationsButton],
-                         subText: applicationSummary(focusSet.rules))
-        return table
-    }
-
-    private var selectedFocusSet: FocusSet? {
-        guard let selectedSetIdentifier else { return nil }
-        return configuration.sets.first { $0.id == selectedSetIdentifier }
     }
 
     private func availableShortcutIdentifiers() -> [String] {
         (0..<Preferences.shortcutCount).map { Preferences.shortcutIdentifier(at: $0) }
     }
 
-    private func shortcutLabel(_ index: Int) -> String {
-        let title = NSLocalizedString("Shortcut", comment: "") + " " + String(index + 1)
-        let hold = Preferences.shortcut(Preferences.indexToName("holdShortcut", index))?.keyEquivalent ?? ""
-        let next = Preferences.shortcut(Preferences.indexToName("nextWindowShortcut", index))?.keyEquivalent ?? ""
-        let keyEquivalent = [hold, next].filter { !$0.isEmpty }.joined(separator: " + ")
-        return keyEquivalent.isEmpty ? title : title + " — " + keyEquivalent
+    private func shortcutTitle(_ index: Int) -> String {
+        NSLocalizedString("Shortcut", comment: "") + " " + String(index + 1)
+    }
+
+    private func shortcutSummary(_ index: Int) -> String {
+        ControlsTab.shortcutSummary(index)
+    }
+
+    private func selectedShortcutSummary() -> String {
+        let identifier = configuration.presentationShortcutIdentifier
+        let index = Preferences.shortcutIndex(forIdentifier: identifier) ?? 0
+        return shortcutSummary(index)
     }
 
     private func refreshCandidateCounts() {
@@ -302,23 +287,14 @@ final class FocusSetSettingsView: NSView {
 
     private func candidateCountLabel(for focusSet: FocusSet) -> String {
         let count = candidateCounts[focusSet.id] ?? 0
-        if count == 1 { return NSLocalizedString("1 matching window", comment: "") }
-        return String(format: NSLocalizedString("%d matching windows", comment: ""), count)
-    }
-
-    private func applicationSummary(_ rules: [FocusSetRule]) -> String {
-        let names = rules.compactMap { rule -> String? in
-            let name = displayName(for: rule)
-            return name.isEmpty ? nil : name
-        }
-        if names.isEmpty { return NSLocalizedString("No applications selected.", comment: "") }
-        return names.joined(separator: ", ")
-    }
-
-    private func displayName(for rule: FocusSetRule) -> String {
-        let name = rule.cachedApplicationName.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !name.isEmpty, name != rule.applicationBundleIdentifier { return name }
-        return NSLocalizedString("Unavailable application", comment: "")
+        let applicationCount = FocusSetSettingsResolver.includedApplicationCount(focusSet.rules)
+        let applications = applicationCount == 1
+            ? NSLocalizedString("1 included application", comment: "")
+            : String(format: NSLocalizedString("%d included applications", comment: ""), applicationCount)
+        let windows = count == 1
+            ? NSLocalizedString("1 matching window", comment: "")
+            : String(format: NSLocalizedString("%d matching windows", comment: ""), count)
+        return applications + " · " + windows
     }
 
     private func liveApplications() -> [FocusSetPickerApplication] {
@@ -338,16 +314,7 @@ final class FocusSetSettingsView: NSView {
         return applications
     }
 
-    private func replaceSelectedSet(name: String? = nil, rules: [FocusSetRule]? = nil) {
-        guard let selectedSetIdentifier,
-              let index = configuration.sets.firstIndex(where: { $0.id == selectedSetIdentifier }) else { return }
-        let current = configuration.sets[index]
-        var sets = configuration.sets
-        sets[index] = FocusSet(id: current.id, name: name ?? current.name, rules: rules ?? current.rules)
-        persist(sets, preferredSelection: selectedSetIdentifier)
-    }
-
-    private func persist(_ sets: [FocusSet], preferredSelection: UUID?) {
+    private func persist(_ sets: [FocusSet]) {
         let next = FocusSetsConfiguration(version: configuration.version,
                                           presentationShortcutIdentifier: configuration.presentationShortcutIdentifier,
                                           sets: sets)
@@ -355,9 +322,6 @@ final class FocusSetSettingsView: NSView {
             NSSound.beep()
             return
         }
-        selectedSetIdentifier = FocusSetSettingsResolver.selectedFocusSetIdentifier(
-            preferredIdentifier: preferredSelection,
-            sets: sets)
         refresh()
         App.refreshOpenUiAfterFocusSetConfigurationChange()
     }
@@ -377,63 +341,57 @@ final class FocusSetSettingsView: NSView {
 
     @objc private func addFocusSet(_ sender: NSButton) {
         let focusSet = FocusSet(name: NSLocalizedString("New Focus Set", comment: ""), rules: [])
-        persist(configuration.sets + [focusSet], preferredSelection: focusSet.id)
-        nameField?.selectText(nil)
+        showFocusSetEditor(focusSet)
     }
 
     @objc private func editFocusSet(_ sender: NSButton) {
         guard let value = sender.identifier?.rawValue,
               let identifier = UUID(uuidString: value),
-              configuration.sets.contains(where: { $0.id == identifier }),
-              selectedSetIdentifier != identifier else { return }
-        selectedSetIdentifier = identifier
-        rebuildContent()
+              let focusSet = configuration.sets.first(where: { $0.id == identifier }) else { return }
+        showFocusSetEditor(focusSet)
     }
 
     @objc private func deleteFocusSet(_ sender: NSButton) {
         guard let value = sender.identifier?.rawValue,
+              let identifier = UUID(uuidString: value) else { return }
+        deleteFocusSet(with: identifier)
+    }
+
+    @objc private func moveFocusSet(_ sender: NSMenuItem) {
+        guard let value = sender.representedObject as? String,
               let identifier = UUID(uuidString: value),
-              configuration.sets.contains(where: { $0.id == identifier }) else { return }
-        let sets = configuration.sets.filter { $0.id != identifier }
-        persist(sets, preferredSelection: selectedSetIdentifier)
+              let sets = FocusSetSettingsResolver.movedFocusSets(
+                  moving: identifier,
+                  by: sender.tag,
+                  in: configuration.sets) else { return }
+        persist(sets)
     }
 
-    @objc private func moveFocusSet(_ sender: NSButton) {
-        guard let value = sender.identifier?.rawValue,
-              let identifier = UUID(uuidString: value),
-              let index = configuration.sets.firstIndex(where: { $0.id == identifier }) else { return }
-        let destination = index + sender.tag
-        guard configuration.sets.indices.contains(destination) else { return }
-        var sets = configuration.sets
-        sets.swapAt(index, destination)
-        persist(sets, preferredSelection: selectedSetIdentifier)
-    }
-
-    @objc private func commitName(_ sender: NSTextField) {
-        let name = sender.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !name.isEmpty else {
-            sender.stringValue = selectedFocusSet?.name ?? ""
-            NSSound.beep()
-            return
-        }
-        replaceSelectedSet(name: name)
-    }
-
-    @objc private func chooseApplications(_ sender: NSButton) {
-        guard let focusSet = selectedFocusSet else { return }
+    private func showFocusSetEditor(_ focusSet: FocusSet) {
         refreshCandidateCounts()
-        let sheet = FocusSetApplicationPickerSheet(applications: liveApplications(),
-                                                   selectedRules: focusSet.rules) { [weak self] rules in
-            self?.replaceSelectedSet(rules: rules)
-        }
+        let sheet = FocusSetEditorSheet(
+            focusSet: focusSet,
+            applications: liveApplications(),
+            onApply: { [weak self] focusSet in
+                self?.saveFocusSet(focusSet)
+            }
+        )
         SettingsWindow.shared.beginSheetWithSearchHighlight(sheet)
     }
-}
 
-extension FocusSetSettingsView: NSTextFieldDelegate {
-    func controlTextDidEndEditing(_ notification: Notification) {
-        guard let field = notification.object as? NSTextField, field === nameField else { return }
-        commitName(field)
+    private func saveFocusSet(_ focusSet: FocusSet) {
+        var sets = configuration.sets
+        if let existingIndex = sets.firstIndex(where: { $0.id == focusSet.id }) {
+            sets[existingIndex] = focusSet
+        } else {
+            sets.append(focusSet)
+        }
+        persist(sets)
+    }
+
+    private func deleteFocusSet(with identifier: UUID) {
+        guard configuration.sets.contains(where: { $0.id == identifier }) else { return }
+        persist(configuration.sets.filter { $0.id != identifier })
     }
 }
 
@@ -453,53 +411,129 @@ private struct FocusSetPickerEntry {
     let isSelected: Bool
 }
 
-private final class FocusSetApplicationPickerSheet: SheetWindow {
+private final class FocusSetEditorSheet: SheetWindow {
+    private let nameField = NSTextField()
     private let searchField = NSSearchField()
+    private let selectionCountLabel = NSTextField(labelWithString: "")
     private let rows = NSStackView()
     private var applicationOptions = [FocusSetApplicationOption]()
     private var applicationsByIdentity = [FocusSetApplicationIdentity: FocusSetPickerApplication]()
     private var selectedIdentities = Set<FocusSetApplicationIdentity>()
     private var currentRules = [FocusSetRule]()
     private var identityBySwitch = [ObjectIdentifier: FocusSetApplicationIdentity]()
+    private var switchesByIdentity = [FocusSetApplicationIdentity: Switch]()
     private weak var resultsScrollView: NSScrollView?
-    private var onApply: (([FocusSetRule]) -> Void)?
+    private var focusSet = FocusSet(name: "", rules: [])
+    private var searchQuery = ""
+    private var textObserver: NSObjectProtocol?
+    private var onApply: ((FocusSet) -> Void)?
 
-    convenience init(applications: [FocusSetPickerApplication],
-                     selectedRules: [FocusSetRule],
-                     onApply: @escaping ([FocusSetRule]) -> Void) {
+    deinit {
+        if let textObserver {
+            NotificationCenter.default.removeObserver(textObserver)
+        }
+    }
+
+    convenience init(focusSet: FocusSet,
+                     applications: [FocusSetPickerApplication],
+                     onApply: @escaping (FocusSet) -> Void) {
         self.init()
+        self.focusSet = focusSet
         self.onApply = onApply
-        applicationOptions = applications.map {
-            FocusSetApplicationOption(bundleIdentifier: $0.bundleIdentifier, presentationName: $0.name)
-        }
-        for (application, option) in zip(applications, applicationOptions) {
-            if applicationsByIdentity[option.identity] == nil {
-                applicationsByIdentity[option.identity] = application
-            }
-        }
-        currentRules = selectedRules
+        configureApplications(applications)
+        currentRules = focusSet.rules
         selectedIdentities = Set(FocusSetSettingsResolver.applicationPickerRows(
             applications: applicationOptions,
             rules: currentRules
         ).filter(\.isSelected).map(\.identity))
+        nameField.stringValue = focusSet.name
+        updateTitle()
         doneButton.title = NSLocalizedString("Apply", comment: "")
         doneButton.target = self
         doneButton.action = #selector(applySelection(_:))
-        rebuildRows()
+        addCancelButton()
+        installSearchObserver()
+        rebuildRows(scrollToTop: true)
+        initialFirstResponder = nameField
     }
 
     override func makeContentView() -> NSView {
+        configureNameField()
+        configureSearchField()
+        configureSelectionCountLabel()
+        return TableGroupSetView(
+            originalViews: [
+                makeNameTable(),
+                makeApplicationsTable(scroll: makeResultsScrollView()),
+            ],
+            padding: 0)
+    }
+
+    private func configureNameField() {
+        nameField.setAccessibilityLabel(NSLocalizedString("Name", comment: ""))
+        DesignSystemControlStyler.styleTextField(nameField)
+        nameField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        nameField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        let minimumWidth = nameField.widthAnchor.constraint(greaterThanOrEqualToConstant: contentWidth * 0.55)
+        minimumWidth.priority = .defaultHigh
+        minimumWidth.isActive = true
+    }
+
+    private func configureSearchField() {
         searchField.placeholderString = NSLocalizedString("Search applications", comment: "")
+        searchField.setAccessibilityLabel(NSLocalizedString("Search applications", comment: ""))
         searchField.target = self
         searchField.action = #selector(searchChanged(_:))
-        searchField.sendsSearchStringImmediately = true
-        DesignSystemControlStyler.styleSearchField(searchField)
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        DesignSystemControlStyler.styleMainSearchField(searchField)
+        searchField.widthAnchor.constraint(equalToConstant: contentWidth - 2 * TableGroupView.rowHorizontalPadding).isActive = true
+    }
 
+    private func configureSelectionCountLabel() {
+        selectionCountLabel.font = NSFont.systemFont(ofSize: 12)
+        selectionCountLabel.textColor = .secondaryLabelColor
+        selectionCountLabel.alignment = .right
+        selectionCountLabel.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func makeNameTable() -> TableGroupView {
+        let table = TableGroupView(width: contentWidth)
+        _ = table.addRow(leftText: NSLocalizedString("Name", comment: ""), rightViews: [nameField])
+        return table
+    }
+
+    private func makeApplicationsTable(scroll: NSScrollView) -> TableGroupView {
+        let table = TableGroupView(
+            title: NSLocalizedString("Included Applications", comment: ""),
+            subTitle: NSLocalizedString("Choose the applications whose windows belong to this Focus Set.", comment: ""),
+            hasHeader: true,
+            width: contentWidth)
+        table.addHeader(views: [makeSelectionCountHeader(for: table)])
+        _ = table.addRow(leftViews: [searchField])
+        _ = table.addRow(leftViews: nil,
+                         rightViews: nil,
+                         secondaryViews: [scroll],
+                         secondaryViewsAlignment: .centerX)
+        return table
+    }
+
+    private func makeSelectionCountHeader(for table: TableGroupView) -> NSStackView {
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        spacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        let header = NSStackView(views: [spacer, selectionCountLabel])
+        header.orientation = .horizontal
+        header.alignment = .centerY
+        header.translatesAutoresizingMaskIntoConstraints = false
+        header.widthAnchor.constraint(equalTo: table.widthAnchor).isActive = true
+        return header
+    }
+
+    private func makeResultsScrollView() -> NSScrollView {
         rows.orientation = .vertical
         rows.alignment = .leading
         rows.spacing = TableGroupView.rowVerticalPadding
         rows.translatesAutoresizingMaskIntoConstraints = false
-
         let document = FlippedView()
         document.translatesAutoresizingMaskIntoConstraints = false
         document.addSubview(rows)
@@ -511,8 +545,8 @@ private final class FocusSetApplicationPickerSheet: SheetWindow {
         scroll.scrollerStyle = .overlay
         scroll.documentView = document
         resultsScrollView = scroll
-        scroll.heightAnchor.constraint(equalToConstant: 280).isActive = true
         scroll.widthAnchor.constraint(equalToConstant: contentWidth - 2 * TableGroupView.rowHorizontalPadding).isActive = true
+        scroll.heightAnchor.constraint(equalToConstant: 240).isActive = true
         NSLayoutConstraint.activate([
             document.widthAnchor.constraint(equalTo: scroll.contentView.widthAnchor),
             document.heightAnchor.constraint(greaterThanOrEqualTo: scroll.contentView.heightAnchor),
@@ -521,23 +555,52 @@ private final class FocusSetApplicationPickerSheet: SheetWindow {
             rows.trailingAnchor.constraint(equalTo: document.trailingAnchor),
             rows.bottomAnchor.constraint(lessThanOrEqualTo: document.bottomAnchor),
         ])
-
-        let table = TableGroupView(title: NSLocalizedString("Included Applications", comment: ""), width: contentWidth)
-        _ = table.addRow(leftText: nil, rightViews: [searchField])
-        _ = table.addRow(leftViews: nil,
-                         rightViews: nil,
-                         secondaryViews: [scroll],
-                         secondaryViewsAlignment: .centerX)
-        return table
+        return scroll
     }
 
-    private func rebuildRows() {
+    private func configureApplications(_ applications: [FocusSetPickerApplication]) {
+        applicationOptions = applications.map {
+            FocusSetApplicationOption(bundleIdentifier: $0.bundleIdentifier, presentationName: $0.name)
+        }
+        applicationsByIdentity.removeAll(keepingCapacity: true)
+        for (application, option) in zip(applications, applicationOptions) {
+            if applicationsByIdentity[option.identity] == nil {
+                applicationsByIdentity[option.identity] = application
+            }
+        }
+    }
+
+    private func updateTitle() {
+        title = String(format: NSLocalizedString("Editing “%@”", comment: ""), focusSet.name)
+    }
+
+    private func installSearchObserver() {
+        textObserver = NotificationCenter.default.addObserver(
+            forName: NSControl.textDidChangeNotification,
+            object: searchField,
+            queue: .main
+        ) { [weak self] _ in
+            self?.updateSearchQuery()
+        }
+    }
+
+    private func updateSearchQuery() {
+        let query = searchField.stringValue
+        guard searchQuery != query else { return }
+        searchQuery = query
+        rebuildRows(scrollToTop: true)
+    }
+
+    private func rebuildRows(scrollToTop shouldScrollToTop: Bool = false) {
+        let focusedIdentity = focusedApplicationIdentity()
+        let restoresSearchFocus = isSearchFieldFocused
+        selectionCountLabel.stringValue = selectionCount()
         rows.arrangedSubviews.forEach {
             rows.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
         identityBySwitch.removeAll(keepingCapacity: true)
-        defer { scrollToTop() }
+        switchesByIdentity.removeAll(keepingCapacity: true)
         let entries = filteredEntries()
         if entries.isEmpty {
             let label = NSTextField(wrappingLabelWithString: NSLocalizedString("No matching applications.", comment: ""))
@@ -545,12 +608,32 @@ private final class FocusSetApplicationPickerSheet: SheetWindow {
             label.translatesAutoresizingMaskIntoConstraints = false
             rows.addArrangedSubview(label)
             label.widthAnchor.constraint(equalTo: rows.widthAnchor).isActive = true
-            return
+        } else {
+            for entry in entries {
+                let row = makeRow(entry)
+                rows.addArrangedSubview(row)
+                row.widthAnchor.constraint(equalTo: rows.widthAnchor).isActive = true
+            }
         }
-        for entry in entries {
-            let row = makeRow(entry)
-            rows.addArrangedSubview(row)
-            row.widthAnchor.constraint(equalTo: rows.widthAnchor).isActive = true
+        if shouldScrollToTop { scrollToTop() }
+        restoreFocus(searchWasFocused: restoresSearchFocus, applicationIdentity: focusedIdentity)
+    }
+
+    private var isSearchFieldFocused: Bool {
+        guard let responder = firstResponder else { return false }
+        return responder === searchField || responder === searchField.currentEditor()
+    }
+
+    private func focusedApplicationIdentity() -> FocusSetApplicationIdentity? {
+        guard let toggle = firstResponder as? Switch else { return nil }
+        return identityBySwitch[ObjectIdentifier(toggle)]
+    }
+
+    private func restoreFocus(searchWasFocused: Bool, applicationIdentity: FocusSetApplicationIdentity?) {
+        if searchWasFocused {
+            makeFirstResponder(searchField)
+        } else if let applicationIdentity, let toggle = switchesByIdentity[applicationIdentity] {
+            makeFirstResponder(toggle)
         }
     }
 
@@ -561,16 +644,10 @@ private final class FocusSetApplicationPickerSheet: SheetWindow {
     }
 
     private func filteredEntries() -> [FocusSetPickerEntry] {
-        let query = searchField.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        return orderedEntries().filter {
-            query.isEmpty || $0.name.range(of: query, options: [.caseInsensitive, .diacriticInsensitive]) != nil
-        }
-    }
-
-    private func orderedEntries() -> [FocusSetPickerEntry] {
-        FocusSetSettingsResolver.applicationPickerRows(
+        FocusSetSettingsResolver.filteredApplicationPickerRows(
             applications: applicationOptions,
-            rules: currentRules
+            rules: currentRules,
+            matching: searchQuery
         ).map { row in
             let application = applicationsByIdentity[row.identity]
             return FocusSetPickerEntry(
@@ -606,13 +683,35 @@ private final class FocusSetApplicationPickerSheet: SheetWindow {
         toggle.toolTip = entry.name
         toggle.setAccessibilityLabel(entry.name)
         identityBySwitch[ObjectIdentifier(toggle)] = entry.identity
-        let row = NSStackView(views: [icon, labels, toggle])
+        switchesByIdentity[entry.identity] = toggle
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        spacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        let row = NSStackView(views: [icon, labels, spacer, toggle])
         row.orientation = .horizontal
         row.alignment = .centerY
         row.spacing = TableGroupView.spacing
         row.translatesAutoresizingMaskIntoConstraints = false
         row.heightAnchor.constraint(greaterThanOrEqualToConstant: DesignSystem.Metrics.standardControlMinHeight).isActive = true
         return row
+    }
+
+    private func selectionCount() -> String {
+        switch selectedIdentities.count {
+        case 0:
+            return NSLocalizedString("No applications selected", comment: "")
+        case 1:
+            return NSLocalizedString("1 application selected", comment: "")
+        default:
+            return String(format: NSLocalizedString("%d applications selected", comment: ""), selectedIdentities.count)
+        }
+    }
+
+    private func addCancelButton() {
+        let cancelButton = NSButton(title: NSLocalizedString("Cancel", comment: ""), target: self, action: #selector(cancel(_:)))
+        cancelButton.keyEquivalent = "\u{1b}"
+        DesignSystemControlStyler.styleButton(cancelButton)
+        addFooterButton(cancelButton)
     }
 
     private func subtitle(for entry: FocusSetPickerEntry) -> String {
@@ -628,7 +727,7 @@ private final class FocusSetApplicationPickerSheet: SheetWindow {
     }
 
     @objc private func searchChanged(_ sender: NSSearchField) {
-        rebuildRows()
+        updateSearchQuery()
     }
 
     @objc private func selectionChanged(_ sender: Switch) {
@@ -646,7 +745,13 @@ private final class FocusSetApplicationPickerSheet: SheetWindow {
     }
 
     @objc private func applySelection(_ sender: NSButton) {
-        onApply?(currentRules)
+        let name = nameField.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else {
+            NSSound.beep()
+            makeFirstResponder(nameField)
+            return
+        }
+        onApply?(FocusSet(id: focusSet.id, name: name, rules: currentRules))
         sheetParent?.endSheet(self)
     }
 }

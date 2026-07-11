@@ -130,6 +130,16 @@ final class DesignSystemTests: XCTestCase {
         }
     }
 
+    func testMainSearchFieldUsesSwitcherChrome() {
+        let field = NSSearchField()
+        DesignSystemControlStyler.styleMainSearchField(field)
+
+        XCTAssertTrue(field.sendsSearchStringImmediately)
+        XCTAssertTrue(field.sendsWholeSearchString)
+        XCTAssertEqual(field.bezelStyle, .roundedBezel)
+        XCTAssertTrue(field.usesSingleLineMode)
+    }
+
     func testFlatSurfaceViewUsesSharedControlChrome() {
         let view = DesignSystemFlatSurfaceView()
         XCTAssertTrue(view.wantsLayer)

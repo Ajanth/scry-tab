@@ -89,6 +89,31 @@ final class FocusSetSettingsResolverTests: XCTestCase {
         XCTAssertEqual(Array(rows.suffix(2).map(\.identity)), [applications[1].identity, applications[0].identity])
     }
 
+    /// Picker search trims its query and matches application names regardless of case or diacritics.
+    func testPickerRowsFilterNamesCaseAndDiacriticInsensitively() {
+        let rows = FocusSetSettingsResolver.filteredApplicationPickerRows(
+            applications: [
+                application("com.example.cursor", "Cúrsor"),
+                application("com.example.terminal", "Terminal"),
+            ],
+            rules: [],
+            matching: " CURSOR \n")
+
+        XCTAssertEqual(rows.map(\.presentationName), ["Cúrsor"])
+    }
+
+    /// Included-app totals count each valid stable identity once.
+    func testIncludedApplicationCountDeduplicatesRulesAndIgnoresBlankIdentifiers() {
+        let count = FocusSetSettingsResolver.includedApplicationCount([
+            rule("com.example.cursor", "Cursor"),
+            rule("com.example.cursor", "Cursor project", titleContains: "project"),
+            rule(" \n", "Ignored"),
+            rule("com.example.terminal", "Terminal"),
+        ])
+
+        XCTAssertEqual(count, 2)
+    }
+
     // MARK: - B. Rule conversion
 
     /// A live presentation-name change refreshes the cached name and emits an app-only rule.
@@ -146,7 +171,40 @@ final class FocusSetSettingsResolverTests: XCTestCase {
                 cachedApplicationName: "Cursor")])
     }
 
-    // MARK: - C. Focus set selection
+    // MARK: - C. Focus Set reordering
+
+    /// Moving a saved Focus Set swaps it with its adjacent destination.
+    func testMovedFocusSetsSwapsAdjacentSets() {
+        let first = focusSet("First")
+        let second = focusSet("Second")
+        let third = focusSet("Third")
+
+        let movedDown = FocusSetSettingsResolver.movedFocusSets(
+            moving: second.id,
+            by: 1,
+            in: [first, second, third])
+        let movedUp = FocusSetSettingsResolver.movedFocusSets(
+            moving: second.id,
+            by: -1,
+            in: [first, second, third])
+
+        XCTAssertEqual(movedDown?.map(\.id), [first.id, third.id, second.id])
+        XCTAssertEqual(movedUp?.map(\.id), [second.id, first.id, third.id])
+    }
+
+    /// Unknown, zero-offset, and out-of-range moves preserve the saved order.
+    func testMovedFocusSetsRejectsMissingOrInvalidDestinations() {
+        let first = focusSet("First")
+        let second = focusSet("Second")
+        let sets = [first, second]
+
+        XCTAssertNil(FocusSetSettingsResolver.movedFocusSets(moving: UUID(), by: 1, in: sets))
+        XCTAssertNil(FocusSetSettingsResolver.movedFocusSets(moving: first.id, by: 0, in: sets))
+        XCTAssertNil(FocusSetSettingsResolver.movedFocusSets(moving: first.id, by: -1, in: sets))
+        XCTAssertNil(FocusSetSettingsResolver.movedFocusSets(moving: second.id, by: 1, in: sets))
+    }
+
+    // MARK: - D. Focus Set selection
 
     /// A selected focus set remains selected when another set is removed.
     func testSelectedFocusSetIdentifierKeepsExistingSet() {

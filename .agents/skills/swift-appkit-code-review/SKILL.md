@@ -23,6 +23,9 @@ Review for user-visible and engineering risk. Do not edit code unless the user a
 - Require main-thread AppKit work and safe return from background work. Reject polling or blocking input/drawing paths.
 - Enforce Swift 5.8 and macOS 10.13. Flag unguarded newer APIs or fallbacks that do not preserve behavior.
 - Check target membership, localization, settings search, persisted-key migration, and launch integration.
+- For Add/Edit sheets, verify one transactional sheet owns the draft, Cancel cannot persist it, and dependent choices are inline rather than nested in a second sheet.
+- For incremental `NSSearchField` UI, verify text changes reach the filtering state after styling or cell replacement; target/action alone is insufficient evidence. Check blank, case/diacritic, unavailable-item, and focus-preservation paths.
+- For sheet actions, verify the default action is rightmost, Cancel is immediately to its left, Return/Escape work, destructive actions are separate, and localized labels rely on intrinsic or safe minimum widths rather than fixed widths.
 - Treat Developer ID, Team ID, release bundle ID, entitlements, and license Keychain changes as release-critical unless an explicit migration proves continuity.
 - Reject `SecKeychain*` and `kSecAccessControl` in license code.
 
