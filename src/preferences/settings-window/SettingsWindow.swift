@@ -874,13 +874,11 @@ class SettingsWindow: NSWindow {
             SettingsWindow.trimmedText(segmentedControl.label(forSegment: $0) ?? "")
         }
         if segmentLabels.allSatisfy(\.isEmpty) { return nil }
-        // For tab controls that surface different content per segment (the Filtering / Appearance
-        // / Ordering toggle in ShortcutEditor — and the gesture editor's clone of the same), the
-        // per-segment searchable strings are registered in `ControlsTab.tabSegmentSearchableStrings`.
-        // A query that matches anything in a segment's content lights that segment up yellow —
-        // including content for *unbuilt* panes (the Filtering/Appearance/Ordering panes are
-        // constructed lazily, see `ShortcutEditor.ensurePaneBuilt`).
-        let perSegmentStrings = ControlsTab.tabSegmentSearchableStrings[ObjectIdentifier(segmentedControl)]
+        // Tabs with distinct content register their per-segment strings so a query can highlight
+        // the segment that contains a match, even when that page is currently hidden or unbuilt.
+        let controlIdentifier = ObjectIdentifier(segmentedControl)
+        let perSegmentStrings = ControlsTab.tabSegmentSearchableStrings[controlIdentifier]
+            ?? FocusSetsTab.tabSegmentSearchableStrings[controlIdentifier]
         var matchingSegmentIndexes = [Int]()
         return SettingsSearchHighlightTarget({ query in
             matchingSegmentIndexes = []

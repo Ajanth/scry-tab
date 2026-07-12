@@ -49,6 +49,7 @@
 "Ask whether to send crash reports" = "クラッシュレポートの送信を毎回確認";
 "Auto" = "自動";
 "Auto-install updates periodically" = "アップデートを定期的に自動インストール";
+"Behavior" = "動作";
 "Brief description of the bug" = "バグの簡単な説明";
 "Brief description of the change" = "変更の簡単な説明";
 "Bundle ID" = "Bundle ID";

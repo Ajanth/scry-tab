@@ -49,6 +49,7 @@
 "Ask whether to send crash reports" = "询问是否发送崩溃报告";
 "Auto" = "自动";
 "Auto-install updates periodically" = "定期自动安装更新";
+"Behavior" = "行为";
 "Brief description of the bug" = "简要描述错误";
 "Brief description of the change" = "简要描述改动";
 "Bundle ID" = "Bundle ID";
