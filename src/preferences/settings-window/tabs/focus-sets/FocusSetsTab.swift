@@ -13,6 +13,10 @@ enum FocusSetsTab {
         settingsView?.refresh()
     }
 
+    static func registerSidebarRowsSearchContent() {
+        settingsView?.registerSidebarRowsSearchContent()
+    }
+
     static func cleanup() {
         settingsView = nil
     }

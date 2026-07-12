@@ -20,6 +20,7 @@
 "Add a running app" = "Actieve app toevoegen";
 "Add an app from disk" = "App vanaf schijf toevoegen";
 "Add Focus Set" = "Focusset toevoegen";
+"Add or remove Focus Sets" = "Focussets toevoegen of verwijderen";
 "Additional controls" = "Extra bedieningselementen";
 "Advanced" = "Geavanceerd";
 "After keys are released" = "Nadat toetsen zijn losgelaten";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Regelmatig op updates controleren";
 "Check for updates…" = "Op updates controleren…";
 "Check permissions…" = "Rechten controleren…";
+"Choose a Focus Set to review its shortcut and included applications." = "Kies een focusset om de sneltoets en opgenomen apps te bekijken.";
 "Choose the applications whose windows belong to this Focus Set." = "Kies de apps waarvan de vensters bij deze focusset horen.";
 "Close window" = "Venster sluiten";
 "Conflicting shortcut" = "Conflicterende sneltoets";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Kan niet naar map Programma's verplaatsen";
 "Couldn't submit feedback" = "Kon feedback niet versturen";
 "Crash reports policy" = "Beleid voor crashrapporten";
-"Create a set to browse the applications you use together." = "Maak een set om de apps te bekijken die u samen gebruikt.";
+"Create a Focus Set to browse the applications you use together." = "Maak een focusset voor de apps die je samen gebruikt.";
 "Create GitHub issue" = "GitHub-issue aanmaken";
 "Cursor follows focus" = "Cursor volgt focus";
 "Customize more…" = "Meer aanpassen…";
 "Dark" = "Donker";
 "Debug tools" = "Foutopsporingstools";
-"Delete" = "Verwijder";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Directe Focussets-sneltoetsen gebruiken de standaardweergave en standaardvensterindeling.";
 "Disabled" = "Uitgeschakeld";
 "Do Not Move" = "Niet verplaatsen";
@@ -80,7 +81,7 @@
 "Don’t send" = "Niet versturen";
 "e.g. com.example.app" = "bijv. com.example.app";
 "e.g. Debug" = "bijv. Debug";
-"Edit" = "Bewerken";
+"Edit Focus Set…" = "Focusset bewerken…";
 "Editing “%@”" = "‘%@’ wordt bewerkt";
 "End" = "Einde";
 "Exceptions" = "Uitzonderingen";
@@ -89,6 +90,8 @@
 "Filtering" = "Filteren";
 "Focus" = "Focus";
 "Focus selected window" = "Geselecteerd venster focussen";
+"Focus Set actions" = "Acties voor focussets";
+"Focus Set Behavior" = "Gedrag van focussets";
 "Focus Sets" = "Focussets";
 "Fullscreen/Defullscreen window" = "Venster in/uit volledig scherm";
 "General" = "Algemeen";
@@ -116,13 +119,12 @@
 "Light" = "Licht";
 "Lock search" = "Zoekopdracht vergrendelen";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserveert ⌘⌥⎋, ⌘⌥⇧⎋ en ⌘⌥⇧⌃⎋ voor Geforceerd stoppen en deze kunnen niet worden vrijgegeven. ScryTab kan ze niet gebruiken.\n\nJe wijziging zou er een toewijzen aan: %@.";
+"Matching windows" = "Overeenkomende vensters";
 "Medium" = "Middelgroot";
 "Middle" = "Midden";
 "Minimize/Deminimize window" = "Minimaliseer/Demaximaliseer venster";
 "Miscellaneous" = "Diversen";
 "Move Down" = "Omlaag";
-"Move Focus Set Down" = "Focusset omlaag verplaatsen";
-"Move Focus Set Up" = "Focusset omhoog verplaatsen";
 "Move to Applications Folder" = "Verplaats naar map Programma's";
 "Move to Applications folder?" = "Naar map Programma's verplaatsen?";
 "Move Up" = "Omhoog";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Niet-actieve apps";
 "Non-visible Spaces" = "Niet-zichtbare Spaces";
 "Not allowed" = "Niet toegestaan";
+"Not assigned" = "Niet toegewezen";
 "Not currently open" = "Momenteel niet geopend";
 "OK" = "OK";
 "Only on different screen" = "Alleen op een ander scherm";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Instellingen herstellen en herstarten…";
 "Restart Now" = "Herstart nu";
 "Resume preview animation" = "Voorvertoningsanimatie hervatten";
-"Saved Focus Sets" = "Opgeslagen focussets";
 "Screen including menu bar" = "Scherm met menubalk";
 "Screen including mouse" = "Scherm met muis";
 "Screen showing ScryTab" = "Scherm dat ScryTab toont";

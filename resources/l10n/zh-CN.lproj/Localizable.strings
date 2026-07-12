@@ -20,6 +20,7 @@
 "Add a running app" = "添加正在运行的应用";
 "Add an app from disk" = "从磁盘添加应用";
 "Add Focus Set" = "添加专注集";
+"Add or remove Focus Sets" = "添加或移除专注集";
 "Additional controls" = "其他控制";
 "Advanced" = "高级";
 "After keys are released" = "释放按键后";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "定期检查更新";
 "Check for updates…" = "检查更新…";
 "Check permissions…" = "检查权限…";
+"Choose a Focus Set to review its shortcut and included applications." = "选择一个专注集以查看其快捷键和包含的应用。";
 "Choose the applications whose windows belong to this Focus Set." = "选择窗口要归入此专注集的应用。";
 "Close window" = "关闭窗口";
 "Conflicting shortcut" = "快捷键冲突";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "无法移动到应用程序文件夹";
 "Couldn't submit feedback" = "无法提交反馈";
 "Crash reports policy" = "崩溃报告策略";
-"Create a set to browse the applications you use together." = "创建一个专注集以浏览您一起使用的应用程序。";
+"Create a Focus Set to browse the applications you use together." = "创建专注集以浏览您常一起使用的应用。";
 "Create GitHub issue" = "创建 GitHub issue";
 "Cursor follows focus" = "光标跟随焦点";
 "Customize more…" = "更多自定义…";
 "Dark" = "深色";
 "Debug tools" = "调试工具";
-"Delete" = "删除";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "直接专注集快捷键使用标准外观和窗口组织方式。";
 "Disabled" = "已停用";
 "Do Not Move" = "不移动";
@@ -80,7 +81,7 @@
 "Don’t send" = "不发送";
 "e.g. com.example.app" = "例如 com.example.app";
 "e.g. Debug" = "例如 Debug";
-"Edit" = "编辑";
+"Edit Focus Set…" = "编辑专注集…";
 "Editing “%@”" = "正在编辑“%@”";
 "End" = "末尾";
 "Exceptions" = "例外";
@@ -89,6 +90,8 @@
 "Filtering" = "筛选";
 "Focus" = "聚焦";
 "Focus selected window" = "聚焦所选窗口";
+"Focus Set actions" = "专注集操作";
+"Focus Set Behavior" = "专注集行为";
 "Focus Sets" = "专注集";
 "Fullscreen/Defullscreen window" = "全屏/退出全屏窗口";
 "General" = "通用";
@@ -116,13 +119,12 @@
 "Light" = "浅色";
 "Lock search" = "锁定搜索";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS 将 ⌘⌥⎋、⌘⌥⇧⎋ 和 ⌘⌥⇧⌃⎋ 保留用于强制退出，无法解除绑定。ScryTab 无法使用它们。\n\n您的更改会将其中之一分配给：%@。";
+"Matching windows" = "匹配的窗口";
 "Medium" = "中";
 "Middle" = "中间";
 "Minimize/Deminimize window" = "最小化/还原窗口";
 "Miscellaneous" = "其他";
 "Move Down" = "下移";
-"Move Focus Set Down" = "下移专注集";
-"Move Focus Set Up" = "上移专注集";
 "Move to Applications Folder" = "移动到应用程序文件夹";
 "Move to Applications folder?" = "要移动到应用程序文件夹吗？";
 "Move Up" = "上移";
@@ -139,6 +141,7 @@
 "Non-active apps" = "非活跃应用";
 "Non-visible Spaces" = "不可见的桌面";
 "Not allowed" = "不允许";
+"Not assigned" = "未分配";
 "Not currently open" = "当前未打开";
 "OK" = "好";
 "Only on different screen" = "仅在不同屏幕上";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "重置设置并重启…";
 "Restart Now" = "立即重启";
 "Resume preview animation" = "继续预览动画";
-"Saved Focus Sets" = "已存储的专注集";
 "Screen including menu bar" = "包含菜单栏的屏幕";
 "Screen including mouse" = "包含鼠标的屏幕";
 "Screen showing ScryTab" = "显示 ScryTab 的屏幕";

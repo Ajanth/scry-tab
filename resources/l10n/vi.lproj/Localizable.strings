@@ -20,6 +20,7 @@
 "Add a running app" = "Thêm một ứng dụng đang chạy";
 "Add an app from disk" = "Thêm một ứng dụng từ ổ đĩa";
 "Add Focus Set" = "Thêm nhóm tập trung";
+"Add or remove Focus Sets" = "Thêm hoặc xóa nhóm tập trung";
 "Additional controls" = "Điều khiển bổ sung";
 "Advanced" = "Nâng cao";
 "After keys are released" = "Sau khi nhả phím";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Kiểm tra cập nhật định kỳ";
 "Check for updates…" = "Kiểm tra cập nhật…";
 "Check permissions…" = "Kiểm tra quyền…";
+"Choose a Focus Set to review its shortcut and included applications." = "Chọn một nhóm tập trung để xem phím tắt và các ứng dụng được đưa vào.";
 "Choose the applications whose windows belong to this Focus Set." = "Chọn các ứng dụng có cửa sổ thuộc Bộ tập trung này.";
 "Close window" = "Đóng cửa sổ";
 "Conflicting shortcut" = "Phím tắt xung đột";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Không thể di chuyển vào thư mục Ứng dụng";
 "Couldn't submit feedback" = "Không thể gửi phản hồi";
 "Crash reports policy" = "Chính sách báo cáo sự cố";
-"Create a set to browse the applications you use together." = "Tạo một nhóm để duyệt các ứng dụng bạn dùng cùng nhau.";
+"Create a Focus Set to browse the applications you use together." = "Tạo một nhóm tập trung để duyệt các ứng dụng bạn thường dùng cùng nhau.";
 "Create GitHub issue" = "Tạo issue trên GitHub";
 "Cursor follows focus" = "Con trỏ theo tiêu điểm";
 "Customize more…" = "Tùy chỉnh thêm…";
 "Dark" = "Tối";
 "Debug tools" = "Công cụ gỡ lỗi";
-"Delete" = "Xóa";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Các phím tắt trực tiếp của Nhóm tập trung sử dụng giao diện và cách sắp xếp cửa sổ tiêu chuẩn.";
 "Disabled" = "Đã tắt";
 "Do Not Move" = "Không di chuyển";
@@ -80,7 +81,7 @@
 "Don’t send" = "Không gửi";
 "e.g. com.example.app" = "ví dụ: com.example.app";
 "e.g. Debug" = "ví dụ: Debug";
-"Edit" = "Sửa";
+"Edit Focus Set…" = "Sửa nhóm tập trung…";
 "Editing “%@”" = "Đang sửa “%@”";
 "End" = "Cuối";
 "Exceptions" = "Ngoại lệ";
@@ -89,6 +90,8 @@
 "Filtering" = "Bộ lọc";
 "Focus" = "Tiêu điểm";
 "Focus selected window" = "Đặt tiêu điểm cửa sổ đã chọn";
+"Focus Set actions" = "Thao tác nhóm tập trung";
+"Focus Set Behavior" = "Hoạt động của nhóm tập trung";
 "Focus Sets" = "Nhóm tập trung";
 "Fullscreen/Defullscreen window" = "Bật/Tắt toàn màn hình cửa sổ";
 "General" = "Tổng quát";
@@ -116,13 +119,12 @@
 "Light" = "Sáng";
 "Lock search" = "Khóa tìm kiếm";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS dành riêng ⌘⌥⎋, ⌘⌥⇧⎋, và ⌘⌥⇧⌃⎋ cho Buộc thoát và không thể gỡ bỏ. ScryTab không thể sử dụng chúng.\n\nThay đổi của bạn sẽ gán một trong số đó cho: %@.";
+"Matching windows" = "Cửa sổ phù hợp";
 "Medium" = "Trung bình";
 "Middle" = "Giữa";
 "Minimize/Deminimize window" = "Thu nhỏ/Khôi phục cửa sổ";
 "Miscellaneous" = "Khác";
 "Move Down" = "Di chuyển xuống";
-"Move Focus Set Down" = "Di chuyển nhóm tập trung xuống";
-"Move Focus Set Up" = "Di chuyển nhóm tập trung lên";
 "Move to Applications Folder" = "Di chuyển vào thư mục Ứng dụng";
 "Move to Applications folder?" = "Di chuyển vào thư mục Ứng dụng?";
 "Move Up" = "Di chuyển lên";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Ứng dụng không hoạt động";
 "Non-visible Spaces" = "Không gian không hiển thị";
 "Not allowed" = "Không cho phép";
+"Not assigned" = "Chưa được gán";
 "Not currently open" = "Hiện không mở";
 "OK" = "OK";
 "Only on different screen" = "Chỉ trên màn hình khác";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Đặt lại cài đặt và khởi động lại…";
 "Restart Now" = "Khởi động lại ngay";
 "Resume preview animation" = "Tiếp tục hoạt ảnh xem trước";
-"Saved Focus Sets" = "Nhóm tập trung đã lưu";
 "Screen including menu bar" = "Màn hình có thanh menu";
 "Screen including mouse" = "Màn hình có con trỏ chuột";
 "Screen showing ScryTab" = "Màn hình hiển thị ScryTab";

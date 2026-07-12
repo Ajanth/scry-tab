@@ -4,8 +4,11 @@ import ShortcutRecorder
 final class FocusSetSettingsView: NSView {
     static let directShortcutReleaseSubtitle = NSLocalizedString("Applies to every direct Focus Set shortcut.", comment: "")
     static let appearanceAndOrganizationSubtitle = NSLocalizedString("Direct Focus Set shortcuts use the standard appearance and window organization.", comment: "")
+    static let focusSetsDetailSubtitle = NSLocalizedString("Choose a Focus Set to review its shortcut and included applications.", comment: "")
     static let searchableStrings = [
         NSLocalizedString("Focus Sets", comment: ""),
+        focusSetsDetailSubtitle,
+        NSLocalizedString("Focus Set Behavior", comment: ""),
         NSLocalizedString("After keys are released", comment: ""),
         directShortcutReleaseSubtitle,
         NSLocalizedString("Visibility", comment: ""),
@@ -13,17 +16,16 @@ final class FocusSetSettingsView: NSView {
         NSLocalizedString("Appearance and organization", comment: ""),
         appearanceAndOrganizationSubtitle,
         NSLocalizedString("Open Appearance Settings", comment: ""),
-        NSLocalizedString("Saved Focus Sets", comment: ""),
         NSLocalizedString("Add Focus Set", comment: ""),
         NSLocalizedString("No Focus Sets", comment: ""),
-        NSLocalizedString("Create a set to browse the applications you use together.", comment: ""),
-        NSLocalizedString("Edit", comment: ""),
+        NSLocalizedString("Create a Focus Set to browse the applications you use together.", comment: ""),
+        NSLocalizedString("Shortcut", comment: ""),
+        NSLocalizedString("Not assigned", comment: ""),
+        NSLocalizedString("Matching windows", comment: ""),
+        NSLocalizedString("Edit Focus Set…", comment: ""),
         NSLocalizedString("Editing “%@”", comment: ""),
-        NSLocalizedString("Move Focus Set Up", comment: ""),
-        NSLocalizedString("Move Focus Set Down", comment: ""),
         NSLocalizedString("Move Up", comment: ""),
         NSLocalizedString("Move Down", comment: ""),
-        NSLocalizedString("Delete", comment: ""),
         NSLocalizedString("Name", comment: ""),
         ShortcutTriggerRow.triggerLabel,
         ShortcutTriggerRow.holdLabelText,
@@ -47,11 +49,22 @@ final class FocusSetSettingsView: NSView {
     private let store = FocusSetsStore()
     private let contentWidth: CGFloat
     private var configuration = FocusSetsConfiguration()
+    private var selectedFocusSetIdentifier: UUID?
     private var candidateCounts = [UUID: Int]()
     private var candidateCountsByBundleIdentifier = [String: Int]()
     private var content: NSView?
     private var contentConstraints = [NSLayoutConstraint]()
-    private var candidateCountLabels = [UUID: NSTextField]()
+    private let focusSetSidebarWidth = CGFloat(280)
+    private let focusSetSidebarRowHeight = CGFloat(56)
+    private var focusSetRows = [SidebarListRow]()
+    private weak var focusSetRowsStackView: NSStackView?
+    private weak var focusSetRowsScrollView: NSScrollView?
+    private weak var focusSetSidebarSection: SidebarListContainer?
+    private weak var focusSetDetailPane: NSView?
+    private weak var includedApplicationsLabel: NSTextField?
+    private weak var matchingWindowsLabel: NSTextField?
+    private var focusSetRowsScrollObserver: NSObjectProtocol?
+    private weak var focusSetCountButtons: NSSegmentedControl?
     private let candidateCountRefreshThrottler = Throttler(delayInMs: 200)
     private var inventoryObserver: NSObjectProtocol?
 
@@ -78,19 +91,30 @@ final class FocusSetSettingsView: NSView {
         if let inventoryObserver {
             NotificationCenter.default.removeObserver(inventoryObserver)
         }
+        if let focusSetRowsScrollObserver {
+            NotificationCenter.default.removeObserver(focusSetRowsScrollObserver)
+        }
     }
 
     func refresh() {
         let refreshedConfiguration = store.read()
-        let needsRebuild = content == nil ||
-            configuration.sets != refreshedConfiguration.sets
+        let setsChanged = configuration.sets != refreshedConfiguration.sets
         configuration = refreshedConfiguration
+        selectedFocusSetIdentifier = FocusSetSettingsResolver.selectedFocusSetIdentifier(
+            preferredIdentifier: selectedFocusSetIdentifier,
+            sets: configuration.sets)
         refreshCandidateCounts()
-        if needsRebuild {
+        if content == nil {
             rebuildContent()
+        } else if setsChanged {
+            refreshFocusSetManager()
         } else {
-            refreshCandidateCountLabels()
+            refreshCandidateCountPresentation()
         }
+    }
+
+    func registerSidebarRowsSearchContent() {
+        focusSetRows.forEach { $0.registerSearchContent() }
     }
 
     private func scheduleCandidateCountRefresh() {
@@ -103,7 +127,7 @@ final class FocusSetSettingsView: NSView {
     private func refreshVisibleCandidateCounts() {
         guard updatesCandidateCountsWhileVisible else { return }
         refreshCandidateCounts()
-        refreshCandidateCountLabels()
+        refreshCandidateCountPresentation()
     }
 
     private var updatesCandidateCountsWhileVisible: Bool {
@@ -114,12 +138,12 @@ final class FocusSetSettingsView: NSView {
     }
 
     private func rebuildContent() {
+        clearFocusSetManagerReferences()
         NSLayoutConstraint.deactivate(contentConstraints)
         contentConstraints.removeAll(keepingCapacity: true)
         content?.removeFromSuperview()
         content = nil
-        candidateCountLabels.removeAll(keepingCapacity: true)
-        let views = [makePolicyTable(), makeFocusSetsTable()]
+        let views = [makeFocusSetManager(), makeBehaviorTable()]
         let content = TableGroupSetView(originalViews: views, padding: 0)
         content.translatesAutoresizingMaskIntoConstraints = false
         addSubview(content)
@@ -132,10 +156,11 @@ final class FocusSetSettingsView: NSView {
         NSLayoutConstraint.activate(constraints)
         self.content = content
         contentConstraints = constraints
+        refreshFocusSetManager()
     }
 
-    private func makePolicyTable() -> TableGroupView {
-        let table = TableGroupView(title: NSLocalizedString("Focus Sets", comment: ""), width: contentWidth)
+    private func makeBehaviorTable() -> TableGroupView {
+        let table = TableGroupView(title: NSLocalizedString("Focus Set Behavior", comment: ""), width: contentWidth)
         let releaseStyle = LabelAndControl.makeDropdown("focusSetsShortcutStyle", ShortcutStylePreference.allCases)
         _ = table.addRow(
             leftText: NSLocalizedString("After keys are released", comment: ""),
@@ -155,60 +180,265 @@ final class FocusSetSettingsView: NSView {
         return table
     }
 
-    private func makeFocusSetsTable() -> TableGroupView {
-        let table = TableGroupView(title: NSLocalizedString("Saved Focus Sets", comment: ""), width: contentWidth)
-        candidateCountLabels.removeAll(keepingCapacity: true)
-        if configuration.sets.isEmpty {
-            let add = DesignSystemControlStyler.makeButton(NSLocalizedString("Add Focus Set", comment: ""), target: self, action: #selector(addFocusSet(_:)))
-            _ = table.addRow(leftText: NSLocalizedString("No Focus Sets", comment: ""),
-                             rightViews: [add],
-                             subText: NSLocalizedString("Create a set to browse the applications you use together.", comment: ""))
-            return table
+    private func makeFocusSetManager() -> NSView {
+        makeSidebarEditorContainer(
+            sidebar: makeFocusSetSidebar(),
+            editor: makeFocusSetDetailPane(),
+            fixedSidebarHeight: DesignSystem.Metrics.settingsEditorSidebarHeight,
+            chrome: .plain,
+            layout: .spaced)
+    }
+
+    private func makeFocusSetSidebar() -> NSView {
+        let sidebar = NSView()
+        sidebar.translatesAutoresizingMaskIntoConstraints = false
+        sidebar.widthAnchor.constraint(equalToConstant: focusSetSidebarWidth).isActive = true
+        let container = NSView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        let section = SidebarListContainer()
+        section.onArrowKey = { [weak self] direction in
+            self?.moveFocusSetSelection(direction)
+        }
+        focusSetSidebarSection = section
+        let rows = NSStackView()
+        rows.orientation = .vertical
+        rows.alignment = .leading
+        rows.spacing = 0
+        rows.translatesAutoresizingMaskIntoConstraints = false
+        focusSetRowsStackView = rows
+        let scrollView = ForwardingVerticalScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.drawsBackground = false
+        scrollView.hasVerticalScroller = true
+        scrollView.verticalScrollElasticity = .none
+        scrollView.hasHorizontalScroller = false
+        scrollView.scrollerStyle = .overlay
+        scrollView.usesPredominantAxisScrolling = true
+        scrollView.contentView.postsBoundsChangedNotifications = true
+        let documentView = ForwardingVerticalDocumentView(frame: .zero)
+        documentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.documentView = documentView
+        documentView.addSubview(rows)
+        focusSetRowsScrollView = scrollView
+        installFocusSetSidebarHoverObserver(scrollView)
+        let buttons = makeFocusSetCountButtons()
+        section.addSubview(scrollView)
+        container.addSubview(section)
+        container.addSubview(buttons)
+        sidebar.addSubview(container)
+        NSLayoutConstraint.activate([
+            container.topAnchor.constraint(equalTo: sidebar.topAnchor),
+            container.leadingAnchor.constraint(equalTo: sidebar.leadingAnchor),
+            container.trailingAnchor.constraint(equalTo: sidebar.trailingAnchor),
+            container.bottomAnchor.constraint(equalTo: sidebar.bottomAnchor),
+            documentView.widthAnchor.constraint(equalTo: scrollView.contentView.widthAnchor),
+            documentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.contentView.heightAnchor),
+            rows.topAnchor.constraint(equalTo: documentView.topAnchor),
+            rows.leadingAnchor.constraint(equalTo: documentView.leadingAnchor),
+            rows.trailingAnchor.constraint(equalTo: documentView.trailingAnchor),
+            rows.bottomAnchor.constraint(lessThanOrEqualTo: documentView.bottomAnchor),
+            section.topAnchor.constraint(equalTo: container.topAnchor, constant: TableGroupView.padding),
+            section.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: TableGroupView.padding),
+            section.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -TableGroupView.padding),
+            section.bottomAnchor.constraint(equalTo: buttons.topAnchor, constant: -TableGroupView.padding),
+            scrollView.topAnchor.constraint(equalTo: section.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: section.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: section.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: section.bottomAnchor),
+            buttons.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: TableGroupView.sidebarToolRowHorizontalPadding),
+            buttons.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -TableGroupView.sidebarToolRowHorizontalPadding),
+            buttons.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -TableGroupView.padding),
+        ])
+        return sidebar
+    }
+
+    private func makeFocusSetCountButtons() -> NSView {
+        let plus = NSImage.fromSymbol(.plus, pointSize: 11)
+        let minus = NSImage.fromSymbol(.minus, pointSize: 11)
+        let buttons = DesignSystemSegmentedControl(
+            images: [plus, minus],
+            trackingMode: .momentary,
+            target: self,
+            action: #selector(focusSetCountButtonClicked(_:)))
+        DesignSystemControlStyler.styleSegmentedControl(buttons)
+        buttons.setWidth(28, forSegment: 0)
+        buttons.setWidth(28, forSegment: 1)
+        buttons.toolTip = NSLocalizedString("Add or remove Focus Sets", comment: "")
+        buttons.setAccessibilityLabel(NSLocalizedString("Focus Set actions", comment: ""))
+        focusSetCountButtons = buttons
+        let row = StackView([buttons], .horizontal, false)
+        row.alignment = .leading
+        return row
+    }
+
+    private func makeFocusSetDetailPane() -> NSView {
+        let pane = NSView()
+        pane.translatesAutoresizingMaskIntoConstraints = false
+        pane.widthAnchor.constraint(equalToConstant: focusSetDetailWidth).isActive = true
+        focusSetDetailPane = pane
+        return pane
+    }
+
+    private var focusSetDetailWidth: CGFloat {
+        contentWidth - focusSetSidebarWidth - DesignSystem.Metrics.sectionGap
+    }
+
+    private var focusSetDetailTableWidth: CGFloat {
+        focusSetDetailWidth - 2 * TableGroupView.padding
+    }
+
+    private func refreshFocusSetManager() {
+        selectedFocusSetIdentifier = FocusSetSettingsResolver.selectedFocusSetIdentifier(
+            preferredIdentifier: selectedFocusSetIdentifier,
+            sets: configuration.sets)
+        refreshFocusSetRows()
+        rebuildFocusSetDetail()
+        refreshFocusSetCountButtons()
+    }
+
+    private func refreshFocusSetRows() {
+        guard let rowsStack = focusSetRowsStackView else { return }
+        setHoveredFocusSetRow(nil)
+        rowsStack.arrangedSubviews.forEach {
+            rowsStack.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
+        while focusSetRows.count < configuration.sets.count {
+            focusSetRows.append(makeFocusSetRow())
+        }
+        if focusSetRows.count > configuration.sets.count {
+            focusSetRows.removeLast(focusSetRows.count - configuration.sets.count)
         }
         for (index, focusSet) in configuration.sets.enumerated() {
-            let controls = makeSetControls(for: focusSet, at: index)
-            let candidateCountLabel = makeCandidateCountLabel(for: focusSet)
-            candidateCountLabels[focusSet.id] = candidateCountLabel
-            _ = table.addRow(leftViews: [TableGroupView.makeText(focusSet.name)],
-                             rightViews: [controls],
-                             secondaryViews: [candidateCountLabel])
+            let row = focusSetRows[index]
+            row.setContent(focusSet.name, candidateCountLabel(for: focusSet))
+            row.setSelected(focusSet.id == selectedFocusSetIdentifier)
+            rowsStack.addArrangedSubview(row)
+            row.widthAnchor.constraint(equalTo: rowsStack.widthAnchor).isActive = true
+            row.heightAnchor.constraint(equalToConstant: focusSetSidebarRowHeight).isActive = true
+            if index < configuration.sets.count - 1 {
+                let separator = sidebarSeparatorView()
+                rowsStack.addArrangedSubview(separator)
+                separator.leadingAnchor.constraint(equalTo: rowsStack.leadingAnchor, constant: TableGroupView.padding).isActive = true
+                separator.trailingAnchor.constraint(equalTo: rowsStack.trailingAnchor, constant: -TableGroupView.padding).isActive = true
+                separator.heightAnchor.constraint(equalToConstant: TableGroupView.borderWidth).isActive = true
+            }
         }
-        let add = DesignSystemControlStyler.makeButton(NSLocalizedString("Add Focus Set", comment: ""), target: self, action: #selector(addFocusSet(_:)))
-        _ = table.addRow(leftText: nil, rightViews: [add])
+        syncFocusSetSidebarHoverState()
+        SettingsWindow.shared?.refreshSectionSearchContent("focusSets")
+    }
+
+    private func makeFocusSetRow() -> SidebarListRow {
+        let row = SidebarListRow()
+        row.onClick = { [weak self, weak row] _, _ in
+            guard let self,
+                  let row,
+                  let index = self.focusSetRows.firstIndex(where: { $0 === row }) else { return }
+            self.selectFocusSet(at: index)
+            self.focusSetSidebarSection?.window?.makeFirstResponder(self.focusSetSidebarSection)
+        }
+        row.onMouseEntered = { [weak self, weak row] _, _ in
+            self?.setHoveredFocusSetRow(row)
+        }
+        row.onMouseExited = { [weak self] _, _ in
+            self?.setHoveredFocusSetRow(nil)
+        }
+        return row
+    }
+
+    private func selectFocusSet(at index: Int) {
+        guard configuration.sets.indices.contains(index) else { return }
+        selectedFocusSetIdentifier = configuration.sets[index].id
+        focusSetRows.enumerated().forEach { rowIndex, row in
+            row.setSelected(rowIndex == index)
+        }
+        focusSetRows[index].scrollToVisible(focusSetRows[index].bounds)
+        rebuildFocusSetDetail()
+        refreshFocusSetCountButtons()
+    }
+
+    private func moveFocusSetSelection(_ direction: SidebarListContainer.ArrowDirection) {
+        guard !configuration.sets.isEmpty else { return }
+        let currentIndex = configuration.sets.firstIndex { $0.id == selectedFocusSetIdentifier } ?? 0
+        let nextIndex: Int
+        switch direction {
+        case .up:
+            nextIndex = max(0, currentIndex - 1)
+        case .down:
+            nextIndex = min(configuration.sets.count - 1, currentIndex + 1)
+        }
+        guard nextIndex != currentIndex else { return }
+        selectFocusSet(at: nextIndex)
+    }
+
+    private func rebuildFocusSetDetail() {
+        guard let pane = focusSetDetailPane else { return }
+        pane.subviews.forEach { $0.removeFromSuperview() }
+        includedApplicationsLabel = nil
+        matchingWindowsLabel = nil
+        let table = makeFocusSetDetailTable()
+        pane.addSubview(table)
+        NSLayoutConstraint.activate([
+            table.topAnchor.constraint(equalTo: pane.topAnchor, constant: TableGroupView.padding),
+            table.leadingAnchor.constraint(equalTo: pane.leadingAnchor, constant: TableGroupView.padding),
+            table.trailingAnchor.constraint(equalTo: pane.trailingAnchor, constant: -TableGroupView.padding),
+        ])
+    }
+
+    private func makeFocusSetDetailTable() -> TableGroupView {
+        let table = TableGroupView(
+            title: NSLocalizedString("Focus Sets", comment: ""),
+            subTitle: Self.focusSetsDetailSubtitle,
+            width: focusSetDetailTableWidth)
+        guard let focusSet = selectedFocusSet else {
+            let add = DesignSystemControlStyler.makeButton(
+                NSLocalizedString("Add Focus Set", comment: ""),
+                target: self,
+                action: #selector(addFocusSet(_:)))
+            _ = table.addRow(
+                leftText: NSLocalizedString("No Focus Sets", comment: ""),
+                rightViews: [add],
+                subText: NSLocalizedString("Create a Focus Set to browse the applications you use together.", comment: ""))
+            return table
+        }
+        let shortcut = makeDetailValueLabel(focusSet.shortcutKeyEquivalent ?? NSLocalizedString("Not assigned", comment: ""))
+        let applications = makeDetailValueLabel(includedApplicationLabel(for: focusSet))
+        let windows = makeDetailValueLabel(matchingWindowLabel(for: focusSet))
+        includedApplicationsLabel = applications
+        matchingWindowsLabel = windows
+        _ = table.addRow(leftText: NSLocalizedString("Name", comment: ""),
+                         rightViews: [makeDetailValueLabel(focusSet.name)])
+        _ = table.addRow(leftText: NSLocalizedString("Shortcut", comment: ""),
+                         rightViews: [shortcut])
+        _ = table.addRow(leftText: NSLocalizedString("Included Applications", comment: ""),
+                         rightViews: [applications])
+        _ = table.addRow(leftText: NSLocalizedString("Matching windows", comment: ""),
+                         rightViews: [windows])
+        if let index = configuration.sets.firstIndex(where: { $0.id == focusSet.id }) {
+            let move = NSLocalizedString("Move Up", comment: "") + " / " + NSLocalizedString("Move Down", comment: "")
+            _ = table.addRow(leftText: move, rightViews: [makeReorderMenu(for: focusSet, at: index)])
+        }
+        let edit = DesignSystemControlStyler.makeButton(
+            NSLocalizedString("Edit Focus Set…", comment: ""),
+            target: self,
+            action: #selector(editSelectedFocusSet(_:)))
+        _ = table.addRow(leftText: nil, rightViews: [edit])
         return table
     }
 
-    private func makeCandidateCountLabel(for focusSet: FocusSet) -> NSTextField {
-        let label = NSTextField(wrappingLabelWithString: candidateCountLabel(for: focusSet))
-        label.font = NSFont.systemFont(ofSize: 12)
+    private func makeDetailValueLabel(_ value: String) -> NSTextField {
+        let label = NSTextField(labelWithString: value)
         label.textColor = .secondaryLabelColor
-        label.alignment = .left
-        label.lineBreakMode = .byWordWrapping
-        label.maximumNumberOfLines = 0
+        label.alignment = .right
+        label.lineBreakMode = .byTruncatingTail
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
         return label
     }
 
-    private func refreshCandidateCountLabels() {
-        for focusSet in configuration.sets {
-            candidateCountLabels[focusSet.id]?.stringValue = candidateCountLabel(for: focusSet)
-        }
-    }
-
-    private func makeSetControls(for focusSet: FocusSet, at index: Int) -> NSStackView {
-        let edit = DesignSystemControlStyler.makeButton(NSLocalizedString("Edit", comment: ""), target: self, action: #selector(editFocusSet(_:)))
-        edit.identifier = NSUserInterfaceItemIdentifier(focusSet.id.uuidString)
-        let delete = DesignSystemControlStyler.makeButton(NSLocalizedString("Delete", comment: ""), destructive: true)
-        delete.onAction = { [weak self] _ in self?.deleteFocusSet(with: focusSet.id) }
-        let move = makeReorderMenu(for: focusSet, at: index)
-        let controls = NSStackView(views: [move, edit, delete])
-        controls.orientation = .horizontal
-        controls.alignment = .centerY
-        controls.spacing = TableGroupView.toolRowSpacing
-        controls.translatesAutoresizingMaskIntoConstraints = false
-        return controls
+    private var selectedFocusSet: FocusSet? {
+        guard let selectedFocusSetIdentifier else { return nil }
+        return configuration.sets.first { $0.id == selectedFocusSetIdentifier }
     }
 
     private func makeReorderMenu(for focusSet: FocusSet, at index: Int) -> PopupButtonLikeSystemSettings {
@@ -241,15 +471,28 @@ final class FocusSetSettingsView: NSView {
     }
 
     private func candidateCountLabel(for focusSet: FocusSet) -> String {
+        includedApplicationLabel(for: focusSet) + " · " + matchingWindowLabel(for: focusSet)
+    }
+
+    private func includedApplicationLabel(for focusSet: FocusSet) -> String {
+        let count = FocusSetSettingsResolver.includedApplicationCount(focusSet.rules)
+        if count == 1 { return NSLocalizedString("1 included application", comment: "") }
+        return String(format: NSLocalizedString("%d included applications", comment: ""), count)
+    }
+
+    private func matchingWindowLabel(for focusSet: FocusSet) -> String {
         let count = candidateCounts[focusSet.id] ?? 0
-        let applicationCount = FocusSetSettingsResolver.includedApplicationCount(focusSet.rules)
-        let applications = applicationCount == 1
-            ? NSLocalizedString("1 included application", comment: "")
-            : String(format: NSLocalizedString("%d included applications", comment: ""), applicationCount)
-        let windows = count == 1
-            ? NSLocalizedString("1 matching window", comment: "")
-            : String(format: NSLocalizedString("%d matching windows", comment: ""), count)
-        return applications + " · " + windows
+        if count == 1 { return NSLocalizedString("1 matching window", comment: "") }
+        return String(format: NSLocalizedString("%d matching windows", comment: ""), count)
+    }
+
+    private func refreshCandidateCountPresentation() {
+        for (index, focusSet) in configuration.sets.enumerated() where index < focusSetRows.count {
+            focusSetRows[index].setSummary(candidateCountLabel(for: focusSet))
+        }
+        guard let focusSet = selectedFocusSet else { return }
+        includedApplicationsLabel?.stringValue = includedApplicationLabel(for: focusSet)
+        matchingWindowsLabel?.stringValue = matchingWindowLabel(for: focusSet)
     }
 
     private func liveApplications() -> [FocusSetApplication] {
@@ -280,15 +523,23 @@ final class FocusSetSettingsView: NSView {
         App.refreshOpenUiAfterFocusSetConfigurationChange()
     }
 
-    @objc private func addFocusSet(_ sender: NSButton) {
+    @objc private func addFocusSet(_ sender: NSControl) {
         let focusSet = FocusSet(name: NSLocalizedString("New Focus Set", comment: ""), rules: [])
         showFocusSetEditor(focusSet)
     }
 
-    @objc private func editFocusSet(_ sender: NSButton) {
-        guard let value = sender.identifier?.rawValue,
-              let identifier = UUID(uuidString: value),
-              let focusSet = configuration.sets.first(where: { $0.id == identifier }) else { return }
+    @objc private func focusSetCountButtonClicked(_ sender: NSSegmentedControl) {
+        let segment = sender.selectedSegment
+        sender.selectedSegment = -1
+        if segment == 0 {
+            addFocusSet(sender)
+        } else if segment == 1 {
+            deleteSelectedFocusSet()
+        }
+    }
+
+    @objc private func editSelectedFocusSet(_ sender: NSButton) {
+        guard let focusSet = selectedFocusSet else { return }
         showFocusSetEditor(focusSet)
     }
 
@@ -327,8 +578,14 @@ final class FocusSetSettingsView: NSView {
            FocusSetShortcutBindingResolver.focusSetIdentifier(from: actionIdentifier) == nil {
             ControlsTab.unassignShortcutConflict(actionIdentifier)
         }
+        selectedFocusSetIdentifier = focusSet.id
         refresh()
         App.refreshOpenUiAfterFocusSetConfigurationChange()
+    }
+
+    private func deleteSelectedFocusSet() {
+        guard let identifier = selectedFocusSetIdentifier else { return }
+        deleteFocusSet(with: identifier)
     }
 
     private func deleteFocusSet(with identifier: UUID) {
@@ -347,10 +604,67 @@ final class FocusSetSettingsView: NSView {
             refresh()
             return
         }
-        configuration = persisted
-        refreshCandidateCounts()
-        rebuildContent()
+        refresh()
         App.refreshOpenUiAfterFocusSetConfigurationChange()
+    }
+
+    private func refreshFocusSetCountButtons() {
+        focusSetCountButtons?.setEnabled(true, forSegment: 0)
+        focusSetCountButtons?.setEnabled(selectedFocusSetIdentifier != nil, forSegment: 1)
+    }
+
+    private func installFocusSetSidebarHoverObserver(_ scrollView: NSScrollView) {
+        if let focusSetRowsScrollObserver {
+            NotificationCenter.default.removeObserver(focusSetRowsScrollObserver)
+        }
+        focusSetRowsScrollObserver = NotificationCenter.default.addObserver(
+            forName: NSView.boundsDidChangeNotification,
+            object: scrollView.contentView,
+            queue: .main
+        ) { [weak self] _ in
+            self?.syncFocusSetSidebarHoverState()
+        }
+    }
+
+    private func setHoveredFocusSetRow(_ row: SidebarListRow?) {
+        focusSetRows.forEach { $0.setHovered($0 === row) }
+    }
+
+    private func syncFocusSetSidebarHoverState() {
+        guard let scrollView = focusSetRowsScrollView,
+              let window = scrollView.window else { return }
+        let location = scrollView.convert(window.mouseLocationOutsideOfEventStream, from: nil)
+        guard scrollView.bounds.contains(location),
+              let documentView = scrollView.documentView else {
+            setHoveredFocusSetRow(nil)
+            return
+        }
+        let locationInDocument = documentView.convert(window.mouseLocationOutsideOfEventStream, from: nil)
+        setHoveredFocusSetRow(enclosingFocusSetRow(documentView.hitTest(locationInDocument)))
+    }
+
+    private func enclosingFocusSetRow(_ view: NSView?) -> SidebarListRow? {
+        var current = view
+        while let candidate = current {
+            if let row = candidate as? SidebarListRow { return row }
+            current = candidate.superview
+        }
+        return nil
+    }
+
+    private func clearFocusSetManagerReferences() {
+        if let focusSetRowsScrollObserver {
+            NotificationCenter.default.removeObserver(focusSetRowsScrollObserver)
+            self.focusSetRowsScrollObserver = nil
+        }
+        focusSetRows.removeAll()
+        focusSetRowsStackView = nil
+        focusSetRowsScrollView = nil
+        focusSetSidebarSection = nil
+        focusSetDetailPane = nil
+        includedApplicationsLabel = nil
+        matchingWindowsLabel = nil
+        focusSetCountButtons = nil
     }
 
     @objc private func openAppearanceSettings(_ sender: NSButton) {

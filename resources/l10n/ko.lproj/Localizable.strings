@@ -20,6 +20,7 @@
 "Add a running app" = "실행 중인 앱 추가";
 "Add an app from disk" = "디스크에서 앱 추가";
 "Add Focus Set" = "집중 세트 추가";
+"Add or remove Focus Sets" = "집중 세트 추가 또는 제거";
 "Additional controls" = "추가 컨트롤";
 "Advanced" = "고급";
 "After keys are released" = "키를 놓은 후";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "주기적으로 업데이트 확인";
 "Check for updates…" = "업데이트 확인…";
 "Check permissions…" = "권한 확인…";
+"Choose a Focus Set to review its shortcut and included applications." = "집중 세트를 선택하여 단축키와 포함된 앱을 확인하십시오.";
 "Choose the applications whose windows belong to this Focus Set." = "이 포커스 세트에 윈도우를 포함할 앱을 선택하십시오.";
 "Close window" = "윈도우 닫기";
 "Conflicting shortcut" = "충돌하는 단축키";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "응용 프로그램 폴더로 이동할 수 없습니다";
 "Couldn't submit feedback" = "피드백을 제출할 수 없습니다";
 "Crash reports policy" = "충돌 보고서 정책";
-"Create a set to browse the applications you use together." = "함께 사용하는 응용 프로그램을 찾아볼 세트를 생성합니다.";
+"Create a Focus Set to browse the applications you use together." = "함께 사용하는 앱을 살펴볼 집중 세트를 생성하십시오.";
 "Create GitHub issue" = "GitHub 이슈 생성";
 "Cursor follows focus" = "커서가 포커스를 따라감";
 "Customize more…" = "더 사용자화…";
 "Dark" = "다크";
 "Debug tools" = "디버그 도구";
-"Delete" = "삭제";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "직접 포커스 세트 단축키는 표준 모양과 윈도우 구성 방식을 사용합니다.";
 "Disabled" = "비활성화됨";
 "Do Not Move" = "이동하지 않음";
@@ -80,7 +81,7 @@
 "Don’t send" = "보내지 않음";
 "e.g. com.example.app" = "예: com.example.app";
 "e.g. Debug" = "예: Debug";
-"Edit" = "편집";
+"Edit Focus Set…" = "집중 세트 편집…";
 "Editing “%@”" = "‘%@’ 편집 중";
 "End" = "끝";
 "Exceptions" = "예외";
@@ -89,6 +90,8 @@
 "Filtering" = "필터링";
 "Focus" = "포커스";
 "Focus selected window" = "선택한 윈도우에 포커스";
+"Focus Set actions" = "집중 세트 동작";
+"Focus Set Behavior" = "집중 세트 동작 방식";
 "Focus Sets" = "집중 세트";
 "Fullscreen/Defullscreen window" = "윈도우 전체 화면 전환";
 "General" = "일반";
@@ -116,13 +119,12 @@
 "Light" = "라이트";
 "Lock search" = "검색 잠그기";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS는 ⌘⌥⎋, ⌘⌥⇧⎋, ⌘⌥⇧⌃⎋를 강제 종료용으로 예약하며 해제할 수 없습니다. ScryTab은 이를 사용할 수 없습니다.\n\n변경하면 이 중 하나가 %@에 할당됩니다.";
+"Matching windows" = "일치하는 윈도우";
 "Medium" = "보통";
 "Middle" = "가운데";
 "Minimize/Deminimize window" = "윈도우 최소화/복원";
 "Miscellaneous" = "기타";
 "Move Down" = "아래로 이동";
-"Move Focus Set Down" = "집중 세트 아래로 이동";
-"Move Focus Set Up" = "집중 세트 위로 이동";
 "Move to Applications Folder" = "응용 프로그램 폴더로 이동";
 "Move to Applications folder?" = "응용 프로그램 폴더로 이동하시겠습니까?";
 "Move Up" = "위로 이동";
@@ -139,6 +141,7 @@
 "Non-active apps" = "비활성 앱";
 "Non-visible Spaces" = "보이지 않는 Space";
 "Not allowed" = "허용되지 않음";
+"Not assigned" = "할당되지 않음";
 "Not currently open" = "현재 열려 있지 않음";
 "OK" = "확인";
 "Only on different screen" = "다른 화면에서만";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "설정 초기화 및 재시작…";
 "Restart Now" = "지금 재시작";
 "Resume preview animation" = "미리보기 애니메이션 재개";
-"Saved Focus Sets" = "저장된 집중 세트";
 "Screen including menu bar" = "메뉴 막대가 있는 화면";
 "Screen including mouse" = "마우스가 있는 화면";
 "Screen showing ScryTab" = "ScryTab이 표시되는 화면";

@@ -20,6 +20,7 @@
 "Add a running app" = "Laufende App hinzufügen";
 "Add an app from disk" = "App vom Datenträger hinzufügen";
 "Add Focus Set" = "Fokus-Set hinzufügen";
+"Add or remove Focus Sets" = "Fokus-Sets hinzufügen oder entfernen";
 "Additional controls" = "Zusätzliche Bedienelemente";
 "Advanced" = "Erweitert";
 "After keys are released" = "Nach Loslassen der Tasten";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Regelmäßig nach Updates suchen";
 "Check for updates…" = "Nach Updates suchen…";
 "Check permissions…" = "Berechtigungen prüfen…";
+"Choose a Focus Set to review its shortcut and included applications." = "Wählen Sie ein Fokus-Set aus, um seinen Kurzbefehl und die enthaltenen Apps anzuzeigen.";
 "Choose the applications whose windows belong to this Focus Set." = "Wähle die Apps aus, deren Fenster zu diesem Fokusset gehören.";
 "Close window" = "Fenster schließen";
 "Conflicting shortcut" = "Kollidierendes Tastenkürzel";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Verschieben in den Programme-Ordner fehlgeschlagen";
 "Couldn't submit feedback" = "Feedback konnte nicht gesendet werden";
 "Crash reports policy" = "Richtlinie für Absturzberichte";
-"Create a set to browse the applications you use together." = "Erstellen Sie ein Set, um die Apps zu durchsuchen, die Sie gemeinsam verwenden.";
+"Create a Focus Set to browse the applications you use together." = "Erstellen Sie ein Fokus-Set für die Apps, die Sie zusammen verwenden.";
 "Create GitHub issue" = "GitHub-Issue erstellen";
 "Cursor follows focus" = "Zeiger folgt dem Fokus";
 "Customize more…" = "Mehr anpassen…";
 "Dark" = "Dunkel";
 "Debug tools" = "Debug-Tools";
-"Delete" = "Löschen";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Direkte Fokus-Set-Kurzbefehle verwenden das Standarderscheinungsbild und die Standardfensterorganisation.";
 "Disabled" = "Deaktiviert";
 "Do Not Move" = "Nicht verschieben";
@@ -80,7 +81,7 @@
 "Don’t send" = "Nicht senden";
 "e.g. com.example.app" = "z. B. com.example.app";
 "e.g. Debug" = "z. B. Debug";
-"Edit" = "Bearbeiten";
+"Edit Focus Set…" = "Fokus-Set bearbeiten…";
 "Editing “%@”" = "„%@“ wird bearbeitet";
 "End" = "Ende";
 "Exceptions" = "Ausnahmen";
@@ -89,6 +90,8 @@
 "Filtering" = "Filtern";
 "Focus" = "Fokus";
 "Focus selected window" = "Ausgewähltes Fenster fokussieren";
+"Focus Set actions" = "Fokus-Set-Aktionen";
+"Focus Set Behavior" = "Verhalten von Fokus-Sets";
 "Focus Sets" = "Fokus-Sets";
 "Fullscreen/Defullscreen window" = "Fenster in Vollbild/aus Vollbild";
 "General" = "Allgemein";
@@ -116,13 +119,12 @@
 "Light" = "Hell";
 "Lock search" = "Suche sperren";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserviert ⌘⌥⎋, ⌘⌥⇧⎋ und ⌘⌥⇧⌃⎋ für „Sofort beenden“ und sie können nicht freigegeben werden. ScryTab kann sie nicht verwenden.\n\nIhre Änderung würde eines davon zuweisen an: %@.";
+"Matching windows" = "Passende Fenster";
 "Medium" = "Mittel";
 "Middle" = "Mitte";
 "Minimize/Deminimize window" = "Fenster minimieren/wiederherstellen";
 "Miscellaneous" = "Sonstiges";
 "Move Down" = "Nach unten";
-"Move Focus Set Down" = "Fokus-Set nach unten verschieben";
-"Move Focus Set Up" = "Fokus-Set nach oben verschieben";
 "Move to Applications Folder" = "In Programme-Ordner verschieben";
 "Move to Applications folder?" = "In Programme-Ordner verschieben?";
 "Move Up" = "Nach oben";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Nicht aktive Apps";
 "Non-visible Spaces" = "Nicht sichtbare Spaces";
 "Not allowed" = "Nicht erlaubt";
+"Not assigned" = "Nicht zugewiesen";
 "Not currently open" = "Zurzeit nicht geöffnet";
 "OK" = "OK";
 "Only on different screen" = "Nur auf anderem Bildschirm";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Einstellungen zurücksetzen und neu starten…";
 "Restart Now" = "Jetzt neu starten";
 "Resume preview animation" = "Vorschauanimation fortsetzen";
-"Saved Focus Sets" = "Gespeicherte Fokus-Sets";
 "Screen including menu bar" = "Bildschirm mit Menüleiste";
 "Screen including mouse" = "Bildschirm mit Mauszeiger";
 "Screen showing ScryTab" = "Bildschirm, der ScryTab anzeigt";

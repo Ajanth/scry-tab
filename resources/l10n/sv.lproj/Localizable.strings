@@ -20,6 +20,7 @@
 "Add a running app" = "Lägg till en app som körs";
 "Add an app from disk" = "Lägg till en app från disk";
 "Add Focus Set" = "Lägg till fokusuppsättning";
+"Add or remove Focus Sets" = "Lägg till eller ta bort fokusuppsättningar";
 "Additional controls" = "Ytterligare kontroller";
 "Advanced" = "Avancerat";
 "After keys are released" = "Efter att tangenterna släppts";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Sök efter uppdateringar regelbundet";
 "Check for updates…" = "Sök efter uppdateringar…";
 "Check permissions…" = "Kontrollera behörigheter…";
+"Choose a Focus Set to review its shortcut and included applications." = "Välj en fokusuppsättning för att se dess kortkommando och inkluderade appar.";
 "Choose the applications whose windows belong to this Focus Set." = "Välj apparna vars fönster ska tillhöra den här fokusuppsättningen.";
 "Close window" = "Stäng fönster";
 "Conflicting shortcut" = "Kortkommando i konflikt";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Kunde inte flytta till mappen Program";
 "Couldn't submit feedback" = "Kunde inte skicka feedback";
 "Crash reports policy" = "Policy för kraschrapporter";
-"Create a set to browse the applications you use together." = "Skapa en uppsättning för att bläddra bland apparna du använder tillsammans.";
+"Create a Focus Set to browse the applications you use together." = "Skapa en fokusuppsättning för att bläddra bland apparna du använder tillsammans.";
 "Create GitHub issue" = "Skapa GitHub-ärende";
 "Cursor follows focus" = "Markören följer fokus";
 "Customize more…" = "Anpassa mer…";
 "Dark" = "Mörk";
 "Debug tools" = "Felsökningsverktyg";
-"Delete" = "Radera";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Direkta kortkommandon för fokusuppsättningar använder standardutseendet och standardfönsterorganisationen.";
 "Disabled" = "Inaktiverad";
 "Do Not Move" = "Flytta inte";
@@ -80,7 +81,7 @@
 "Don’t send" = "Skicka inte";
 "e.g. com.example.app" = "t.ex. com.example.app";
 "e.g. Debug" = "t.ex. Debug";
-"Edit" = "Redigera";
+"Edit Focus Set…" = "Redigera fokusuppsättning…";
 "Editing “%@”" = "Redigerar ”%@”";
 "End" = "Slut";
 "Exceptions" = "Undantag";
@@ -89,6 +90,8 @@
 "Filtering" = "Filtrering";
 "Focus" = "Fokus";
 "Focus selected window" = "Fokusera valt fönster";
+"Focus Set actions" = "Åtgärder för fokusuppsättningar";
+"Focus Set Behavior" = "Beteende för fokusuppsättningar";
 "Focus Sets" = "Fokusuppsättningar";
 "Fullscreen/Defullscreen window" = "Helskärm/Avsluta helskärm för fönster";
 "General" = "Allmänt";
@@ -116,13 +119,12 @@
 "Light" = "Ljus";
 "Lock search" = "Lås sökning";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserverar ⌘⌥⎋, ⌘⌥⇧⎋ och ⌘⌥⇧⌃⎋ för Tvinga att avsluta och de kan inte frigöras. ScryTab kan inte använda dem.\n\nDin ändring skulle tilldela ett av dessa till: %@.";
+"Matching windows" = "Matchande fönster";
 "Medium" = "Mellan";
 "Middle" = "Mitten";
 "Minimize/Deminimize window" = "Minimera/Avminimera fönster";
 "Miscellaneous" = "Övrigt";
 "Move Down" = "Flytta ned";
-"Move Focus Set Down" = "Flytta fokusuppsättning nedåt";
-"Move Focus Set Up" = "Flytta fokusuppsättning uppåt";
 "Move to Applications Folder" = "Flytta till mappen Program";
 "Move to Applications folder?" = "Flytta till mappen Program?";
 "Move Up" = "Flytta upp";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Icke-aktiva appar";
 "Non-visible Spaces" = "Skrivbord som inte visas";
 "Not allowed" = "Inte tillåten";
+"Not assigned" = "Inte tilldelad";
 "Not currently open" = "Inte öppen för närvarande";
 "OK" = "OK";
 "Only on different screen" = "Endast på annan skärm";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Återställ inställningar och starta om…";
 "Restart Now" = "Starta om nu";
 "Resume preview animation" = "Återuppta förhandsvisningsanimation";
-"Saved Focus Sets" = "Sparade fokusuppsättningar";
 "Screen including menu bar" = "Skärm som innehåller menyraden";
 "Screen including mouse" = "Skärm som innehåller musen";
 "Screen showing ScryTab" = "Skärm som visar ScryTab";

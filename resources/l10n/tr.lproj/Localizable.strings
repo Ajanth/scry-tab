@@ -20,6 +20,7 @@
 "Add a running app" = "Çalışan bir uygulama ekle";
 "Add an app from disk" = "Diskten bir uygulama ekle";
 "Add Focus Set" = "Odak kümesi ekle";
+"Add or remove Focus Sets" = "Odak kümeleri ekle veya kaldır";
 "Additional controls" = "Ek denetimler";
 "Advanced" = "Gelişmiş";
 "After keys are released" = "Tuşlar bırakıldıktan sonra";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Güncellemeleri düzenli olarak denetle";
 "Check for updates…" = "Güncellemeleri denetle…";
 "Check permissions…" = "İzinleri denetle…";
+"Choose a Focus Set to review its shortcut and included applications." = "Kısayolunu ve dahil edilen uygulamaları görmek için bir odak kümesi seçin.";
 "Choose the applications whose windows belong to this Focus Set." = "Pencereleri bu Odak Kümesine ait olan uygulamaları seçin.";
 "Close window" = "Pencereyi kapat";
 "Conflicting shortcut" = "Çakışan kısayol";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Uygulamalar klasörüne taşınamadı";
 "Couldn't submit feedback" = "Geri bildirim gönderilemedi";
 "Crash reports policy" = "Çökme raporları ilkesi";
-"Create a set to browse the applications you use together." = "Birlikte kullandığınız uygulamalara göz atmak için bir küme oluşturun.";
+"Create a Focus Set to browse the applications you use together." = "Birlikte kullandığınız uygulamalara göz atmak için bir odak kümesi oluşturun.";
 "Create GitHub issue" = "GitHub konusu oluştur";
 "Cursor follows focus" = "İmleç odağı izler";
 "Customize more…" = "Daha fazla özelleştir…";
 "Dark" = "Karanlık";
 "Debug tools" = "Hata ayıklama araçları";
-"Delete" = "Sil";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Doğrudan Odak Kümesi kısayolları standart görünümü ve pencere düzenini kullanır.";
 "Disabled" = "Devre dışı";
 "Do Not Move" = "Taşıma";
@@ -80,7 +81,7 @@
 "Don’t send" = "Gönderme";
 "e.g. com.example.app" = "örn. com.example.app";
 "e.g. Debug" = "örn. Debug";
-"Edit" = "Düzenle";
+"Edit Focus Set…" = "Odak kümesini düzenle…";
 "Editing “%@”" = "“%@” düzenleniyor";
 "End" = "Son";
 "Exceptions" = "İstisnalar";
@@ -89,6 +90,8 @@
 "Filtering" = "Filtreleme";
 "Focus" = "Odak";
 "Focus selected window" = "Seçili pencereye odaklan";
+"Focus Set actions" = "Odak kümesi eylemleri";
+"Focus Set Behavior" = "Odak kümelerinin davranışı";
 "Focus Sets" = "Odak kümeleri";
 "Fullscreen/Defullscreen window" = "Pencereyi tam ekran yap/tam ekrandan çıkar";
 "General" = "Genel";
@@ -116,13 +119,12 @@
 "Light" = "Açık";
 "Lock search" = "Aramayı kilitle";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS, ⌘⌥⎋, ⌘⌥⇧⎋ ve ⌘⌥⇧⌃⎋ tuşlarını Çıkmaya Zorla için ayırmıştır ve bunların bağlantısı kaldırılamaz. ScryTab bunları kullanamaz.\n\nYaptığınız değişiklik bunlardan birini şuna atayacaktır: %@.";
+"Matching windows" = "Eşleşen pencereler";
 "Medium" = "Orta";
 "Middle" = "Orta";
 "Minimize/Deminimize window" = "Pencereyi küçült/küçültmeyi geri al";
 "Miscellaneous" = "Çeşitli";
 "Move Down" = "Aşağı Taşı";
-"Move Focus Set Down" = "Odak kümesini aşağı taşı";
-"Move Focus Set Up" = "Odak kümesini yukarı taşı";
 "Move to Applications Folder" = "Uygulamalar Klasörüne Taşı";
 "Move to Applications folder?" = "Uygulamalar klasörüne taşınsın mı?";
 "Move Up" = "Yukarı Taşı";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Etkin olmayan uygulamalar";
 "Non-visible Spaces" = "Görünmeyen Alanlar";
 "Not allowed" = "İzin verilmedi";
+"Not assigned" = "Atanmamış";
 "Not currently open" = "Şu anda açık değil";
 "OK" = "Tamam";
 "Only on different screen" = "Yalnızca farklı ekranda";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Ayarları sıfırla ve yeniden başlat…";
 "Restart Now" = "Şimdi Yeniden Başlat";
 "Resume preview animation" = "Önizleme animasyonunu sürdür";
-"Saved Focus Sets" = "Kaydedilen odak kümeleri";
 "Screen including menu bar" = "Menü çubuğunu içeren ekran";
 "Screen including mouse" = "Fareyi içeren ekran";
 "Screen showing ScryTab" = "ScryTab’ı gösteren ekran";

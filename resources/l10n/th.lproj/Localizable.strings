@@ -20,6 +20,7 @@
 "Add a running app" = "เพิ่มแอปที่กำลังทำงาน";
 "Add an app from disk" = "เพิ่มแอปจากดิสก์";
 "Add Focus Set" = "เพิ่มชุดโฟกัส";
+"Add or remove Focus Sets" = "เพิ่มหรือลบชุดโฟกัส";
 "Additional controls" = "การควบคุมเพิ่มเติม";
 "Advanced" = "ขั้นสูง";
 "After keys are released" = "หลังจากปล่อยปุ่ม";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "ตรวจหาอัปเดตเป็นระยะ";
 "Check for updates…" = "ตรวจหาอัปเดต…";
 "Check permissions…" = "ตรวจสอบสิทธิ์…";
+"Choose a Focus Set to review its shortcut and included applications." = "เลือกชุดโฟกัสเพื่อดูปุ่มลัดและแอปที่รวมอยู่";
 "Choose the applications whose windows belong to this Focus Set." = "เลือกแอปที่มีหน้าต่างอยู่ในชุดโฟกัสนี้";
 "Close window" = "ปิดหน้าต่าง";
 "Conflicting shortcut" = "ทางลัดที่ขัดแย้งกัน";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "ไม่สามารถย้ายไปยังโฟลเดอร์ Applications";
 "Couldn't submit feedback" = "ไม่สามารถส่งคำติชม";
 "Crash reports policy" = "นโยบายรายงานการขัดข้อง";
-"Create a set to browse the applications you use together." = "สร้างชุดเพื่อเลือกดูแอปพลิเคชันที่คุณใช้ร่วมกัน";
+"Create a Focus Set to browse the applications you use together." = "สร้างชุดโฟกัสเพื่อเรียกดูแอปที่คุณใช้ร่วมกัน";
 "Create GitHub issue" = "สร้างปัญหาบน GitHub";
 "Cursor follows focus" = "เคอร์เซอร์ตามโฟกัส";
 "Customize more…" = "ปรับแต่งเพิ่มเติม…";
 "Dark" = "มืด";
 "Debug tools" = "เครื่องมือแก้ไขข้อบกพร่อง";
-"Delete" = "ลบ";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "ปุ่มลัดโดยตรงของชุดโฟกัสใช้รูปลักษณ์มาตรฐานและการจัดระเบียบหน้าต่างมาตรฐาน";
 "Disabled" = "ปิดใช้งาน";
 "Do Not Move" = "ไม่ย้าย";
@@ -80,7 +81,7 @@
 "Don’t send" = "ไม่ส่ง";
 "e.g. com.example.app" = "เช่น com.example.app";
 "e.g. Debug" = "เช่น Debug";
-"Edit" = "แก้ไข";
+"Edit Focus Set…" = "แก้ไขชุดโฟกัส…";
 "Editing “%@”" = "กำลังแก้ไข “%@”";
 "End" = "สิ้นสุด";
 "Exceptions" = "ข้อยกเว้น";
@@ -89,6 +90,8 @@
 "Filtering" = "การกรอง";
 "Focus" = "โฟกัส";
 "Focus selected window" = "โฟกัสหน้าต่างที่เลือก";
+"Focus Set actions" = "การทำงานของชุดโฟกัส";
+"Focus Set Behavior" = "ลักษณะการทำงานของชุดโฟกัส";
 "Focus Sets" = "ชุดโฟกัส";
 "Fullscreen/Defullscreen window" = "เต็มหน้าจอ/ออกจากเต็มหน้าจอ";
 "General" = "ทั่วไป";
@@ -116,13 +119,12 @@
 "Light" = "สว่าง";
 "Lock search" = "ล็อกการค้นหา";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS สงวน ⌘⌥⎋, ⌘⌥⇧⎋ และ ⌘⌥⇧⌃⎋ ไว้สำหรับการบังคับออก และไม่สามารถยกเลิกการกำหนดได้ ScryTab ไม่สามารถใช้ปุ่มเหล่านี้\n\nการเปลี่ยนแปลงของคุณจะกำหนดปุ่มหนึ่งในเหล่านี้ให้กับ: %@";
+"Matching windows" = "หน้าต่างที่ตรงกัน";
 "Medium" = "ปานกลาง";
 "Middle" = "ตรงกลาง";
 "Minimize/Deminimize window" = "ย่อ/เลิกย่อหน้าต่าง";
 "Miscellaneous" = "เบ็ดเตล็ด";
 "Move Down" = "เลื่อนลง";
-"Move Focus Set Down" = "ย้ายชุดโฟกัสลง";
-"Move Focus Set Up" = "ย้ายชุดโฟกัสขึ้น";
 "Move to Applications Folder" = "ย้ายไปยังโฟลเดอร์ Applications";
 "Move to Applications folder?" = "ย้ายไปยังโฟลเดอร์ Applications หรือไม่?";
 "Move Up" = "เลื่อนขึ้น";
@@ -139,6 +141,7 @@
 "Non-active apps" = "แอปที่ไม่ได้ทำงานอยู่";
 "Non-visible Spaces" = "พื้นที่ทำงานที่ไม่ได้แสดง";
 "Not allowed" = "ไม่อนุญาต";
+"Not assigned" = "ยังไม่ได้กำหนด";
 "Not currently open" = "ไม่ได้เปิดอยู่ในขณะนี้";
 "OK" = "ตกลง";
 "Only on different screen" = "เฉพาะบนหน้าจอที่ต่างกัน";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "รีเซ็ตการตั้งค่าและรีสตาร์ท…";
 "Restart Now" = "รีสตาร์ททันที";
 "Resume preview animation" = "เล่นภาพเคลื่อนไหวตัวอย่างต่อ";
-"Saved Focus Sets" = "ชุดโฟกัสที่บันทึกไว้";
 "Screen including menu bar" = "หน้าจอที่มีแถบเมนู";
 "Screen including mouse" = "หน้าจอที่มีเมาส์";
 "Screen showing ScryTab" = "หน้าจอที่แสดง ScryTab";
