@@ -130,7 +130,8 @@ final class FocusSetsStore {
     }
 
     private func normalizedShortcut(_ keyEquivalent: String?) -> String? {
-        guard let keyEquivalent, !keyEquivalent.isEmpty else { return nil }
+        guard let keyEquivalent,
+              FocusSetShortcutBindingResolver.trigger(for: keyEquivalent) != nil else { return nil }
         return keyEquivalent
     }
 

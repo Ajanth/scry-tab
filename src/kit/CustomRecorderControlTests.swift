@@ -19,8 +19,8 @@ final class CustomRecorderControlTests: XCTestCase {
         XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("holdShortcut", Shortcut(keyEquivalent: "⌘e")!), .modifiersOnlyButContainsKeycode)
     }
 
-    /// Direct Focus Set shortcuts require a non-modifier key without changing ordinary recorder acceptance.
-    func testIsShortcutAcceptable_directFocusSetRequiresNonModifierKey() {
+    /// Direct Focus Set shortcuts require exactly one modifier plus a non-modifier key without changing ordinary recorder acceptance.
+    func testIsShortcutAcceptable_directFocusSetRequiresOneModifierAndNonModifierKey() {
         let originalShortcuts = ControlsTab.shortcuts
         defer { ControlsTab.shortcuts = originalShortcuts }
         ControlsTab.shortcuts = [:]
@@ -32,6 +32,12 @@ final class CustomRecorderControlTests: XCTestCase {
         XCTAssertEqual(
             CustomRecorderControlTestable.isShortcutAcceptable(directIdentifier, Shortcut(keyEquivalent: "⌥1")!),
             .accepted)
+        XCTAssertEqual(
+            CustomRecorderControlTestable.isShortcutAcceptable(directIdentifier, Shortcut(keyEquivalent: "1")!),
+            .nonModifierKeyRequired)
+        XCTAssertEqual(
+            CustomRecorderControlTestable.isShortcutAcceptable(directIdentifier, Shortcut(keyEquivalent: "⌘⌥1")!),
+            .nonModifierKeyRequired)
         XCTAssertEqual(
             CustomRecorderControlTestable.isShortcutAcceptable("previousWindowShortcut", Shortcut(keyEquivalent: "⌥")!),
             .accepted)

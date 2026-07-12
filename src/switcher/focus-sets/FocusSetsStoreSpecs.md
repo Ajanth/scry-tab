@@ -14,7 +14,7 @@ uses only Foundation and receives its `UserDefaults` instance at construction.
   while their otherwise valid set remains, including when that leaves an empty set.
 - A rule requires a non-blank stable application bundle identifier. Cached application names are
   presentation-only, so a saved name remains available when its application is not running.
-- A missing, empty, or non-string direct shortcut decodes as unassigned without discarding its set.
+- A missing, empty, non-string, or malformed direct shortcut decodes as unassigned without discarding its set. A valid direct shortcut has exactly one modifier and one non-modifier key.
 - Writes preserve unknown root, set, and rule fields from the existing JSON when the stable set
   identifier and rule bundle identifier are each unambiguous, while updating known fields.
 - Reading a legacy V1/V2 configuration migrates it to the current version while preserving unknown
@@ -36,6 +36,7 @@ Mirrors `FocusSetsStoreTests.swift` 1:1.
 - **testWriteDropsDuplicateSetIdentifiers** — an explicit configuration with duplicate set identifiers persists only the first set.
 - **testReadKeepsCachedNameForUnavailableApplication** — a saved display name remains readable without any live-application dependency.
 - **testMalformedShortcutValueIsIgnoredWithoutDroppingSet** — a malformed optional shortcut is ignored while its otherwise valid set remains.
+- **testReadClearsShortcutWithoutExactlyOneModifierAndOneKey** — a persisted multi-modifier shortcut is removed while its Focus Set remains available.
 
 ### B. Forward compatibility
 - **testReadMigratesV1WhilePreservingUnknownFields** — a V1 configuration migrates to the current version without losing unknown root or set fields.

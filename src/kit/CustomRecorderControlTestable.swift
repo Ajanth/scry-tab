@@ -17,7 +17,7 @@ class CustomRecorderControlTestable {
     static func isShortcutAcceptable(_ candidateId: String, _ candidateShortcut: Shortcut) -> ShortcutAcceptance {
         assert(isWellFormedCandidateId(candidateId), "malformed candidateId '\(candidateId)' reached the conflict check — recycled editor id/identifier drift?")
         if FocusSetShortcutBindingResolver.focusSetIdentifier(from: candidateId) != nil,
-           candidateShortcut.keyCode == .none {
+           FocusSetShortcutBindingResolver.trigger(for: candidateShortcut) == nil {
             return .nonModifierKeyRequired
         }
         if let currentShortcutWithSameId = ControlsTab.shortcuts[candidateId]?.shortcut,

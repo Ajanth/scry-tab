@@ -14,8 +14,9 @@ existing ScryTab shortcut or a macOS-reserved one.
 - A normal key+modifier combo is **accepted**.
 - A "modifiers only" recording is rejected — *unless* it actually carries a keycode (the
   modifiers-only-but-contains-keycode case is accepted).
-- Direct Focus Set shortcuts require a non-modifier key. Modifier-only chords are rejected before
-  conflict resolution, while ordinary hold and active-switcher recorders retain existing behavior.
+- Direct Focus Set shortcuts require exactly one modifier and a non-modifier key. Incomplete or
+  multi-modifier chords are rejected before conflict resolution, while ordinary hold and
+  active-switcher recorders retain existing behavior.
 - A combo that **conflicts** with an already-bound ScryTab shortcut is rejected.
 - A press (`nextWindowShortcut`) candidate is checked against the local shortcuts (arrow keys, vim
   keys, statics like Space) combined with its **own** hold — not just the other shortcuts' holds.
@@ -37,7 +38,7 @@ Mirrors `CustomRecorderControlTests.swift` 1:1.
 ### isShortcutAcceptable
 - **testIsShortcutAcceptable_accepted** — a valid key+modifier combo is accepted.
 - **testIsShortcutAcceptable_modifiersOnlyButContainsKeycode** — modifiers-only flags but with a real keycode → accepted.
-- **testIsShortcutAcceptable_directFocusSetRequiresNonModifierKey** — a direct Focus Set binding rejects modifier-only input, accepts a chord with a real key, and leaves ordinary recorder acceptance unchanged.
+- **testIsShortcutAcceptable_directFocusSetRequiresOneModifierAndNonModifierKey** — a direct Focus Set binding requires exactly one modifier plus a real key, while ordinary recorder acceptance remains unchanged.
 - **testIsShortcutAcceptable_conflictWithExistingShortcut** — collides with an existing shortcut → rejected.
 - **testIsShortcutAcceptable_holdChangeStripsOldHoldFromCombinedNextWindow** — changing a shortcut's hold (e.g. ⌘→⌥) so its chord now duplicates another shortcut is detected; the same-index nextWindow is stored COMBINED with the old hold, so the old hold is stripped before applying the new one (else ⌥⌘+Tab is compared instead of ⌥+Tab and the conflict is missed).
 - **testIsShortcutAcceptable_pressConflictsWithLocalShortcutsUnderItsOwnHold** — recording a press that collides with a local shortcut (arrow keys, statics like Space) under the SAME shortcut's hold is rejected. Regression: the old-combos exclusion dropped the candidate's own hold, so the collision was only caught when another shortcut happened to share the same hold modifiers — the default double-⌥ holds masked the bug (⌥+→ flagged by luck), while ⌃+→ recorded with no conflict dialog after the arrow-keys toggle had unassigned it.

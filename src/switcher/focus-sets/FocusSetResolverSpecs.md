@@ -2,7 +2,7 @@
 
 ## Summary
 
-`FocusSetsConfiguration`, `FocusSet`, and `FocusSetRule` are Foundation-only Codable values for
+`FocusSetsConfiguration`, `FocusSet`, and `FocusSetRule` are Codable values for
 the separate Focus Sets persistence layer. A Focus Set can carry an optional direct-shortcut key
 equivalent, and `FocusSetShortcutBindingResolver` maps it to an action identifier containing the
 exact stable set UUID. `FocusSetResolver` compiles application bundle identifiers into one
@@ -23,7 +23,7 @@ Accessibility, or preference dependency.
 - Empty sets and stale set identifiers safely produce no selected membership.
 - Empty persisted rule identifiers are ignored by the resolver, protecting matching before the
   persistence store can reject malformed rules.
-- Direct shortcut bindings exist only for non-empty saved values. Their action identifier decodes
+- Direct shortcut bindings require exactly one modifier and one non-modifier key. Their action identifier decodes
   to the exact saved UUID, so a stale deleted identifier cannot alias a retained set.
 
 ---
@@ -60,4 +60,5 @@ Accessibility, or preference dependency.
 
 ### F. Direct shortcut bindings
 - **testShortcutBindingsResolveSavedIdentifiersAndSkipMissingValues** — binding resolution emits only configured shortcuts with exact stable action identifiers.
+- **testShortcutBindingsRequireExactlyOneModifierAndOneKey** — zero-modifier, multi-modifier, and modifier-only values cannot become direct Focus Set bindings.
 - **testShortcutActionIdentifierPreservesExactStableIdentifier** — action identifiers decode only their embedded UUID and malformed values cannot alias another set.

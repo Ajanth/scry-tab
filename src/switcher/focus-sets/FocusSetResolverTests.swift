@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+import ShortcutRecorder
 
 final class FocusSetResolverTests: XCTestCase {
 
@@ -273,6 +274,25 @@ final class FocusSetResolverTests: XCTestCase {
         XCTAssertEqual(
             FocusSetShortcutBindingResolver.focusSetIdentifier(from: bindings[0].actionIdentifier),
             bound.id)
+    }
+
+    /// A direct Focus Set trigger has one modifier field and one key field, so zero, multiple, and modifier-only values never bind.
+    func testShortcutBindingsRequireExactlyOneModifierAndOneKey() {
+        let valid = FocusSet(id: UUID(), name: "Valid", rules: [], shortcutKeyEquivalent: "⌃1")
+        let missingModifier = FocusSet(id: UUID(), name: "No modifier", rules: [], shortcutKeyEquivalent: "1")
+        let multipleModifiers = FocusSet(id: UUID(), name: "Two modifiers", rules: [], shortcutKeyEquivalent: "⌃⌥1")
+        let modifierOnly = FocusSet(id: UUID(), name: "Modifier only", rules: [], shortcutKeyEquivalent: "⌃")
+
+        let bindings = FocusSetShortcutBindingResolver.bindings(
+            in: FocusSetsConfiguration(sets: [valid, missingModifier, multipleModifiers, modifierOnly]))
+
+        XCTAssertEqual(bindings.map(\.focusSetIdentifier), [valid.id])
+        XCTAssertEqual(FocusSetShortcutBindingResolver.trigger(for: valid.shortcutKeyEquivalent)?.modifier.modifierFlags,
+                       Shortcut(keyEquivalent: "⌃")?.modifierFlags)
+        XCTAssertNotNil(FocusSetShortcutBindingResolver.trigger(for: valid.shortcutKeyEquivalent)?.key)
+        XCTAssertNil(FocusSetShortcutBindingResolver.trigger(for: missingModifier.shortcutKeyEquivalent))
+        XCTAssertNil(FocusSetShortcutBindingResolver.trigger(for: multipleModifiers.shortcutKeyEquivalent))
+        XCTAssertNil(FocusSetShortcutBindingResolver.trigger(for: modifierOnly.shortcutKeyEquivalent))
     }
 
     /// A deleted action identifier cannot decode as another Focus Set identifier.

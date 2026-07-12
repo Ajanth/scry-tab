@@ -1,4 +1,5 @@
 import Foundation
+import ShortcutRecorder
 
 struct FocusSetsConfiguration: Codable, Equatable {
     static let currentVersion = 3
@@ -60,18 +61,63 @@ struct FocusSetShortcutBinding: Equatable {
     let name: String
 }
 
+struct FocusSetShortcutTrigger {
+    let modifier: Shortcut
+    let key: Shortcut
+}
+
 enum FocusSetShortcutBindingResolver {
     static let actionIdentifierPrefix = "focusSetShortcut:"
+    private static let modifierShortcuts = ["⌘", "⌥", "⌃", "⇧"].compactMap(Shortcut.init(keyEquivalent:))
 
     static func bindings(in configuration: FocusSetsConfiguration) -> [FocusSetShortcutBinding] {
         configuration.sets.compactMap { focusSet in
-            guard let keyEquivalent = focusSet.shortcutKeyEquivalent, !keyEquivalent.isEmpty else { return nil }
+            guard let keyEquivalent = focusSet.shortcutKeyEquivalent,
+                  trigger(for: keyEquivalent) != nil else { return nil }
             return FocusSetShortcutBinding(
                 focusSetIdentifier: focusSet.id,
                 actionIdentifier: actionIdentifier(for: focusSet.id),
                 keyEquivalent: keyEquivalent,
                 name: focusSet.name)
         }
+    }
+
+    static func trigger(for keyEquivalent: String?) -> FocusSetShortcutTrigger? {
+        guard let keyEquivalent,
+              let shortcut = Shortcut(keyEquivalent: keyEquivalent) else { return nil }
+        return trigger(for: shortcut)
+    }
+
+    static func trigger(for shortcut: Shortcut) -> FocusSetShortcutTrigger? {
+        guard shortcut.keyCode != .none,
+              let modifier = modifierShortcut(in: shortcut) else { return nil }
+        return FocusSetShortcutTrigger(
+            modifier: modifier,
+            key: Shortcut(
+                code: shortcut.keyCode,
+                modifierFlags: [],
+                characters: shortcut.characters,
+                charactersIgnoringModifiers: shortcut.charactersIgnoringModifiers))
+    }
+
+    static func isModifierShortcut(_ shortcut: Shortcut) -> Bool {
+        shortcut.keyCode == .none && modifierShortcut(in: shortcut) != nil
+    }
+
+    static func isKeyShortcut(_ shortcut: Shortcut) -> Bool {
+        shortcut.keyCode != .none && shortcut.modifierFlags == []
+    }
+
+    static func shortcut(modifier: Shortcut?, key: Shortcut?) -> Shortcut? {
+        guard let modifier,
+              let key,
+              isModifierShortcut(modifier),
+              isKeyShortcut(key) else { return nil }
+        return Shortcut(
+            code: key.keyCode,
+            modifierFlags: modifier.modifierFlags,
+            characters: key.characters,
+            charactersIgnoringModifiers: key.charactersIgnoringModifiers)
     }
 
     static func actionIdentifier(for focusSetIdentifier: UUID) -> String {
@@ -81,6 +127,14 @@ enum FocusSetShortcutBindingResolver {
     static func focusSetIdentifier(from actionIdentifier: String) -> UUID? {
         guard actionIdentifier.hasPrefix(actionIdentifierPrefix) else { return nil }
         return UUID(uuidString: String(actionIdentifier.dropFirst(actionIdentifierPrefix.count)))
+    }
+
+    private static func modifierShortcut(in shortcut: Shortcut) -> Shortcut? {
+        let matches = modifierShortcuts.filter { shortcut.modifierFlags.contains($0.modifierFlags) }
+        guard matches.count == 1,
+              let modifier = matches.first,
+              shortcut.modifierFlags == modifier.modifierFlags else { return nil }
+        return modifier
     }
 }
 

@@ -52,7 +52,7 @@ final class ShortcutEditor {
     /// Localized labels shared between the recycled shortcut editor and the fixed-bind gesture
     /// editor in `ControlsTab.makeGestureEditor`. Both build the same Trigger row + tab control
     /// shape, so exposing the strings here keeps a single source of truth for each one.
-    static let triggerLabel = NSLocalizedString("Trigger", comment: "")
+    static let triggerLabel = ShortcutTriggerRow.triggerLabel
     static let tabLabelFiltering = NSLocalizedString("Filtering", comment: "")
     static let tabLabelAppearance = NSLocalizedString("Appearance", comment: "")
     static let tabLabelOrdering = NSLocalizedString("Ordering & Grouping", comment: "")
@@ -206,6 +206,42 @@ final class ShortcutEditor {
 
 // MARK: - Trigger row (hold + next-window recorders)
 
+final class ShortcutTriggerRow {
+    static let triggerLabel = NSLocalizedString("Trigger", comment: "")
+    static let holdLabelText = NSLocalizedString("Hold", comment: "")
+    static let andPressText = NSLocalizedString("and press", comment: "")
+    private static let inlineControlSpacing = CGFloat(12)
+    private static let labelToControlSpacing = CGFloat(8)
+
+    let view: NSStackView
+
+    init(holdControl: NSView, pressControl: NSView) {
+        let stack = NSStackView()
+        stack.orientation = .horizontal
+        stack.alignment = .centerY
+        stack.spacing = Self.inlineControlSpacing
+        stack.setContentHuggingPriority(.required, for: .horizontal)
+        stack.setContentCompressionResistancePriority(.required, for: .horizontal)
+        stack.addArrangedSubview(Self.makeInlineLabel(Self.holdLabelText))
+        stack.setCustomSpacing(Self.labelToControlSpacing, after: stack.arrangedSubviews.last!)
+        stack.addArrangedSubview(holdControl)
+        stack.setCustomSpacing(Self.inlineControlSpacing, after: holdControl)
+        stack.addArrangedSubview(Self.makeInlineLabel(Self.andPressText))
+        stack.setCustomSpacing(Self.labelToControlSpacing, after: stack.arrangedSubviews.last!)
+        stack.addArrangedSubview(pressControl)
+        stack.heightAnchor.constraint(equalToConstant: ShortcutEditor.triggerRowContentHeight).isActive = true
+        view = stack
+    }
+
+    private static func makeInlineLabel(_ text: String) -> NSTextField {
+        let label = LabelAndControl.makeLabel(text)
+        label.alignment = .left
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return label
+    }
+}
+
 /// The Trigger row owns two recorders (hold + next-window). They have a cross-reference: the
 /// next-window recorder is restricted to the modifiers of the hold key. On rebind we swap both
 /// recorders' identifiers, refresh both displayed values, and resync `shortcutControls` so other
@@ -214,10 +250,6 @@ final class TriggerBinding {
     let view: NSView
     private let holdRecorder: CustomRecorderControl
     private let nextRecorder: CustomRecorderControl
-    private static let holdLabelText = NSLocalizedString("Hold", comment: "")
-    private static let andPressText = NSLocalizedString("and press", comment: "")
-    private static let inlineControlSpacing = CGFloat(12)
-    private static let labelToControlSpacing = CGFloat(8)
     // The next-window recorder's human-readable name, stored alongside it in `shortcutControls`.
     private static let selectNextText = NSLocalizedString("Select next window", comment: "")
     private var currentIndex: Int = -1
@@ -226,22 +258,7 @@ final class TriggerBinding {
         // Placeholder identifier — replaced in bind().
         holdRecorder = CustomRecorderControl(nil, false, "holdShortcut0")
         nextRecorder = CustomRecorderControl(nil, true, "nextWindowShortcut0")
-
-        let stack = NSStackView()
-        stack.orientation = .horizontal
-        stack.alignment = .centerY
-        stack.spacing = TriggerBinding.inlineControlSpacing
-        stack.setContentHuggingPriority(.required, for: .horizontal)
-        stack.setContentCompressionResistancePriority(.required, for: .horizontal)
-        stack.addArrangedSubview(Self.makeInlineLabel(TriggerBinding.holdLabelText))
-        stack.setCustomSpacing(TriggerBinding.labelToControlSpacing, after: stack.arrangedSubviews.last!)
-        stack.addArrangedSubview(holdRecorder)
-        stack.setCustomSpacing(TriggerBinding.inlineControlSpacing, after: holdRecorder)
-        stack.addArrangedSubview(Self.makeInlineLabel(TriggerBinding.andPressText))
-        stack.setCustomSpacing(TriggerBinding.labelToControlSpacing, after: stack.arrangedSubviews.last!)
-        stack.addArrangedSubview(nextRecorder)
-        stack.heightAnchor.constraint(equalToConstant: ShortcutEditor.triggerRowContentHeight).isActive = true
-        view = stack
+        view = ShortcutTriggerRow(holdControl: holdRecorder, pressControl: nextRecorder).view
 
         // Recorder edits need three things to happen in order:
         // 1. Persist the new shortcut into `Preferences` (via `controlWasChanged`). Otherwise
@@ -266,14 +283,6 @@ final class TriggerBinding {
         }
     }
 
-    private static func makeInlineLabel(_ text: String) -> NSTextField {
-        let label = LabelAndControl.makeLabel(text)
-        label.alignment = .left
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return label
-    }
-
     func bind(toShortcut index: Int) {
         // Clear any previous mapping in `shortcutControls`.
         if currentIndex >= 0 {
@@ -287,7 +296,7 @@ final class TriggerBinding {
         nextRecorder.identifier = NSUserInterfaceItemIdentifier(nextKey)
         holdRecorder.objectValue = Preferences.shortcut(holdKey)
         nextRecorder.objectValue = Preferences.shortcut(nextKey)
-        ControlsTab.shortcutControls[holdKey] = (holdRecorder, TriggerBinding.holdLabelText)
+        ControlsTab.shortcutControls[holdKey] = (holdRecorder, ShortcutTriggerRow.holdLabelText)
         ControlsTab.shortcutControls[nextKey] = (nextRecorder, TriggerBinding.selectNextText)
         // Reapply modifier restriction on the next-window recorder based on the hold shortcut.
         if let holdModifiers = Preferences.shortcut(holdKey)?.modifierFlags {

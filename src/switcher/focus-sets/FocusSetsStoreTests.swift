@@ -239,6 +239,31 @@ final class FocusSetsStoreTests: XCTestCase {
         XCTAssertNil(configuration.sets.first?.shortcutKeyEquivalent)
     }
 
+    /// A legacy multi-modifier shortcut is removed before it can be registered as a direct Focus Set trigger.
+    func testReadClearsShortcutWithoutExactlyOneModifierAndOneKey() throws {
+        let store = try makeStore()
+        let identifier = UUID()
+        try seed([
+            "version": FocusSetsConfiguration.currentVersion,
+            "sets": [
+                [
+                    "id": identifier.uuidString,
+                    "name": "Project",
+                    "rules": [],
+                    "shortcutKeyEquivalent": "⌃⌥1",
+                ],
+            ],
+        ])
+
+        let configuration = store.read()
+        let root = try storedRoot()
+        let storedSet = try XCTUnwrap((root["sets"] as? [[String: Any]])?.first)
+
+        XCTAssertEqual(configuration.sets.map(\.id), [identifier])
+        XCTAssertNil(configuration.sets.first?.shortcutKeyEquivalent)
+        XCTAssertNil(storedSet["shortcutKeyEquivalent"])
+    }
+
     // MARK: - B. Forward compatibility
 
     func testReadMigratesV1WhilePreservingUnknownFields() throws {
