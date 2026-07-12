@@ -20,6 +20,7 @@
 "Add a running app" = "إضافة تطبيق قيد التشغيل";
 "Add an app from disk" = "إضافة تطبيق من القرص";
 "Add Focus Set" = "إضافة مجموعة تركيز";
+"Add or remove Focus Sets" = "إضافة مجموعات التركيز أو إزالتها";
 "Additional controls" = "عناصر تحكم إضافية";
 "Advanced" = "متقدم";
 "After keys are released" = "بعد تحرير المفاتيح";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "البحث عن التحديثات بشكل دوري";
 "Check for updates…" = "البحث عن التحديثات…";
 "Check permissions…" = "التحقق من الأذونات…";
+"Choose a Focus Set to review its shortcut and included applications." = "اختر مجموعة تركيز لعرض الاختصار والتطبيقات المضمنة فيها.";
 "Choose the applications whose windows belong to this Focus Set." = "اختر التطبيقات التي تنتمي نوافذها إلى مجموعة التركيز هذه.";
 "Close window" = "إغلاق النافذة";
 "Conflicting shortcut" = "اختصار متعارض";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "تعذّر النقل إلى مجلد التطبيقات";
 "Couldn't submit feedback" = "تعذّر إرسال الملاحظات";
 "Crash reports policy" = "سياسة تقارير الأعطال";
-"Create a set to browse the applications you use together." = "أنشئ مجموعة لتصفح التطبيقات التي تستخدمها معًا.";
+"Create a Focus Set to browse the applications you use together." = "أنشئ مجموعة تركيز لاستعراض التطبيقات التي تستخدمها معًا.";
 "Create GitHub issue" = "إنشاء مشكلة على GitHub";
 "Cursor follows focus" = "المؤشر يتبع التركيز";
 "Customize more…" = "تخصيص المزيد…";
 "Dark" = "مظلم";
 "Debug tools" = "أدوات التصحيح";
-"Delete" = "حذف";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "تستخدم الاختصارات المباشرة لمجموعات التركيز المظهر القياسي وتنظيم النوافذ القياسي.";
 "Disabled" = "مُعطّل";
 "Do Not Move" = "عدم النقل";
@@ -80,7 +81,7 @@
 "Don’t send" = "عدم الإرسال";
 "e.g. com.example.app" = "مثال: com.example.app";
 "e.g. Debug" = "مثال: Debug";
-"Edit" = "تحرير";
+"Edit Focus Set…" = "تحرير مجموعة التركيز…";
 "Editing “%@”" = "جارٍ تعديل «%@»";
 "End" = "النهاية";
 "Exceptions" = "استثناءات";
@@ -89,6 +90,8 @@
 "Filtering" = "التصفية";
 "Focus" = "التركيز";
 "Focus selected window" = "التركيز على النافذة المحددة";
+"Focus Set actions" = "إجراءات مجموعة التركيز";
+"Focus Set Behavior" = "سلوك مجموعات التركيز";
 "Focus Sets" = "مجموعات التركيز";
 "Fullscreen/Defullscreen window" = "ملء الشاشة/إلغاء ملء الشاشة للنافذة";
 "General" = "عام";
@@ -116,13 +119,12 @@
 "Light" = "فاتح";
 "Lock search" = "قفل البحث";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "يحجز macOS ⌘⌥⎋ و⌘⌥⇧⎋ و⌘⌥⇧⌃⎋ لإنهاء بالقوة ولا يمكن إلغاء ربطها. لا يمكن لـ ScryTab استخدامها.\n\nسيؤدي تغييرك إلى تعيين أحدها إلى: %@.";
+"Matching windows" = "النوافذ المطابقة";
 "Medium" = "متوسط";
 "Middle" = "الوسط";
 "Minimize/Deminimize window" = "تصغير/إلغاء تصغير النافذة";
 "Miscellaneous" = "متفرقات";
 "Move Down" = "نقل لأسفل";
-"Move Focus Set Down" = "نقل مجموعة التركيز لأسفل";
-"Move Focus Set Up" = "نقل مجموعة التركيز لأعلى";
 "Move to Applications Folder" = "النقل إلى مجلد التطبيقات";
 "Move to Applications folder?" = "النقل إلى مجلد التطبيقات؟";
 "Move Up" = "نقل لأعلى";
@@ -139,6 +141,7 @@
 "Non-active apps" = "التطبيقات غير النشطة";
 "Non-visible Spaces" = "المساحات غير المرئية";
 "Not allowed" = "غير مسموح";
+"Not assigned" = "غير معيّن";
 "Not currently open" = "غير مفتوح حاليًا";
 "OK" = "موافق";
 "Only on different screen" = "فقط على شاشة مختلفة";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "إعادة تعيين الإعدادات وإعادة التشغيل…";
 "Restart Now" = "إعادة التشغيل الآن";
 "Resume preview animation" = "استئناف حركة المعاينة";
-"Saved Focus Sets" = "مجموعات التركيز المحفوظة";
 "Screen including menu bar" = "الشاشة التي تتضمن شريط القائمة";
 "Screen including mouse" = "الشاشة التي تتضمن الفأرة";
 "Screen showing ScryTab" = "الشاشة التي تعرض ScryTab";

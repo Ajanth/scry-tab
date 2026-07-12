@@ -20,6 +20,7 @@
 "Add a running app" = "実行中の App を追加";
 "Add an app from disk" = "ディスクから App を追加";
 "Add Focus Set" = "フォーカスセットを追加";
+"Add or remove Focus Sets" = "フォーカスセットを追加または削除";
 "Additional controls" = "追加のコントロール";
 "Advanced" = "詳細";
 "After keys are released" = "キーを離した後";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "アップデートを定期的に確認";
 "Check for updates…" = "アップデートを確認…";
 "Check permissions…" = "権限を確認…";
+"Choose a Focus Set to review its shortcut and included applications." = "フォーカスセットを選択して、ショートカットと含まれるアプリケーションを確認します。";
 "Choose the applications whose windows belong to this Focus Set." = "このフォーカスセットに含めるウインドウのアプリケーションを選択します。";
 "Close window" = "ウインドウを閉じる";
 "Conflicting shortcut" = "ショートカットの競合";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "アプリケーションフォルダに移動できませんでした";
 "Couldn't submit feedback" = "フィードバックを送信できませんでした";
 "Crash reports policy" = "クラッシュレポートのポリシー";
-"Create a set to browse the applications you use together." = "一緒に使うアプリケーションを参照するためのセットを作成します。";
+"Create a Focus Set to browse the applications you use together." = "よく一緒に使うアプリケーションを確認するためのフォーカスセットを作成します。";
 "Create GitHub issue" = "GitHub Issue を作成";
 "Cursor follows focus" = "カーソルがフォーカスに従う";
 "Customize more…" = "さらにカスタマイズ…";
 "Dark" = "ダーク";
 "Debug tools" = "デバッグツール";
-"Delete" = "削除";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "直接フォーカスセットショートカットでは、標準の外観とウインドウの整理方法が使用されます。";
 "Disabled" = "無効";
 "Do Not Move" = "移動しない";
@@ -80,7 +81,7 @@
 "Don’t send" = "送信しない";
 "e.g. com.example.app" = "例: com.example.app";
 "e.g. Debug" = "例: Debug";
-"Edit" = "編集";
+"Edit Focus Set…" = "フォーカスセットを編集…";
 "Editing “%@”" = "「%@」を編集中";
 "End" = "末尾";
 "Exceptions" = "例外";
@@ -89,6 +90,8 @@
 "Filtering" = "フィルタリング";
 "Focus" = "フォーカス";
 "Focus selected window" = "選択したウインドウにフォーカス";
+"Focus Set actions" = "フォーカスセットの操作";
+"Focus Set Behavior" = "フォーカスセットの動作";
 "Focus Sets" = "フォーカスセット";
 "Fullscreen/Defullscreen window" = "ウインドウのフルスクリーン切り替え";
 "General" = "一般";
@@ -116,13 +119,12 @@
 "Light" = "ライト";
 "Lock search" = "検索をロック";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS は ⌘⌥⎋、⌘⌥⇧⎋、⌘⌥⇧⌃⎋ を強制終了用に予約しており、解除できません。ScryTab では使用できません。\n\n変更しようとしている割り当て: %@。";
+"Matching windows" = "一致するウインドウ";
 "Medium" = "中";
 "Middle" = "中央";
 "Minimize/Deminimize window" = "ウインドウの最小化切り替え";
 "Miscellaneous" = "その他";
 "Move Down" = "下へ移動";
-"Move Focus Set Down" = "フォーカスセットを下へ移動";
-"Move Focus Set Up" = "フォーカスセットを上へ移動";
 "Move to Applications Folder" = "アプリケーションフォルダに移動";
 "Move to Applications folder?" = "アプリケーションフォルダに移動しますか?";
 "Move Up" = "上へ移動";
@@ -139,6 +141,7 @@
 "Non-active apps" = "非アクティブな App";
 "Non-visible Spaces" = "表示されていない Space";
 "Not allowed" = "許可しない";
+"Not assigned" = "未割り当て";
 "Not currently open" = "現在開いていません";
 "OK" = "OK";
 "Only on different screen" = "別の画面のときのみ";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "設定をリセットして再起動…";
 "Restart Now" = "今すぐ再起動";
 "Resume preview animation" = "プレビューアニメーションを再開";
-"Saved Focus Sets" = "保存済みフォーカスセット";
 "Screen including menu bar" = "メニューバーを含む画面";
 "Screen including mouse" = "マウスのある画面";
 "Screen showing ScryTab" = "ScryTab を表示する画面";

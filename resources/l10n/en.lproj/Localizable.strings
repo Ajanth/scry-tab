@@ -20,6 +20,7 @@
 "Add a running app" = "Add a running app";
 "Add an app from disk" = "Add an app from disk";
 "Add Focus Set" = "Add Focus Set";
+"Add or remove Focus Sets" = "Add or remove Focus Sets";
 "Additional controls" = "Additional controls";
 "Advanced" = "Advanced";
 "After keys are released" = "After keys are released";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Check for updates periodically";
 "Check for updates…" = "Check for updates…";
 "Check permissions…" = "Check permissions…";
+"Choose a Focus Set to review its shortcut and included applications." = "Choose a Focus Set to review its shortcut and included applications.";
 "Choose the applications whose windows belong to this Focus Set." = "Choose the applications whose windows belong to this Focus Set.";
 "Close window" = "Close window";
 "Conflicting shortcut" = "Conflicting shortcut";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Could not move to Applications folder";
 "Couldn't submit feedback" = "Couldn't submit feedback";
 "Crash reports policy" = "Crash reports policy";
-"Create a set to browse the applications you use together." = "Create a set to browse the applications you use together.";
+"Create a Focus Set to browse the applications you use together." = "Create a Focus Set to browse the applications you use together.";
 "Create GitHub issue" = "Create GitHub issue";
 "Cursor follows focus" = "Cursor follows focus";
 "Customize more…" = "Customize more…";
 "Dark" = "Dark";
 "Debug tools" = "Debug tools";
-"Delete" = "Delete";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Direct Focus Set shortcuts use the standard appearance and window organization.";
 "Disabled" = "Disabled";
 "Do Not Move" = "Do Not Move";
@@ -80,7 +81,7 @@
 "Don’t send" = "Don’t send";
 "e.g. com.example.app" = "e.g. com.example.app";
 "e.g. Debug" = "e.g. Debug";
-"Edit" = "Edit";
+"Edit Focus Set…" = "Edit Focus Set…";
 "Editing “%@”" = "Editing “%@”";
 "End" = "End";
 "Exceptions" = "Exceptions";
@@ -89,6 +90,8 @@
 "Filtering" = "Filtering";
 "Focus" = "Focus";
 "Focus selected window" = "Focus selected window";
+"Focus Set actions" = "Focus Set actions";
+"Focus Set Behavior" = "Focus Set Behavior";
 "Focus Sets" = "Focus Sets";
 "Fullscreen/Defullscreen window" = "Fullscreen/Defullscreen window";
 "General" = "General";
@@ -116,13 +119,12 @@
 "Light" = "Light";
 "Lock search" = "Lock search";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@.";
+"Matching windows" = "Matching windows";
 "Medium" = "Medium";
 "Middle" = "Middle";
 "Minimize/Deminimize window" = "Minimize/Deminimize window";
 "Miscellaneous" = "Miscellaneous";
 "Move Down" = "Move Down";
-"Move Focus Set Down" = "Move Focus Set Down";
-"Move Focus Set Up" = "Move Focus Set Up";
 "Move to Applications Folder" = "Move to Applications Folder";
 "Move to Applications folder?" = "Move to Applications folder?";
 "Move Up" = "Move Up";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Non-active apps";
 "Non-visible Spaces" = "Non-visible Spaces";
 "Not allowed" = "Not allowed";
+"Not assigned" = "Not assigned";
 "Not currently open" = "Not currently open";
 "OK" = "OK";
 "Only on different screen" = "Only on different screen";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Reset settings and restart…";
 "Restart Now" = "Restart Now";
 "Resume preview animation" = "Resume preview animation";
-"Saved Focus Sets" = "Saved Focus Sets";
 "Screen including menu bar" = "Screen including menu bar";
 "Screen including mouse" = "Screen including mouse";
 "Screen showing ScryTab" = "Screen showing ScryTab";

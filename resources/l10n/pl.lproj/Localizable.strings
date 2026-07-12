@@ -20,6 +20,7 @@
 "Add a running app" = "Dodaj uruchomioną aplikację";
 "Add an app from disk" = "Dodaj aplikację z dysku";
 "Add Focus Set" = "Dodaj zestaw skupienia";
+"Add or remove Focus Sets" = "Dodaj lub usuń zestawy skupienia";
 "Additional controls" = "Dodatkowe sterowanie";
 "Advanced" = "Zaawansowane";
 "After keys are released" = "Po zwolnieniu klawiszy";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Sprawdzaj uaktualnienia okresowo";
 "Check for updates…" = "Sprawdź uaktualnienia…";
 "Check permissions…" = "Sprawdź uprawnienia…";
+"Choose a Focus Set to review its shortcut and included applications." = "Wybierz zestaw skupienia, aby zobaczyć jego skrót i uwzględnione aplikacje.";
 "Choose the applications whose windows belong to this Focus Set." = "Wybierz aplikacje, których okna należą do tego zestawu skupienia.";
 "Close window" = "Zamknij okno";
 "Conflicting shortcut" = "Sprzeczny skrót";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Nie udało się przenieść do folderu Aplikacje";
 "Couldn't submit feedback" = "Nie udało się wysłać opinii";
 "Crash reports policy" = "Zasady raportów awarii";
-"Create a set to browse the applications you use together." = "Utwórz zestaw, aby przeglądać aplikacje używane razem.";
+"Create a Focus Set to browse the applications you use together." = "Utwórz zestaw skupienia, aby przeglądać aplikacje, których używasz razem.";
 "Create GitHub issue" = "Utwórz zgłoszenie na GitHub";
 "Cursor follows focus" = "Kursor podąża za aktywnym oknem";
 "Customize more…" = "Dostosuj więcej…";
 "Dark" = "Ciemny";
 "Debug tools" = "Narzędzia diagnostyczne";
-"Delete" = "Usuń";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Bezpośrednie skróty zestawów skupienia używają standardowego wyglądu i organizacji okien.";
 "Disabled" = "Wyłączone";
 "Do Not Move" = "Nie przenoś";
@@ -80,7 +81,7 @@
 "Don’t send" = "Nie wysyłaj";
 "e.g. com.example.app" = "np. com.example.app";
 "e.g. Debug" = "np. Debug";
-"Edit" = "Edytuj";
+"Edit Focus Set…" = "Edytuj zestaw skupienia…";
 "Editing “%@”" = "Edycja „%@”";
 "End" = "Koniec";
 "Exceptions" = "Wyjątki";
@@ -89,6 +90,8 @@
 "Filtering" = "Filtrowanie";
 "Focus" = "Uaktywnij";
 "Focus selected window" = "Uaktywnij zaznaczone okno";
+"Focus Set actions" = "Działania zestawu skupienia";
+"Focus Set Behavior" = "Działanie zestawów skupienia";
 "Focus Sets" = "Zestawy skupienia";
 "Fullscreen/Defullscreen window" = "Pełny ekran / wyjście z pełnego ekranu";
 "General" = "Ogólne";
@@ -116,13 +119,12 @@
 "Light" = "Jasny";
 "Lock search" = "Zablokuj wyszukiwanie";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS rezerwuje ⌘⌥⎋, ⌘⌥⇧⎋ i ⌘⌥⇧⌃⎋ dla Wymuś koniec i nie można ich odpiąć. ScryTab nie może ich użyć.\n\nTwoja zmiana przypisałaby jeden z nich do: %@.";
+"Matching windows" = "Pasujące okna";
 "Medium" = "Średni";
 "Middle" = "Środek";
 "Minimize/Deminimize window" = "Zminimalizuj / przywróć okno";
 "Miscellaneous" = "Inne";
 "Move Down" = "Przenieś w dół";
-"Move Focus Set Down" = "Przenieś zestaw skupienia w dół";
-"Move Focus Set Up" = "Przenieś zestaw skupienia w górę";
 "Move to Applications Folder" = "Przenieś do folderu Aplikacje";
 "Move to Applications folder?" = "Przenieść do folderu Aplikacje?";
 "Move Up" = "Przenieś w górę";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Nieaktywne aplikacje";
 "Non-visible Spaces" = "Niewidoczne Przestrzenie";
 "Not allowed" = "Niedozwolone";
+"Not assigned" = "Nieprzypisane";
 "Not currently open" = "Obecnie nie jest otwarta";
 "OK" = "OK";
 "Only on different screen" = "Tylko na innym ekranie";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Wyzeruj ustawienia i uruchom ponownie…";
 "Restart Now" = "Uruchom ponownie teraz";
 "Resume preview animation" = "Wznów animację podglądu";
-"Saved Focus Sets" = "Zapisane zestawy skupienia";
 "Screen including menu bar" = "Ekran z paskiem menu";
 "Screen including mouse" = "Ekran z kursorem";
 "Screen showing ScryTab" = "Ekran z ScryTab";

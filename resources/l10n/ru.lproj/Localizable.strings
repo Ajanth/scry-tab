@@ -20,6 +20,7 @@
 "Add a running app" = "Добавить запущенное приложение";
 "Add an app from disk" = "Добавить приложение с диска";
 "Add Focus Set" = "Добавить набор фокуса";
+"Add or remove Focus Sets" = "Добавить или удалить наборы фокуса";
 "Additional controls" = "Дополнительные элементы управления";
 "Advanced" = "Дополнительно";
 "After keys are released" = "После отпускания клавиш";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Периодически проверять обновления";
 "Check for updates…" = "Проверить обновления…";
 "Check permissions…" = "Проверить разрешения…";
+"Choose a Focus Set to review its shortcut and included applications." = "Выберите набор фокуса, чтобы просмотреть его сочетание клавиш и включённые приложения.";
 "Choose the applications whose windows belong to this Focus Set." = "Выберите приложения, окна которых относятся к этому набору фокуса.";
 "Close window" = "Закрыть окно";
 "Conflicting shortcut" = "Конфликт сочетания клавиш";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Не удалось переместить в папку «Программы»";
 "Couldn't submit feedback" = "Не удалось отправить отзыв";
 "Crash reports policy" = "Политика отчётов о сбоях";
-"Create a set to browse the applications you use together." = "Создайте набор, чтобы просматривать приложения, которыми вы пользуетесь вместе.";
+"Create a Focus Set to browse the applications you use together." = "Создайте набор фокуса для просмотра приложений, которыми вы пользуетесь вместе.";
 "Create GitHub issue" = "Создать issue на GitHub";
 "Cursor follows focus" = "Курсор следует за фокусом";
 "Customize more…" = "Дополнительная настройка…";
 "Dark" = "Тёмная";
 "Debug tools" = "Инструменты отладки";
-"Delete" = "Удалить";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Прямые сочетания клавиш набора фокуса используют стандартный внешний вид и организацию окон.";
 "Disabled" = "Отключено";
 "Do Not Move" = "Не перемещать";
@@ -80,7 +81,7 @@
 "Don’t send" = "Не отправлять";
 "e.g. com.example.app" = "напр. com.example.app";
 "e.g. Debug" = "напр. Debug";
-"Edit" = "Изменить";
+"Edit Focus Set…" = "Изменить набор фокуса…";
 "Editing “%@”" = "Редактируется «%@»";
 "End" = "Конец";
 "Exceptions" = "Исключения";
@@ -89,6 +90,8 @@
 "Filtering" = "Фильтрация";
 "Focus" = "Фокус";
 "Focus selected window" = "Сфокусировать выбранное окно";
+"Focus Set actions" = "Действия набора фокуса";
+"Focus Set Behavior" = "Поведение наборов фокуса";
 "Focus Sets" = "Наборы фокуса";
 "Fullscreen/Defullscreen window" = "Развернуть/свернуть окно на весь экран";
 "General" = "Основные";
@@ -116,13 +119,12 @@
 "Light" = "Светлая";
 "Lock search" = "Зафиксировать поиск";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS резервирует ⌘⌥⎋, ⌘⌥⇧⎋ и ⌘⌥⇧⌃⎋ для «Завершить принудительно», и их нельзя отвязать. ScryTab не может их использовать.\n\nВаше изменение назначит одно из них на: %@.";
+"Matching windows" = "Подходящие окна";
 "Medium" = "Средний";
 "Middle" = "Середина";
 "Minimize/Deminimize window" = "Свернуть/развернуть окно";
 "Miscellaneous" = "Прочее";
 "Move Down" = "Переместить вниз";
-"Move Focus Set Down" = "Переместить набор фокуса вниз";
-"Move Focus Set Up" = "Переместить набор фокуса вверх";
 "Move to Applications Folder" = "Переместить в папку «Программы»";
 "Move to Applications folder?" = "Переместить в папку «Программы»?";
 "Move Up" = "Переместить вверх";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Неактивные приложения";
 "Non-visible Spaces" = "Невидимые пространства";
 "Not allowed" = "Не разрешено";
+"Not assigned" = "Не назначено";
 "Not currently open" = "Сейчас не открыто";
 "OK" = "OK";
 "Only on different screen" = "Только на другом экране";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Сбросить настройки и перезапустить…";
 "Restart Now" = "Перезапустить сейчас";
 "Resume preview animation" = "Возобновить анимацию предпросмотра";
-"Saved Focus Sets" = "Сохраненные наборы фокуса";
 "Screen including menu bar" = "Экран со строкой меню";
 "Screen including mouse" = "Экран с курсором мыши";
 "Screen showing ScryTab" = "Экран с ScryTab";

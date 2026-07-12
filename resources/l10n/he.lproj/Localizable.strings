@@ -20,6 +20,7 @@
 "Add a running app" = "הוסף יישום פעיל";
 "Add an app from disk" = "הוסף יישום מהדיסק";
 "Add Focus Set" = "הוסף קבוצת מיקוד";
+"Add or remove Focus Sets" = "הוספה או הסרה של קבוצות מיקוד";
 "Additional controls" = "פקדים נוספים";
 "Advanced" = "מתקדם";
 "After keys are released" = "לאחר שחרור המקשים";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "חפש עדכונים מעת לעת";
 "Check for updates…" = "חפש עדכונים…";
 "Check permissions…" = "בדוק הרשאות…";
+"Choose a Focus Set to review its shortcut and included applications." = "בחר קבוצת מיקוד כדי להציג את קיצור הדרך ואת היישומים הכלולים בה.";
 "Choose the applications whose windows belong to this Focus Set." = "יש לבחור את היישומים שהחלונות שלהם שייכים לערכת המיקוד הזו.";
 "Close window" = "סגור חלון";
 "Conflicting shortcut" = "קיצור דרך מתנגש";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "לא ניתן היה להעביר לתיקיית היישומים";
 "Couldn't submit feedback" = "לא ניתן היה לשלוח משוב";
 "Crash reports policy" = "מדיניות דיווחי קריסה";
-"Create a set to browse the applications you use together." = "צור קבוצה כדי לעיין ביישומים שבהם אתה משתמש יחד.";
+"Create a Focus Set to browse the applications you use together." = "צור קבוצת מיקוד כדי לעיין ביישומים שבהם אתה משתמש יחד.";
 "Create GitHub issue" = "צור issue ב-GitHub";
 "Cursor follows focus" = "הסמן עוקב אחר המיקוד";
 "Customize more…" = "התאמה אישית נוספת…";
 "Dark" = "כהה";
 "Debug tools" = "כלי איתור באגים";
-"Delete" = "מחק";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "קיצורי מקשים ישירים של קבוצות מיקוד משתמשים במראה ובארגון החלונות הרגילים.";
 "Disabled" = "מושבת";
 "Do Not Move" = "אל תעביר";
@@ -80,7 +81,7 @@
 "Don’t send" = "אל תשלח";
 "e.g. com.example.app" = "לדוגמה: com.example.app";
 "e.g. Debug" = "לדוגמה: Debug";
-"Edit" = "ערוך";
+"Edit Focus Set…" = "ערוך קבוצת מיקוד…";
 "Editing “%@”" = "עריכת „%@”";
 "End" = "סוף";
 "Exceptions" = "חריגים";
@@ -89,6 +90,8 @@
 "Filtering" = "סינון";
 "Focus" = "מיקוד";
 "Focus selected window" = "מקד את החלון הנבחר";
+"Focus Set actions" = "פעולות קבוצת מיקוד";
+"Focus Set Behavior" = "התנהגות קבוצות מיקוד";
 "Focus Sets" = "קבוצות מיקוד";
 "Fullscreen/Defullscreen window" = "מסך מלא/יציאה ממסך מלא של חלון";
 "General" = "כללי";
@@ -116,13 +119,12 @@
 "Light" = "בהיר";
 "Lock search" = "נעל חיפוש";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS שומר את ⌘⌥⎋, ⌘⌥⇧⎋ ו-⌘⌥⇧⌃⎋ עבור כפיית יציאה ולא ניתן לבטל את שיוכם. ScryTab אינו יכול להשתמש בהם.\n\nהשינוי שלך ישייך אחד מהם ל: %@.";
+"Matching windows" = "חלונות תואמים";
 "Medium" = "בינוני";
 "Middle" = "אמצע";
 "Minimize/Deminimize window" = "מזער/בטל מזעור של חלון";
 "Miscellaneous" = "שונות";
 "Move Down" = "העברה למטה";
-"Move Focus Set Down" = "העבר קבוצת מיקוד למטה";
-"Move Focus Set Up" = "העבר קבוצת מיקוד למעלה";
 "Move to Applications Folder" = "העבר לתיקיית היישומים";
 "Move to Applications folder?" = "להעביר לתיקיית היישומים?";
 "Move Up" = "העברה למעלה";
@@ -139,6 +141,7 @@
 "Non-active apps" = "יישומים לא פעילים";
 "Non-visible Spaces" = "מרחבים לא נראים";
 "Not allowed" = "לא מותר";
+"Not assigned" = "לא הוקצה";
 "Not currently open" = "לא פתוח כעת";
 "OK" = "אישור";
 "Only on different screen" = "רק במסך אחר";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "אפס הגדרות והפעל מחדש…";
 "Restart Now" = "הפעל מחדש כעת";
 "Resume preview animation" = "המשך את הנפשת התצוגה המקדימה";
-"Saved Focus Sets" = "קבוצות מיקוד שמורות";
 "Screen including menu bar" = "מסך הכולל את שורת התפריטים";
 "Screen including mouse" = "מסך הכולל את העכבר";
 "Screen showing ScryTab" = "מסך המציג את ScryTab";

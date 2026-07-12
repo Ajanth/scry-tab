@@ -65,6 +65,9 @@
 "Add Focus Set" = "Add Focus Set";
 
 /* No comment provided by engineer. */
+"Add or remove Focus Sets" = "Add or remove Focus Sets";
+
+/* No comment provided by engineer. */
 "Additional controls" = "Additional controls";
 
 /* No comment provided by engineer. */
@@ -176,6 +179,9 @@
 "Check permissions…" = "Check permissions…";
 
 /* No comment provided by engineer. */
+"Choose a Focus Set to review its shortcut and included applications." = "Choose a Focus Set to review its shortcut and included applications.";
+
+/* No comment provided by engineer. */
 "Choose the applications whose windows belong to this Focus Set." = "Choose the applications whose windows belong to this Focus Set.";
 
 /* No comment provided by engineer. */
@@ -197,7 +203,7 @@
 "Crash reports policy" = "Crash reports policy";
 
 /* No comment provided by engineer. */
-"Create a set to browse the applications you use together." = "Create a set to browse the applications you use together.";
+"Create a Focus Set to browse the applications you use together." = "Create a Focus Set to browse the applications you use together.";
 
 /* No comment provided by engineer. */
 "Create GitHub issue" = "Create GitHub issue";
@@ -213,9 +219,6 @@
 
 /* Menubar option */
 "Debug tools" = "Debug tools";
-
-/* No comment provided by engineer. */
-"Delete" = "Delete";
 
 /* No comment provided by engineer. */
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Direct Focus Set shortcuts use the standard appearance and window organization.";
@@ -245,7 +248,7 @@
 "e.g. Debug" = "e.g. Debug";
 
 /* No comment provided by engineer. */
-"Edit" = "Edit";
+"Edit Focus Set…" = "Edit Focus Set…";
 
 /* No comment provided by engineer. */
 "Editing “%@”" = "Editing “%@”";
@@ -270,6 +273,12 @@
 
 /* No comment provided by engineer. */
 "Focus selected window" = "Focus selected window";
+
+/* No comment provided by engineer. */
+"Focus Set actions" = "Focus Set actions";
+
+/* No comment provided by engineer. */
+"Focus Set Behavior" = "Focus Set Behavior";
 
 /* No comment provided by engineer. */
 "Focus Sets" = "Focus Sets";
@@ -353,6 +362,9 @@
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@.";
 
 /* No comment provided by engineer. */
+"Matching windows" = "Matching windows";
+
+/* No comment provided by engineer. */
 "Medium" = "Medium";
 
 /* No comment provided by engineer. */
@@ -366,12 +378,6 @@
 
 /* No comment provided by engineer. */
 "Move Down" = "Move Down";
-
-/* No comment provided by engineer. */
-"Move Focus Set Down" = "Move Focus Set Down";
-
-/* No comment provided by engineer. */
-"Move Focus Set Up" = "Move Focus Set Up";
 
 /* LetsMove replacement alert */
 "Move to Applications Folder" = "Move to Applications Folder";
@@ -420,6 +426,9 @@
 
 /* No comment provided by engineer. */
 "Not allowed" = "Not allowed";
+
+/* No comment provided by engineer. */
+"Not assigned" = "Not assigned";
 
 /* No comment provided by engineer. */
 "Not currently open" = "Not currently open";
@@ -501,9 +510,6 @@
 
 /* No comment provided by engineer. */
 "Resume preview animation" = "Resume preview animation";
-
-/* No comment provided by engineer. */
-"Saved Focus Sets" = "Saved Focus Sets";
 
 /* No comment provided by engineer. */
 "Screen including menu bar" = "Screen including menu bar";

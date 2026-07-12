@@ -20,6 +20,7 @@
 "Add a running app" = "加入執行中的 App";
 "Add an app from disk" = "從磁碟加入 App";
 "Add Focus Set" = "加入專注組合";
+"Add or remove Focus Sets" = "加入或移除專注組合";
 "Additional controls" = "額外控制項";
 "Advanced" = "進階";
 "After keys are released" = "在按鍵釋放後";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "定期檢查更新";
 "Check for updates…" = "檢查更新…";
 "Check permissions…" = "檢查權限…";
+"Choose a Focus Set to review its shortcut and included applications." = "選擇專注組合以檢視其快捷鍵及所包含的應用程式。";
 "Choose the applications whose windows belong to this Focus Set." = "選擇視窗要歸入此專注組合的應用程式。";
 "Close window" = "關閉視窗";
 "Conflicting shortcut" = "快捷鍵衝突";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "無法移至「應用程式」檔案夾";
 "Couldn't submit feedback" = "無法提交意見";
 "Crash reports policy" = "當機報告政策";
-"Create a set to browse the applications you use together." = "建立組合以瀏覽你一同使用的應用程式。";
+"Create a Focus Set to browse the applications you use together." = "建立專注組合以瀏覽你常一起使用的應用程式。";
 "Create GitHub issue" = "建立 GitHub issue";
 "Cursor follows focus" = "游標跟隨焦點";
 "Customize more…" = "更多自訂…";
 "Dark" = "深色";
 "Debug tools" = "除錯工具";
-"Delete" = "刪除";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "直接專注組合快捷鍵會使用標準外觀和視窗整理方式。";
 "Disabled" = "已停用";
 "Do Not Move" = "不要移動";
@@ -80,7 +81,7 @@
 "Don’t send" = "不傳送";
 "e.g. com.example.app" = "例如:com.example.app";
 "e.g. Debug" = "例如:Debug";
-"Edit" = "編輯";
+"Edit Focus Set…" = "編輯專注組合…";
 "Editing “%@”" = "正在編輯「%@」";
 "End" = "結尾";
 "Exceptions" = "例外";
@@ -89,6 +90,8 @@
 "Filtering" = "篩選";
 "Focus" = "聚焦";
 "Focus selected window" = "聚焦選取的視窗";
+"Focus Set actions" = "專注組合操作";
+"Focus Set Behavior" = "專注組合行為";
 "Focus Sets" = "專注組合";
 "Fullscreen/Defullscreen window" = "視窗全螢幕/取消全螢幕";
 "General" = "一般";
@@ -116,13 +119,12 @@
 "Light" = "淺色";
 "Lock search" = "鎖定搜尋";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS 保留 ⌘⌥⎋、⌘⌥⇧⎋ 及 ⌘⌥⇧⌃⎋ 用於強制結束,無法解除綁定。ScryTab 無法使用這些組合鍵。\n\n您的變更會將其中之一指派給:%@。";
+"Matching windows" = "相符的視窗";
 "Medium" = "中";
 "Middle" = "中間";
 "Minimize/Deminimize window" = "視窗縮到最小/取消最小化";
 "Miscellaneous" = "其他";
 "Move Down" = "向下移";
-"Move Focus Set Down" = "向下移動專注組合";
-"Move Focus Set Up" = "向上移動專注組合";
 "Move to Applications Folder" = "移至「應用程式」檔案夾";
 "Move to Applications folder?" = "移至「應用程式」檔案夾?";
 "Move Up" = "向上移";
@@ -139,6 +141,7 @@
 "Non-active apps" = "非使用中的 App";
 "Non-visible Spaces" = "不可見的空間";
 "Not allowed" = "不允許";
+"Not assigned" = "未指派";
 "Not currently open" = "目前未開啟";
 "OK" = "好";
 "Only on different screen" = "僅在不同螢幕上";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "重設設定並重新啟動…";
 "Restart Now" = "立即重新啟動";
 "Resume preview animation" = "繼續預覽動畫";
-"Saved Focus Sets" = "已儲存的專注組合";
 "Screen including menu bar" = "包含選單列的螢幕";
 "Screen including mouse" = "包含滑鼠的螢幕";
 "Screen showing ScryTab" = "顯示 ScryTab 的螢幕";

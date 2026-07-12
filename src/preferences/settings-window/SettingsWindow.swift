@@ -531,7 +531,7 @@ class SettingsWindow: NSWindow {
         [
             SettingsSectionDefinition(id: "appearance", title: NSLocalizedString("Appearance", comment: ""), symbol: .paintpalette, route: .appearance, builder: AppearanceTab.initTab, registerDynamicSearchContent: nil),
             SettingsSectionDefinition(id: "controls", title: NSLocalizedString("Controls", comment: ""), symbol: .command, route: .controls(nil), builder: ControlsTab.initTab, registerDynamicSearchContent: ControlsTab.registerSidebarRowsSearchContent),
-            SettingsSectionDefinition(id: "focusSets", title: NSLocalizedString("Focus Sets", comment: ""), symbol: .circledStar, route: .focusSets, builder: FocusSetsTab.initTab, registerDynamicSearchContent: nil),
+            SettingsSectionDefinition(id: "focusSets", title: NSLocalizedString("Focus Sets", comment: ""), symbol: .circledStar, route: .focusSets, builder: FocusSetsTab.initTab, registerDynamicSearchContent: FocusSetsTab.registerSidebarRowsSearchContent),
             SettingsSectionDefinition(id: "general", title: NSLocalizedString("General", comment: ""), symbol: .gearshape, route: .general, builder: GeneralTab.initTab, registerDynamicSearchContent: nil),
             SettingsSectionDefinition(id: "exceptions", title: NSLocalizedString("Exceptions", comment: ""), symbol: .handRaised, route: .exceptions(nil), builder: ExceptionsTab.initTab, registerDynamicSearchContent: nil),
             SettingsSectionDefinition(id: "about", title: NSLocalizedString("About", comment: ""), symbol: .circledInfo, route: .about, builder: AboutTab.initTab, registerDynamicSearchContent: nil),

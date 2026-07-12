@@ -20,6 +20,7 @@
 "Add a running app" = "Ajouter une app en cours d'exécution";
 "Add an app from disk" = "Ajouter une app depuis le disque";
 "Add Focus Set" = "Ajouter un ensemble de concentration";
+"Add or remove Focus Sets" = "Ajouter ou supprimer des ensembles de concentration";
 "Additional controls" = "Contrôles supplémentaires";
 "Advanced" = "Avancé";
 "After keys are released" = "Après le relâchement des touches";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Rechercher les mises à jour automatiquement";
 "Check for updates…" = "Rechercher les mises à jour…";
 "Check permissions…" = "Vérifier les autorisations…";
+"Choose a Focus Set to review its shortcut and included applications." = "Choisissez un ensemble de concentration pour consulter son raccourci et les applications incluses.";
 "Choose the applications whose windows belong to this Focus Set." = "Choisissez les applications dont les fenêtres appartiennent à ce Focus Set.";
 "Close window" = "Fermer la fenêtre";
 "Conflicting shortcut" = "Raccourci en conflit";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Impossible de déplacer vers le dossier Applications";
 "Couldn't submit feedback" = "Impossible d'envoyer le commentaire";
 "Crash reports policy" = "Politique des rapports de plantage";
-"Create a set to browse the applications you use together." = "Créez un ensemble pour parcourir les applications que vous utilisez ensemble.";
+"Create a Focus Set to browse the applications you use together." = "Créez un ensemble de concentration pour parcourir les applications que vous utilisez ensemble.";
 "Create GitHub issue" = "Créer un ticket GitHub";
 "Cursor follows focus" = "Le curseur suit la sélection";
 "Customize more…" = "Personnaliser davantage…";
 "Dark" = "Sombre";
 "Debug tools" = "Outils de débogage";
-"Delete" = "Supprimer";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Les raccourcis directs d’ensemble de concentration utilisent l’apparence standard et l’organisation standard des fenêtres.";
 "Disabled" = "Désactivé";
 "Do Not Move" = "Ne pas déplacer";
@@ -80,7 +81,7 @@
 "Don’t send" = "Ne pas envoyer";
 "e.g. com.example.app" = "ex. com.example.app";
 "e.g. Debug" = "ex. Debug";
-"Edit" = "Modifier";
+"Edit Focus Set…" = "Modifier l’ensemble de concentration…";
 "Editing “%@”" = "Modification de « %@ »";
 "End" = "Fin";
 "Exceptions" = "Exceptions";
@@ -89,6 +90,8 @@
 "Filtering" = "Filtrage";
 "Focus" = "Sélection";
 "Focus selected window" = "Sélectionner la fenêtre choisie";
+"Focus Set actions" = "Actions de l’ensemble de concentration";
+"Focus Set Behavior" = "Comportement des ensembles de concentration";
 "Focus Sets" = "Ensembles de concentration";
 "Fullscreen/Defullscreen window" = "Mettre/Quitter le plein écran";
 "General" = "Général";
@@ -116,13 +119,12 @@
 "Light" = "Clair";
 "Lock search" = "Verrouiller la recherche";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS réserve ⌘⌥⎋, ⌘⌥⇧⎋ et ⌘⌥⇧⌃⎋ pour Forcer à quitter et ils ne peuvent pas être réaffectés. ScryTab ne peut pas les utiliser.\n\nVotre modification en affecterait un à : %@.";
+"Matching windows" = "Fenêtres correspondantes";
 "Medium" = "Moyen";
 "Middle" = "Milieu";
 "Minimize/Deminimize window" = "Réduire/Restaurer la fenêtre";
 "Miscellaneous" = "Divers";
 "Move Down" = "Déplacer vers le bas";
-"Move Focus Set Down" = "Descendre l’ensemble de concentration";
-"Move Focus Set Up" = "Monter l’ensemble de concentration";
 "Move to Applications Folder" = "Déplacer vers le dossier Applications";
 "Move to Applications folder?" = "Déplacer vers le dossier Applications ?";
 "Move Up" = "Déplacer vers le haut";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Apps non actives";
 "Non-visible Spaces" = "Bureaux non visibles";
 "Not allowed" = "Non autorisé";
+"Not assigned" = "Non attribué";
 "Not currently open" = "Pas ouverte actuellement";
 "OK" = "OK";
 "Only on different screen" = "Uniquement sur un autre écran";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Réinitialiser les réglages et redémarrer…";
 "Restart Now" = "Redémarrer maintenant";
 "Resume preview animation" = "Reprendre l’animation d’aperçu";
-"Saved Focus Sets" = "Ensembles de concentration enregistrés";
 "Screen including menu bar" = "Écran avec la barre des menus";
 "Screen including mouse" = "Écran avec la souris";
 "Screen showing ScryTab" = "Écran affichant ScryTab";

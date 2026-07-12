@@ -20,6 +20,7 @@
 "Add a running app" = "Tambah aplikasi yang sedang berjalan";
 "Add an app from disk" = "Tambah aplikasi dari disk";
 "Add Focus Set" = "Tambah set fokus";
+"Add or remove Focus Sets" = "Tambah atau hapus set fokus";
 "Additional controls" = "Kontrol tambahan";
 "Advanced" = "Lanjutan";
 "After keys are released" = "Setelah tombol dilepas";
@@ -57,6 +58,7 @@
 "Check for updates periodically" = "Periksa pembaruan secara berkala";
 "Check for updates…" = "Periksa pembaruan…";
 "Check permissions…" = "Periksa izin…";
+"Choose a Focus Set to review its shortcut and included applications." = "Pilih set fokus untuk melihat pintasan dan aplikasi yang disertakan.";
 "Choose the applications whose windows belong to this Focus Set." = "Pilih aplikasi yang jendelanya termasuk dalam Set Fokus ini.";
 "Close window" = "Tutup jendela";
 "Conflicting shortcut" = "Pintasan bertentangan";
@@ -64,13 +66,12 @@
 "Could not move to Applications folder" = "Tidak dapat memindahkan ke folder Aplikasi";
 "Couldn't submit feedback" = "Tidak dapat mengirim masukan";
 "Crash reports policy" = "Kebijakan laporan kerusakan";
-"Create a set to browse the applications you use together." = "Buat set untuk menelusuri aplikasi yang Anda gunakan bersama.";
+"Create a Focus Set to browse the applications you use together." = "Buat set fokus untuk menelusuri aplikasi yang Anda gunakan bersama.";
 "Create GitHub issue" = "Buat isu GitHub";
 "Cursor follows focus" = "Kursor mengikuti fokus";
 "Customize more…" = "Sesuaikan lebih lanjut…";
 "Dark" = "Gelap";
 "Debug tools" = "Alat debug";
-"Delete" = "Hapus";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Pintasan langsung Set Fokus menggunakan tampilan standar dan pengaturan jendela standar.";
 "Disabled" = "Dinonaktifkan";
 "Do Not Move" = "Jangan Pindahkan";
@@ -80,7 +81,7 @@
 "Don’t send" = "Jangan kirim";
 "e.g. com.example.app" = "mis. com.example.app";
 "e.g. Debug" = "mis. Debug";
-"Edit" = "Edit";
+"Edit Focus Set…" = "Edit set fokus…";
 "Editing “%@”" = "Mengedit “%@”";
 "End" = "Akhir";
 "Exceptions" = "Pengecualian";
@@ -89,6 +90,8 @@
 "Filtering" = "Penyaringan";
 "Focus" = "Fokus";
 "Focus selected window" = "Fokuskan jendela terpilih";
+"Focus Set actions" = "Tindakan set fokus";
+"Focus Set Behavior" = "Perilaku set fokus";
 "Focus Sets" = "Set fokus";
 "Fullscreen/Defullscreen window" = "Jendela layar penuh/Keluar dari layar penuh";
 "General" = "Umum";
@@ -116,13 +119,12 @@
 "Light" = "Terang";
 "Lock search" = "Kunci pencarian";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS mencadangkan ⌘⌥⎋, ⌘⌥⇧⎋, dan ⌘⌥⇧⌃⎋ untuk Paksa Keluar dan tidak dapat dilepaskan. ScryTab tidak dapat menggunakannya.\n\nPerubahan Anda akan menetapkan salah satunya ke: %@.";
+"Matching windows" = "Jendela yang cocok";
 "Medium" = "Sedang";
 "Middle" = "Tengah";
 "Minimize/Deminimize window" = "Minimalkan/Pulihkan jendela";
 "Miscellaneous" = "Lain-lain";
 "Move Down" = "Pindahkan ke Bawah";
-"Move Focus Set Down" = "Pindahkan set fokus ke bawah";
-"Move Focus Set Up" = "Pindahkan set fokus ke atas";
 "Move to Applications Folder" = "Pindahkan ke Folder Aplikasi";
 "Move to Applications folder?" = "Pindahkan ke folder Aplikasi?";
 "Move Up" = "Pindahkan ke Atas";
@@ -139,6 +141,7 @@
 "Non-active apps" = "Aplikasi tidak aktif";
 "Non-visible Spaces" = "Ruang tidak terlihat";
 "Not allowed" = "Tidak diizinkan";
+"Not assigned" = "Belum ditetapkan";
 "Not currently open" = "Saat ini tidak terbuka";
 "OK" = "OK";
 "Only on different screen" = "Hanya pada layar berbeda";
@@ -166,7 +169,6 @@
 "Reset settings and restart…" = "Setel ulang pengaturan dan mulai ulang…";
 "Restart Now" = "Mulai Ulang Sekarang";
 "Resume preview animation" = "Lanjutkan animasi pratinjau";
-"Saved Focus Sets" = "Set fokus tersimpan";
 "Screen including menu bar" = "Layar termasuk bilah menu";
 "Screen including mouse" = "Layar termasuk tetikus";
 "Screen showing ScryTab" = "Layar yang menampilkan ScryTab";
