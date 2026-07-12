@@ -49,6 +49,7 @@
 "Ask whether to send crash reports" = "Fragen, ob Absturzberichte gesendet werden sollen";
 "Auto" = "Automatisch";
 "Auto-install updates periodically" = "Updates regelmäßig automatisch installieren";
+"Behavior" = "Verhalten";
 "Brief description of the bug" = "Kurze Beschreibung des Fehlers";
 "Brief description of the change" = "Kurze Beschreibung der Änderung";
 "Bundle ID" = "Bundle ID";

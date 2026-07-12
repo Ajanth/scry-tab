@@ -2,20 +2,15 @@ import Cocoa
 import ShortcutRecorder
 
 final class FocusSetSettingsView: NSView {
+    static let focusSetsCategoryLabel = NSLocalizedString("Focus Sets", comment: "")
+    static let behaviorCategoryLabel = NSLocalizedString("Behavior", comment: "")
+    static let behaviorTableTitle = NSLocalizedString("Focus Set Behavior", comment: "")
     static let directShortcutReleaseSubtitle = NSLocalizedString("Applies to every direct Focus Set shortcut.", comment: "")
     static let appearanceAndOrganizationSubtitle = NSLocalizedString("Direct Focus Set shortcuts use the standard appearance and window organization.", comment: "")
     static let focusSetsDetailSubtitle = NSLocalizedString("Choose a Focus Set to review its shortcut and included applications.", comment: "")
-    static let searchableStrings = [
-        NSLocalizedString("Focus Sets", comment: ""),
+    static let focusSetManagerSearchableStrings = [
+        focusSetsCategoryLabel,
         focusSetsDetailSubtitle,
-        NSLocalizedString("Focus Set Behavior", comment: ""),
-        NSLocalizedString("After keys are released", comment: ""),
-        directShortcutReleaseSubtitle,
-        NSLocalizedString("Visibility", comment: ""),
-        NSLocalizedString("Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows.", comment: ""),
-        NSLocalizedString("Appearance and organization", comment: ""),
-        appearanceAndOrganizationSubtitle,
-        NSLocalizedString("Open Appearance Settings", comment: ""),
         NSLocalizedString("Add Focus Set", comment: ""),
         NSLocalizedString("No Focus Sets", comment: ""),
         NSLocalizedString("Create a Focus Set to browse the applications you use together.", comment: ""),
@@ -44,7 +39,19 @@ final class FocusSetSettingsView: NSView {
         NSLocalizedString("%d matching windows", comment: ""),
         NSLocalizedString("Cancel", comment: ""),
         NSLocalizedString("Apply", comment: ""),
+    ]
+    static let behaviorSearchableStrings = [
+        behaviorCategoryLabel,
+        behaviorTableTitle,
+        NSLocalizedString("After keys are released", comment: ""),
+        directShortcutReleaseSubtitle,
+        NSLocalizedString("Visibility", comment: ""),
+        NSLocalizedString("Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows.", comment: ""),
+        NSLocalizedString("Appearance and organization", comment: ""),
+        appearanceAndOrganizationSubtitle,
+        NSLocalizedString("Open Appearance Settings", comment: ""),
     ] + ShortcutStylePreference.allCases.map(\.localizedString)
+    static let searchableStrings = focusSetManagerSearchableStrings + behaviorSearchableStrings
 
     private let store = FocusSetsStore()
     private let contentWidth: CGFloat
@@ -54,6 +61,12 @@ final class FocusSetSettingsView: NSView {
     private var candidateCountsByBundleIdentifier = [String: Int]()
     private var content: NSView?
     private var contentConstraints = [NSLayoutConstraint]()
+    private let focusSetsCategoryIndex = 0
+    private let behaviorCategoryIndex = 1
+    private var selectedCategoryIndex = 0
+    private weak var categoryControl: NSSegmentedControl?
+    private weak var focusSetManagerView: NSView?
+    private weak var behaviorView: NSView?
     private let focusSetSidebarWidth = CGFloat(280)
     private let focusSetSidebarRowHeight = CGFloat(56)
     private var focusSetRows = [SidebarListRow]()
@@ -143,8 +156,17 @@ final class FocusSetSettingsView: NSView {
         contentConstraints.removeAll(keepingCapacity: true)
         content?.removeFromSuperview()
         content = nil
-        let views = [makeFocusSetManager(), makeBehaviorTable()]
-        let content = TableGroupSetView(originalViews: views, padding: 0)
+        categoryControl = nil
+        focusSetManagerView = nil
+        behaviorView = nil
+        let manager = makeFocusSetManager()
+        let behavior = makeBehaviorTable()
+        focusSetManagerView = manager
+        behaviorView = behavior
+        let content = NSStackView(views: [makeCategoryControl(), manager, behavior])
+        content.orientation = .vertical
+        content.alignment = .leading
+        content.spacing = TableGroupSetView.othersSpacing
         content.translatesAutoresizingMaskIntoConstraints = false
         addSubview(content)
         let constraints = [
@@ -156,11 +178,44 @@ final class FocusSetSettingsView: NSView {
         NSLayoutConstraint.activate(constraints)
         self.content = content
         contentConstraints = constraints
+        refreshVisibleCategory()
         refreshFocusSetManager()
     }
 
+    private func makeCategoryControl() -> NSSegmentedControl {
+        let labels = [Self.focusSetsCategoryLabel, Self.behaviorCategoryLabel]
+        let control = DesignSystemSegmentedControl(labels: labels, trackingMode: .selectOne, target: nil, action: nil)
+        control.selectedSegment = selectedCategoryIndex
+        LabelAndControl.applySystemSelectedSegmentStyle(control)
+        control.widthAnchor.constraint(equalToConstant: contentWidth).isActive = true
+        let segmentWidth = contentWidth / CGFloat(labels.count)
+        for index in labels.indices { control.setWidth(segmentWidth, forSegment: index) }
+        control.onAction = { [weak self, weak control] _ in
+            guard let self, let control else { return }
+            self.selectCategory(control.selectedSegment)
+        }
+        FocusSetsTab.tabSegmentSearchableStrings[ObjectIdentifier(control)] = [
+            Self.focusSetManagerSearchableStrings,
+            Self.behaviorSearchableStrings,
+        ]
+        categoryControl = control
+        return control
+    }
+
+    private func selectCategory(_ index: Int) {
+        guard index == focusSetsCategoryIndex || index == behaviorCategoryIndex else { return }
+        selectedCategoryIndex = index
+        refreshVisibleCategory()
+    }
+
+    private func refreshVisibleCategory() {
+        categoryControl?.selectedSegment = selectedCategoryIndex
+        focusSetManagerView?.isHidden = selectedCategoryIndex != focusSetsCategoryIndex
+        behaviorView?.isHidden = selectedCategoryIndex != behaviorCategoryIndex
+    }
+
     private func makeBehaviorTable() -> TableGroupView {
-        let table = TableGroupView(title: NSLocalizedString("Focus Set Behavior", comment: ""), width: contentWidth)
+        let table = TableGroupView(title: Self.behaviorTableTitle, width: contentWidth)
         let releaseStyle = LabelAndControl.makeDropdown("focusSetsShortcutStyle", ShortcutStylePreference.allCases)
         _ = table.addRow(
             leftText: NSLocalizedString("After keys are released", comment: ""),

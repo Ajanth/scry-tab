@@ -49,6 +49,7 @@
 "Ask whether to send crash reports" = "Спрашивать перед отправкой отчётов о сбоях";
 "Auto" = "Авто";
 "Auto-install updates periodically" = "Периодически устанавливать обновления автоматически";
+"Behavior" = "Поведение";
 "Brief description of the bug" = "Краткое описание ошибки";
 "Brief description of the change" = "Краткое описание изменения";
 "Bundle ID" = "Bundle ID";

@@ -49,6 +49,7 @@
 "Ask whether to send crash reports" = "Demander avant d'envoyer un rapport de plantage";
 "Auto" = "Auto";
 "Auto-install updates periodically" = "Installer automatiquement les mises à jour";
+"Behavior" = "Comportement";
 "Brief description of the bug" = "Brève description du bug";
 "Brief description of the change" = "Brève description du changement";
 "Bundle ID" = "Bundle ID";

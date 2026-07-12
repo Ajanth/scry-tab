@@ -2,6 +2,7 @@ import Cocoa
 
 enum FocusSetsTab {
     private static weak var settingsView: FocusSetSettingsView?
+    static var tabSegmentSearchableStrings = [ObjectIdentifier: [[String]]]()
 
     static func initTab() -> NSView {
         let view = FocusSetSettingsView(width: SettingsWindow.contentWidth)
@@ -19,5 +20,6 @@ enum FocusSetsTab {
 
     static func cleanup() {
         settingsView = nil
+        tabSegmentSearchableStrings.removeAll()
     }
 }
