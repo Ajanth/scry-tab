@@ -25,6 +25,9 @@ final class FocusSetSettingsView: NSView {
         NSLocalizedString("Move Down", comment: ""),
         NSLocalizedString("Delete", comment: ""),
         NSLocalizedString("Name", comment: ""),
+        ShortcutTriggerRow.triggerLabel,
+        ShortcutTriggerRow.holdLabelText,
+        ShortcutTriggerRow.andPressText,
         NSLocalizedString("Included Applications", comment: ""),
         NSLocalizedString("1 included application", comment: ""),
         NSLocalizedString("%d included applications", comment: ""),
@@ -374,7 +377,8 @@ private struct FocusSetApplicationEntry {
 
 private final class FocusSetEditorSheet: SheetWindow {
     private let nameField = NSTextField()
-    private let shortcutRecorder = CustomRecorderControl(nil, true, "focusSetShortcut:pending")
+    private let modifierRecorder = CustomRecorderControl(nil, true, "focusSetShortcut:pending")
+    private let keyRecorder = CustomRecorderControl(nil, true, "focusSetShortcut:pending")
     private let searchField = NSSearchField()
     private let selectionCountLabel = NSTextField(labelWithString: "")
     private let rows = NSStackView()
@@ -411,7 +415,7 @@ private final class FocusSetEditorSheet: SheetWindow {
             rules: currentRules
         ).filter(\.isSelected).map(\.identity))
         nameField.stringValue = focusSet.name
-        configureShortcutRecorder(focusSet)
+        configureShortcutTrigger(focusSet)
         updateTitle()
         doneButton.title = NSLocalizedString("Apply", comment: "")
         doneButton.target = self
@@ -464,28 +468,73 @@ private final class FocusSetEditorSheet: SheetWindow {
     private func makeNameTable() -> TableGroupView {
         let table = TableGroupView(width: contentWidth)
         _ = table.addRow(leftText: NSLocalizedString("Name", comment: ""), rightViews: [nameField])
-        _ = table.addRow(leftText: NSLocalizedString("Shortcut", comment: ""), rightViews: [shortcutRecorder])
+        let trigger = ShortcutTriggerRow(holdControl: modifierRecorder, pressControl: keyRecorder)
+        _ = table.addRow(leftText: ShortcutTriggerRow.triggerLabel, rightViews: [trigger.view])
         return table
     }
 
-    private func configureShortcutRecorder(_ focusSet: FocusSet) {
-        shortcutRecorder.identifier = NSUserInterfaceItemIdentifier(
+    private func configureShortcutTrigger(_ focusSet: FocusSet) {
+        let actionIdentifier = NSUserInterfaceItemIdentifier(
             FocusSetShortcutBindingResolver.actionIdentifier(for: focusSet.id))
-        shortcutRecorder.allowsModifierFlagsOnlyShortcut = false
-        shortcutKeyEquivalent = focusSet.shortcutKeyEquivalent
-        shortcutRecorder.objectValue = focusSet.shortcutKeyEquivalent.flatMap(Shortcut.init(keyEquivalent:))
-        shortcutRecorder.setAccessibilityLabel(NSLocalizedString("Shortcut", comment: ""))
-        shortcutRecorder.transactionalCandidateHandler = { [weak self] shortcut, acceptance in
-            self?.acceptShortcut(shortcut, acceptance: acceptance) ?? false
+        let trigger = FocusSetShortcutBindingResolver.trigger(for: focusSet.shortcutKeyEquivalent)
+        modifierRecorder.identifier = actionIdentifier
+        modifierRecorder.allowsModifierFlagsOnlyShortcut = true
+        modifierRecorder.restrictModifiers([])
+        modifierRecorder.objectValue = trigger?.modifier
+        modifierRecorder.setAccessibilityLabel(ShortcutTriggerRow.holdLabelText)
+        modifierRecorder.transactionalCandidateHandler = { [weak self] shortcut, _ in
+            self?.recordModifier(shortcut) ?? false
         }
-        shortcutRecorder.onAction = { [weak self] _ in
-            guard let self, self.shortcutRecorder.objectValue == nil else { return }
-            self.shortcutKeyEquivalent = nil
-            self.conflictingShortcutActionIdentifier = nil
+        modifierRecorder.onAction = { [weak self] _ in
+            guard let self, self.modifierRecorder.objectValue == nil else { return }
+            self.clearShortcut()
         }
+        keyRecorder.identifier = actionIdentifier
+        keyRecorder.allowsModifierFlagsOnlyShortcut = false
+        keyRecorder.restrictModifiers(CustomRecorderControl.allowedModifiers)
+        keyRecorder.objectValue = trigger?.key
+        keyRecorder.setAccessibilityLabel(ShortcutTriggerRow.andPressText)
+        keyRecorder.transactionalCandidateHandler = { [weak self] shortcut, _ in
+            self?.recordKey(shortcut) ?? false
+        }
+        keyRecorder.onAction = { [weak self] _ in
+            guard let self, self.keyRecorder.objectValue == nil else { return }
+            self.clearShortcut()
+        }
+        shortcutKeyEquivalent = trigger == nil ? nil : focusSet.shortcutKeyEquivalent
     }
 
-    private func acceptShortcut(_ shortcut: Shortcut, acceptance: ShortcutAcceptance) -> Bool {
+    private func recordModifier(_ shortcut: Shortcut) -> Bool {
+        guard FocusSetShortcutBindingResolver.isModifierShortcut(shortcut) else { return false }
+        return recordTrigger(modifier: shortcut, key: keyRecorder.objectValue)
+    }
+
+    private func recordKey(_ shortcut: Shortcut) -> Bool {
+        guard FocusSetShortcutBindingResolver.isKeyShortcut(shortcut) else { return false }
+        return recordTrigger(modifier: modifierRecorder.objectValue, key: shortcut)
+    }
+
+    private func recordTrigger(modifier: Shortcut?, key: Shortcut?) -> Bool {
+        guard let modifier,
+              let key else {
+            clearShortcut()
+            return true
+        }
+        guard let shortcut = FocusSetShortcutBindingResolver.shortcut(modifier: modifier, key: key) else {
+            return false
+        }
+        return acceptShortcut(shortcut)
+    }
+
+    private func clearShortcut() {
+        shortcutKeyEquivalent = nil
+        conflictingShortcutActionIdentifier = nil
+    }
+
+    private func acceptShortcut(_ shortcut: Shortcut) -> Bool {
+        let acceptance = CustomRecorderControlTestable.isShortcutAcceptable(
+            modifierRecorder.id,
+            shortcut)
         switch acceptance {
         case .accepted:
             shortcutKeyEquivalent = shortcut.keyEquivalent
@@ -496,12 +545,12 @@ private final class FocusSetEditorSheet: SheetWindow {
         case .nonModifierKeyRequired:
             return false
         case .conflictWithExistingShortcut(let actionIdentifier):
-            guard shortcutRecorder.confirmUnassigningShortcut(actionIdentifier) else { return false }
+            guard modifierRecorder.confirmUnassigningShortcut(actionIdentifier) else { return false }
             shortcutKeyEquivalent = shortcut.keyEquivalent
             conflictingShortcutActionIdentifier = actionIdentifier
             return true
         case .reservedByMacos(let actionIdentifier):
-            guard shortcutRecorder.confirmUnassigningShortcutReservedByMacos(actionIdentifier) else { return false }
+            guard modifierRecorder.confirmUnassigningShortcutReservedByMacos(actionIdentifier) else { return false }
             shortcutKeyEquivalent = shortcut.keyEquivalent
             conflictingShortcutActionIdentifier = actionIdentifier
             return true
