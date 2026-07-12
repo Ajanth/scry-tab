@@ -1,10 +1,8 @@
 "%@ switches, %@" = "%1$@ Wechsel, %2$@";
 "%d applications selected" = "%d Apps ausgewählt";
 "%d included applications" = "%d enthaltene Apps";
-"%d matching windows" = "%d passende Fenster";
 "1 application selected" = "1 App ausgewählt";
 "1 included application" = "1 enthaltene App";
-"1 matching window" = "1 passendes Fenster";
 "3-finger Horizontal Swipe" = "Horizontales 3-Finger-Wischen";
 "3-finger Vertical Swipe" = "Vertikales 3-Finger-Wischen";
 "4-finger Horizontal Swipe" = "Horizontales 4-Finger-Wischen";
@@ -46,7 +44,7 @@
 "Apply to All Shortcuts" = "Auf alle Tastenkürzel anwenden";
 "Arrow keys" = "Pfeiltasten";
 "Arrow keys already assigned to other actions:\n%@" = "Pfeiltasten sind bereits anderen Aktionen zugewiesen:\n%@";
-"Ask whether to send crash reports" = "Fragen, ob Absturzberichte gesendet werden sollen";
+"Ask before enabling crash reports" = "Vor dem Aktivieren von Absturzberichten fragen";
 "Auto" = "Automatisch";
 "Auto-install updates periodically" = "Updates regelmäßig automatisch installieren";
 "Behavior" = "Verhalten";
@@ -79,11 +77,12 @@
 "Don't hide" = "Nicht ausblenden";
 "Done" = "Fertig";
 "Don’t check for updates periodically" = "Nicht regelmäßig nach Updates suchen";
-"Don’t send" = "Nicht senden";
 "e.g. com.example.app" = "z. B. com.example.app";
 "e.g. Debug" = "z. B. Debug";
 "Edit Focus Set…" = "Fokus-Set bearbeiten…";
 "Editing “%@”" = "„%@“ wird bearbeitet";
+"Enable" = "Aktivieren";
+"Enable automatic crash reports?" = "Automatische Absturzberichte aktivieren?";
 "End" = "Ende";
 "Exceptions" = "Ausnahmen";
 "Export settings…" = "Einstellungen exportieren…";
@@ -102,6 +101,7 @@
 "Group apps" = "Apps gruppieren";
 "Group tabs" = "Tabs gruppieren";
 "Help improve ScryTab" = "Helfen Sie, ScryTab zu verbessern";
+"Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Helfen Sie, ScryTab zu verbessern, indem Sie automatisch Absturzberichte senden. Sie können dies später in den Einstellungen ändern.";
 "Hide" = "Ausblenden";
 "Hide Space number labels" = "Space-Nummern ausblenden";
 "Hide status icons" = "Statussymbole ausblenden";
@@ -120,7 +120,6 @@
 "Light" = "Hell";
 "Lock search" = "Suche sperren";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserviert ⌘⌥⎋, ⌘⌥⇧⎋ und ⌘⌥⇧⌃⎋ für „Sofort beenden“ und sie können nicht freigegeben werden. ScryTab kann sie nicht verwenden.\n\nIhre Änderung würde eines davon zuweisen an: %@.";
-"Matching windows" = "Passende Fenster";
 "Medium" = "Mittel";
 "Middle" = "Mitte";
 "Minimize/Deminimize window" = "Fenster minimieren/wiederherstellen";
@@ -144,6 +143,7 @@
 "Not allowed" = "Nicht erlaubt";
 "Not assigned" = "Nicht zugewiesen";
 "Not currently open" = "Zurzeit nicht geöffnet";
+"Not now" = "Jetzt nicht";
 "OK" = "OK";
 "Only on different screen" = "Nur auf anderem Bildschirm";
 "Open Accessibility Settings…" = "Einstellungen für Bedienungshilfen öffnen…";
@@ -163,7 +163,6 @@
 "Quit app" = "App beenden";
 "Recently Created First" = "Zuletzt erstellte zuerst";
 "Recently Focused First" = "Zuletzt fokussierte zuerst";
-"Remember my choice" = "Auswahl merken";
 "Report a bug" = "Fehler melden";
 "Report on current version" = "Auf aktueller Version melden";
 "Reset settings and restart" = "Einstellungen zurücksetzen und neu starten";
@@ -173,7 +172,6 @@
 "Screen including menu bar" = "Bildschirm mit Menüleiste";
 "Screen including mouse" = "Bildschirm mit Mauszeiger";
 "Screen showing ScryTab" = "Bildschirm, der ScryTab anzeigt";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab ist bei der letzten Verwendung abgestürzt. Das Senden eines Absturzberichts hilft bei der Behebung des Problems";
 "ScryTab needs accessibility permission" = "ScryTab benötigt die Bedienungshilfen-Berechtigung";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab zeigt mit einem Statussymbol an, ob das Fenster derzeit minimiert oder im Vollbild ist.";
 "Search" = "Suche";
@@ -183,8 +181,6 @@
 "Select windows on mouse hover" = "Fenster beim Überfahren mit der Maus auswählen";
 "Select windows using arrow keys" = "Fenster mit Pfeiltasten auswählen";
 "Select windows using vim keys" = "Fenster mit Vim-Tasten auswählen";
-"Send" = "Senden";
-"Send a crash report?" = "Absturzbericht senden?";
 "Send feedback" = "Feedback senden";
 "Send feedback…" = "Feedback senden…";
 "Sending…" = "Wird gesendet…";

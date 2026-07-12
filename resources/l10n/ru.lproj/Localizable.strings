@@ -1,10 +1,8 @@
 "%@ switches, %@" = "%1$@ переключений, %2$@";
 "%d applications selected" = "Выбрано приложений: %d";
 "%d included applications" = "Включено приложений: %d";
-"%d matching windows" = "%d подходящих окон";
 "1 application selected" = "Выбрано приложений: 1";
 "1 included application" = "Включено приложений: 1";
-"1 matching window" = "1 подходящее окно";
 "3-finger Horizontal Swipe" = "Горизонтальный свайп тремя пальцами";
 "3-finger Vertical Swipe" = "Вертикальный свайп тремя пальцами";
 "4-finger Horizontal Swipe" = "Горизонтальный свайп четырьмя пальцами";
@@ -46,7 +44,7 @@
 "Apply to All Shortcuts" = "Применить ко всем сочетаниям клавиш";
 "Arrow keys" = "Клавиши со стрелками";
 "Arrow keys already assigned to other actions:\n%@" = "Клавиши со стрелками уже назначены другим действиям:\n%@";
-"Ask whether to send crash reports" = "Спрашивать перед отправкой отчётов о сбоях";
+"Ask before enabling crash reports" = "Спрашивать перед включением отчетов о сбоях";
 "Auto" = "Авто";
 "Auto-install updates periodically" = "Периодически устанавливать обновления автоматически";
 "Behavior" = "Поведение";
@@ -79,11 +77,12 @@
 "Don't hide" = "Не скрывать";
 "Done" = "Готово";
 "Don’t check for updates periodically" = "Не проверять обновления автоматически";
-"Don’t send" = "Не отправлять";
 "e.g. com.example.app" = "напр. com.example.app";
 "e.g. Debug" = "напр. Debug";
 "Edit Focus Set…" = "Изменить набор фокуса…";
 "Editing “%@”" = "Редактируется «%@»";
+"Enable" = "Включить";
+"Enable automatic crash reports?" = "Включить автоматическую отправку отчетов о сбоях?";
 "End" = "Конец";
 "Exceptions" = "Исключения";
 "Export settings…" = "Экспорт настроек…";
@@ -102,6 +101,7 @@
 "Group apps" = "Группировать приложения";
 "Group tabs" = "Группировать вкладки";
 "Help improve ScryTab" = "Помочь улучшить ScryTab";
+"Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Помогите улучшить ScryTab, автоматически отправляя отчеты о сбоях. Позже этот параметр можно изменить в настройках.";
 "Hide" = "Скрыть";
 "Hide Space number labels" = "Скрывать номера пространств";
 "Hide status icons" = "Скрывать значки статуса";
@@ -120,7 +120,6 @@
 "Light" = "Светлая";
 "Lock search" = "Зафиксировать поиск";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS резервирует ⌘⌥⎋, ⌘⌥⇧⎋ и ⌘⌥⇧⌃⎋ для «Завершить принудительно», и их нельзя отвязать. ScryTab не может их использовать.\n\nВаше изменение назначит одно из них на: %@.";
-"Matching windows" = "Подходящие окна";
 "Medium" = "Средний";
 "Middle" = "Середина";
 "Minimize/Deminimize window" = "Свернуть/развернуть окно";
@@ -144,6 +143,7 @@
 "Not allowed" = "Не разрешено";
 "Not assigned" = "Не назначено";
 "Not currently open" = "Сейчас не открыто";
+"Not now" = "Не сейчас";
 "OK" = "OK";
 "Only on different screen" = "Только на другом экране";
 "Open Accessibility Settings…" = "Открыть настройки Универсального доступа…";
@@ -163,7 +163,6 @@
 "Quit app" = "Завершить приложение";
 "Recently Created First" = "Сначала недавно созданные";
 "Recently Focused First" = "Сначала недавно активные";
-"Remember my choice" = "Запомнить мой выбор";
 "Report a bug" = "Сообщить об ошибке";
 "Report on current version" = "Сообщить о текущей версии";
 "Reset settings and restart" = "Сбросить настройки и перезапустить";
@@ -173,7 +172,6 @@
 "Screen including menu bar" = "Экран со строкой меню";
 "Screen including mouse" = "Экран с курсором мыши";
 "Screen showing ScryTab" = "Экран с ScryTab";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "В прошлый раз ScryTab завершился со сбоем. Отправка отчёта о сбое поможет устранить проблему";
 "ScryTab needs accessibility permission" = "ScryTab требуется разрешение Универсального доступа";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab покажет значком статуса, если окно сейчас свёрнуто или в полноэкранном режиме.";
 "Search" = "Поиск";
@@ -183,8 +181,6 @@
 "Select windows on mouse hover" = "Выбирать окна при наведении курсора";
 "Select windows using arrow keys" = "Выбирать окна клавишами со стрелками";
 "Select windows using vim keys" = "Выбирать окна клавишами Vim";
-"Send" = "Отправить";
-"Send a crash report?" = "Отправить отчёт о сбое?";
 "Send feedback" = "Отправить отзыв";
 "Send feedback…" = "Отправить отзыв…";
 "Sending…" = "Отправка…";

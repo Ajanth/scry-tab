@@ -1,10 +1,8 @@
 "%@ switches, %@" = "%2$@：%1$@回の切り替え";
 "%d applications selected" = "%d個のアプリケーションを選択";
 "%d included applications" = "%d個のアプリケーションを含む";
-"%d matching windows" = "一致するウインドウ %d 個";
 "1 application selected" = "1個のアプリケーションを選択";
 "1 included application" = "1個のアプリケーションを含む";
-"1 matching window" = "一致するウインドウ 1 個";
 "3-finger Horizontal Swipe" = "3 本指の水平スワイプ";
 "3-finger Vertical Swipe" = "3 本指の垂直スワイプ";
 "4-finger Horizontal Swipe" = "4 本指の水平スワイプ";
@@ -46,7 +44,7 @@
 "Apply to All Shortcuts" = "すべてのショートカットに適用";
 "Arrow keys" = "矢印キー";
 "Arrow keys already assigned to other actions:\n%@" = "矢印キーはすでに他のアクションに割り当てられています:\n%@";
-"Ask whether to send crash reports" = "クラッシュレポートの送信を毎回確認";
+"Ask before enabling crash reports" = "クラッシュレポートを有効にする前に確認";
 "Auto" = "自動";
 "Auto-install updates periodically" = "アップデートを定期的に自動インストール";
 "Behavior" = "動作";
@@ -79,11 +77,12 @@
 "Don't hide" = "非表示にしない";
 "Done" = "完了";
 "Don’t check for updates periodically" = "アップデートを定期的に確認しない";
-"Don’t send" = "送信しない";
 "e.g. com.example.app" = "例: com.example.app";
 "e.g. Debug" = "例: Debug";
 "Edit Focus Set…" = "フォーカスセットを編集…";
 "Editing “%@”" = "「%@」を編集中";
+"Enable" = "有効にする";
+"Enable automatic crash reports?" = "クラッシュレポートを自動送信しますか？";
 "End" = "末尾";
 "Exceptions" = "例外";
 "Export settings…" = "設定を書き出す…";
@@ -102,6 +101,7 @@
 "Group apps" = "App をグループ化";
 "Group tabs" = "タブをグループ化";
 "Help improve ScryTab" = "ScryTab の改善に協力";
+"Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "クラッシュレポートを自動送信して、ScryTab の改善にご協力ください。これは後で「設定」で変更できます。";
 "Hide" = "非表示";
 "Hide Space number labels" = "Space 番号ラベルを非表示";
 "Hide status icons" = "ステータスアイコンを非表示";
@@ -120,7 +120,6 @@
 "Light" = "ライト";
 "Lock search" = "検索をロック";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS は ⌘⌥⎋、⌘⌥⇧⎋、⌘⌥⇧⌃⎋ を強制終了用に予約しており、解除できません。ScryTab では使用できません。\n\n変更しようとしている割り当て: %@。";
-"Matching windows" = "一致するウインドウ";
 "Medium" = "中";
 "Middle" = "中央";
 "Minimize/Deminimize window" = "ウインドウの最小化切り替え";
@@ -144,6 +143,7 @@
 "Not allowed" = "許可しない";
 "Not assigned" = "未割り当て";
 "Not currently open" = "現在開いていません";
+"Not now" = "今はしない";
 "OK" = "OK";
 "Only on different screen" = "別の画面のときのみ";
 "Open Accessibility Settings…" = "アクセシビリティ設定を開く…";
@@ -163,7 +163,6 @@
 "Quit app" = "App を終了";
 "Recently Created First" = "作成日順(新しい順)";
 "Recently Focused First" = "最近フォーカスした順";
-"Remember my choice" = "選択を記憶する";
 "Report a bug" = "バグを報告";
 "Report on current version" = "現在のバージョンについて報告";
 "Reset settings and restart" = "設定をリセットして再起動";
@@ -173,7 +172,6 @@
 "Screen including menu bar" = "メニューバーを含む画面";
 "Screen including mouse" = "マウスのある画面";
 "Screen showing ScryTab" = "ScryTab を表示する画面";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "前回の使用時に ScryTab がクラッシュしました。クラッシュレポートを送信すると問題の修正に役立ちます";
 "ScryTab needs accessibility permission" = "ScryTabにはアクセシビリティ権限が必要です";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ウインドウが現在最小化またはフルスクリーンの場合、ScryTab はステータスアイコンで表示します。";
 "Search" = "検索";
@@ -183,8 +181,6 @@
 "Select windows on mouse hover" = "マウスホバーでウインドウを選択";
 "Select windows using arrow keys" = "矢印キーでウインドウを選択";
 "Select windows using vim keys" = "Vim キーでウインドウを選択";
-"Send" = "送信";
-"Send a crash report?" = "クラッシュレポートを送信しますか?";
 "Send feedback" = "フィードバックを送信";
 "Send feedback…" = "フィードバックを送信…";
 "Sending…" = "送信中…";
