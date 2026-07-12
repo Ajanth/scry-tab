@@ -8,16 +8,10 @@
 "%d included applications" = "%d included applications";
 
 /* No comment provided by engineer. */
-"%d matching windows" = "%d matching windows";
-
-/* No comment provided by engineer. */
 "1 application selected" = "1 application selected";
 
 /* No comment provided by engineer. */
 "1 included application" = "1 included application";
-
-/* No comment provided by engineer. */
-"1 matching window" = "1 matching window";
 
 /* No comment provided by engineer. */
 "3-finger Horizontal Swipe" = "3-finger Horizontal Swipe";
@@ -143,7 +137,7 @@
 "Arrow keys already assigned to other actions:\n%@" = "Arrow keys already assigned to other actions:\n%@";
 
 /* No comment provided by engineer. */
-"Ask whether to send crash reports" = "Ask whether to send crash reports";
+"Ask before enabling crash reports" = "Ask before enabling crash reports";
 
 /* No comment provided by engineer. */
 "Auto" = "Auto";
@@ -242,9 +236,6 @@
 "Don’t check for updates periodically" = "Don’t check for updates periodically";
 
 /* No comment provided by engineer. */
-"Don’t send" = "Don’t send";
-
-/* No comment provided by engineer. */
 "e.g. com.example.app" = "e.g. com.example.app";
 
 /* No comment provided by engineer. */
@@ -255,6 +246,12 @@
 
 /* No comment provided by engineer. */
 "Editing “%@”" = "Editing “%@”";
+
+/* No comment provided by engineer. */
+"Enable" = "Enable";
+
+/* No comment provided by engineer. */
+"Enable automatic crash reports?" = "Enable automatic crash reports?";
 
 /* No comment provided by engineer. */
 "End" = "End";
@@ -311,6 +308,9 @@
 "Help improve ScryTab" = "Help improve ScryTab";
 
 /* No comment provided by engineer. */
+"Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings.";
+
+/* No comment provided by engineer. */
 "Hide" = "Hide";
 
 /* No comment provided by engineer. */
@@ -363,9 +363,6 @@
 
 /* No comment provided by engineer. */
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@.";
-
-/* No comment provided by engineer. */
-"Matching windows" = "Matching windows";
 
 /* No comment provided by engineer. */
 "Medium" = "Medium";
@@ -437,6 +434,9 @@
 "Not currently open" = "Not currently open";
 
 /* No comment provided by engineer. */
+"Not now" = "Not now";
+
+/* No comment provided by engineer. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -494,9 +494,6 @@
 "Recently Focused First" = "Recently Focused First";
 
 /* No comment provided by engineer. */
-"Remember my choice" = "Remember my choice";
-
-/* No comment provided by engineer. */
 "Report a bug" = "Report a bug";
 
 /* No comment provided by engineer. */
@@ -524,9 +521,6 @@
 "Screen showing ScryTab" = "Screen showing ScryTab";
 
 /* No comment provided by engineer. */
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed";
-
-/* No comment provided by engineer. */
 "ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
 
 /* No comment provided by engineer. */
@@ -552,12 +546,6 @@
 
 /* No comment provided by engineer. */
 "Select windows using vim keys" = "Select windows using vim keys";
-
-/* No comment provided by engineer. */
-"Send" = "Send";
-
-/* No comment provided by engineer. */
-"Send a crash report?" = "Send a crash report?";
 
 /* No comment provided by engineer. */
 "Send feedback" = "Send feedback";

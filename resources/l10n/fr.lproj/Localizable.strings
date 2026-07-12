@@ -1,10 +1,8 @@
 "%@ switches, %@" = "%1$@ changements, %2$@";
 "%d applications selected" = "%d applications sélectionnées";
 "%d included applications" = "%d applications incluses";
-"%d matching windows" = "%d fenêtres correspondantes";
 "1 application selected" = "1 application sélectionnée";
 "1 included application" = "1 application incluse";
-"1 matching window" = "1 fenêtre correspondante";
 "3-finger Horizontal Swipe" = "Balayage horizontal à 3 doigts";
 "3-finger Vertical Swipe" = "Balayage vertical à 3 doigts";
 "4-finger Horizontal Swipe" = "Balayage horizontal à 4 doigts";
@@ -46,7 +44,7 @@
 "Apply to All Shortcuts" = "Appliquer à tous les raccourcis";
 "Arrow keys" = "Touches fléchées";
 "Arrow keys already assigned to other actions:\n%@" = "Touches fléchées déjà affectées à d'autres actions :\n%@";
-"Ask whether to send crash reports" = "Demander avant d'envoyer un rapport de plantage";
+"Ask before enabling crash reports" = "Demander avant d’activer les rapports de plantage";
 "Auto" = "Auto";
 "Auto-install updates periodically" = "Installer automatiquement les mises à jour";
 "Behavior" = "Comportement";
@@ -79,11 +77,12 @@
 "Don't hide" = "Ne pas masquer";
 "Done" = "Terminé";
 "Don’t check for updates periodically" = "Ne pas rechercher les mises à jour automatiquement";
-"Don’t send" = "Ne pas envoyer";
 "e.g. com.example.app" = "ex. com.example.app";
 "e.g. Debug" = "ex. Debug";
 "Edit Focus Set…" = "Modifier l’ensemble de concentration…";
 "Editing “%@”" = "Modification de « %@ »";
+"Enable" = "Activer";
+"Enable automatic crash reports?" = "Activer l’envoi automatique de rapports de plantage ?";
 "End" = "Fin";
 "Exceptions" = "Exceptions";
 "Export settings…" = "Exporter les réglages…";
@@ -102,6 +101,7 @@
 "Group apps" = "Grouper les apps";
 "Group tabs" = "Grouper les onglets";
 "Help improve ScryTab" = "Aidez à améliorer ScryTab";
+"Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Aidez à améliorer ScryTab en envoyant automatiquement des rapports de plantage. Vous pourrez modifier ce réglage plus tard dans Réglages.";
 "Hide" = "Masquer";
 "Hide Space number labels" = "Masquer les numéros de Bureau";
 "Hide status icons" = "Masquer les icônes d'état";
@@ -120,7 +120,6 @@
 "Light" = "Clair";
 "Lock search" = "Verrouiller la recherche";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS réserve ⌘⌥⎋, ⌘⌥⇧⎋ et ⌘⌥⇧⌃⎋ pour Forcer à quitter et ils ne peuvent pas être réaffectés. ScryTab ne peut pas les utiliser.\n\nVotre modification en affecterait un à : %@.";
-"Matching windows" = "Fenêtres correspondantes";
 "Medium" = "Moyen";
 "Middle" = "Milieu";
 "Minimize/Deminimize window" = "Réduire/Restaurer la fenêtre";
@@ -144,6 +143,7 @@
 "Not allowed" = "Non autorisé";
 "Not assigned" = "Non attribué";
 "Not currently open" = "Pas ouverte actuellement";
+"Not now" = "Pas maintenant";
 "OK" = "OK";
 "Only on different screen" = "Uniquement sur un autre écran";
 "Open Accessibility Settings…" = "Ouvrir les réglages d'accessibilité…";
@@ -163,7 +163,6 @@
 "Quit app" = "Quitter l'app";
 "Recently Created First" = "Récemment créées d'abord";
 "Recently Focused First" = "Récemment sélectionnées d'abord";
-"Remember my choice" = "Mémoriser mon choix";
 "Report a bug" = "Signaler un bug";
 "Report on current version" = "Signaler sur la version actuelle";
 "Reset settings and restart" = "Réinitialiser les réglages et redémarrer";
@@ -173,7 +172,6 @@
 "Screen including menu bar" = "Écran avec la barre des menus";
 "Screen including mouse" = "Écran avec la souris";
 "Screen showing ScryTab" = "Écran affichant ScryTab";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab a planté lors de votre dernière utilisation. Envoyer un rapport de plantage aidera à résoudre le problème";
 "ScryTab needs accessibility permission" = "ScryTab a besoin de l’autorisation Accessibilité";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab indique avec une icône d'état si la fenêtre est réduite ou en plein écran.";
 "Search" = "Recherche";
@@ -183,8 +181,6 @@
 "Select windows on mouse hover" = "Sélectionner les fenêtres au survol de la souris";
 "Select windows using arrow keys" = "Sélectionner les fenêtres avec les touches fléchées";
 "Select windows using vim keys" = "Sélectionner les fenêtres avec les touches Vim";
-"Send" = "Envoyer";
-"Send a crash report?" = "Envoyer un rapport de plantage ?";
 "Send feedback" = "Envoyer un commentaire";
 "Send feedback…" = "Envoyer un commentaire…";
 "Sending…" = "Envoi…";

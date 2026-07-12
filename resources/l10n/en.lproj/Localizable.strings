@@ -1,10 +1,8 @@
 "%@ switches, %@" = "%@ switches, %@";
 "%d applications selected" = "%d applications selected";
 "%d included applications" = "%d included applications";
-"%d matching windows" = "%d matching windows";
 "1 application selected" = "1 application selected";
 "1 included application" = "1 included application";
-"1 matching window" = "1 matching window";
 "3-finger Horizontal Swipe" = "3-finger Horizontal Swipe";
 "3-finger Vertical Swipe" = "3-finger Vertical Swipe";
 "4-finger Horizontal Swipe" = "4-finger Horizontal Swipe";
@@ -46,7 +44,7 @@
 "Apply to All Shortcuts" = "Apply to All Shortcuts";
 "Arrow keys" = "Arrow keys";
 "Arrow keys already assigned to other actions:\n%@" = "Arrow keys already assigned to other actions:\n%@";
-"Ask whether to send crash reports" = "Ask whether to send crash reports";
+"Ask before enabling crash reports" = "Ask before enabling crash reports";
 "Auto" = "Auto";
 "Auto-install updates periodically" = "Auto-install updates periodically";
 "Behavior" = "Behavior";
@@ -79,11 +77,12 @@
 "Don't hide" = "Don't hide";
 "Done" = "Done";
 "Don’t check for updates periodically" = "Don’t check for updates periodically";
-"Don’t send" = "Don’t send";
 "e.g. com.example.app" = "e.g. com.example.app";
 "e.g. Debug" = "e.g. Debug";
 "Edit Focus Set…" = "Edit Focus Set…";
 "Editing “%@”" = "Editing “%@”";
+"Enable" = "Enable";
+"Enable automatic crash reports?" = "Enable automatic crash reports?";
 "End" = "End";
 "Exceptions" = "Exceptions";
 "Export settings…" = "Export settings…";
@@ -102,6 +101,7 @@
 "Group apps" = "Group apps";
 "Group tabs" = "Group tabs";
 "Help improve ScryTab" = "Help improve ScryTab";
+"Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings.";
 "Hide" = "Hide";
 "Hide Space number labels" = "Hide Space number labels";
 "Hide status icons" = "Hide status icons";
@@ -120,7 +120,6 @@
 "Light" = "Light";
 "Lock search" = "Lock search";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@.";
-"Matching windows" = "Matching windows";
 "Medium" = "Medium";
 "Middle" = "Middle";
 "Minimize/Deminimize window" = "Minimize/Deminimize window";
@@ -144,6 +143,7 @@
 "Not allowed" = "Not allowed";
 "Not assigned" = "Not assigned";
 "Not currently open" = "Not currently open";
+"Not now" = "Not now";
 "OK" = "OK";
 "Only on different screen" = "Only on different screen";
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
@@ -163,7 +163,6 @@
 "Quit app" = "Quit app";
 "Recently Created First" = "Recently Created First";
 "Recently Focused First" = "Recently Focused First";
-"Remember my choice" = "Remember my choice";
 "Report a bug" = "Report a bug";
 "Report on current version" = "Report on current version";
 "Reset settings and restart" = "Reset settings and restart";
@@ -173,7 +172,6 @@
 "Screen including menu bar" = "Screen including menu bar";
 "Screen including mouse" = "Screen including mouse";
 "Screen showing ScryTab" = "Screen showing ScryTab";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed";
 "ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
 "Search" = "Search";
@@ -183,8 +181,6 @@
 "Select windows on mouse hover" = "Select windows on mouse hover";
 "Select windows using arrow keys" = "Select windows using arrow keys";
 "Select windows using vim keys" = "Select windows using vim keys";
-"Send" = "Send";
-"Send a crash report?" = "Send a crash report?";
 "Send feedback" = "Send feedback";
 "Send feedback…" = "Send feedback…";
 "Sending…" = "Sending…";

@@ -1,10 +1,8 @@
 "%@ switches, %@" = "%1$@ cambios, %2$@";
 "%d applications selected" = "%d aplicaciones seleccionadas";
 "%d included applications" = "%d aplicaciones incluidas";
-"%d matching windows" = "%d ventanas coincidentes";
 "1 application selected" = "1 aplicación seleccionada";
 "1 included application" = "1 aplicación incluida";
-"1 matching window" = "1 ventana coincidente";
 "3-finger Horizontal Swipe" = "Deslizamiento horizontal con 3 dedos";
 "3-finger Vertical Swipe" = "Deslizamiento vertical con 3 dedos";
 "4-finger Horizontal Swipe" = "Deslizamiento horizontal con 4 dedos";
@@ -46,7 +44,7 @@
 "Apply to All Shortcuts" = "Aplicar a todos los atajos";
 "Arrow keys" = "Teclas de flecha";
 "Arrow keys already assigned to other actions:\n%@" = "Teclas de flecha ya asignadas a otras acciones:\n%@";
-"Ask whether to send crash reports" = "Preguntar si enviar los informes de problema";
+"Ask before enabling crash reports" = "Preguntar antes de activar los informes de fallos";
 "Auto" = "Automático";
 "Auto-install updates periodically" = "Instalar actualizaciones automáticamente";
 "Behavior" = "Comportamiento";
@@ -79,11 +77,12 @@
 "Don't hide" = "No ocultar";
 "Done" = "Listo";
 "Don’t check for updates periodically" = "No buscar actualizaciones periódicamente";
-"Don’t send" = "No enviar";
 "e.g. com.example.app" = "p. ej. com.example.app";
 "e.g. Debug" = "p. ej. Debug";
 "Edit Focus Set…" = "Editar conjunto de enfoque…";
 "Editing “%@”" = "Editando «%@»";
+"Enable" = "Activar";
+"Enable automatic crash reports?" = "¿Activar el envío automático de informes de fallos?";
 "End" = "Fin";
 "Exceptions" = "Excepciones";
 "Export settings…" = "Exportar ajustes…";
@@ -102,6 +101,7 @@
 "Group apps" = "Agrupar apps";
 "Group tabs" = "Agrupar pestañas";
 "Help improve ScryTab" = "Ayuda a mejorar ScryTab";
+"Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Ayuda a mejorar ScryTab enviando automáticamente informes de fallos. Puedes cambiar esta opción más tarde en Configuración.";
 "Hide" = "Ocultar";
 "Hide Space number labels" = "Ocultar las etiquetas de número de Espacio";
 "Hide status icons" = "Ocultar los iconos de estado";
@@ -120,7 +120,6 @@
 "Light" = "Claro";
 "Lock search" = "Bloquear búsqueda";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserva ⌘⌥⎋, ⌘⌥⇧⎋ y ⌘⌥⇧⌃⎋ para Forzar salida y no se pueden reasignar. ScryTab no puede usarlas.\n\nTu cambio asignaría una de estas a: %@.";
-"Matching windows" = "Ventanas coincidentes";
 "Medium" = "Medio";
 "Middle" = "Centro";
 "Minimize/Deminimize window" = "Minimizar/restaurar ventana";
@@ -144,6 +143,7 @@
 "Not allowed" = "No permitido";
 "Not assigned" = "Sin asignar";
 "Not currently open" = "No está abierta actualmente";
+"Not now" = "Ahora no";
 "OK" = "OK";
 "Only on different screen" = "Solo en otra pantalla";
 "Open Accessibility Settings…" = "Abrir Ajustes de Accesibilidad…";
@@ -163,7 +163,6 @@
 "Quit app" = "Salir de la app";
 "Recently Created First" = "Creadas recientemente primero";
 "Recently Focused First" = "Enfocadas recientemente primero";
-"Remember my choice" = "Recordar mi elección";
 "Report a bug" = "Informar de un error";
 "Report on current version" = "Informe sobre la versión actual";
 "Reset settings and restart" = "Restablecer ajustes y reiniciar";
@@ -173,7 +172,6 @@
 "Screen including menu bar" = "Pantalla con la barra de menús";
 "Screen including mouse" = "Pantalla con el ratón";
 "Screen showing ScryTab" = "Pantalla que muestra ScryTab";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab se cerró inesperadamente la última vez que lo usaste. Enviar un informe de problema ayudará a solucionarlo";
 "ScryTab needs accessibility permission" = "ScryTab necesita permiso de accesibilidad";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab indica con un icono de estado si la ventana está minimizada o en pantalla completa.";
 "Search" = "Buscar";
@@ -183,8 +181,6 @@
 "Select windows on mouse hover" = "Seleccionar ventanas al pasar el ratón";
 "Select windows using arrow keys" = "Seleccionar ventanas con las teclas de flecha";
 "Select windows using vim keys" = "Seleccionar ventanas con las teclas Vim";
-"Send" = "Enviar";
-"Send a crash report?" = "¿Enviar un informe de problema?";
 "Send feedback" = "Enviar comentarios";
 "Send feedback…" = "Enviar comentarios…";
 "Sending…" = "Enviando…";

@@ -1,10 +1,8 @@
 "%@ switches, %@" = "%2$@切换了%1$@次";
 "%d applications selected" = "已选择 %d 个应用";
 "%d included applications" = "包含 %d 个应用";
-"%d matching windows" = "%d 个匹配的窗口";
 "1 application selected" = "已选择 1 个应用";
 "1 included application" = "包含 1 个应用";
-"1 matching window" = "1 个匹配的窗口";
 "3-finger Horizontal Swipe" = "三指水平滑动";
 "3-finger Vertical Swipe" = "三指垂直滑动";
 "4-finger Horizontal Swipe" = "四指水平滑动";
@@ -46,7 +44,7 @@
 "Apply to All Shortcuts" = "应用到所有快捷键";
 "Arrow keys" = "方向键";
 "Arrow keys already assigned to other actions:\n%@" = "方向键已分配给其他操作：\n%@";
-"Ask whether to send crash reports" = "询问是否发送崩溃报告";
+"Ask before enabling crash reports" = "在启用崩溃报告前询问";
 "Auto" = "自动";
 "Auto-install updates periodically" = "定期自动安装更新";
 "Behavior" = "行为";
@@ -79,11 +77,12 @@
 "Don't hide" = "不隐藏";
 "Done" = "完成";
 "Don’t check for updates periodically" = "不定期检查更新";
-"Don’t send" = "不发送";
 "e.g. com.example.app" = "例如 com.example.app";
 "e.g. Debug" = "例如 Debug";
 "Edit Focus Set…" = "编辑专注集…";
 "Editing “%@”" = "正在编辑“%@”";
+"Enable" = "启用";
+"Enable automatic crash reports?" = "要启用自动崩溃报告吗？";
 "End" = "末尾";
 "Exceptions" = "例外";
 "Export settings…" = "导出设置…";
@@ -102,6 +101,7 @@
 "Group apps" = "应用分组";
 "Group tabs" = "标签分组";
 "Help improve ScryTab" = "帮助改进 ScryTab";
+"Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "通过自动发送崩溃报告来帮助改进 ScryTab。你可以稍后在“设置”中更改此选项。";
 "Hide" = "隐藏";
 "Hide Space number labels" = "隐藏桌面编号标签";
 "Hide status icons" = "隐藏状态图标";
@@ -120,7 +120,6 @@
 "Light" = "浅色";
 "Lock search" = "锁定搜索";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS 将 ⌘⌥⎋、⌘⌥⇧⎋ 和 ⌘⌥⇧⌃⎋ 保留用于强制退出，无法解除绑定。ScryTab 无法使用它们。\n\n您的更改会将其中之一分配给：%@。";
-"Matching windows" = "匹配的窗口";
 "Medium" = "中";
 "Middle" = "中间";
 "Minimize/Deminimize window" = "最小化/还原窗口";
@@ -144,6 +143,7 @@
 "Not allowed" = "不允许";
 "Not assigned" = "未分配";
 "Not currently open" = "当前未打开";
+"Not now" = "暂不";
 "OK" = "好";
 "Only on different screen" = "仅在不同屏幕上";
 "Open Accessibility Settings…" = "打开辅助功能设置…";
@@ -163,7 +163,6 @@
 "Quit app" = "退出应用";
 "Recently Created First" = "最近创建优先";
 "Recently Focused First" = "最近聚焦优先";
-"Remember my choice" = "记住我的选择";
 "Report a bug" = "报告错误";
 "Report on current version" = "在当前版本上报告";
 "Reset settings and restart" = "重置设置并重启";
@@ -173,7 +172,6 @@
 "Screen including menu bar" = "包含菜单栏的屏幕";
 "Screen including mouse" = "包含鼠标的屏幕";
 "Screen showing ScryTab" = "显示 ScryTab 的屏幕";
-"ScryTab crashed last time you used it. Sending a crash report will help get the issue fixed" = "ScryTab 在您上次使用时崩溃了。发送崩溃报告有助于修复问题";
 "ScryTab needs accessibility permission" = "ScryTab 需要辅助功能权限";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab 将通过状态图标显示窗口当前是否已最小化或全屏。";
 "Search" = "搜索";
@@ -183,8 +181,6 @@
 "Select windows on mouse hover" = "鼠标悬停时选择窗口";
 "Select windows using arrow keys" = "使用方向键选择窗口";
 "Select windows using vim keys" = "使用 Vim 键选择窗口";
-"Send" = "发送";
-"Send a crash report?" = "发送崩溃报告？";
 "Send feedback" = "发送反馈";
 "Send feedback…" = "发送反馈…";
 "Sending…" = "发送中…";
