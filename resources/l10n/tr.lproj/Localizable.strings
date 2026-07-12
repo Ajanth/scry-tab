@@ -26,7 +26,6 @@
 "All apps" = "Tüm uygulamalar";
 "All screens" = "Tüm ekranlar";
 "All Spaces" = "Tüm Alanlar";
-"All Windows" = "Tüm pencereler";
 "Allowed" = "İzin verildi";
 "Alphabetical Order" = "Alfabetik sıra";
 "Always" = "Her zaman";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Güncellemeleri düzenli olarak denetle";
 "Check for updates…" = "Güncellemeleri denetle…";
 "Check permissions…" = "İzinleri denetle…";
-"Choose a global shortcut to open the Focus Sets picker." = "Odak Kümeleri seçicisini açmak için genel bir klavye kısayolu seçin.";
 "Choose the applications whose windows belong to this Focus Set." = "Pencereleri bu Odak Kümesine ait olan uygulamaları seçin.";
 "Close window" = "Pencereyi kapat";
 "Conflicting shortcut" = "Çakışan kısayol";
@@ -92,7 +90,6 @@
 "Focus" = "Odak";
 "Focus selected window" = "Seçili pencereye odaklan";
 "Focus Sets" = "Odak kümeleri";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Odak Kümeleri etkin durumdaki paylaşılan kısayolları kullanır. Bunları Denetimler'de değiştirin.";
 "Fullscreen/Defullscreen window" = "Pencereyi tam ekran yap/tam ekrandan çıkar";
 "General" = "Genel";
 "Gesture" = "Hareket";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Yalnızca farklı ekranda";
 "Open Accessibility Settings…" = "Erişilebilirlik ayarlarını aç…";
 "Open Appearance Settings" = "Görünüm Ayarları’nı aç";
-"Open Focus Sets" = "Odak Kümelerini Aç";
-"Open Shortcuts When Active Settings" = "Etkin Kullanılan Kısayollar ayarlarını aç";
 "Open Trackpad Settings…" = "Trackpad ayarlarını aç…";
 "Order windows by" = "Pencereleri sıralama ölçütü";
 "Ordering" = "Sıralama";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab, pencerenin şu anda küçültülmüş veya tam ekran olduğunu bir durum simgesiyle gösterir.";
 "Search" = "Ara";
 "Search applications" = "Uygulamaları ara";
-"Search Focus Sets" = "Odak Kümelerini Ara";
 "Select next window" = "Sonraki pencereyi seç";
 "Select previous window" = "Önceki pencereyi seç";
 "Select windows on mouse hover" = "Fare üzerine geldiğinde pencereleri seç";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Kısayol zaten şuna atanmış: %@";
 "Shortcuts" = "Kısayollar";
 "Shortcuts When Active" = "Etkinken Kullanılan Kısayollar";
-"Shortcuts while browsing" = "Göz atarken kullanılan kısayollar";
 "Shortcuts while ScryTab is active" = "ScryTab etkinken kestirmeler";
 "Show" = "Göster";
 "Show all windows" = "Tüm pencereleri göster";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Trackpad dokunsal geri bildirimi";
 "Trigger" = "Tetikleyici";
 "Unassign existing shortcut and continue" = "Mevcut kısayolun atamasını kaldır ve devam et";
-"Unassigned Windows" = "Atanmamış pencereler";
 "Unavailable application" = "Kullanılamayan uygulama";
 "Update now" = "Şimdi güncelle";
 "Updates policy" = "Güncelleme ilkesi";

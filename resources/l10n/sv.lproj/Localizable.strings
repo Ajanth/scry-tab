@@ -26,7 +26,6 @@
 "All apps" = "Alla appar";
 "All screens" = "Alla skärmar";
 "All Spaces" = "Alla skrivbord";
-"All Windows" = "Alla fönster";
 "Allowed" = "Tillåten";
 "Alphabetical Order" = "Alfabetisk ordning";
 "Always" = "Alltid";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Sök efter uppdateringar regelbundet";
 "Check for updates…" = "Sök efter uppdateringar…";
 "Check permissions…" = "Kontrollera behörigheter…";
-"Choose a global shortcut to open the Focus Sets picker." = "Välj en global kortkommando för att öppna väljaren för fokusuppsättningar.";
 "Choose the applications whose windows belong to this Focus Set." = "Välj apparna vars fönster ska tillhöra den här fokusuppsättningen.";
 "Close window" = "Stäng fönster";
 "Conflicting shortcut" = "Kortkommando i konflikt";
@@ -92,7 +90,6 @@
 "Focus" = "Fokus";
 "Focus selected window" = "Fokusera valt fönster";
 "Focus Sets" = "Fokusuppsättningar";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Fokusuppsättningar använder de delade kortkommandona när de är aktiva. Ändra dem i Reglage.";
 "Fullscreen/Defullscreen window" = "Helskärm/Avsluta helskärm för fönster";
 "General" = "Allmänt";
 "Gesture" = "Gest";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Endast på annan skärm";
 "Open Accessibility Settings…" = "Öppna inställningar för Hjälpmedel…";
 "Open Appearance Settings" = "Öppna utseendeinställningar";
-"Open Focus Sets" = "Öppna fokusuppsättningar";
-"Open Shortcuts When Active Settings" = "Öppna inställningar för kortkommandon när aktiv";
 "Open Trackpad Settings…" = "Öppna inställningar för Styrplatta…";
 "Order windows by" = "Sortera fönster efter";
 "Ordering" = "Sortering";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab visar med en statusikon om fönstret är minimerat eller i helskärm.";
 "Search" = "Sök";
 "Search applications" = "Sök efter appar";
-"Search Focus Sets" = "Sök fokusuppsättningar";
 "Select next window" = "Välj nästa fönster";
 "Select previous window" = "Välj föregående fönster";
 "Select windows on mouse hover" = "Välj fönster när muspekaren är över";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Kortkommandot är redan tilldelat: %@";
 "Shortcuts" = "Kortkommandon";
 "Shortcuts When Active" = "Kortkommandon när aktiv";
-"Shortcuts while browsing" = "Kortkommandon under bläddring";
 "Shortcuts while ScryTab is active" = "Kortkommandon när ScryTab är aktivt";
 "Show" = "Visa";
 "Show all windows" = "Visa alla fönster";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Haptisk återkoppling på styrplatta";
 "Trigger" = "Utlösare";
 "Unassign existing shortcut and continue" = "Ta bort befintligt kortkommando och fortsätt";
-"Unassigned Windows" = "Ej tilldelade fönster";
 "Unavailable application" = "Otillgänglig app";
 "Update now" = "Uppdatera nu";
 "Updates policy" = "Policy för uppdateringar";

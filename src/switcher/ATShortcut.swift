@@ -57,7 +57,7 @@ class ATShortcut {
         }
         let session = SwitcherSession.current
         // other shortcuts: contains exactly or exactly + holdShortcut modifiers
-        let holdModifiersCleaned = activeHoldModifiers(session)
+        let holdModifiersCleaned = Self.activeHoldModifiers(session)
         // nextWindowShortcut when panel is open: also match base key without holdShortcut modifiers
         if session != nil && id.hasPrefix("nextWindowShortcut") {
             let baseModifiersCleaned = shortcutModifiersCleaned & ~holdModifiersCleaned
@@ -68,15 +68,18 @@ class ATShortcut {
         return modifiersCleaned == shortcutModifiersCleaned || modifiersCleaned == (shortcutModifiersCleaned | holdModifiersCleaned)
     }
 
-    private func activeHoldModifiers(_ session: SwitcherSession?) -> CarbonModifierFlags {
+    static func activeHoldModifiers(_ session: SwitcherSession?) -> CarbonModifierFlags {
         guard let session else { return 0 }
         if let shortcutIndex = session.presentationSource.shortcutIndex {
             return ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", shortcutIndex)]?.shortcut.carbonModifierFlags.cleaned() ?? 0
         }
-        guard let chord = session.chordLifecycleState,
-              case let .directFocusSet(identifier) = chord.owner,
-              session.focusSetSessionState.directFocusSetIdentifier == identifier else { return 0 }
-        return chord.holdModifiers.cleaned()
+        guard let chord = session.chordLifecycleState else { return 0 }
+        switch chord.owner {
+        case let .directFocusSet(identifier):
+            return session.focusSetSessionState.directFocusSetIdentifier == identifier ? chord.holdModifiers.cleaned() : 0
+        case .shortcut:
+            return 0
+        }
     }
 
     func shouldTrigger() -> Bool {

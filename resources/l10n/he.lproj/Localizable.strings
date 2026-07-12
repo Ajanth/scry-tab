@@ -26,7 +26,6 @@
 "All apps" = "כל היישומים";
 "All screens" = "כל המסכים";
 "All Spaces" = "כל המרחבים";
-"All Windows" = "כל החלונות";
 "Allowed" = "מותר";
 "Alphabetical Order" = "סדר אלפביתי";
 "Always" = "תמיד";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "חפש עדכונים מעת לעת";
 "Check for updates…" = "חפש עדכונים…";
 "Check permissions…" = "בדוק הרשאות…";
-"Choose a global shortcut to open the Focus Sets picker." = "בחר קיצור מקשים כללי כדי לפתוח את בורר ערכות המיקוד.";
 "Choose the applications whose windows belong to this Focus Set." = "יש לבחור את היישומים שהחלונות שלהם שייכים לערכת המיקוד הזו.";
 "Close window" = "סגור חלון";
 "Conflicting shortcut" = "קיצור דרך מתנגש";
@@ -92,7 +90,6 @@
 "Focus" = "מיקוד";
 "Focus selected window" = "מקד את החלון הנבחר";
 "Focus Sets" = "קבוצות מיקוד";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "ערכות מיקוד משתמשות בקיצורי הדרך המשותפים כשהן פעילות. שנה אותם בפקדים.";
 "Fullscreen/Defullscreen window" = "מסך מלא/יציאה ממסך מלא של חלון";
 "General" = "כללי";
 "Gesture" = "מחווה";
@@ -147,8 +144,6 @@
 "Only on different screen" = "רק במסך אחר";
 "Open Accessibility Settings…" = "פתח הגדרות נגישות…";
 "Open Appearance Settings" = "פתיחת הגדרות המראה";
-"Open Focus Sets" = "פתח ערכות מיקוד";
-"Open Shortcuts When Active Settings" = "פתיחת הגדרות קיצורי הדרך כאשר פעיל";
 "Open Trackpad Settings…" = "פתח הגדרות משטח מגע…";
 "Order windows by" = "מיין חלונות לפי";
 "Ordering" = "סדר";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab יציג באמצעות סמל מצב אם החלון ממוזער או במסך מלא.";
 "Search" = "חיפוש";
 "Search applications" = "חפש יישומים";
-"Search Focus Sets" = "חפש ערכות מיקוד";
 "Select next window" = "בחר בחלון הבא";
 "Select previous window" = "בחר בחלון הקודם";
 "Select windows on mouse hover" = "בחר חלונות בעת ריחוף עכבר";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "קיצור הדרך כבר משויך: %@";
 "Shortcuts" = "קיצורי דרך";
 "Shortcuts When Active" = "קיצורי דרך כאשר פעיל";
-"Shortcuts while browsing" = "קיצורי דרך במהלך עיון";
 "Shortcuts while ScryTab is active" = "קיצורי דרך בזמן ש-ScryTab פעיל";
 "Show" = "הצג";
 "Show all windows" = "הצג את כל החלונות";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "משוב הפטי של משטח מגע";
 "Trigger" = "טריגר";
 "Unassign existing shortcut and continue" = "בטל שיוך של קיצור דרך קיים והמשך";
-"Unassigned Windows" = "חלונות שלא הוקצו";
 "Unavailable application" = "יישום לא זמין";
 "Update now" = "עדכן כעת";
 "Updates policy" = "מדיניות עדכונים";

@@ -26,7 +26,6 @@
 "All apps" = "Tutte le app";
 "All screens" = "Tutti gli schermi";
 "All Spaces" = "Tutti gli Spazi";
-"All Windows" = "Tutte le finestre";
 "Allowed" = "Consentito";
 "Alphabetical Order" = "Ordine alfabetico";
 "Always" = "Sempre";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Cerca aggiornamenti periodicamente";
 "Check for updates…" = "Cerca aggiornamenti…";
 "Check permissions…" = "Controlla i permessi…";
-"Choose a global shortcut to open the Focus Sets picker." = "Scegli una scorciatoia globale per aprire il selettore dei set di concentrazione.";
 "Choose the applications whose windows belong to this Focus Set." = "Scegli le app le cui finestre appartengono a questo Focus Set.";
 "Close window" = "Chiudi finestra";
 "Conflicting shortcut" = "Scorciatoia in conflitto";
@@ -92,7 +90,6 @@
 "Focus" = "Focus";
 "Focus selected window" = "Metti a fuoco la finestra selezionata";
 "Focus Sets" = "Set di concentrazione";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "I set di messa a fuoco usano le scorciatoie condivise quando attivi. Modificale in Controlli.";
 "Fullscreen/Defullscreen window" = "Attiva/disattiva schermo intero";
 "General" = "Generali";
 "Gesture" = "Gesto";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Solo su schermo diverso";
 "Open Accessibility Settings…" = "Apri Impostazioni di Accessibilità…";
 "Open Appearance Settings" = "Apri impostazioni Aspetto";
-"Open Focus Sets" = "Apri set di concentrazione";
-"Open Shortcuts When Active Settings" = "Apri le impostazioni delle scorciatoie quando attivo";
 "Open Trackpad Settings…" = "Apri Impostazioni del Trackpad…";
 "Order windows by" = "Ordina finestre per";
 "Ordering" = "Ordinamento";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab indicherà con un'icona di stato se la finestra è ridotta a icona o a tutto schermo.";
 "Search" = "Cerca";
 "Search applications" = "Cerca applicazioni";
-"Search Focus Sets" = "Cerca set di concentrazione";
 "Select next window" = "Seleziona la finestra successiva";
 "Select previous window" = "Seleziona la finestra precedente";
 "Select windows on mouse hover" = "Seleziona la finestra al passaggio del mouse";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Scorciatoia già assegnata a: %@";
 "Shortcuts" = "Scorciatoie";
 "Shortcuts When Active" = "Scorciatoie quando attivo";
-"Shortcuts while browsing" = "Scorciatoie durante la navigazione";
 "Shortcuts while ScryTab is active" = "Abbreviazioni mentre ScryTab è attivo";
 "Show" = "Mostra";
 "Show all windows" = "Mostra tutte le finestre";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Feedback aptico del Trackpad";
 "Trigger" = "Attivatore";
 "Unassign existing shortcut and continue" = "Rimuovi la scorciatoia esistente e continua";
-"Unassigned Windows" = "Finestre non assegnate";
 "Unavailable application" = "Applicazione non disponibile";
 "Update now" = "Aggiorna ora";
 "Updates policy" = "Politica degli aggiornamenti";

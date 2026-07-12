@@ -115,22 +115,6 @@ class TileView: FlippedView {
             showsStatus: true)
     }
 
-    func updateFocusSetPickerCell(title: String,
-                                  icon: NSImage,
-                                  frameSize: NSSize,
-                                  rowWidth: CGFloat) {
-        updatePresentationCell(
-            title: title,
-            icon: icon,
-            frameSize: frameSize,
-            rowWidth: rowWidth,
-            isFullscreen: false,
-            spaceNumber: 0,
-            scale: 1,
-            style: .titles,
-            showsStatus: false)
-    }
-
     private func updatePresentationCell(title: String,
                                         icon: NSImage,
                                         frameSize: NSSize,

@@ -2,19 +2,6 @@ import XCTest
 import ShortcutRecorder
 
 final class KeyboardEventsUtilsTests: XCTestCase {
-    func testOpenFocusSetsShortcutUsesDedicatedHotkeyIdAndFiresOnlyOnKeyDown() throws {
-        let originalShortcuts = ControlsTab.shortcuts
-        defer { ControlsTab.shortcuts = originalShortcuts }
-        resetState()
-        let shortcutId = "openFocusSetsShortcut"
-        let hotkeyId = try XCTUnwrap(KeyboardEventsTestable.globalShortcutsIds[shortcutId])
-        XCTAssertEqual(hotkeyId, 2 * Preferences.maxShortcutCount)
-        ControlsTab.shortcuts[shortcutId] = ATShortcut(Shortcut(keyEquivalent: "⌘f")!, shortcutId, .global, .down)
-        handleKeyboardEvent(hotkeyId, .down, nil, nil, false)
-        handleKeyboardEvent(hotkeyId, .up, nil, nil, false)
-        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [shortcutId])
-    }
-
     func testDynamicFocusSetHotkeyIdsAreStableAndNeverReusedAfterDeletion() throws {
         let first = FocusSetShortcutBindingResolver.actionIdentifier(for: UUID())
         let second = FocusSetShortcutBindingResolver.actionIdentifier(for: UUID())
@@ -130,113 +117,10 @@ final class KeyboardEventsUtilsTests: XCTestCase {
         XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [shortcutId, "searchShortcut", "cancelShortcut"])
     }
 
-    func testPickerTextKeyPassesToSearchField() throws {
-        resetState()
-        let session = SwitcherSession()
-        session.focusSetSessionState = .picker
-        SwitcherSession.current = session
-        TilesPanel.shared.isKeyWindow = true
-        let event = try XCTUnwrap(NSEvent.keyEvent(
-            with: .keyDown,
-            location: .zero,
-            modifierFlags: [],
-            timestamp: 0,
-            windowNumber: 0,
-            context: nil,
-            characters: " ",
-            charactersIgnoringModifiers: " ",
-            isARepeat: false,
-            keyCode: UInt16(keycodeMap[" "]!)))
-        XCTAssertFalse(handleKeyboardEvent(nil, nil, keycodeMap[" "], [], false, event))
-        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [])
-    }
-
-    func testPickerVimKeyRunsRegisteredLocalShortcut() throws {
-        let originalShortcuts = ControlsTab.shortcuts
-        defer { ControlsTab.shortcuts = originalShortcuts }
-        resetState()
-        ControlsTab.shortcuts["vimCycleDown"] = ATShortcut(Shortcut(keyEquivalent: "j")!, "vimCycleDown", .local, .down)
-        let session = SwitcherSession()
-        session.focusSetSessionState = .picker
-        SwitcherSession.current = session
-        TilesPanel.shared.isKeyWindow = true
-        let event = try XCTUnwrap(NSEvent.keyEvent(
-            with: .keyDown,
-            location: .zero,
-            modifierFlags: [],
-            timestamp: 0,
-            windowNumber: 0,
-            context: nil,
-            characters: "j",
-            charactersIgnoringModifiers: "j",
-            isARepeat: false,
-            keyCode: UInt16(keycodeMap["j"]!)))
-        XCTAssertTrue(handleKeyboardEvent(nil, nil, keycodeMap["j"], [], false, event))
-        let keyUp = try XCTUnwrap(NSEvent.keyEvent(
-            with: .keyUp,
-            location: .zero,
-            modifierFlags: [],
-            timestamp: 0,
-            windowNumber: 0,
-            context: nil,
-            characters: "j",
-            charactersIgnoringModifiers: "j",
-            isARepeat: false,
-            keyCode: UInt16(keycodeMap["j"]!)))
-        XCTAssertFalse(handleKeyboardEvent(nil, nil, nil, [], false, keyUp))
-        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, ["vimCycleDown"])
-    }
-
-    func testPickerModifiedVimKeysPassToSearchField() throws {
-        let originalShortcuts = ControlsTab.shortcuts
-        defer { ControlsTab.shortcuts = originalShortcuts }
-        resetState()
-        ControlsTab.shortcuts["vimCycleDown"] = ATShortcut(Shortcut(keyEquivalent: "j")!, "vimCycleDown", .local, .down)
-        let session = SwitcherSession()
-        session.focusSetSessionState = .picker
-        SwitcherSession.current = session
-        TilesPanel.shared.isKeyWindow = true
-        let shiftedEvent = try XCTUnwrap(NSEvent.keyEvent(
-            with: .keyDown,
-            location: .zero,
-            modifierFlags: [.shift],
-            timestamp: 0,
-            windowNumber: 0,
-            context: nil,
-            characters: "J",
-            charactersIgnoringModifiers: "j",
-            isARepeat: false,
-            keyCode: UInt16(keycodeMap["j"]!)))
-        let commandEvent = try XCTUnwrap(NSEvent.keyEvent(
-            with: .keyDown,
-            location: .zero,
-            modifierFlags: [.command],
-            timestamp: 0,
-            windowNumber: 0,
-            context: nil,
-            characters: "j",
-            charactersIgnoringModifiers: "j",
-            isARepeat: false,
-            keyCode: UInt16(keycodeMap["j"]!)))
-        XCTAssertFalse(handleKeyboardEvent(nil, nil, keycodeMap["j"], [.shift], false, shiftedEvent))
-        XCTAssertFalse(handleKeyboardEvent(nil, nil, keycodeMap["j"], [.command], false, commandEvent))
-        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [])
-    }
-
-    func testPickerModifierChangeWithoutEventBypassesShortcuts() {
-        resetState()
-        let session = SwitcherSession()
-        session.focusSetSessionState = .picker
-        SwitcherSession.current = session
-        TilesPanel.shared.isKeyWindow = true
-        XCTAssertFalse(handleKeyboardEvent(nil, nil, nil, [.shift], false))
-        XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [])
-    }
-
-    func testHidEscapeBypassesFocusSetPicker() {
-        XCTAssertFalse(KeyboardEventsTestable.shouldAbsorbEscapeAtHidTap(
+    func testHidEscapeIsAbsorbedDuringDirectFocusSetSession() {
+        XCTAssertTrue(KeyboardEventsTestable.shouldAbsorbEscapeAtHidTap(
             anyShortcutUsesEscape: true,
-            sessionState: .picker))
+            sessionState: .directFocusSetGrid(UUID())))
         XCTAssertTrue(KeyboardEventsTestable.shouldAbsorbEscapeAtHidTap(
             anyShortcutUsesEscape: true,
             sessionState: .ordinaryGrid))

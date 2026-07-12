@@ -8,7 +8,6 @@ struct ShortcutAction {
 enum ShortcutActions {
     static let all: [ShortcutAction] = [
         ShortcutAction(id: "focusWindowShortcut", perform: { App.focusTarget() }),
-        ShortcutAction(id: "openFocusSetsShortcut", perform: { App.showFocusSetPicker() }),
         ShortcutAction(id: "previousWindowShortcut", perform: { App.previousWindowShortcutWithRepeatingKey() }),
         ShortcutAction(id: "→", perform: { App.cycleSelection(.right) }),
         ShortcutAction(id: "←", perform: { App.cycleSelection(.left) }),
@@ -48,7 +47,6 @@ enum ShortcutActions {
             return
         }
         if id.hasPrefix("holdShortcut") {
-            guard SwitcherSession.current?.focusSetSessionState != .picker else { return }
             App.focusTarget()
             return
         }
@@ -58,7 +56,6 @@ enum ShortcutActions {
     }
 
     private static func selectedWindowForShortcutAction() -> Window? {
-        guard SwitcherSession.current?.focusSetSessionState != .picker else { return nil }
         return Windows.selectedWindow()
     }
 }

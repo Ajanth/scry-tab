@@ -26,7 +26,6 @@
 "All apps" = "Alle Apps";
 "All screens" = "Alle Bildschirme";
 "All Spaces" = "Alle Spaces";
-"All Windows" = "Alle Fenster";
 "Allowed" = "Erlaubt";
 "Alphabetical Order" = "Alphabetische Reihenfolge";
 "Always" = "Immer";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Regelmäßig nach Updates suchen";
 "Check for updates…" = "Nach Updates suchen…";
 "Check permissions…" = "Berechtigungen prüfen…";
-"Choose a global shortcut to open the Focus Sets picker." = "Wählen Sie einen globalen Kurzbefehl, um die Fokusgruppen-Auswahl zu öffnen.";
 "Choose the applications whose windows belong to this Focus Set." = "Wähle die Apps aus, deren Fenster zu diesem Fokusset gehören.";
 "Close window" = "Fenster schließen";
 "Conflicting shortcut" = "Kollidierendes Tastenkürzel";
@@ -92,7 +90,6 @@
 "Focus" = "Fokus";
 "Focus selected window" = "Ausgewähltes Fenster fokussieren";
 "Focus Sets" = "Fokus-Sets";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Fokus-Sets verwenden die gemeinsamen Tastenkürzel bei Aktivität. Ändere sie in der Steuerung.";
 "Fullscreen/Defullscreen window" = "Fenster in Vollbild/aus Vollbild";
 "General" = "Allgemein";
 "Gesture" = "Geste";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Nur auf anderem Bildschirm";
 "Open Accessibility Settings…" = "Einstellungen für Bedienungshilfen öffnen…";
 "Open Appearance Settings" = "Darstellungseinstellungen öffnen";
-"Open Focus Sets" = "Fokusgruppen öffnen";
-"Open Shortcuts When Active Settings" = "Einstellungen für „Tastenkürzel bei Aktivität“ öffnen";
 "Open Trackpad Settings…" = "Einstellungen für Trackpad öffnen…";
 "Order windows by" = "Fenster sortieren nach";
 "Ordering" = "Sortierung";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab zeigt mit einem Statussymbol an, ob das Fenster derzeit minimiert oder im Vollbild ist.";
 "Search" = "Suche";
 "Search applications" = "Apps suchen";
-"Search Focus Sets" = "Fokusgruppen durchsuchen";
 "Select next window" = "Nächstes Fenster auswählen";
 "Select previous window" = "Vorheriges Fenster auswählen";
 "Select windows on mouse hover" = "Fenster beim Überfahren mit der Maus auswählen";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Tastenkürzel ist bereits zugewiesen: %@";
 "Shortcuts" = "Tastenkürzel";
 "Shortcuts When Active" = "Tastenkürzel bei Aktivität";
-"Shortcuts while browsing" = "Tastenkürzel beim Durchsuchen";
 "Shortcuts while ScryTab is active" = "Kurzbefehle, während ScryTab aktiv ist";
 "Show" = "Anzeigen";
 "Show all windows" = "Alle Fenster anzeigen";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Haptisches Trackpad-Feedback";
 "Trigger" = "Auslöser";
 "Unassign existing shortcut and continue" = "Vorhandenes Tastenkürzel aufheben und fortfahren";
-"Unassigned Windows" = "Nicht zugewiesene Fenster";
 "Unavailable application" = "Nicht verfügbare App";
 "Update now" = "Jetzt aktualisieren";
 "Updates policy" = "Update-Richtlinie";

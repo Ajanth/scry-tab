@@ -48,13 +48,11 @@ class Windows {
 
     static func voiceOverWindow(_ windowIndex: Int = (SwitcherSession.current?.selectedIndex ?? 0)) {
         guard SwitcherSession.isActive,
-              SwitcherSession.current?.focusSetSessionState != .picker,
               TilesPanel.shared.isKeyWindow else { return }
         if TilesView.isSearchEditing { return }
         // it seems that sometimes makeFirstResponder is called before the view is visible
         // and it creates a delay in showing the main window; calling it with some delay seems to work around this
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(10)) {
-            if SwitcherSession.current?.focusSetSessionState == .picker { return }
             if TilesView.isSearchEditing { return }
             let window = TilesView.recycledViews[windowIndex]
             if window.window_ != nil && window.window != nil {
@@ -493,7 +491,7 @@ struct WindowFilters {
         let session = SwitcherSession.current
         let source = session?.presentationSource ?? .shortcut(0)
         let focusSetScope = session?.focusSetScope ?? .none
-        let focusSetResolver = focusSetScope == .none ? nil : session?.focusSetPickerSnapshot?.presentation.resolver
+        let focusSetResolver = focusSetScope == .none ? nil : session?.focusSetPresentationSnapshot?.resolver
         if source == .focusSets {
             let policy = FocusSetsPresentationPolicy.standard
             return WindowFilters(

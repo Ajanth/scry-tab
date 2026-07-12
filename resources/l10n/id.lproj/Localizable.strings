@@ -26,7 +26,6 @@
 "All apps" = "Semua aplikasi";
 "All screens" = "Semua layar";
 "All Spaces" = "Semua Ruang";
-"All Windows" = "Semua Jendela";
 "Allowed" = "Diizinkan";
 "Alphabetical Order" = "Urutan Abjad";
 "Always" = "Selalu";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Periksa pembaruan secara berkala";
 "Check for updates…" = "Periksa pembaruan…";
 "Check permissions…" = "Periksa izin…";
-"Choose a global shortcut to open the Focus Sets picker." = "Pilih pintasan global untuk membuka pemilih Set Fokus.";
 "Choose the applications whose windows belong to this Focus Set." = "Pilih aplikasi yang jendelanya termasuk dalam Set Fokus ini.";
 "Close window" = "Tutup jendela";
 "Conflicting shortcut" = "Pintasan bertentangan";
@@ -92,7 +90,6 @@
 "Focus" = "Fokus";
 "Focus selected window" = "Fokuskan jendela terpilih";
 "Focus Sets" = "Set fokus";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Kumpulan Fokus menggunakan pintasan bersama saat aktif. Ubah di Kontrol.";
 "Fullscreen/Defullscreen window" = "Jendela layar penuh/Keluar dari layar penuh";
 "General" = "Umum";
 "Gesture" = "Gestur";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Hanya pada layar berbeda";
 "Open Accessibility Settings…" = "Buka Pengaturan Aksesibilitas…";
 "Open Appearance Settings" = "Buka Pengaturan Tampilan";
-"Open Focus Sets" = "Buka Set Fokus";
-"Open Shortcuts When Active Settings" = "Buka pengaturan Pintasan Saat Aktif";
 "Open Trackpad Settings…" = "Buka Pengaturan Trackpad…";
 "Order windows by" = "Urutkan jendela berdasarkan";
 "Ordering" = "Pengurutan";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab akan menampilkan ikon status jika jendela saat ini diminimalkan atau dalam layar penuh.";
 "Search" = "Cari";
 "Search applications" = "Cari aplikasi";
-"Search Focus Sets" = "Cari Set Fokus";
 "Select next window" = "Pilih jendela berikutnya";
 "Select previous window" = "Pilih jendela sebelumnya";
 "Select windows on mouse hover" = "Pilih jendela saat kursor diarahkan";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Pintasan sudah ditetapkan untuk: %@";
 "Shortcuts" = "Pintasan";
 "Shortcuts When Active" = "Pintasan Saat Aktif";
-"Shortcuts while browsing" = "Pintasan saat menelusuri";
 "Shortcuts while ScryTab is active" = "Pintasan saat ScryTab aktif";
 "Show" = "Tampilkan";
 "Show all windows" = "Tampilkan semua jendela";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Umpan balik haptik Trackpad";
 "Trigger" = "Pemicu";
 "Unassign existing shortcut and continue" = "Hapus penetapan pintasan yang ada dan lanjutkan";
-"Unassigned Windows" = "Jendela yang belum ditetapkan";
 "Unavailable application" = "Aplikasi tidak tersedia";
 "Update now" = "Perbarui sekarang";
 "Updates policy" = "Kebijakan pembaruan";

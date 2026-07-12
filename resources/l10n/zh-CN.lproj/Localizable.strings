@@ -26,7 +26,6 @@
 "All apps" = "所有应用";
 "All screens" = "所有屏幕";
 "All Spaces" = "所有桌面";
-"All Windows" = "所有窗口";
 "Allowed" = "允许";
 "Alphabetical Order" = "按字母顺序";
 "Always" = "始终";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "定期检查更新";
 "Check for updates…" = "检查更新…";
 "Check permissions…" = "检查权限…";
-"Choose a global shortcut to open the Focus Sets picker." = "选择一个全局快捷键以打开专注集选择器。";
 "Choose the applications whose windows belong to this Focus Set." = "选择窗口要归入此专注集的应用。";
 "Close window" = "关闭窗口";
 "Conflicting shortcut" = "快捷键冲突";
@@ -92,7 +90,6 @@
 "Focus" = "聚焦";
 "Focus selected window" = "聚焦所选窗口";
 "Focus Sets" = "专注集";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "专注集使用共享的激活时快捷键。请在“控制”中更改它们。";
 "Fullscreen/Defullscreen window" = "全屏/退出全屏窗口";
 "General" = "通用";
 "Gesture" = "手势";
@@ -147,8 +144,6 @@
 "Only on different screen" = "仅在不同屏幕上";
 "Open Accessibility Settings…" = "打开辅助功能设置…";
 "Open Appearance Settings" = "打开“外观”设置";
-"Open Focus Sets" = "打开专注集";
-"Open Shortcuts When Active Settings" = "打开“激活时的快捷键”设置";
 "Open Trackpad Settings…" = "打开触控板设置…";
 "Order windows by" = "窗口排序方式";
 "Ordering" = "排序";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab 将通过状态图标显示窗口当前是否已最小化或全屏。";
 "Search" = "搜索";
 "Search applications" = "搜索应用程序";
-"Search Focus Sets" = "搜索专注集";
 "Select next window" = "选择下一个窗口";
 "Select previous window" = "选择上一个窗口";
 "Select windows on mouse hover" = "鼠标悬停时选择窗口";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "快捷键已分配给：%@";
 "Shortcuts" = "快捷键";
 "Shortcuts When Active" = "激活时的快捷键";
-"Shortcuts while browsing" = "浏览时的快捷键";
 "Shortcuts while ScryTab is active" = "ScryTab 处于活跃状态时的快捷键";
 "Show" = "显示";
 "Show all windows" = "显示所有窗口";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "触控板触感反馈";
 "Trigger" = "触发";
 "Unassign existing shortcut and continue" = "取消现有快捷键分配并继续";
-"Unassigned Windows" = "未分配窗口";
 "Unavailable application" = "不可用的应用程序";
 "Update now" = "立即更新";
 "Updates policy" = "更新策略";

@@ -26,7 +26,6 @@
 "All apps" = "Tất cả ứng dụng";
 "All screens" = "Tất cả màn hình";
 "All Spaces" = "Tất cả Không gian";
-"All Windows" = "Tất cả cửa sổ";
 "Allowed" = "Cho phép";
 "Alphabetical Order" = "Thứ tự bảng chữ cái";
 "Always" = "Luôn luôn";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Kiểm tra cập nhật định kỳ";
 "Check for updates…" = "Kiểm tra cập nhật…";
 "Check permissions…" = "Kiểm tra quyền…";
-"Choose a global shortcut to open the Focus Sets picker." = "Chọn phím tắt toàn cục để mở bộ chọn bộ tập trung.";
 "Choose the applications whose windows belong to this Focus Set." = "Chọn các ứng dụng có cửa sổ thuộc Bộ tập trung này.";
 "Close window" = "Đóng cửa sổ";
 "Conflicting shortcut" = "Phím tắt xung đột";
@@ -92,7 +90,6 @@
 "Focus" = "Tiêu điểm";
 "Focus selected window" = "Đặt tiêu điểm cửa sổ đã chọn";
 "Focus Sets" = "Nhóm tập trung";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Bộ tập trung sử dụng các phím tắt dùng chung khi hoạt động. Hãy thay đổi chúng trong Điều khiển.";
 "Fullscreen/Defullscreen window" = "Bật/Tắt toàn màn hình cửa sổ";
 "General" = "Tổng quát";
 "Gesture" = "Cử chỉ";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Chỉ trên màn hình khác";
 "Open Accessibility Settings…" = "Mở Cài đặt Trợ năng…";
 "Open Appearance Settings" = "Mở cài đặt Giao diện";
-"Open Focus Sets" = "Mở bộ tập trung";
-"Open Shortcuts When Active Settings" = "Mở cài đặt Phím tắt khi hoạt động";
 "Open Trackpad Settings…" = "Mở Cài đặt Trackpad…";
 "Order windows by" = "Sắp xếp cửa sổ theo";
 "Ordering" = "Sắp xếp";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab sẽ hiển thị biểu tượng trạng thái nếu cửa sổ đang được thu nhỏ hoặc ở chế độ toàn màn hình.";
 "Search" = "Tìm kiếm";
 "Search applications" = "Tìm kiếm ứng dụng";
-"Search Focus Sets" = "Tìm kiếm bộ tập trung";
 "Select next window" = "Chọn cửa sổ kế tiếp";
 "Select previous window" = "Chọn cửa sổ trước đó";
 "Select windows on mouse hover" = "Chọn cửa sổ khi di chuột";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Phím tắt đã được gán cho: %@";
 "Shortcuts" = "Phím tắt";
 "Shortcuts When Active" = "Phím tắt khi hoạt động";
-"Shortcuts while browsing" = "Phím tắt khi duyệt";
 "Shortcuts while ScryTab is active" = "Phím tắt khi ScryTab đang hoạt động";
 "Show" = "Hiển thị";
 "Show all windows" = "Hiển thị tất cả cửa sổ";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Phản hồi xúc giác Trackpad";
 "Trigger" = "Kích hoạt";
 "Unassign existing shortcut and continue" = "Bỏ gán phím tắt hiện có và tiếp tục";
-"Unassigned Windows" = "Cửa sổ chưa được gán";
 "Unavailable application" = "Ứng dụng không khả dụng";
 "Update now" = "Cập nhật ngay";
 "Updates policy" = "Chính sách cập nhật";

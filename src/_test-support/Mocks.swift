@@ -99,7 +99,8 @@ enum SearchKeyResult {
 
 class TilesViewMock {
     var isSearchEditing = false
-    func handleSearchEditingKeyDown(_ event: NSEvent) -> SearchKeyResult { return .passToField }
+    var searchKeyResult = SearchKeyResult.passToField
+    func handleSearchEditingKeyDown(_ event: NSEvent) -> SearchKeyResult { return searchKeyResult }
 }
 
 class TilesPanelMock {
@@ -137,15 +138,6 @@ class TilesView {
     static func handleSearchEditingKeyDown(_ event: NSEvent) -> SearchKeyResult {
         return App.app.tilesPanel.tilesView.handleSearchEditingKeyDown(event)
     }
-}
-
-class FocusSetPickerPanel {
-    static let shared = FocusSetPickerPanel()
-    func picker() -> FocusSetPickerMock? { nil }
-}
-
-class FocusSetPickerMock {
-    func hasMarkedText() -> Bool { false }
 }
 
 class ControlsTab {
