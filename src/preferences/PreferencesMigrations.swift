@@ -74,7 +74,6 @@ class PreferencesMigrations {
         for (version, migration) in [
             ("10.13.0", migrateGroupingToPerShortcut),
             ("10.12.0", migrateExceptionsTitleArray),
-            ("10.12.0", migrateLanguagePreferenceIndex),
             ("10.2.0", migrateBlacklistToExceptions),
             ("9.0.0", migrateShortcutIndexes),
             ("7.27.0", migrateCursorFollowFocus),
@@ -152,19 +151,6 @@ class PreferencesMigrations {
             Self.defaults.set(oldValue, forKey: newKey)
         }
         Self.defaults.removeObject(forKey: oldKey)
-    }
-
-    // LanguagePreference enum dropped from 59 to 21 cases; stored indexes need remapping.
-    // Removed languages map to systemDefault (0). Map below uses the pre-trim enum order.
-    static func migrateLanguagePreferenceIndex() {
-        let oldToNew: [Int: Int] = [
-            0: 0, 1: 1, 5: 2, 7: 3, 8: 4, 9: 5, 13: 6, 19: 7, 23: 8, 25: 9,
-            30: 10, 31: 11, 32: 12, 38: 13, 42: 14, 44: 15, 52: 16, 54: 17,
-            55: 18, 56: 19, 57: 20, 58: 21,
-        ]
-        guard let stored = Self.defaults.string(forKey: "language"), let oldIndex = Int(stored) else { return }
-        let newIndex = oldToNew[oldIndex] ?? 0
-        Self.defaults.set(String(newIndex), forKey: "language")
     }
 
     // gesture index moved from 3 (suffix "4") to 9 (suffix "10"); set shortcutCount for users who had a 3rd shortcut

@@ -217,7 +217,7 @@ The Settings window includes a **live search bar** that filters all settings sec
 
 - **Start at login** — one toggle; no helper app or daemon required.
 - **Menubar item** — quick access to Show, Settings, updates, and feedback; icon style can be outlined, filled, or colored, or hidden entirely.
-- **Language support** — 21 languages including Arabic, Chinese (Simplified, Traditional, HK), French, German, Japanese, Korean, Russian, Spanish, and more.
+- **Language support** — 7 languages: Simplified Chinese, English, French, German, Japanese, Russian, and Spanish.
 - **Export / Import / Reset settings** — move your configuration between Macs or reset to defaults in one click.
 - **Automatic and manual updates** — powered by Sparkle; choose manual checks, periodic checks, or auto-install. Update checks include app version, macOS version, architecture, and language for relevant release notes.
 - **Crash reporting** — opt-in (Ask, Always, or Never). Crash reports include a debug profile; network access is enabled only when a report is sent.
