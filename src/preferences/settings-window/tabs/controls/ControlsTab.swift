@@ -56,9 +56,7 @@ class ControlsTab {
     private static let staticManagedShortcutPreferences = [
         "focusWindowShortcut", "previousWindowShortcut", "cancelShortcut", "searchShortcut", "lockSearchShortcut",
         "closeWindowShortcut", "minDeminWindowShortcut", "toggleFullscreenWindowShortcut", "quitAppShortcut", "hideShowAppShortcut",
-        "openFocusSetsShortcut",
     ]
-    private static let staticGlobalShortcutPreferences: Set<String> = ["openFocusSetsShortcut"]
     /// Canonical id → localized label for fixed shortcuts. Single source of truth:
     /// `ShortcutsWhenActiveSheet` reads its row titles from here, and `conflictLabel(_:)`
     /// uses it to name a conflicting shortcut without needing its (possibly-unbuilt) sheet control.
@@ -73,7 +71,6 @@ class ControlsTab {
         "toggleFullscreenWindowShortcut": NSLocalizedString("Fullscreen/Defullscreen window", comment: ""),
         "quitAppShortcut": NSLocalizedString("Quit app", comment: ""),
         "hideShowAppShortcut": NSLocalizedString("Hide/Show app", comment: ""),
-        "openFocusSetsShortcut": NSLocalizedString("Open Focus Sets", comment: ""),
     ]
     private static let removableShortcutPreferences = [
         "shortcutIdentifier",
@@ -908,7 +905,7 @@ class ControlsTab {
     }
 
     private static func scopeForShortcutPreference(_ controlId: String) -> ShortcutScope {
-        return controlId.hasPrefix("nextWindowShortcut") || staticGlobalShortcutPreferences.contains(controlId) ? .global : .local
+        controlId.hasPrefix("nextWindowShortcut") ? .global : .local
     }
 
     // MARK: - Shortcut registry (global keyboard binding — unchanged from the old code)

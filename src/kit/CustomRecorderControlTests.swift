@@ -45,17 +45,6 @@ final class CustomRecorderControlTests: XCTestCase {
         XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("nextWindowShortcut", Shortcut(keyEquivalent: "⇧")!), .conflictWithExistingShortcut(shortcutAlreadyAssigned: "previousWindowShortcut"))
     }
 
-    func testIsShortcutAcceptable_openFocusSetsShortcutReportsConflictId() {
-        let originalShortcuts = ControlsTab.shortcuts
-        defer { ControlsTab.shortcuts = originalShortcuts }
-        ControlsTab.shortcuts["openFocusSetsShortcut"] = ATShortcut(Shortcut(keyEquivalent: "⌘f")!, "openFocusSetsShortcut", .global, .down)
-        let acceptance = CustomRecorderControlTestable.isShortcutAcceptable("toggleFullscreenWindowShortcut", Shortcut(keyEquivalent: "⌘f")!)
-        guard case .conflictWithExistingShortcut(let shortcutAlreadyAssigned) = acceptance else {
-            return XCTFail("expected Open Focus Sets to conflict")
-        }
-        XCTAssertEqual(shortcutAlreadyAssigned, "openFocusSetsShortcut")
-    }
-
     /// Regression: S1 = ⌥+Tab, S2 = ⌘+Tab. Changing S2's *hold* from ⌘ to ⌥ makes it ⌥+Tab, which must
     /// conflict with S1. The registry here mirrors PRODUCTION, where `nextWindowShortcut` is stored
     /// COMBINED (hold ∪ key) — unlike `defaultShortcuts`, which stores it raw, which is precisely why

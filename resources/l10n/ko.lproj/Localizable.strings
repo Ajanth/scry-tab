@@ -26,7 +26,6 @@
 "All apps" = "모든 앱";
 "All screens" = "모든 화면";
 "All Spaces" = "모든 Space";
-"All Windows" = "모든 윈도우";
 "Allowed" = "허용됨";
 "Alphabetical Order" = "알파벳 순서";
 "Always" = "항상";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "주기적으로 업데이트 확인";
 "Check for updates…" = "업데이트 확인…";
 "Check permissions…" = "권한 확인…";
-"Choose a global shortcut to open the Focus Sets picker." = "포커스 세트 선택기를 열 전역 단축키를 선택하십시오.";
 "Choose the applications whose windows belong to this Focus Set." = "이 포커스 세트에 윈도우를 포함할 앱을 선택하십시오.";
 "Close window" = "윈도우 닫기";
 "Conflicting shortcut" = "충돌하는 단축키";
@@ -92,7 +90,6 @@
 "Focus" = "포커스";
 "Focus selected window" = "선택한 윈도우에 포커스";
 "Focus Sets" = "집중 세트";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "포커스 세트는 활성 시 공유 단축키를 사용합니다. 제어에서 변경하세요.";
 "Fullscreen/Defullscreen window" = "윈도우 전체 화면 전환";
 "General" = "일반";
 "Gesture" = "제스처";
@@ -147,8 +144,6 @@
 "Only on different screen" = "다른 화면에서만";
 "Open Accessibility Settings…" = "손쉬운 사용 설정 열기…";
 "Open Appearance Settings" = "모양 설정 열기";
-"Open Focus Sets" = "포커스 세트 열기";
-"Open Shortcuts When Active Settings" = "활성 시 단축키 설정 열기";
 "Open Trackpad Settings…" = "트랙패드 설정 열기…";
 "Order windows by" = "윈도우 정렬 기준";
 "Ordering" = "정렬";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab이 윈도우의 최소화 또는 전체 화면 상태를 상태 아이콘으로 표시합니다.";
 "Search" = "검색";
 "Search applications" = "응용 프로그램 검색";
-"Search Focus Sets" = "포커스 세트 검색";
 "Select next window" = "다음 윈도우 선택";
 "Select previous window" = "이전 윈도우 선택";
 "Select windows on mouse hover" = "마우스 오버 시 윈도우 선택";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "단축키가 이미 할당되어 있습니다: %@";
 "Shortcuts" = "단축키";
 "Shortcuts When Active" = "활성 시 단축키";
-"Shortcuts while browsing" = "탐색 중 단축키";
 "Shortcuts while ScryTab is active" = "ScryTab이 활성 상태일 때의 단축키";
 "Show" = "보이기";
 "Show all windows" = "모든 윈도우 보이기";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "트랙패드 햅틱 피드백";
 "Trigger" = "트리거";
 "Unassign existing shortcut and continue" = "기존 단축키 할당 해제 후 계속";
-"Unassigned Windows" = "할당되지 않은 윈도우";
 "Unavailable application" = "사용할 수 없는 응용 프로그램";
 "Update now" = "지금 업데이트";
 "Updates policy" = "업데이트 정책";

@@ -46,50 +46,18 @@ class App: AppCenterApplication {
     static func resetPreferencesDependentComponents() {
         TilesView.reset()
         guard let session = SwitcherSession.current else { return }
-        switch session.focusSetSessionState {
-        case .picker:
-            FocusSetPickerPanel.shared.remove()
-            let snapshot = focusSetPickerSnapshot()
-            updateFocusSetSession(snapshot, session: session)
-            presentFocusSetPicker(snapshot, session: session)
-        case .focusSetGrid, .directFocusSetGrid:
-            refreshFocusSetGridAfterExternalEvent(session)
-        case .idle, .ordinaryGrid:
-            break
-        }
+        guard session.focusSetSessionState.directFocusSetIdentifier != nil else { return }
+        refreshFocusSetGridAfterExternalEvent(session)
     }
 
-    private static func focusSetPickerSnapshot(_ presentationSnapshot: FocusSetPresentationSnapshot? = nil) -> FocusSetPickerSnapshot {
-        let presentationSnapshot = presentationSnapshot ?? FocusSetPresentationSnapshotBuilder.make()
-        let configuration = presentationSnapshot.configuration
-        let names = FocusSetPickerBuiltInNames(
-            allWindows: NSLocalizedString("All Windows", comment: ""),
-            unassignedWindows: NSLocalizedString("Unassigned Windows", comment: ""))
-        let resolver = FocusSetPickerResolver(
-            configuration: configuration,
-            candidateCounts: presentationSnapshot.candidateCounts,
-            builtInNames: names)
-        let availableScopes = Set(resolver.availableScopes.compactMap { FocusSetPickerScope(scope: $0) })
-        return FocusSetPickerSnapshot(
-            presentation: presentationSnapshot,
-            names: names,
-            resolver: resolver,
-            availableScopes: availableScopes)
+    private static func directFocusSetSnapshot() -> FocusSetPresentationSnapshot {
+        FocusSetPresentationSnapshotBuilder.make(countedScopes: [])
     }
 
-    private static func directFocusSetSnapshot() -> FocusSetPickerSnapshot {
-        focusSetPickerSnapshot(FocusSetPresentationSnapshotBuilder.make(countedScopes: []))
-    }
-
-    private static func updateFocusSetSession(_ snapshot: FocusSetPickerSnapshot,
+    private static func updateFocusSetSession(_ snapshot: FocusSetPresentationSnapshot,
                                               session: SwitcherSession) {
-        session.focusSetPickerSnapshot = snapshot
+        session.focusSetPresentationSnapshot = snapshot
         session.presentationSource = .focusSets
-    }
-
-    private static func focusSetCandidateCountSummary(_ count: Int) -> String {
-        if count == 1 { return NSLocalizedString("1 matching window", comment: "") }
-        return String(format: NSLocalizedString("%d matching windows", comment: ""), count)
     }
 
     static func restart() {
@@ -111,7 +79,6 @@ class App: AppCenterApplication {
         CursorEvents.toggle(false)
         TrackpadEvents.reset()
         Tooltips.hideAll()
-        FocusSetPickerPanel.shared.remove()
         hideTilesPanelWithoutChangingKeyWindow()
         MainMenu.toggle(true)
     }
@@ -132,10 +99,6 @@ class App: AppCenterApplication {
     }
 
     static func focusTarget() {
-        if SwitcherSession.current?.focusSetSessionState == .picker {
-            confirmFocusSetPickerSelection()
-            return
-        }
         guard SwitcherSession.isActive else { return }
         let selectedWindow = Windows.selectedWindow()
         if let selectedWindow { Logger.info { selectedWindow.debugId } }
@@ -258,15 +221,6 @@ class App: AppCenterApplication {
     }
 
     static func cycleSelection(_ direction: Direction, allowWrap: Bool = true) {
-        if SwitcherSession.current?.focusSetSessionState == .picker {
-            let picker = FocusSetPickerPanel.shared.picker()
-            if direction == .up || direction == .left || direction == .leading {
-                picker?.selectPrevious()
-            } else {
-                picker?.selectNext()
-            }
-            return
-        }
         (TilesView.scrollView?.documentView as? TilesDocumentView)?.cancelDraggingTimer()
         CursorEvents.resetDeadzone()
         if direction == .up || direction == .down {
@@ -274,24 +228,6 @@ class App: AppCenterApplication {
         } else {
             Windows.cycleSelectedWindowIndex(direction.step(), allowWrap: allowWrap)
         }
-    }
-
-    static func showFocusSetPicker() {
-        let state = SwitcherSession.current?.focusSetSessionState ?? .idle
-        let session = SwitcherSession.current ?? {
-            let new = SwitcherSession()
-            SwitcherSession.current = new
-            return new
-        }()
-        NSScreen.updatePreferred()
-        if isVeryFirstSummon {
-            Windows.sortByLevel()
-            isVeryFirstSummon = false
-        }
-        let snapshot = focusSetPickerSnapshot()
-        let decision = FocusSetSessionResolver.resolve(
-            FocusSetSessionInput(state: state, event: .openFocusSets, availableScopes: snapshot.availableScopes))
-        applyFocusSetDecision(decision, snapshot: snapshot, session: session)
     }
 
     static func handleDirectFocusSetShortcut(_ identifier: UUID, state: ShortcutState) {
@@ -302,7 +238,7 @@ class App: AppCenterApplication {
             FocusSetSessionInput(
                 state: currentState,
                 event: .directFocusSetShortcut(identifier),
-                availableScopes: snapshot.availableScopes))
+                availableFocusSetIdentifiers: Set(snapshot.configuration.sets.map(\.id))))
         guard decision.action != .noOp else { return }
         guard let session = SwitcherSession.current ?? makeSwitcherSession(for: decision) else { return }
         NSScreen.updatePreferred()
@@ -311,12 +247,11 @@ class App: AppCenterApplication {
             isVeryFirstSummon = false
         }
         session.forceDoNothingOnRelease = false
-        session.focusSetPickerSelectedIdentifier = .focusSet(identifier)
         applyFocusSetDecision(decision, snapshot: snapshot, session: session)
     }
 
     private static func makeSwitcherSession(for decision: FocusSetSessionDecision) -> SwitcherSession? {
-        guard case .showFocusSetGrid = decision.action else { return nil }
+        guard decision.action == .showDirectFocusSetGrid else { return nil }
         let session = SwitcherSession()
         SwitcherSession.current = session
         return session
@@ -336,33 +271,8 @@ class App: AppCenterApplication {
         }
     }
 
-    static func confirmFocusSetPickerSelection(_ item: FocusSetPickerItem? = nil) {
-        guard let session = SwitcherSession.current,
-              session.focusSetSessionState == .picker else { return }
-        guard let item else {
-            _ = FocusSetPickerPanel.shared.picker()?.confirmSelection()
-            return
-        }
-        guard let snapshot = session.focusSetPickerSnapshot else { return }
-        let scope = FocusSetPickerScope(scope: item.scope)
-        let decision = FocusSetSessionResolver.resolve(
-            FocusSetSessionInput(
-                state: session.focusSetSessionState,
-                event: .confirm(scope: scope),
-                availableScopes: snapshot.availableScopes))
-        applyFocusSetDecision(decision, snapshot: snapshot, session: session)
-    }
-
     static func handleCancelShortcut() {
         guard let session = SwitcherSession.current else { return }
-        if session.focusSetSessionState == .picker {
-            if let picker = FocusSetPickerPanel.shared.picker() {
-                picker.handleCancel()
-            } else {
-                dismissFocusSetPicker()
-            }
-            return
-        }
         let entry: SearchEntryStyle = Preferences.shortcutStyle(session.presentationSource) == .searchOnRelease ? .startedInSearch : .toggledMidSession
         switch SearchModeResolver.escape(mode: TilesView.searchMode, entry: entry) {
         case .exitSearch:
@@ -371,16 +281,12 @@ class App: AppCenterApplication {
             let decision = FocusSetSessionResolver.resolve(
                 FocusSetSessionInput(
                     state: session.focusSetSessionState,
-                    event: .escape(searchConsumesEscape: false)))
-            applyFocusSetDecision(decision, snapshot: session.focusSetPickerSnapshot, session: session)
+                    event: .escape))
+            applyFocusSetDecision(decision, snapshot: session.focusSetPresentationSnapshot, session: session)
         }
     }
 
     static func toggleSearchMode() {
-        if SwitcherSession.current?.focusSetSessionState == .picker {
-            _ = FocusSetPickerPanel.shared.picker()?.focusSearchField()
-            return
-        }
         guard SwitcherSession.isActive else { return }
         TilesView.toggleSearchModeFromShortcut()
     }
@@ -394,45 +300,20 @@ class App: AppCenterApplication {
         cycleSelection(direction, allowWrap: false)
     }
 
-    static func dismissFocusSetPicker() {
-        guard let session = SwitcherSession.current else { return }
-        let decision = FocusSetSessionResolver.resolve(
-            FocusSetSessionInput(
-                state: session.focusSetSessionState,
-                event: .dismiss))
-        applyFocusSetDecision(decision, snapshot: nil, session: session)
-    }
-
     private static func applyFocusSetDecision(_ decision: FocusSetSessionDecision,
-                                              snapshot: FocusSetPickerSnapshot?,
+                                              snapshot: FocusSetPresentationSnapshot?,
                                               session: SwitcherSession) {
         session.focusSetSessionState = decision.nextState
         if let snapshot { updateFocusSetSession(snapshot, session: session) }
-        if decision.suppressFocusOnRelease {
-            session.forceDoNothingOnRelease = true
-        }
         discardInvalidChordLifecycleState(session)
         switch decision.action {
-        case .showFocusSetPicker, .refreshFocusSetPicker:
-            guard let snapshot = snapshot ?? session.focusSetPickerSnapshot else { return }
-            KeyRepeatTimer.stopCurrentTimer()
-            TilesView.endSearchSession()
-            presentFocusSetPicker(snapshot, session: session)
-        case .showFocusSetGrid:
-            guard let snapshot = snapshot ?? session.focusSetPickerSnapshot else { return }
-            showFocusSetGrid(snapshot, session: session)
+        case .showDirectFocusSetGrid:
+            guard (snapshot ?? session.focusSetPresentationSnapshot) != nil else { return }
+            showDirectFocusSetGrid(session: session)
         case .cycleFocusSetSelection:
             cycleSelection(.leading)
-        case .returnToFocusSetPicker:
-            guard let snapshot = snapshot ?? session.focusSetPickerSnapshot else { return }
-            KeyRepeatTimer.stopCurrentTimer()
-            TilesView.endSearchSession()
-            presentFocusSetPicker(snapshot, session: session)
         case .showOrdinaryGrid:
             session.isFirstSummon = true
-            if !FocusSetPickerPanel.shared.remove() {
-                Appearance.update()
-            }
         case .dismissSwitcherUi:
             hideUi()
         case .noOp:
@@ -457,59 +338,8 @@ class App: AppCenterApplication {
         }
     }
 
-    private static func presentFocusSetPicker(_ snapshot: FocusSetPickerSnapshot,
-                                              session: SwitcherSession) {
-        Appearance.update(style: .titles)
-        FocusSetPickerPanel.shared.refreshAppearance()
-        if let picker = FocusSetPickerPanel.shared.picker(),
-           FocusSetPickerPanel.shared.isShowing {
-            picker.update(
-                resolver: snapshot.resolver,
-                selectedIdentifier: session.focusSetPickerSelectedIdentifier,
-                query: session.focusSetPickerQuery)
-            session.focusSetPickerSelectedIdentifier = picker.selectedIdentifier
-            FocusSetPickerPanel.shared.updateLayout()
-            TilesPanel.shared.show()
-            _ = picker.focusSearchField()
-            return
-        }
-        FocusSetPickerPanel.shared.remove()
-        let picker = FocusSetPickerView(
-            resolver: snapshot.resolver,
-            selectedIdentifier: session.focusSetPickerSelectedIdentifier,
-            query: session.focusSetPickerQuery,
-            builtInNames: snapshot.names,
-            searchPlaceholder: NSLocalizedString("Search Focus Sets", comment: ""),
-            searchAccessibilityLabel: NSLocalizedString("Search Focus Sets", comment: ""),
-            candidateCountSummary: focusSetCandidateCountSummary)
-        picker.onSelectionChange = { identifier in
-            SwitcherSession.current?.focusSetPickerSelectedIdentifier = identifier
-        }
-        picker.onQueryChange = { query in
-            guard let session = SwitcherSession.current,
-                  session.focusSetSessionState == .picker else { return }
-            session.focusSetPickerQuery = query
-            FocusSetPickerPanel.shared.updateLayout()
-        }
-        picker.onConfirm = { item in
-            confirmFocusSetPickerSelection(item)
-        }
-        picker.onDismiss = {
-            dismissFocusSetPicker()
-        }
-        TilesPanel.shared.alphaValue = 0
-        FocusSetPickerPanel.shared.show(picker)
-        session.focusSetPickerSelectedIdentifier = picker.selectedIdentifier
-        TilesPanel.shared.show()
-        _ = picker.focusSearchField()
-    }
-
-    private static func showFocusSetGrid(_ snapshot: FocusSetPickerSnapshot,
-                                         session: SwitcherSession) {
+    private static func showDirectFocusSetGrid(session: SwitcherSession) {
         KeyRepeatTimer.stopCurrentTimer()
-        if !FocusSetPickerPanel.shared.remove() {
-            Appearance.update()
-        }
         TilesPanel.shared.alphaValue = 0
         session.isFirstSummon = false
         TilesView.startSearchSession(false)
@@ -546,30 +376,19 @@ class App: AppCenterApplication {
     }
 
     private static func refreshFocusSetGridAfterExternalEvent(_ session: SwitcherSession) {
-        let snapshot = session.focusSetSessionState.directFocusSetIdentifier == nil
-            ? focusSetPickerSnapshot()
-            : directFocusSetSnapshot()
+        let snapshot = directFocusSetSnapshot()
         updateFocusSetSession(snapshot, session: session)
-        if !Windows.updatesBeforeShowing() {
-            let decision = FocusSetSessionResolver.resolve(
-                FocusSetSessionInput(
-                    state: session.focusSetSessionState,
-                    event: .availableScopesChanged,
-                    availableScopes: snapshot.availableScopes))
-            if decision.action == .returnToFocusSetPicker || decision.action == .dismissSwitcherUi {
-                applyFocusSetDecision(decision, snapshot: snapshot, session: session)
-            } else {
-                hideUi()
-            }
-            return
-        }
         let decision = FocusSetSessionResolver.resolve(
             FocusSetSessionInput(
                 state: session.focusSetSessionState,
-                event: .availableScopesChanged,
-                availableScopes: snapshot.availableScopes))
-        if decision.action == .returnToFocusSetPicker || decision.action == .dismissSwitcherUi {
+                event: .availableFocusSetsChanged,
+                availableFocusSetIdentifiers: Set(snapshot.configuration.sets.map(\.id))))
+        if decision.action == .dismissSwitcherUi {
             applyFocusSetDecision(decision, snapshot: snapshot, session: session)
+            return
+        }
+        if !Windows.updatesBeforeShowing() {
+            hideUi()
             return
         }
         refreshUi(true)
@@ -584,12 +403,7 @@ class App: AppCenterApplication {
         switcherUiRefreshThrottler.throttleOrProceed {
             guard let session = SwitcherSession.current else { return }
             switch session.focusSetSessionState {
-            case .picker:
-                let snapshot = focusSetPickerSnapshot()
-                updateFocusSetSession(snapshot, session: session)
-                presentFocusSetPicker(snapshot, session: session)
-                return
-            case .focusSetGrid, .directFocusSetGrid:
+            case .directFocusSetGrid:
                 refreshFocusSetGridAfterExternalEvent(session)
                 return
             case .idle, .ordinaryGrid:
@@ -601,12 +415,7 @@ class App: AppCenterApplication {
     }
 
     static func refreshUi(_ preserveScrollPosition: Bool = false) {
-        guard let session = SwitcherSession.current else { return }
-        if session.focusSetSessionState == .picker {
-            guard let snapshot = session.focusSetPickerSnapshot else { return }
-            presentFocusSetPicker(snapshot, session: session)
-            return
-        }
+        guard SwitcherSession.current != nil else { return }
         let preservedScrollOrigin = preserveScrollPosition ? TilesView.currentScrollOrigin() : nil
         Windows.updateSelectedWindow()
         guard SwitcherSession.isActive else { return }
@@ -629,12 +438,9 @@ class App: AppCenterApplication {
             let decision = FocusSetSessionResolver.resolve(
                 FocusSetSessionInput(state: session.focusSetSessionState, event: .ordinaryShortcutOrGesture))
             session.focusSetSessionState = decision.nextState
-            session.focusSetPickerSelectedIdentifier = nil
-            session.focusSetPickerQuery = ""
-            session.focusSetPickerSnapshot = nil
+            session.focusSetPresentationSnapshot = nil
             session.isFirstSummon = true
             KeyRepeatTimer.stopCurrentTimer()
-            FocusSetPickerPanel.shared.remove()
         }
         session.forceDoNothingOnRelease = forceDoNothingOnRelease_
         Logger.debug { "isFirstSummon:\(session.isFirstSummon) shortcutIndex:\(shortcutIndex)" }

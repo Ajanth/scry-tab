@@ -6,13 +6,8 @@ final class FocusSetSettingsView: NSView {
     static let appearanceAndOrganizationSubtitle = NSLocalizedString("Direct Focus Set shortcuts use the standard appearance and window organization.", comment: "")
     static let searchableStrings = [
         NSLocalizedString("Focus Sets", comment: ""),
-        NSLocalizedString("Open Focus Sets", comment: ""),
-        NSLocalizedString("Choose a global shortcut to open the Focus Sets picker.", comment: ""),
         NSLocalizedString("After keys are released", comment: ""),
         directShortcutReleaseSubtitle,
-        NSLocalizedString("Shortcuts while browsing", comment: ""),
-        NSLocalizedString("Focus Sets uses the shared active shortcuts. Change them in Controls.", comment: ""),
-        NSLocalizedString("Open Shortcuts When Active Settings", comment: ""),
         NSLocalizedString("Visibility", comment: ""),
         NSLocalizedString("Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows.", comment: ""),
         NSLocalizedString("Appearance and organization", comment: ""),
@@ -138,28 +133,11 @@ final class FocusSetSettingsView: NSView {
 
     private func makePolicyTable() -> TableGroupView {
         let table = TableGroupView(title: NSLocalizedString("Focus Sets", comment: ""), width: contentWidth)
-        let openPickerShortcut = LabelAndControl.makeLabelWithRecorder(
-            NSLocalizedString("Open Focus Sets", comment: ""),
-            "openFocusSetsShortcut",
-            Preferences.openFocusSetsShortcut,
-            labelPosition: .right)[0]
-        _ = table.addRow(
-            leftText: NSLocalizedString("Open Focus Sets", comment: ""),
-            rightViews: [openPickerShortcut],
-            subText: NSLocalizedString("Choose a global shortcut to open the Focus Sets picker.", comment: ""))
         let releaseStyle = LabelAndControl.makeDropdown("focusSetsShortcutStyle", ShortcutStylePreference.allCases)
         _ = table.addRow(
             leftText: NSLocalizedString("After keys are released", comment: ""),
             rightViews: [releaseStyle],
             subText: Self.directShortcutReleaseSubtitle)
-        let activeShortcutsButton = DesignSystemControlStyler.makeButton(
-            NSLocalizedString("Open Shortcuts When Active Settings", comment: ""),
-            target: self,
-            action: #selector(openActiveShortcutsSettings(_:)))
-        _ = table.addRow(
-            leftText: NSLocalizedString("Shortcuts while browsing", comment: ""),
-            rightViews: [activeShortcutsButton],
-            subText: NSLocalizedString("Focus Sets uses the shared active shortcuts. Change them in Controls.", comment: ""))
         _ = table.addRow(
             leftText: NSLocalizedString("Visibility", comment: ""),
             subText: NSLocalizedString("Shows applications from all Spaces and screens, with standard handling for hidden, minimized, fullscreen, and windowless windows.", comment: ""))
@@ -271,16 +249,16 @@ final class FocusSetSettingsView: NSView {
         return applications + " · " + windows
     }
 
-    private func liveApplications() -> [FocusSetPickerApplication] {
+    private func liveApplications() -> [FocusSetApplication] {
         var identifiers = Set<String>()
-        var applications = [FocusSetPickerApplication]()
+        var applications = [FocusSetApplication]()
         for application in Applications.list {
             guard let bundleIdentifier = application.bundleIdentifier?.trimmingCharacters(in: .whitespacesAndNewlines),
                   !bundleIdentifier.isEmpty,
                   identifiers.insert(bundleIdentifier).inserted,
                   let name = application.localizedName?.trimmingCharacters(in: .whitespacesAndNewlines),
                   !name.isEmpty else { continue }
-            applications.append(FocusSetPickerApplication(bundleIdentifier: bundleIdentifier,
+            applications.append(FocusSetApplication(bundleIdentifier: bundleIdentifier,
                                                           name: name,
                                                           icon: application.runningApplication.icon ?? AppDisplayInfo.genericIcon,
                                                           candidateCount: candidateCountsByBundleIdentifier[bundleIdentifier] ?? 0))
@@ -376,19 +354,16 @@ final class FocusSetSettingsView: NSView {
         SettingsWindow.shared.navigate(to: .appearance)
     }
 
-    @objc private func openActiveShortcutsSettings(_ sender: NSButton) {
-        SettingsWindow.shared.navigate(to: .controls(.activeShortcuts))
-    }
 }
 
-private struct FocusSetPickerApplication {
+private struct FocusSetApplication {
     let bundleIdentifier: String
     let name: String
     let icon: NSImage
     let candidateCount: Int
 }
 
-private struct FocusSetPickerEntry {
+private struct FocusSetApplicationEntry {
     let identity: FocusSetApplicationIdentity
     let name: String
     let icon: NSImage
@@ -404,7 +379,7 @@ private final class FocusSetEditorSheet: SheetWindow {
     private let selectionCountLabel = NSTextField(labelWithString: "")
     private let rows = NSStackView()
     private var applicationOptions = [FocusSetApplicationOption]()
-    private var applicationsByIdentity = [FocusSetApplicationIdentity: FocusSetPickerApplication]()
+    private var applicationsByIdentity = [FocusSetApplicationIdentity: FocusSetApplication]()
     private var selectedIdentities = Set<FocusSetApplicationIdentity>()
     private var currentRules = [FocusSetRule]()
     private var identityBySwitch = [ObjectIdentifier: FocusSetApplicationIdentity]()
@@ -424,7 +399,7 @@ private final class FocusSetEditorSheet: SheetWindow {
     }
 
     convenience init(focusSet: FocusSet,
-                     applications: [FocusSetPickerApplication],
+                     applications: [FocusSetApplication],
                      onApply: @escaping (FocusSet, String?) -> Void) {
         self.init()
         self.focusSet = focusSet
@@ -590,7 +565,7 @@ private final class FocusSetEditorSheet: SheetWindow {
         return scroll
     }
 
-    private func configureApplications(_ applications: [FocusSetPickerApplication]) {
+    private func configureApplications(_ applications: [FocusSetApplication]) {
         applicationOptions = applications.map {
             FocusSetApplicationOption(bundleIdentifier: $0.bundleIdentifier, presentationName: $0.name)
         }
@@ -666,14 +641,14 @@ private final class FocusSetEditorSheet: SheetWindow {
         resultsScrollView.reflectScrolledClipView(resultsScrollView.contentView)
     }
 
-    private func filteredEntries() -> [FocusSetPickerEntry] {
+    private func filteredEntries() -> [FocusSetApplicationEntry] {
         FocusSetSettingsResolver.filteredApplicationPickerRows(
             applications: applicationOptions,
             rules: currentRules,
             matching: searchQuery
         ).map { row in
             let application = applicationsByIdentity[row.identity]
-            return FocusSetPickerEntry(
+            return FocusSetApplicationEntry(
                 identity: row.identity,
                 name: displayName(row),
                 icon: application?.icon ?? AppDisplayInfo.genericIcon,
@@ -683,7 +658,7 @@ private final class FocusSetEditorSheet: SheetWindow {
         }
     }
 
-    private func makeRow(_ entry: FocusSetPickerEntry) -> NSStackView {
+    private func makeRow(_ entry: FocusSetApplicationEntry) -> NSStackView {
         let icon = NSImageView(image: entry.icon)
         icon.imageScaling = .scaleProportionallyUpOrDown
         icon.translatesAutoresizingMaskIntoConstraints = false
@@ -737,7 +712,7 @@ private final class FocusSetEditorSheet: SheetWindow {
         addFooterButton(cancelButton)
     }
 
-    private func subtitle(for entry: FocusSetPickerEntry) -> String {
+    private func subtitle(for entry: FocusSetApplicationEntry) -> String {
         if !entry.isAvailable { return NSLocalizedString("Not currently open", comment: "") }
         if entry.candidateCount == 1 { return NSLocalizedString("1 matching window", comment: "") }
         return String(format: NSLocalizedString("%d matching windows", comment: ""), entry.candidateCount)

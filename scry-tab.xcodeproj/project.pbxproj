@@ -322,15 +322,12 @@
 		F05E75000000000000000113 /* FocusSetCandidateCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000012 /* FocusSetCandidateCounter.swift */; };
 		F05E75000000000000000114 /* FocusSetCandidateCounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000013 /* FocusSetCandidateCounterTests.swift */; };
 		F05E75000000000000000115 /* FocusSetSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000015 /* FocusSetSettingsView.swift */; };
-		F05E75000000000000000116 /* FocusSetPickerResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000016 /* FocusSetPickerResolver.swift */; };
-		F05E75000000000000000117 /* FocusSetPickerResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000016 /* FocusSetPickerResolver.swift */; };
-		F05E75000000000000000118 /* FocusSetPickerResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000017 /* FocusSetPickerResolverTests.swift */; };
 		F05E75000000000000000119 /* FocusSetSessionResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000019 /* FocusSetSessionResolver.swift */; };
 		F05E75000000000000000120 /* FocusSetSessionResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000019 /* FocusSetSessionResolver.swift */; };
 		F05E75000000000000000121 /* FocusSetSessionResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000020 /* FocusSetSessionResolverTests.swift */; };
-		F05E75000000000000000122 /* FocusSetPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000022 /* FocusSetPickerView.swift */; };
-		F05E75000000000000000123 /* FocusSetPickerPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000023 /* FocusSetPickerPanel.swift */; };
 		F05E75000000000000000124 /* FocusSetPresentationSnapshotBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000024 /* FocusSetPresentationSnapshotBuilder.swift */; };
+		F05E75000000000000000125 /* FocusSetPresentationSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000025 /* FocusSetPresentationSnapshot.swift */; };
+		F05E75000000000000000126 /* FocusSetPresentationSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000025 /* FocusSetPresentationSnapshot.swift */; };
 		F05E76000000000000000101 /* FocusSetsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E76000000000000000001 /* FocusSetsTab.swift */; };
 /* End PBXBuildFile section */
 
@@ -704,15 +701,11 @@
 		F05E75000000000000000013 /* FocusSetCandidateCounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetCandidateCounterTests.swift; sourceTree = "<group>"; };
 		F05E75000000000000000014 /* FocusSetCandidateCounterSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FocusSetCandidateCounterSpecs.md; sourceTree = "<group>"; };
 		F05E75000000000000000015 /* FocusSetSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetSettingsView.swift; sourceTree = "<group>"; };
-		F05E75000000000000000016 /* FocusSetPickerResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetPickerResolver.swift; sourceTree = "<group>"; };
-		F05E75000000000000000017 /* FocusSetPickerResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetPickerResolverTests.swift; sourceTree = "<group>"; };
-		F05E75000000000000000018 /* FocusSetPickerResolverSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FocusSetPickerResolverSpecs.md; sourceTree = "<group>"; };
 		F05E75000000000000000019 /* FocusSetSessionResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetSessionResolver.swift; sourceTree = "<group>"; };
 		F05E75000000000000000020 /* FocusSetSessionResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetSessionResolverTests.swift; sourceTree = "<group>"; };
 		F05E75000000000000000021 /* FocusSetSessionResolverSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FocusSetSessionResolverSpecs.md; sourceTree = "<group>"; };
-		F05E75000000000000000022 /* FocusSetPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetPickerView.swift; sourceTree = "<group>"; };
-		F05E75000000000000000023 /* FocusSetPickerPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetPickerPanel.swift; sourceTree = "<group>"; };
 		F05E75000000000000000024 /* FocusSetPresentationSnapshotBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetPresentationSnapshotBuilder.swift; sourceTree = "<group>"; };
+		F05E75000000000000000025 /* FocusSetPresentationSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetPresentationSnapshot.swift; sourceTree = "<group>"; };
 		F05E76000000000000000001 /* FocusSetsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetsTab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1087,15 +1080,11 @@
 				F05E75000000000000000013 /* FocusSetCandidateCounterTests.swift */,
 				F05E75000000000000000014 /* FocusSetCandidateCounterSpecs.md */,
 				F05E75000000000000000015 /* FocusSetSettingsView.swift */,
-				F05E75000000000000000016 /* FocusSetPickerResolver.swift */,
-				F05E75000000000000000017 /* FocusSetPickerResolverTests.swift */,
-				F05E75000000000000000018 /* FocusSetPickerResolverSpecs.md */,
 				F05E75000000000000000019 /* FocusSetSessionResolver.swift */,
 				F05E75000000000000000020 /* FocusSetSessionResolverTests.swift */,
 				F05E75000000000000000021 /* FocusSetSessionResolverSpecs.md */,
-				F05E75000000000000000022 /* FocusSetPickerView.swift */,
-				F05E75000000000000000023 /* FocusSetPickerPanel.swift */,
 				F05E75000000000000000024 /* FocusSetPresentationSnapshotBuilder.swift */,
+				F05E75000000000000000025 /* FocusSetPresentationSnapshot.swift */,
 				F05E75000000000000000005 /* FocusSetsStore.swift */,
 				F05E75000000000000000006 /* FocusSetsStoreTests.swift */,
 				F05E75000000000000000007 /* FocusSetsStoreSpecs.md */,
@@ -1883,10 +1872,9 @@
 				F05E75000000000000000111 /* FocusSetSettingsResolverTests.swift in Sources */,
 				F05E75000000000000000113 /* FocusSetCandidateCounter.swift in Sources */,
 				F05E75000000000000000114 /* FocusSetCandidateCounterTests.swift in Sources */,
-				F05E75000000000000000117 /* FocusSetPickerResolver.swift in Sources */,
-				F05E75000000000000000118 /* FocusSetPickerResolverTests.swift in Sources */,
 				F05E75000000000000000120 /* FocusSetSessionResolver.swift in Sources */,
 				F05E75000000000000000121 /* FocusSetSessionResolverTests.swift in Sources */,
+				F05E75000000000000000126 /* FocusSetPresentationSnapshot.swift in Sources */,
 				F05E75000000000000000107 /* FocusSetsStore.swift in Sources */,
 				F05E75000000000000000108 /* FocusSetsStoreTests.swift in Sources */,
 				BF0CBBBB0000000000001001 /* OnActionExtensionTests.swift in Sources */,
@@ -1984,11 +1972,9 @@
 				F05E75000000000000000109 /* FocusSetSettingsResolver.swift in Sources */,
 				F05E75000000000000000112 /* FocusSetCandidateCounter.swift in Sources */,
 				F05E75000000000000000115 /* FocusSetSettingsView.swift in Sources */,
-				F05E75000000000000000116 /* FocusSetPickerResolver.swift in Sources */,
 				F05E75000000000000000119 /* FocusSetSessionResolver.swift in Sources */,
-				F05E75000000000000000122 /* FocusSetPickerView.swift in Sources */,
-				F05E75000000000000000123 /* FocusSetPickerPanel.swift in Sources */,
 				F05E75000000000000000124 /* FocusSetPresentationSnapshotBuilder.swift in Sources */,
+				F05E75000000000000000125 /* FocusSetPresentationSnapshot.swift in Sources */,
 				F05E76000000000000000101 /* FocusSetsTab.swift in Sources */,
 				F05E75000000000000000106 /* FocusSetsStore.swift in Sources */,
 				D04BAC011A71E0418154F8CD /* Preferences.swift in Sources */,

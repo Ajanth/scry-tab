@@ -26,7 +26,6 @@
 "All apps" = "Wszystkie aplikacje";
 "All screens" = "Wszystkie ekrany";
 "All Spaces" = "Wszystkie Przestrzenie";
-"All Windows" = "Wszystkie okna";
 "Allowed" = "Dozwolone";
 "Alphabetical Order" = "Kolejność alfabetyczna";
 "Always" = "Zawsze";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Sprawdzaj uaktualnienia okresowo";
 "Check for updates…" = "Sprawdź uaktualnienia…";
 "Check permissions…" = "Sprawdź uprawnienia…";
-"Choose a global shortcut to open the Focus Sets picker." = "Wybierz globalny skrót, aby otworzyć selektor zestawów skupienia.";
 "Choose the applications whose windows belong to this Focus Set." = "Wybierz aplikacje, których okna należą do tego zestawu skupienia.";
 "Close window" = "Zamknij okno";
 "Conflicting shortcut" = "Sprzeczny skrót";
@@ -92,7 +90,6 @@
 "Focus" = "Uaktywnij";
 "Focus selected window" = "Uaktywnij zaznaczone okno";
 "Focus Sets" = "Zestawy skupienia";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Zestawy skupienia używają wspólnych skrótów, gdy są aktywne. Zmień je w sekcji Sterowanie.";
 "Fullscreen/Defullscreen window" = "Pełny ekran / wyjście z pełnego ekranu";
 "General" = "Ogólne";
 "Gesture" = "Gest";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Tylko na innym ekranie";
 "Open Accessibility Settings…" = "Otwórz ustawienia Dostępności…";
 "Open Appearance Settings" = "Otwórz ustawienia wyglądu";
-"Open Focus Sets" = "Otwórz zestawy skupienia";
-"Open Shortcuts When Active Settings" = "Otwórz ustawienia skrótów, gdy aktywne";
 "Open Trackpad Settings…" = "Otwórz ustawienia Gładzika…";
 "Order windows by" = "Sortuj okna według";
 "Ordering" = "Kolejność";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab pokaże ikoną stanu, czy okno jest obecnie zminimalizowane lub na pełnym ekranie.";
 "Search" = "Wyszukiwanie";
 "Search applications" = "Szukaj aplikacji";
-"Search Focus Sets" = "Wyszukaj zestawy skupienia";
 "Select next window" = "Zaznacz następne okno";
 "Select previous window" = "Zaznacz poprzednie okno";
 "Select windows on mouse hover" = "Zaznaczaj okna po najechaniu kursorem";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Skrót jest już przypisany do: %@";
 "Shortcuts" = "Skróty";
 "Shortcuts When Active" = "Skróty, gdy aktywne";
-"Shortcuts while browsing" = "Skróty podczas przeglądania";
 "Shortcuts while ScryTab is active" = "Skróty, gdy ScryTab jest aktywny";
 "Show" = "Pokaż";
 "Show all windows" = "Pokaż wszystkie okna";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Reakcja dotykowa Gładzika";
 "Trigger" = "Wyzwalacz";
 "Unassign existing shortcut and continue" = "Usuń przypisanie istniejącego skrótu i kontynuuj";
-"Unassigned Windows" = "Nieprzypisane okna";
 "Unavailable application" = "Niedostępna aplikacja";
 "Update now" = "Uaktualnij teraz";
 "Updates policy" = "Zasady uaktualnień";

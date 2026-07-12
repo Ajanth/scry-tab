@@ -173,7 +173,7 @@ final class FocusSetSettingsResolverTests: XCTestCase {
 
     // MARK: - C. Focus Set deletion
 
-    /// Deletion removes only the requested stable UUID and the next picker snapshot cannot expose it.
+    /// Deletion removes only the requested stable UUID and leaves no direct shortcut binding for it.
     func testDeletingFocusSetRemovesOnlyRequestedStableIdentifier() throws {
         let retained = focusSet("Same name")
         let deleted = focusSet("Same name", shortcutKeyEquivalent: "⌃1")
@@ -183,15 +183,10 @@ final class FocusSetSettingsResolverTests: XCTestCase {
             sets: [retained, deleted, trailing])
 
         let next = try XCTUnwrap(FocusSetSettingsResolver.configurationByDeletingFocusSet(deleted.id, from: configuration))
-        let picker = FocusSetPickerResolver(
-            configuration: next,
-            candidateCounts: [:],
-            builtInNames: FocusSetPickerBuiltInNames(allWindows: "All", unassignedWindows: "Unassigned"))
 
         XCTAssertEqual(next.version, configuration.version)
         XCTAssertEqual(next.sets.map(\.id), [retained.id, trailing.id])
         XCTAssertFalse(FocusSetShortcutBindingResolver.bindings(in: next).contains { $0.focusSetIdentifier == deleted.id })
-        XCTAssertFalse(picker.visibleItems().contains { $0.identifier == .focusSet(deleted.id) })
     }
 
     /// An unknown stable UUID cannot produce a deletion configuration.

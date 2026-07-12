@@ -26,7 +26,6 @@
 "All apps" = "Alle apps";
 "All screens" = "Alle schermen";
 "All Spaces" = "Alle Spaces";
-"All Windows" = "Alle vensters";
 "Allowed" = "Toegestaan";
 "Alphabetical Order" = "Alfabetische volgorde";
 "Always" = "Altijd";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Regelmatig op updates controleren";
 "Check for updates…" = "Op updates controleren…";
 "Check permissions…" = "Rechten controleren…";
-"Choose a global shortcut to open the Focus Sets picker." = "Kies een algemene sneltoets om de Focussets-kiezer te openen.";
 "Choose the applications whose windows belong to this Focus Set." = "Kies de apps waarvan de vensters bij deze focusset horen.";
 "Close window" = "Venster sluiten";
 "Conflicting shortcut" = "Conflicterende sneltoets";
@@ -92,7 +90,6 @@
 "Focus" = "Focus";
 "Focus selected window" = "Geselecteerd venster focussen";
 "Focus Sets" = "Focussets";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Focussets gebruiken de gedeelde sneltoetsen wanneer actief. Wijzig ze in Bediening.";
 "Fullscreen/Defullscreen window" = "Venster in/uit volledig scherm";
 "General" = "Algemeen";
 "Gesture" = "Gebaar";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Alleen op een ander scherm";
 "Open Accessibility Settings…" = "Open Toegankelijkheid-instellingen…";
 "Open Appearance Settings" = "Weergave-instellingen openen";
-"Open Focus Sets" = "Focussets openen";
-"Open Shortcuts When Active Settings" = "Instellingen voor sneltoetsen wanneer actief openen";
 "Open Trackpad Settings…" = "Open Trackpad-instellingen…";
 "Order windows by" = "Vensters rangschikken op";
 "Ordering" = "Sortering";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab toont met een statussymbool of het venster momenteel geminimaliseerd of in volledig scherm is.";
 "Search" = "Zoeken";
 "Search applications" = "Apps zoeken";
-"Search Focus Sets" = "Focussets zoeken";
 "Select next window" = "Selecteer volgend venster";
 "Select previous window" = "Selecteer vorig venster";
 "Select windows on mouse hover" = "Vensters selecteren bij aanwijzen met muis";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Sneltoets is al toegewezen aan: %@";
 "Shortcuts" = "Sneltoetsen";
 "Shortcuts When Active" = "Sneltoetsen wanneer actief";
-"Shortcuts while browsing" = "Sneltoetsen tijdens het bladeren";
 "Shortcuts while ScryTab is active" = "Sneltoetsen terwijl ScryTab actief is";
 "Show" = "Toon";
 "Show all windows" = "Toon alle vensters";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Tactiele feedback van Trackpad";
 "Trigger" = "Activering";
 "Unassign existing shortcut and continue" = "Bestaande sneltoets vrijmaken en doorgaan";
-"Unassigned Windows" = "Niet-toegewezen vensters";
 "Unavailable application" = "Niet-beschikbare app";
 "Update now" = "Nu bijwerken";
 "Updates policy" = "Updatebeleid";

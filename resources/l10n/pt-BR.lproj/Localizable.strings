@@ -26,7 +26,6 @@
 "All apps" = "Todos os apps";
 "All screens" = "Todas as telas";
 "All Spaces" = "Todos os Espaços";
-"All Windows" = "Todas as janelas";
 "Allowed" = "Permitido";
 "Alphabetical Order" = "Ordem alfabética";
 "Always" = "Sempre";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Buscar atualizações de tempos em tempos";
 "Check for updates…" = "Buscar atualizações…";
 "Check permissions…" = "Verificar permissões…";
-"Choose a global shortcut to open the Focus Sets picker." = "Escolha um atalho global para abrir o seletor de conjuntos de foco.";
 "Choose the applications whose windows belong to this Focus Set." = "Escolha os apps cujas janelas pertencem a este Conjunto de Foco.";
 "Close window" = "Fechar janela";
 "Conflicting shortcut" = "Atalho em conflito";
@@ -92,7 +90,6 @@
 "Focus" = "Foco";
 "Focus selected window" = "Focar janela selecionada";
 "Focus Sets" = "Conjuntos de foco";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Os Conjuntos de Foco usam os atalhos compartilhados quando ativos. Altere-os em Controles.";
 "Fullscreen/Defullscreen window" = "Entrar/sair de tela cheia";
 "General" = "Geral";
 "Gesture" = "Gesto";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Apenas em outra tela";
 "Open Accessibility Settings…" = "Abrir Ajustes de Acessibilidade…";
 "Open Appearance Settings" = "Abrir ajustes de aparência";
-"Open Focus Sets" = "Abrir conjuntos de foco";
-"Open Shortcuts When Active Settings" = "Abrir ajustes de atalhos quando ativo";
 "Open Trackpad Settings…" = "Abrir Ajustes do Trackpad…";
 "Order windows by" = "Ordenar janelas por";
 "Ordering" = "Ordenação";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "O ScryTab mostrará com um ícone de status se a janela está minimizada ou em tela cheia.";
 "Search" = "Buscar";
 "Search applications" = "Buscar aplicativos";
-"Search Focus Sets" = "Pesquisar conjuntos de foco";
 "Select next window" = "Selecionar próxima janela";
 "Select previous window" = "Selecionar janela anterior";
 "Select windows on mouse hover" = "Selecionar janelas ao passar o mouse";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Atalho já atribuído a: %@";
 "Shortcuts" = "Atalhos";
 "Shortcuts When Active" = "Atalhos quando ativo";
-"Shortcuts while browsing" = "Atalhos durante a navegação";
 "Shortcuts while ScryTab is active" = "Atalhos enquanto o ScryTab está ativo";
 "Show" = "Mostrar";
 "Show all windows" = "Mostrar todas as janelas";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Feedback tátil do Trackpad";
 "Trigger" = "Acionador";
 "Unassign existing shortcut and continue" = "Remover atalho existente e continuar";
-"Unassigned Windows" = "Janelas não atribuídas";
 "Unavailable application" = "Aplicativo indisponível";
 "Update now" = "Atualizar agora";
 "Updates policy" = "Política de atualizações";

@@ -26,7 +26,6 @@
 "All apps" = "所有 App";
 "All screens" = "所有螢幕";
 "All Spaces" = "所有 Spaces";
-"All Windows" = "所有視窗";
 "Allowed" = "允許";
 "Alphabetical Order" = "字母順序";
 "Always" = "永遠";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "定期檢查更新";
 "Check for updates…" = "檢查更新…";
 "Check permissions…" = "檢查權限…";
-"Choose a global shortcut to open the Focus Sets picker." = "選擇全域快捷鍵以開啟專注組合選擇器。";
 "Choose the applications whose windows belong to this Focus Set." = "選擇視窗要歸入此專注組合的 App。";
 "Close window" = "關閉視窗";
 "Conflicting shortcut" = "快速鍵衝突";
@@ -92,7 +90,6 @@
 "Focus" = "聚焦";
 "Focus selected window" = "聚焦所選視窗";
 "Focus Sets" = "專注集合";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "焦點集會使用啟用時的共用快速鍵。請在「控制項」中變更。";
 "Fullscreen/Defullscreen window" = "進入／退出全螢幕視窗";
 "General" = "一般";
 "Gesture" = "手勢";
@@ -147,8 +144,6 @@
 "Only on different screen" = "僅在不同螢幕上";
 "Open Accessibility Settings…" = "打開「輔助使用」設定…";
 "Open Appearance Settings" = "開啟「外觀」設定";
-"Open Focus Sets" = "開啟專注組合";
-"Open Shortcuts When Active Settings" = "打開「啟用時的快速鍵」設定";
 "Open Trackpad Settings…" = "打開「觸控板」設定…";
 "Order windows by" = "視窗排序方式";
 "Ordering" = "排序";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab 會以狀態圖示顯示視窗目前是否為最小化或全螢幕。";
 "Search" = "搜尋";
 "Search applications" = "搜尋應用程式";
-"Search Focus Sets" = "搜尋專注組合";
 "Select next window" = "選擇下一個視窗";
 "Select previous window" = "選擇上一個視窗";
 "Select windows on mouse hover" = "滑鼠停留時選擇視窗";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "快速鍵已指派給：%@";
 "Shortcuts" = "快速鍵";
 "Shortcuts When Active" = "啟用時的快速鍵";
-"Shortcuts while browsing" = "瀏覽時的快速鍵";
 "Shortcuts while ScryTab is active" = "ScryTab 啟用時的快捷鍵";
 "Show" = "顯示";
 "Show all windows" = "顯示所有視窗";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "觸控板觸覺回饋";
 "Trigger" = "觸發方式";
 "Unassign existing shortcut and continue" = "取消指派現有快速鍵並繼續";
-"Unassigned Windows" = "未指派的視窗";
 "Unavailable application" = "無法使用的應用程式";
 "Update now" = "立即更新";
 "Updates policy" = "更新政策";

@@ -22,8 +22,8 @@ It also resolves Focus Set deletion, reordering, and selection after model chang
   cached name. They are app-only rules: `titleContains` is always `nil`.
 - Included-application totals count unique non-blank stable identities rather than rule records.
 - Deletion requires an existing stable Focus Set UUID, preserves configuration metadata and the
-  order of every other set, and cannot leave the removed UUID in a subsequent picker or direct
-  shortcut binding snapshot.
+  order of every other set, and cannot leave the removed UUID in a subsequent direct shortcut
+  binding snapshot.
 - A saved Focus Set can move by a nonzero offset only when its destination exists; an unknown set,
   zero offset, or out-of-range destination leaves the saved order unchanged.
 - Applying an editor draft replaces name, application rules, and optional shortcut in one immutable
@@ -34,7 +34,7 @@ It also resolves Focus Set deletion, reordering, and selection after model chang
 
 ## Test scenarios
 
-### A. Application picker rows
+### A. Application selection rows
 - **testPickerRowsPlaceSelectedAppsBeforeOtherAvailableApps** — selected applications precede other available applications while both groups remain alphabetical.
 - **testPickerRowsKeepUnavailableSavedApplicationsSelected** — a selected saved application remains editable when it is no longer available live.
 - **testPickerRowsDeduplicateIdentitiesAndIgnoreBlankIdentifiers** — duplicate identities retain the first live name while blank live and saved identities disappear.
@@ -49,7 +49,7 @@ It also resolves Focus Set deletion, reordering, and selection after model chang
 - **testRulesDropDeselectedApplications** — deselecting an existing application removes only that app from the rewritten rules.
 
 ### C. Focus Set deletion
-- **testDeletingFocusSetRemovesOnlyRequestedStableIdentifier** — deletion removes only the requested stable UUID and the next picker snapshot cannot expose it.
+- **testDeletingFocusSetRemovesOnlyRequestedStableIdentifier** — deletion removes only the requested stable UUID and no direct binding can target it.
 - **testDeletingFocusSetRejectsUnknownStableIdentifier** — an unknown stable UUID cannot produce a deletion configuration.
 
 ### D. Focus Set reordering

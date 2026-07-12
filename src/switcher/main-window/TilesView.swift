@@ -8,24 +8,11 @@ enum SearchKeyResult {
     case passToShortcuts
 }
 
-private struct FocusSetPickerSearchFieldState {
-    let delegate: NSSearchFieldDelegate?
-    let placeholder: String?
-    let accessibilityLabel: String?
-    let stringValue: String
-    let isEditable: Bool
-    let isSelectable: Bool
-    let superview: NSView?
-    let frame: NSRect
-}
-
 class TilesView {
     static var scrollView: ScrollView!
     static var contentView: EffectView!
     static var currentEffectViewKind: EffectViewKind?
     private static var cachedEffectViews: [EffectViewKind: EffectView] = [:]
-    private static var cachedFocusSetPickerEffectViews: [EffectViewKind: EffectView] = [:]
-    private static var focusSetPickerSearchFieldState: FocusSetPickerSearchFieldState?
     static var searchField = NSSearchField(frame: NSRect(x: 0, y: 0, width: 320, height: 30))
     static var noWindowLabel = NSTextField(labelWithString: NSLocalizedString("No Window", comment: ""))
     private(set) static var searchMode: SearchMode = .off
@@ -67,43 +54,6 @@ class TilesView {
         TilesPanel.shared.resetFrozenPosition()
         searchMode = .off
         updateSearchFieldEditability()
-    }
-
-    static func beginFocusSetPickerSearchSession(_ query: String,
-                                                 placeholder: String?,
-                                                 accessibilityLabel: String?) {
-        if focusSetPickerSearchFieldState == nil {
-            focusSetPickerSearchFieldState = FocusSetPickerSearchFieldState(
-                delegate: searchField.delegate,
-                placeholder: searchField.placeholderString,
-                accessibilityLabel: searchField.accessibilityLabel(),
-                stringValue: searchField.stringValue,
-                isEditable: searchField.isEditable,
-                isSelectable: searchField.isSelectable,
-                superview: searchField.superview,
-                frame: searchField.frame)
-        }
-        searchField.placeholderString = placeholder
-        if let accessibilityLabel = accessibilityLabel ?? placeholder {
-            searchField.setAccessibilityLabel(accessibilityLabel)
-        }
-        searchField.stringValue = query
-        searchField.isEditable = true
-        searchField.isSelectable = true
-    }
-
-    static func endFocusSetPickerSearchSession() {
-        guard let state = focusSetPickerSearchFieldState else { return }
-        focusSetPickerSearchFieldState = nil
-        searchField.removeFromSuperview()
-        state.superview?.addSubview(searchField)
-        searchField.frame = state.frame
-        searchField.delegate = state.delegate
-        searchField.placeholderString = state.placeholder
-        searchField.setAccessibilityLabel(state.accessibilityLabel)
-        searchField.stringValue = state.stringValue
-        searchField.isEditable = state.isEditable
-        searchField.isSelectable = state.isSelectable
     }
 
     static func toggleSearchModeFromShortcut() {
@@ -219,10 +169,6 @@ class TilesView {
     }
 
     private static func updateSearchQuery(_ query: String) {
-        if SwitcherSession.current?.focusSetSessionState == .picker {
-            FocusSetPickerPanel.shared.picker()?.setQuery(query)
-            return
-        }
         if (SwitcherSession.current?.searchQuery ?? "") == query { return }
         if !query.isEmpty { UsageStats.recordSearchIfFirst() }
         clearHover()
@@ -270,10 +216,7 @@ class TilesView {
     private static func matchesShortcut(_ event: NSEvent, _ shortcutId: String) -> Bool {
         guard let shortcut = ControlsTab.shortcuts[shortcutId]?.shortcut else { return false }
         if shortcut.keyCode == .none || shortcut.carbonKeyCode != UInt32(event.keyCode) { return false }
-        let shortcutIndex = SwitcherSession.current?.presentationSource.shortcutIndex
-        let holdModifiers = shortcutIndex.flatMap {
-            ControlsTab.shortcuts[Preferences.indexToName("holdShortcut", $0)]?.shortcut.carbonModifierFlags.cleaned()
-        } ?? 0
+        let holdModifiers = ATShortcut.activeHoldModifiers(SwitcherSession.current)
         let eventModifiers = cocoaToCarbonFlags(event.modifierFlags).cleaned()
         let shortcutModifiers = shortcut.carbonModifierFlags.cleaned()
         return eventModifiers == shortcutModifiers || eventModifiers == (shortcutModifiers | holdModifiers)
@@ -337,18 +280,6 @@ class TilesView {
         }
         let view = makeEffectView(for: kind)
         cachedEffectViews[kind] = view
-        return view
-    }
-
-    static func focusSetPickerEffectView() -> EffectView {
-        let style = AppearanceStylePreference.titles
-        let kind = requiredEffectViewKind(style: style)
-        if let cached = cachedFocusSetPickerEffectViews[kind] {
-            cached.updateAppearance()
-            return cached
-        }
-        let view = makeEffectView(for: kind, style: style)
-        cachedFocusSetPickerEffectViews[kind] = view
         return view
     }
 

@@ -26,7 +26,6 @@
 "All apps" = "すべての App";
 "All screens" = "すべての画面";
 "All Spaces" = "すべての Space";
-"All Windows" = "すべてのウインドウ";
 "Allowed" = "許可";
 "Alphabetical Order" = "アルファベット順";
 "Always" = "常に";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "アップデートを定期的に確認";
 "Check for updates…" = "アップデートを確認…";
 "Check permissions…" = "権限を確認…";
-"Choose a global shortcut to open the Focus Sets picker." = "フォーカスセットの選択画面を開くグローバルショートカットを選択してください。";
 "Choose the applications whose windows belong to this Focus Set." = "このフォーカスセットに含めるウインドウのアプリケーションを選択します。";
 "Close window" = "ウインドウを閉じる";
 "Conflicting shortcut" = "ショートカットの競合";
@@ -92,7 +90,6 @@
 "Focus" = "フォーカス";
 "Focus selected window" = "選択したウインドウにフォーカス";
 "Focus Sets" = "フォーカスセット";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "フォーカスセットでは共通のアクティブ時のショートカットを使用します。これらは「コントロール」で変更できます。";
 "Fullscreen/Defullscreen window" = "ウインドウのフルスクリーン切り替え";
 "General" = "一般";
 "Gesture" = "ジェスチャ";
@@ -147,8 +144,6 @@
 "Only on different screen" = "別の画面のときのみ";
 "Open Accessibility Settings…" = "アクセシビリティ設定を開く…";
 "Open Appearance Settings" = "「外観」設定を開く";
-"Open Focus Sets" = "フォーカスセットを開く";
-"Open Shortcuts When Active Settings" = "「アクティブ時のショートカット」設定を開く";
 "Open Trackpad Settings…" = "トラックパッド設定を開く…";
 "Order windows by" = "ウインドウの並び順";
 "Ordering" = "並べ替え";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ウインドウが現在最小化またはフルスクリーンの場合、ScryTab はステータスアイコンで表示します。";
 "Search" = "検索";
 "Search applications" = "アプリケーションを検索";
-"Search Focus Sets" = "フォーカスセットを検索";
 "Select next window" = "次のウインドウを選択";
 "Select previous window" = "前のウインドウを選択";
 "Select windows on mouse hover" = "マウスホバーでウインドウを選択";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "ショートカットはすでに割り当てられています: %@";
 "Shortcuts" = "ショートカット";
 "Shortcuts When Active" = "アクティブ時のショートカット";
-"Shortcuts while browsing" = "閲覧中のショートカット";
 "Shortcuts while ScryTab is active" = "ScryTabがアクティブなときのショートカット";
 "Show" = "表示";
 "Show all windows" = "すべてのウインドウを表示";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "トラックパッドの触覚フィードバック";
 "Trigger" = "トリガー";
 "Unassign existing shortcut and continue" = "既存のショートカットを解除して続行";
-"Unassigned Windows" = "未割り当てのウインドウ";
 "Unavailable application" = "利用できないアプリケーション";
 "Update now" = "今すぐアップデート";
 "Updates policy" = "アップデートのポリシー";

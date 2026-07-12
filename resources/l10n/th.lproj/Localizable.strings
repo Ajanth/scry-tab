@@ -26,7 +26,6 @@
 "All apps" = "แอปทั้งหมด";
 "All screens" = "หน้าจอทั้งหมด";
 "All Spaces" = "พื้นที่ทำงานทั้งหมด";
-"All Windows" = "หน้าต่างทั้งหมด";
 "Allowed" = "อนุญาต";
 "Alphabetical Order" = "เรียงตามตัวอักษร";
 "Always" = "เสมอ";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "ตรวจหาอัปเดตเป็นระยะ";
 "Check for updates…" = "ตรวจหาอัปเดต…";
 "Check permissions…" = "ตรวจสอบสิทธิ์…";
-"Choose a global shortcut to open the Focus Sets picker." = "เลือกปุ่มลัดส่วนกลางเพื่อเปิดตัวเลือกชุดโฟกัส";
 "Choose the applications whose windows belong to this Focus Set." = "เลือกแอปที่มีหน้าต่างอยู่ในชุดโฟกัสนี้";
 "Close window" = "ปิดหน้าต่าง";
 "Conflicting shortcut" = "ทางลัดที่ขัดแย้งกัน";
@@ -92,7 +90,6 @@
 "Focus" = "โฟกัส";
 "Focus selected window" = "โฟกัสหน้าต่างที่เลือก";
 "Focus Sets" = "ชุดโฟกัส";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "ชุดโฟกัสใช้แป้นลัดที่ใช้ร่วมกันเมื่อทำงานอยู่ เปลี่ยนได้ในการควบคุม";
 "Fullscreen/Defullscreen window" = "เต็มหน้าจอ/ออกจากเต็มหน้าจอ";
 "General" = "ทั่วไป";
 "Gesture" = "ท่าทาง";
@@ -147,8 +144,6 @@
 "Only on different screen" = "เฉพาะบนหน้าจอที่ต่างกัน";
 "Open Accessibility Settings…" = "เปิดการตั้งค่าการช่วยการเข้าถึง…";
 "Open Appearance Settings" = "เปิดการตั้งค่าลักษณะ";
-"Open Focus Sets" = "เปิดชุดโฟกัส";
-"Open Shortcuts When Active Settings" = "เปิดการตั้งค่าแป้นลัดเมื่อทำงานอยู่";
 "Open Trackpad Settings…" = "เปิดการตั้งค่าแทร็คแพด…";
 "Order windows by" = "เรียงหน้าต่างตาม";
 "Ordering" = "การเรียงลำดับ";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab จะแสดงไอคอนสถานะหากหน้าต่างถูกย่อหรืออยู่ในโหมดเต็มหน้าจอ";
 "Search" = "ค้นหา";
 "Search applications" = "ค้นหาแอปพลิเคชัน";
-"Search Focus Sets" = "ค้นหาชุดโฟกัส";
 "Select next window" = "เลือกหน้าต่างถัดไป";
 "Select previous window" = "เลือกหน้าต่างก่อนหน้า";
 "Select windows on mouse hover" = "เลือกหน้าต่างเมื่อชี้เมาส์";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "ทางลัดถูกกำหนดไว้แล้ว: %@";
 "Shortcuts" = "ทางลัด";
 "Shortcuts When Active" = "ทางลัดเมื่อทำงานอยู่";
-"Shortcuts while browsing" = "แป้นลัดขณะเรียกดู";
 "Shortcuts while ScryTab is active" = "ปุ่มลัดขณะ ScryTab ทำงานอยู่";
 "Show" = "แสดง";
 "Show all windows" = "แสดงหน้าต่างทั้งหมด";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "การตอบสนองแบบสัมผัสของแทร็คแพด";
 "Trigger" = "ทริกเกอร์";
 "Unassign existing shortcut and continue" = "ยกเลิกการกำหนดทางลัดที่มีอยู่และดำเนินการต่อ";
-"Unassigned Windows" = "หน้าต่างที่ไม่ได้กำหนด";
 "Unavailable application" = "แอปพลิเคชันไม่พร้อมใช้งาน";
 "Update now" = "อัปเดตทันที";
 "Updates policy" = "นโยบายการอัปเดต";

@@ -26,7 +26,6 @@
 "All apps" = "Все приложения";
 "All screens" = "Все экраны";
 "All Spaces" = "Все пространства";
-"All Windows" = "Все окна";
 "Allowed" = "Разрешено";
 "Alphabetical Order" = "По алфавиту";
 "Always" = "Всегда";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Периодически проверять обновления";
 "Check for updates…" = "Проверить обновления…";
 "Check permissions…" = "Проверить разрешения…";
-"Choose a global shortcut to open the Focus Sets picker." = "Выберите глобальное сочетание клавиш, чтобы открыть средство выбора наборов фокусировки.";
 "Choose the applications whose windows belong to this Focus Set." = "Выберите приложения, окна которых относятся к этому набору фокуса.";
 "Close window" = "Закрыть окно";
 "Conflicting shortcut" = "Конфликт сочетания клавиш";
@@ -92,7 +90,6 @@
 "Focus" = "Фокус";
 "Focus selected window" = "Сфокусировать выбранное окно";
 "Focus Sets" = "Наборы фокуса";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Наборы фокусировки используют общие сочетания клавиш при активном переключателе. Измените их в разделе «Управление».";
 "Fullscreen/Defullscreen window" = "Развернуть/свернуть окно на весь экран";
 "General" = "Основные";
 "Gesture" = "Жест";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Только на другом экране";
 "Open Accessibility Settings…" = "Открыть настройки Универсального доступа…";
 "Open Appearance Settings" = "Открыть настройки внешнего вида";
-"Open Focus Sets" = "Открыть наборы фокусировки";
-"Open Shortcuts When Active Settings" = "Открыть настройки сочетаний клавиш при активном переключателе";
 "Open Trackpad Settings…" = "Открыть настройки Трекпада…";
 "Order windows by" = "Сортировка окон";
 "Ordering" = "Порядок";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab покажет значком статуса, если окно сейчас свёрнуто или в полноэкранном режиме.";
 "Search" = "Поиск";
 "Search applications" = "Искать приложения";
-"Search Focus Sets" = "Поиск наборов фокусировки";
 "Select next window" = "Выбрать следующее окно";
 "Select previous window" = "Выбрать предыдущее окно";
 "Select windows on mouse hover" = "Выбирать окна при наведении курсора";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Сочетание клавиш уже назначено: %@";
 "Shortcuts" = "Сочетания клавиш";
 "Shortcuts When Active" = "Сочетания клавиш при активном переключателе";
-"Shortcuts while browsing" = "Сочетания клавиш при просмотре";
 "Shortcuts while ScryTab is active" = "Сочетания клавиш, когда ScryTab активен";
 "Show" = "Показать";
 "Show all windows" = "Показать все окна";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Тактильный отклик трекпада";
 "Trigger" = "Триггер";
 "Unassign existing shortcut and continue" = "Снять текущее сочетание и продолжить";
-"Unassigned Windows" = "Неназначенные окна";
 "Unavailable application" = "Недоступное приложение";
 "Update now" = "Обновить сейчас";
 "Updates policy" = "Политика обновлений";

@@ -26,7 +26,6 @@
 "All apps" = "All apps";
 "All screens" = "All screens";
 "All Spaces" = "All Spaces";
-"All Windows" = "All Windows";
 "Allowed" = "Allowed";
 "Alphabetical Order" = "Alphabetical Order";
 "Always" = "Always";
@@ -58,7 +57,6 @@
 "Check for updates periodically" = "Check for updates periodically";
 "Check for updates…" = "Check for updates…";
 "Check permissions…" = "Check permissions…";
-"Choose a global shortcut to open the Focus Sets picker." = "Choose a global shortcut to open the Focus Sets picker.";
 "Choose the applications whose windows belong to this Focus Set." = "Choose the applications whose windows belong to this Focus Set.";
 "Close window" = "Close window";
 "Conflicting shortcut" = "Conflicting shortcut";
@@ -92,7 +90,6 @@
 "Focus" = "Focus";
 "Focus selected window" = "Focus selected window";
 "Focus Sets" = "Focus Sets";
-"Focus Sets uses the shared active shortcuts. Change them in Controls." = "Focus Sets uses the shared active shortcuts. Change them in Controls.";
 "Fullscreen/Defullscreen window" = "Fullscreen/Defullscreen window";
 "General" = "General";
 "Gesture" = "Gesture";
@@ -147,8 +144,6 @@
 "Only on different screen" = "Only on different screen";
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
 "Open Appearance Settings" = "Open Appearance Settings";
-"Open Focus Sets" = "Open Focus Sets";
-"Open Shortcuts When Active Settings" = "Open Shortcuts When Active Settings";
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
 "Order windows by" = "Order windows by";
 "Ordering" = "Ordering";
@@ -180,7 +175,6 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
 "Search" = "Search";
 "Search applications" = "Search applications";
-"Search Focus Sets" = "Search Focus Sets";
 "Select next window" = "Select next window";
 "Select previous window" = "Select previous window";
 "Select windows on mouse hover" = "Select windows on mouse hover";
@@ -197,7 +191,6 @@
 "Shortcut already assigned to: %@" = "Shortcut already assigned to: %@";
 "Shortcuts" = "Shortcuts";
 "Shortcuts When Active" = "Shortcuts When Active";
-"Shortcuts while browsing" = "Shortcuts while browsing";
 "Shortcuts while ScryTab is active" = "Shortcuts while ScryTab is active";
 "Show" = "Show";
 "Show all windows" = "Show all windows";
@@ -239,7 +232,6 @@
 "Trackpad haptic feedback" = "Trackpad haptic feedback";
 "Trigger" = "Trigger";
 "Unassign existing shortcut and continue" = "Unassign existing shortcut and continue";
-"Unassigned Windows" = "Unassigned Windows";
 "Unavailable application" = "Unavailable application";
 "Update now" = "Update now";
 "Updates policy" = "Updates policy";
