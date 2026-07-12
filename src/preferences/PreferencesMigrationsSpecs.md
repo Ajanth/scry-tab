@@ -41,12 +41,6 @@ Mirrors `PreferencesMigrationsTests.swift` 1:1.
 - **testGroupingConvertsShowTabsAsWindowsBoolGlobalToEnumIndex** — `"false"` → `"0"` across indexed keys; global removed.
 - **testGroupingConvertsPreExistingPerShortcutBoolString** — a leftover `"true"` per-shortcut Bool string → `"1"`.
 
-### D. Language index remap (59 → 21 cases)
-- **testLanguageRemapsKnownIndex** — `5` → `2` via the remap table.
-- **testLanguageRemapsLastKnownIndex** — `58` → `21` (table boundary).
-- **testLanguageRemovedLanguageFallsBackToSystemDefault** — an index no longer valid → `0`.
-- **testLanguageNoStoredValueIsNoOp** — no stored language → key stays absent.
-
 ### D. Blacklist → exceptions (key rename)
 - **testBlacklistCopiedToExceptionsAndRemoved** — `blacklist` value copied to `exceptions`; `blacklist` removed.
 - **testBlacklistDoesNotOverwriteExistingExceptions** — existing `exceptions` preserved; `blacklist` still removed.

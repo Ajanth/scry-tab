@@ -11,7 +11,7 @@ import XCTest
 /// the former needs the real NSKeyedArchiver/ShortcutRecorder codec (stubbed compile-only here), the
 /// latter mutates real Login Items via deprecated LaunchServices APIs.
 ///
-/// Groups: A version gating · B grouping→per-shortcut · C language remap · D/E/F exceptions ·
+/// Groups: A version gating · B shared presentation defaults · C grouping→per-shortcut · D/E/F exceptions ·
 /// G/H show-windows dropdowns · I gestures · J cursor · K menubar · L/M sizes · N shortcuts · P dropdowns ·
 /// Q drop-thumbnails appearance style.
 final class PreferencesMigrationsTests: XCTestCase {
@@ -133,31 +133,6 @@ final class PreferencesMigrationsTests: XCTestCase {
         defaults.set("true", forKey: "showTabsAsWindows3")
         PreferencesMigrations.migrateGroupingToPerShortcut()
         XCTAssertEqual(defaults.string(forKey: "showTabsAsWindows3"), "1")
-    }
-
-    // MARK: - D. Language index remap (59 cases -> 21)
-
-    func testLanguageRemapsKnownIndex() {
-        defaults.set("5", forKey: "language") // 5 -> 2 in the remap table
-        PreferencesMigrations.migrateLanguagePreferenceIndex()
-        XCTAssertEqual(defaults.string(forKey: "language"), "2")
-    }
-
-    func testLanguageRemapsLastKnownIndex() {
-        defaults.set("58", forKey: "language") // 58 -> 21
-        PreferencesMigrations.migrateLanguagePreferenceIndex()
-        XCTAssertEqual(defaults.string(forKey: "language"), "21")
-    }
-
-    func testLanguageRemovedLanguageFallsBackToSystemDefault() {
-        defaults.set("3", forKey: "language") // not in the table -> 0 (systemDefault)
-        PreferencesMigrations.migrateLanguagePreferenceIndex()
-        XCTAssertEqual(defaults.string(forKey: "language"), "0")
-    }
-
-    func testLanguageNoStoredValueIsNoOp() {
-        PreferencesMigrations.migrateLanguagePreferenceIndex()
-        XCTAssertNil(defaults.string(forKey: "language"))
     }
 
     // MARK: - D. Blacklist -> exceptions (rename)

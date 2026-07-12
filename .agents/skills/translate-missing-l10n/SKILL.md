@@ -7,7 +7,7 @@ description: Translate missing localization strings for this project. Use after 
 
 ## Languages
 
-`de, ja, fr, es, zh-CN, pt-BR, nl, ko, it, pl, ar, zh-HK, vi, tr, sv, th, zh-TW, he, id, ru`
+`de, ja, fr, es, zh-CN, ru`
 
 English is the source and is handled by the apply script.
 

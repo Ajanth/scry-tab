@@ -26,51 +26,23 @@ enum GesturePreference: CaseIterable, MacroPreference {
 
 enum LanguagePreference: CaseIterable, MacroPreference {
     case systemDefault
-    case indonesian
     case german
     case english
     case spanish
     case french
-    case italian
-    case dutch
-    case polish
-    case portugueseBrasil
-    case swedish
-    case vietnamese
-    case turkish
-    case russian
-    case hebrew
-    case arabic
-    case thai
     case japanese
     case chineseSimplified
-    case chineseTraditional
-    case chineseHongKong
-    case korean
+    case russian
 
     private static let metadata: [LanguagePreference: (name: String, code: String?)] = [
         .systemDefault: (NSLocalizedString("System Default", comment: ""), nil),
-        .arabic: ("العربية", "ar"),
         .german: ("Deutsch", "de"),
         .english: ("English", "en"),
         .spanish: ("Español", "es"),
-        .hebrew: ("עִבְרִית", "he"),
         .french: ("Français", "fr"),
-        .indonesian: ("Bahasa Indonesia", "id"),
-        .italian: ("Italiano", "it"),
         .japanese: ("日本語", "ja"),
-        .korean: ("한국어", "ko"),
-        .dutch: ("Nederlands", "nl"),
-        .polish: ("Polski", "pl"),
-        .portugueseBrasil: ("Português (Brasil)", "pt-BR"),
         .russian: ("Русский", "ru"),
-        .swedish: ("Svenska", "sv"),
-        .thai: ("ภาษาไทย", "th"),
-        .turkish: ("Türkçe", "tr"),
-        .vietnamese: ("Tiếng Việt", "vi"),
         .chineseSimplified: ("简体中文", "zh-CN"),
-        .chineseTraditional: ("繁體中文", "zh-TW"),
-        .chineseHongKong: ("繁體中文 (香港)", "zh-HK"),
     ]
 
     var localizedString: String {
