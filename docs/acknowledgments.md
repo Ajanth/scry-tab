@@ -8,5 +8,5 @@ These third-party libraries are used:
 **Sparkle**
 [Website](https://github.com/sparkle-project/Sparkle) - [License](https://github.com/sparkle-project/Sparkle/blob/master/LICENSE)
 
-**AppCenter**
-[Website](https://github.com/microsoft/appcenter-sdk-apple) - [Custom](https://github.com/microsoft/appcenter-sdk-apple/blob/develop/LICENSE)
+**Sentry Cocoa**
+[Website](https://github.com/getsentry/sentry-cocoa) - [MIT](https://github.com/getsentry/sentry-cocoa/blob/main/LICENSE.md)

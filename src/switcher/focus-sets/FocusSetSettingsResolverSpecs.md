@@ -29,6 +29,8 @@ It also resolves Focus Set deletion, reordering, and selection after model chang
 - Applying an editor draft replaces name, application rules, and optional shortcut in one immutable
   configuration decision. If the user approved replacing another Focus Set's shortcut, that
   conflicting binding is cleared in the same decision without changing its membership.
+- Category-search registration keeps manager and Behavior terms associated with their own segments
+  and clears every registration when the tab closes.
 
 ---
 
@@ -64,3 +66,6 @@ It also resolves Focus Set deletion, reordering, and selection after model chang
 ### F. Transactional editor decisions
 - **testSavingFocusSetCommitsCompleteDraftAtomically** — Apply replaces name, applications, and shortcut together while preserving metadata and ordering.
 - **testSavingFocusSetUnassignsConflictingDirectBindingWithoutChangingMembership** — an approved direct-shortcut conflict is cleared on the other set without changing its rules.
+
+### G. Category search registration
+- **testCategorySearchRegistrationHighlightsMatchingSegmentAndClearsOnCleanup** — Behavior and Focus Sets terms select their matching segment, then teardown clears the registration.

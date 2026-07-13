@@ -4,8 +4,10 @@ on:
       - master
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  APPCENTER_SECRET: ${{ secrets.APPCENTER_SECRET }}
-  APPCENTER_TOKEN: ${{ secrets.APPCENTER_TOKEN }}
+  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+  SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
   APPLE_ID: ${{ secrets.APPLE_ID }}
   APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
   APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
@@ -40,7 +42,7 @@ jobs:
           fetch-depth: ${{ steps.pre-checkout.outputs.fetch-depth }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: 18
           cache: 'npm'
       - run: sudo xcode-select -s /Applications/Xcode_26.0.1.app/Contents/Developer
       - run: scripts/print_env.sh
@@ -53,7 +55,7 @@ jobs:
       - run: scripts/run_tests.sh
       - run: scripts/build_app.sh
       - run: scripts/package_and_notarize_release.sh
-      - run: scripts/upload_symbols_to_appcenter.sh
+      - run: scripts/upload_symbols_to_sentry.sh
       - run: scripts/update_appcast.sh
       - run: scripts/update_readme_and_website.sh
       - run: npx semantic-release

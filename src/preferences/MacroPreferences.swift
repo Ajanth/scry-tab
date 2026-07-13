@@ -355,7 +355,7 @@ enum CrashPolicyPreference: CaseIterable, MacroPreference {
     var localizedString: LocalizedString {
         switch self {
             case .never: return NSLocalizedString("Never send crash reports", comment: "")
-            case .ask: return NSLocalizedString("Ask whether to send crash reports", comment: "")
+            case .ask: return NSLocalizedString("Ask before enabling crash reports", comment: "")
             case .always: return NSLocalizedString("Always send crash reports", comment: "")
         }
     }

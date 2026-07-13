@@ -14,7 +14,6 @@ class BackgroundWork {
     static var imageProcessingQueue: LabeledOperationQueue!
     static var accessibilityCommandsQueue: LabeledOperationQueue!
     static var focusOrderQueue: LabeledOperationQueue!
-    static var crashReportsQueue: LabeledOperationQueue!
     static var permissionsCheckOnTimerQueue: LabeledOperationQueue!
 
     private static var totalPotentialThreadCount = 0
@@ -46,24 +45,17 @@ class BackgroundWork {
         cliEventsThread = BackgroundThreadWithRunLoop("cliMessages", .userInteractive)
     }
 
-    static func startCrashReportsQueue() {
-        if crashReportsQueue == nil {
-            // crash reports can be sent off the main thread
-            crashReportsQueue = LabeledOperationQueue("crashReports", .utility, 1)
-        }
-    }
-
     static func addPotentialThreadCount(_ additionalCount: Int) {
         totalPotentialThreadCount += additionalCount
         // a macos process has a soft limit of 64 threads. We need to be careful to don't spawn too many threads through DispatchQueues.
-        // budget: BackgroundWork (~20) + AXCallScheduler (24) + CGSCallScheduler (2) + ProcessCallScheduler (2) + crashReports (1) = 49
+        // budget: BackgroundWork (~20) + AXCallScheduler (24) + CGSCallScheduler (2) + ProcessCallScheduler (2) = 48
         assert(totalPotentialThreadCount <= 50)
     }
 
     #if DEBUG
     // dev-only helpers to inspect thread count / queue depth; call from lldb when diagnosing
     private static func logQueues() -> Void {
-        let queues = [imageProcessingQueue, accessibilityCommandsQueue, AXCallScheduler.shared.axQueryFirstTryQueue, AXCallScheduler.shared.axQueryScanQueue, AXCallScheduler.shared.axQueryRetryQueue, CGSCallScheduler.debugQueue, ProcessCallScheduler.debugQueue, crashReportsQueue].compactMap { $0 }
+        let queues = [imageProcessingQueue, accessibilityCommandsQueue, AXCallScheduler.shared.axQueryFirstTryQueue, AXCallScheduler.shared.axQueryScanQueue, AXCallScheduler.shared.axQueryRetryQueue, CGSCallScheduler.debugQueue, ProcessCallScheduler.debugQueue].compactMap { $0 }
         var map = [String:Int]()
         for queue in queues {
             map[queue.underlyingQueue!.label] = queue.operations.reduce(0) { $1.isExecuting ? $0 + 1 : $0 }

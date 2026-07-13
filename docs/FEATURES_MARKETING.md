@@ -220,7 +220,7 @@ The Settings window includes a **live search bar** that filters all settings sec
 - **Language support** — 7 languages: Simplified Chinese, English, French, German, Japanese, Russian, and Spanish.
 - **Export / Import / Reset settings** — move your configuration between Macs or reset to defaults in one click.
 - **Automatic and manual updates** — powered by Sparkle; choose manual checks, periodic checks, or auto-install. Update checks include app version, macOS version, architecture, and language for relevant release notes.
-- **Crash reporting** — opt-in (Ask, Always, or Never). Crash reports include a debug profile; network access is enabled only when a report is sent.
+- **Crash reporting** — opt-in (Ask, Always, or Never). Consent is collected before ScryTab initializes crash reporting; automatic reports do not include the manual-feedback debug profile.
 - **Feedback** — built-in form for bug reports and suggestions, with a link to existing discussions and a pre-send update check to ensure reports are filed against the latest version.
 - **Restores native Command-Tab** — if ScryTab owns the Command-Tab chord, it suppresses the native switcher while active and restores it cleanly on quit or crash.
 - **macOS 26 (Sequoia) ready** — uses Liquid Glass panel background on macOS 26+; falls back to the standard visual-effect material on earlier releases.

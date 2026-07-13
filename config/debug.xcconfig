@@ -11,5 +11,5 @@ OTHER_CODE_SIGN_FLAGS = --timestamp=none
 SWIFT_COMPILATION_MODE = incremental
 ENABLE_DEBUG_DYLIB = NO // skip the debug dylib loader (we don't use SwiftUI Previews); silences [PreviewsAgentExecutorLibrary] startup chatter
 
-// Per-developer overrides (CODE_SIGN_IDENTITY, APPCENTER_SECRET, DOMAIN, API_DOMAIN, …).
+// Per-developer overrides (CODE_SIGN_IDENTITY, SENTRY_DSN, DOMAIN, API_DOMAIN, …).
 #include? "local.xcconfig"

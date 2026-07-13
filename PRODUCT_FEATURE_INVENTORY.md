@@ -167,7 +167,7 @@ This is a product-surface inventory for stripping ScryTab down. Source reference
 - Language options are System Default, German, English, Spanish, French, Japanese, Simplified Chinese, and Russian. Reference: `src/preferences/MacroPreferences.swift`.
 - Changing language writes `AppleLanguages` and offers Restart Now or Later. Reference: `src/preferences/settings-window/tabs/GeneralTab.swift`.
 - Update policy options are manual/no periodic checks, periodic checks, and periodic auto-install. References: `src/preferences/MacroPreferences.swift`, `src/vendors/SparkleDelegate.swift`.
-- Crash report policy options are Never, Ask, and Always. References: `src/preferences/MacroPreferences.swift`, `src/vendors/AppCenterCrashes.swift`.
+- Crash report policy options are Never, Ask, and Always. References: `src/preferences/MacroPreferences.swift`, `src/vendors/SentryCrashReporter.swift`.
 - Export settings writes a plist containing only ScryTab-owned preference keys. Import settings accepts a plist, filters to owned keys, writes the preference domain, and offers restart. Reference: `src/preferences/settings-window/tabs/GeneralTab.swift`, `src/preferences/Preferences.swift`.
 - Reset settings clears ScryTab preferences and restarts after destructive confirmation. Reference: `src/preferences/settings-window/tabs/GeneralTab.swift`.
 
@@ -180,9 +180,9 @@ This is a product-surface inventory for stripping ScryTab down. Source reference
 - Sparkle handles update checks. The updater is created at launch and started after 30 seconds; manual checks can start it earlier. References: `src/App.swift`, `src/vendors/SparkleDelegate.swift`, `src/preferences/settings-window/tabs/GeneralTab.swift`.
 - Sparkle feed requests include app version, macOS version, architecture, and language as feed parameters. Reference: `src/vendors/SparkleDelegate.swift`.
 - The update policy is kept in sync bidirectionally with Sparkle's own defaults: the app observes Sparkle's `SUEnableAutomaticChecks` and `SUAutomaticallyUpdate` keys and maps changes back to ScryTab's `updatePolicy`, while ScryTab-initiated policy changes set a `policyLock` to prevent the observer from echoing the change back into a loop. References: `src/events/UserDefaultsEvents.swift`, `src/events/PreferencesEvents.swift`, `src/preferences/settings-window/tabs/GeneralTab.swift`.
-- Crash reporting uses AppCenter Crashes. Network requests are disabled by default and enabled only when a report is being sent. Reference: `src/vendors/AppCenterCrashes.swift`.
-- Crash reports can be never sent, always sent, or ask each time. The Ask prompt includes "Remember my choice" and updates the General setting. Reference: `src/vendors/AppCenterCrashes.swift`.
-- Crash reports include a debug profile attachment. References: `src/vendors/AppCenterCrashes.swift`, `src/secondary-windows/DebugProfile.swift`.
+- Crash reporting uses Sentry in an explicit crash-only configuration; performance, profiling, replay, breadcrumbs, sessions, user identity, and automatic DebugProfile attachments are disabled. Reference: `src/vendors/SentryCrashReporter.swift`.
+- Crash reports can be never sent, always sent, or asked before Sentry starts. Choosing Enable persists Always and starts reporting in the current launch; Not now persists Never. References: `src/App.swift`, `src/vendors/SentryCrashReporter.swift`.
+- DebugProfile remains part of the explicit manual-feedback workflow only. Reference: `src/secondary-windows/DebugProfile.swift`.
 - Feedback starts with a kind picker: Report a bug or Suggest a change. The picker has a single "View existing discussions" link that points to the GitHub issues page, and the form has a Go back button to return to the picker while preserving each kind's draft. Reference: `src/secondary-windows/FeedbackWindow.swift`.
 - Bug feedback first checks for updates. If a newer version is available, the user is prompted to update first or report on the current version. The check is cached for the app session and has a 5 second timeout. Reference: `src/secondary-windows/FeedbackWindow.swift`.
 - Feedback drafts are preserved per kind until successful submission. Reference: `src/secondary-windows/FeedbackWindow.swift`.

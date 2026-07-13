@@ -312,6 +312,37 @@ final class FocusSetSettingsResolverTests: XCTestCase {
         XCTAssertEqual(next.sets[1], draft)
     }
 
+    // MARK: - G. Category search registration
+
+    /// Category content maps behavior and Focus Sets queries to their own segments, then clears on teardown.
+    func testCategorySearchRegistrationHighlightsMatchingSegmentAndClearsOnCleanup() throws {
+        let marker = NSObject()
+        let identifier = ObjectIdentifier(marker)
+        let labels = ["Focus Sets", "Behavior"]
+        var registrations = [ObjectIdentifier: [[String]]]()
+        FocusSetSettingsResolver.registerCategorySearchContent(
+            for: identifier,
+            focusSetManagerStrings: ["Focus Sets", "Included Applications"],
+            behaviorStrings: ["Behavior", "After keys are released"],
+            in: &registrations)
+
+        let content = try XCTUnwrap(registrations[identifier])
+        XCTAssertEqual(SettingsSearch.matchingSegmentIndexes(
+            query: "After keys are released",
+            segmentLabels: labels,
+            perSegmentStrings: content), [1])
+        XCTAssertEqual(SettingsSearch.matchingSegmentIndexes(
+            query: "Included Applications",
+            segmentLabels: labels,
+            perSegmentStrings: content), [0])
+        FocusSetSettingsResolver.clearCategorySearchContent(&registrations)
+        XCTAssertTrue(registrations.isEmpty)
+        XCTAssertTrue(SettingsSearch.matchingSegmentIndexes(
+            query: "After keys are released",
+            segmentLabels: labels,
+            perSegmentStrings: registrations[identifier]).isEmpty)
+    }
+
     private func application(_ bundleIdentifier: String,
                              _ presentationName: String) -> FocusSetApplicationOption {
         FocusSetApplicationOption(

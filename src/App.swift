@@ -1,10 +1,9 @@
 import Cocoa
 import Darwin
 import ShortcutRecorder
-import AppCenterCrashes
 import Sparkle
 
-class App: AppCenterApplication {
+class App: ScryTabApplication {
     /// periphery:ignore
     static let activity = ProcessInfo.processInfo.beginActivity(options: .userInitiatedAllowingIdleSystemSleep,
         reason: "Prevent App Nap to preserve responsiveness")
@@ -25,17 +24,39 @@ class App: AppCenterApplication {
     override class var shared: App { super.shared as! App }
     private static var isVeryFirstSummon = true
     private static var pendingShowSettingsWindow = false
-    // periphery:ignore
-    private static var appCenterDelegate: AppCenterCrash?
+    private static let sentryCrashReporter = SentryCrashReporter.shared
     // periphery:ignore
     static var sparkleDelegate: SparkleDelegate?
     static var updaterController: SPUStandardUpdaterController?
-    static let windowInventoryDidChangeNotification = Notification.Name("ScryTab.windowInventoryDidChange")
     private static let switcherUiRefreshThrottler = Throttler(delayInMs: 200)
 
     override init() {
         super.init()
         delegate = self
+    }
+
+    private static var crashReportPolicy: CrashReportPolicy {
+        CrashReportPolicy(rawValue: Preferences.crashPolicy.indexAsString) ?? .ask
+    }
+
+    static func captureHandledException(_ exception: NSException) {
+        sentryCrashReporter.captureHandledException(exception, policy: crashReportPolicy)
+    }
+
+    private static func presentCrashReportConsentIfNeeded() {
+        guard crashReportPolicy == .ask else { return }
+        App.shared.activate(ignoringOtherApps: true)
+        let alert = NSAlert()
+        alert.alertStyle = .informational
+        alert.messageText = NSLocalizedString("Enable automatic crash reports?", comment: "")
+        alert.informativeText = NSLocalizedString("Help improve ScryTab by automatically sending crash reports. You can change this later in Settings.", comment: "")
+        let notNowButton = alert.addButton(withTitle: NSLocalizedString("Not now", comment: ""))
+        notNowButton.keyEquivalent = "\u{1b}"
+        let enableButton = alert.addButton(withTitle: NSLocalizedString("Enable", comment: ""))
+        enableButton.keyEquivalent = "\r"
+        let policy = CrashReportPolicy.afterConsent(alert.runModal() == .alertSecondButtonReturn)
+        Preferences.set("crashPolicy", policy.rawValue)
+        sentryCrashReporter.startIfAllowed(policy: policy, dsn: Secrets.sentryDsn)
     }
 
     required init?(coder: NSCoder) {
@@ -51,7 +72,7 @@ class App: AppCenterApplication {
     }
 
     private static func directFocusSetSnapshot() -> FocusSetPresentationSnapshot {
-        FocusSetPresentationSnapshotBuilder.make(countedScopes: [])
+        FocusSetPresentationSnapshotBuilder.make()
     }
 
     private static func updateFocusSetSession(_ snapshot: FocusSetPresentationSnapshot,
@@ -395,7 +416,6 @@ class App: AppCenterApplication {
     }
 
     static func refreshOpenUiAfterExternalEvent() {
-        NotificationCenter.default.post(name: windowInventoryDidChangeNotification, object: nil)
         refreshOpenUiAfterFocusSetConfigurationChange()
     }
 
@@ -543,13 +563,13 @@ class App: AppCenterApplication {
         if QAMenu.graphEnabled { DebugMenu.setEnabled(true) }
         #endif
         UsageStats.prune()
+        DispatchQueue.main.async { presentCrashReportConsentIfNeeded() }
         Logger.info { "Finished launching ScryTab" }
     }
 }
 
 extension App: NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        App.appCenterDelegate = AppCenterCrash()
         App.shared.disableRelaunchOnLogin()
         Logger.initialize()
         Logger.info { "Launching ScryTab \(App.version)" }
@@ -558,6 +578,7 @@ extension App: NSApplicationDelegate {
         #endif
         AXUIElement.setGlobalTimeout()
         Preferences.initialize()
+        App.sentryCrashReporter.startIfAllowed(policy: App.crashReportPolicy, dsn: Secrets.sentryDsn)
         BackgroundWork.preStart()
         SystemPermissions.ensurePermissionsAreGranted()
     }
@@ -575,5 +596,13 @@ extension App: NSApplicationDelegate {
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         Logger.info { "" }
         return .terminateNow
+    }
+}
+
+@objc(SentryCrashReporterBridge)
+final class SentryCrashReporterBridge: NSObject {
+    @objc(captureException:)
+    static func captureException(_ exception: NSException) {
+        App.captureHandledException(exception)
     }
 }
