@@ -26,6 +26,8 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(DesignSystem.Metrics.sidebarIconRadius, 6)
         XCTAssertEqual(DesignSystem.Metrics.standardControlMinHeight, 32)
         XCTAssertEqual(DesignSystem.Metrics.settingsEditorSidebarHeight, 470)
+        XCTAssertEqual(DesignSystem.Metrics.centeredSettingsContentMaxWidth, 536)
+        XCTAssertEqual(DesignSystem.Metrics.centeredDetailPageVerticalInset, 10)
     }
 
     func testControlGeometryTokensMatchMigrationPlan() {
@@ -40,6 +42,27 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(DesignSystem.Metrics.disclosureCaretHeight, 6)
         XCTAssertEqual(DesignSystem.Metrics.disclosureCaretStrokeWidth, 1.75)
         XCTAssertEqual(DesignSystem.Metrics.disclosureCaretTitleSpacing, 6)
+    }
+
+    func testCenteredDetailPageBoundsAndCentersContent() {
+        let content = NSView()
+        content.widthAnchor.constraint(equalToConstant: 320).isActive = true
+        content.heightAnchor.constraint(equalToConstant: 64).isActive = true
+        let page = DesignSystemCenteredDetailPage(content: content, width: 760)
+
+        XCTAssertEqual(DesignSystemCenteredDetailPage.contentWidth(for: 760), 536)
+        XCTAssertEqual(DesignSystemCenteredDetailPage.contentWidth(for: 320), 320)
+        XCTAssertTrue(page.constraints.contains {
+            guard let first = $0.firstItem as? NSView, let second = $0.secondItem as? NSView else { return false }
+            return first === content && second === page &&
+                $0.firstAttribute == .centerX && $0.secondAttribute == .centerX
+        })
+        XCTAssertTrue(page.constraints.contains {
+            guard let first = $0.firstItem as? NSView, let second = $0.secondItem as? NSView else { return false }
+            return first === content && second === page &&
+                $0.firstAttribute == .top && $0.secondAttribute == .top &&
+                $0.constant == DesignSystem.Metrics.centeredDetailPageVerticalInset
+        })
     }
 
     func testFlatButtonUsesAppOwnedSurfaceAndDestructiveAccent() {
