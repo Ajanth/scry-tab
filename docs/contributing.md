@@ -32,7 +32,7 @@ We minimize reliance on XCode, InterfaceBuilder, Playground, and other GUI tools
 * 1 xib (InterfaceBuilder UI file, describing the menubar items like “Edit” or “Format”)
 * `scry-tab.xcodeproj` file describing ScryTab itself. It contains some settings for the app
 * `scry_tab.entitlements` and Info.plist which are static files describing some app config for XCode
-* `vendor/` holds vendored open-source libraries (Sparkle, ShortcutRecorder, AppCenter) as local SPM packages. `vendor/scripts/update_*.sh` refresh them from upstream.
+* `vendor/` holds vendored open-source libraries (Sparkle and ShortcutRecorder) as local SPM packages. Sentry is resolved from its upstream Swift package.
 * Some `.xcconfig` files in `config/` which contain XCode settings that people typically change using XCode UI, but that I want to be version controlled
 
 The project directory is organized in the following way:

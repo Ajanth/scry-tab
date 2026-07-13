@@ -41,6 +41,18 @@ enum SettingsSearch {
         return SettingsSearchResult(score: averageScore, ranges: mergeRanges(matchedRanges))
     }
 
+    static func matchingSegmentIndexes(query: String,
+                                       segmentLabels: [String],
+                                       perSegmentStrings: [[String]]?) -> [Int] {
+        segmentLabels.enumerated().compactMap { index, label in
+            if !label.isEmpty, match(query, in: label) != nil { return index }
+            guard let perSegmentStrings,
+                  perSegmentStrings.indices.contains(index),
+                  perSegmentStrings[index].contains(where: { match(query, in: $0) != nil }) else { return nil }
+            return index
+        }
+    }
+
     private static func bestMatch(for queryToken: [Character], in textTokens: [SettingsSearchToken]) -> TokenMatch? {
         var best: TokenMatch?
         textTokens.forEach { token in

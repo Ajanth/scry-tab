@@ -93,8 +93,8 @@
 		5FDF9EA62FB3575B00703843 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDF9EA52FB3575B00703843 /* Sparkle */; };
 		5FDF9EA92FB3577600703843 /* ShortcutRecorder in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDF9EA82FB3577600703843 /* ShortcutRecorder */; };
 		5FDF9EAB2FB357F600703843 /* ShortcutRecorder in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDF9EAA2FB357F600703843 /* ShortcutRecorder */; };
-		5FDF9EAE2FB3582300703843 /* AppCenter in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDF9EAD2FB3582300703843 /* AppCenter */; };
-		5FDF9EB02FB3582300703843 /* AppCenterCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDF9EAF2FB3582300703843 /* AppCenterCrashes */; };
+		B3C0C0040000000000000001 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = B3C0C0020000000000000001 /* Sentry */; };
+		B3C0C0050000000000000001 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = B3C0C0030000000000000001 /* Sentry */; };
 		5FDF9EB12FB3584300703843 /* Sparkle in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 5FDF9EA52FB3575B00703843 /* Sparkle */; };
 		6D42BE46F595D567EDBF559A /* DynamicColorTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA0000000000000DCFFF1 /* DynamicColorTextField.swift */; };
 		6E800CF06EE430DCCF9CE47B /* ObjCExceptionCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E7DD4D4CA23EE28B22048CE6 /* ObjCExceptionCatcher.m */; };
@@ -192,7 +192,10 @@
 		D04BA48B00B4211A465C7337 /* DebugProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BACABD048E62EBE4576CC /* DebugProfile.swift */; };
 		D04BA4A11F821548EE3C5E95 /* Bash.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA514F1C4B475B3CA6EB6 /* Bash.swift */; };
 		D04BA530F00E5989D66C6A1F /* contributors.md in Resources */ = {isa = PBXBuildFile; fileRef = D04BA812B8DCB915B8F4B915 /* contributors.md */; };
-		D04BA56789A2AF52557A9BFF /* AppCenterCrashes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA7E3EA104941FE76DA70 /* AppCenterCrashes.swift */; };
+		B3C0C00B0000000000000001 /* SentryCrashReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C0C0060000000000000001 /* SentryCrashReporter.swift */; };
+		B3C0C00C0000000000000001 /* SentryCrashReporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C0C0060000000000000001 /* SentryCrashReporter.swift */; };
+		B3C0C00D0000000000000001 /* SentryCrashReporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C0C0080000000000000001 /* SentryCrashReporterTests.swift */; };
+		B3C0C00E0000000000000001 /* ScryTabApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = B3C0C00A0000000000000001 /* ScryTabApplication.m */; };
 		D04BA6187A91A847844B6ABB /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA015A45DE7AFDC9794FE /* Window.swift */; };
 		D04BA69012A483201B375D46 /* acknowledgments.md in Resources */ = {isa = PBXBuildFile; fileRef = D04BAADF01EB8FF8A15AECC6 /* acknowledgments.md */; };
 		D04BA69D47B5E60A6AD9CBD9 /* TileTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAD1297730B191E96E7FE /* TileTitleView.swift */; };
@@ -223,7 +226,6 @@
 		D04BAD1BE9DC22C48C53D195 /* AboutTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA4A26987F67DD94C827F /* AboutTab.swift */; };
 		D04BAD2A7F2E8BF64EE982E9 /* TextArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA7C836A8CE8C0B8D128B /* TextArea.swift */; };
 		D04BAD451966B43720120D2E /* Menubar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAD905546AA93E5117B0A /* Menubar.swift */; };
-		D04BADA3F2DAB820D6FC6E75 /* AppCenterApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = D04BA48BC82D3060C3A1AB11 /* AppCenterApplication.m */; };
 		D04BADCDA9F9A6C3D6499877 /* SystemPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA7C6F2519091717F4B4E /* SystemPermissions.swift */; };
 		D04BADE4DDF7597749FB13BD /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA099FA155FB4D517D66B /* SettingsWindow.swift */; };
 		D04BAE1F00000000ED001001 /* ShortcutEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAE1F00000000ED001002 /* ShortcutEditor.swift */; };
@@ -290,9 +292,6 @@
 		F05E75000000000000000109 /* FocusSetSettingsResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000008 /* FocusSetSettingsResolver.swift */; };
 		F05E75000000000000000110 /* FocusSetSettingsResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000008 /* FocusSetSettingsResolver.swift */; };
 		F05E75000000000000000111 /* FocusSetSettingsResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000009 /* FocusSetSettingsResolverTests.swift */; };
-		F05E75000000000000000112 /* FocusSetCandidateCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000012 /* FocusSetCandidateCounter.swift */; };
-		F05E75000000000000000113 /* FocusSetCandidateCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000012 /* FocusSetCandidateCounter.swift */; };
-		F05E75000000000000000114 /* FocusSetCandidateCounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000013 /* FocusSetCandidateCounterTests.swift */; };
 		F05E75000000000000000115 /* FocusSetSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000015 /* FocusSetSettingsView.swift */; };
 		F05E75000000000000000119 /* FocusSetSessionResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000019 /* FocusSetSessionResolver.swift */; };
 		F05E75000000000000000120 /* FocusSetSessionResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E75000000000000000019 /* FocusSetSessionResolver.swift */; };
@@ -535,7 +534,6 @@
 		D04BA3EF6656955B0B29C2CD /* other.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = other.md; sourceTree = "<group>"; };
 		D04BA4336B6004A0A99849AD /* package.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		D04BA459034C1885CA43A807 /* LICENCE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENCE.md; sourceTree = "<group>"; };
-		D04BA48BC82D3060C3A1AB11 /* AppCenterApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppCenterApplication.m; sourceTree = "<group>"; };
 		D04BA49E45BFFF3D9FC60E43 /* HyperlinkLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperlinkLabel.swift; sourceTree = "<group>"; };
 		D04BA4A26987F67DD94C827F /* AboutTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutTab.swift; sourceTree = "<group>"; };
 		D04BA4A621A8A15660F973C1 /* KeyboardEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardEvents.swift; sourceTree = "<group>"; };
@@ -554,7 +552,6 @@
 		D04BA662DF59DF9A97FDA598 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
 		D04BA6BBFD0E87B8458E91D3 /* feature-suggestion.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "feature-suggestion.md"; sourceTree = "<group>"; };
 		D04BA6D57A1456C07318B8EA /* GridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
-		D04BA6ED38651224DB117A5A /* upload_symbols_to_appcenter.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = upload_symbols_to_appcenter.sh; sourceTree = "<group>"; };
 		D04BA6EF1954DCE80E539142 /* base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 		D04BA6F823BC0EDA9AA4B80A /* AXUIElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AXUIElement.swift; sourceTree = "<group>"; };
 		D04BA70746DEEC3D30B43F81 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -565,7 +562,6 @@
 		D04BA7C6F2519091717F4B4E /* SystemPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemPermissions.swift; sourceTree = "<group>"; };
 		D04BA7C836A8CE8C0B8D128B /* TextArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextArea.swift; sourceTree = "<group>"; };
 		D04BA7CF9C2D1BEC7C05AB24 /* Spaces.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spaces.swift; sourceTree = "<group>"; };
-		D04BA7E3EA104941FE76DA70 /* AppCenterCrashes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCenterCrashes.swift; sourceTree = "<group>"; };
 		D04BA812B8DCB915B8F4B915 /* contributors.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = contributors.md; sourceTree = "<group>"; };
 		D04BA8209A337A2960716E3B /* zh-CN */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "zh-CN"; path = Localizable.strings; sourceTree = "<group>"; };
 		D04BA82F792DF53958D92572 /* ScryTab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScryTab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -584,7 +580,12 @@
 		D04BAADF01EB8FF8A15AECC6 /* acknowledgments.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = acknowledgments.md; sourceTree = "<group>"; };
 		D04BAAE6E6823304D66B74F8 /* update_website.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = update_website.sh; sourceTree = "<group>"; };
 		D04BAAF760E3A8A22BDA84D6 /* appcast.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
-		D04BAAF79737A0673502FEB5 /* AppCenterApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppCenterApplication.h; sourceTree = "<group>"; };
+		B3C0C0060000000000000001 /* SentryCrashReporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryCrashReporter.swift; sourceTree = "<group>"; };
+		B3C0C0070000000000000001 /* SentryCrashReporterSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = SentryCrashReporterSpecs.md; sourceTree = "<group>"; };
+		B3C0C0080000000000000001 /* SentryCrashReporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentryCrashReporterTests.swift; sourceTree = "<group>"; };
+		B3C0C0090000000000000001 /* ScryTabApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScryTabApplication.h; sourceTree = "<group>"; };
+		B3C0C00A0000000000000001 /* ScryTabApplication.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScryTabApplication.m; sourceTree = "<group>"; };
+		B3C0C00F0000000000000001 /* upload_symbols_to_sentry.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = upload_symbols_to_sentry.sh; sourceTree = "<group>"; };
 		D04BAB74451B79FE18B8BEDF /* BackgroundWork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundWork.swift; sourceTree = "<group>"; };
 		D04BAB8A94DA69A6B5008AE5 /* Pipfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pipfile; sourceTree = "<group>"; };
 		D04BAC02D60EF22D9CC7D969 /* commitlint.config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = commitlint.config.js; sourceTree = "<group>"; };
@@ -641,9 +642,6 @@
 		F05E75000000000000000008 /* FocusSetSettingsResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetSettingsResolver.swift; sourceTree = "<group>"; };
 		F05E75000000000000000009 /* FocusSetSettingsResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetSettingsResolverTests.swift; sourceTree = "<group>"; };
 		F05E75000000000000000011 /* FocusSetSettingsResolverSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FocusSetSettingsResolverSpecs.md; sourceTree = "<group>"; };
-		F05E75000000000000000012 /* FocusSetCandidateCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetCandidateCounter.swift; sourceTree = "<group>"; };
-		F05E75000000000000000013 /* FocusSetCandidateCounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetCandidateCounterTests.swift; sourceTree = "<group>"; };
-		F05E75000000000000000014 /* FocusSetCandidateCounterSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FocusSetCandidateCounterSpecs.md; sourceTree = "<group>"; };
 		F05E75000000000000000015 /* FocusSetSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetSettingsView.swift; sourceTree = "<group>"; };
 		F05E75000000000000000019 /* FocusSetSessionResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetSessionResolver.swift; sourceTree = "<group>"; };
 		F05E75000000000000000020 /* FocusSetSessionResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusSetSessionResolverTests.swift; sourceTree = "<group>"; };
@@ -659,6 +657,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FDF9EAB2FB357F600703843 /* ShortcutRecorder in Frameworks */,
+				B3C0C0050000000000000001 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,10 +666,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4807A6C623A9CD190052A53E /* SkyLight.framework in Frameworks */,
-				5FDF9EB02FB3582300703843 /* AppCenterCrashes in Frameworks */,
 				5FDF9EA92FB3577600703843 /* ShortcutRecorder in Frameworks */,
 				5FDF9EA62FB3575B00703843 /* Sparkle in Frameworks */,
-				5FDF9EAE2FB3582300703843 /* AppCenter in Frameworks */,
+				B3C0C0040000000000000001 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -843,10 +841,12 @@
 		71FD1536EE94015DF0B9D6E7 /* vendors */ = {
 			isa = PBXGroup;
 			children = (
-				D04BA7E3EA104941FE76DA70 /* AppCenterCrashes.swift */,
+				B3C0C0060000000000000001 /* SentryCrashReporter.swift */,
+				B3C0C0070000000000000001 /* SentryCrashReporterSpecs.md */,
+				B3C0C0080000000000000001 /* SentryCrashReporterTests.swift */,
 				E70C8A1100000000000SP001 /* SparkleDelegate.swift */,
-				D04BAAF79737A0673502FEB5 /* AppCenterApplication.h */,
-				D04BA48BC82D3060C3A1AB11 /* AppCenterApplication.m */,
+				B3C0C0090000000000000001 /* ScryTabApplication.h */,
+				B3C0C00A0000000000000001 /* ScryTabApplication.m */,
 				3F9B638CE7C1DF9BD655C52B /* ObjCExceptionCatcher.h */,
 				E7DD4D4CA23EE28B22048CE6 /* ObjCExceptionCatcher.m */,
 			);
@@ -966,9 +966,6 @@
 				F05E75000000000000000008 /* FocusSetSettingsResolver.swift */,
 				F05E75000000000000000009 /* FocusSetSettingsResolverTests.swift */,
 				F05E75000000000000000011 /* FocusSetSettingsResolverSpecs.md */,
-				F05E75000000000000000012 /* FocusSetCandidateCounter.swift */,
-				F05E75000000000000000013 /* FocusSetCandidateCounterTests.swift */,
-				F05E75000000000000000014 /* FocusSetCandidateCounterSpecs.md */,
 				F05E75000000000000000015 /* FocusSetSettingsView.swift */,
 				F05E75000000000000000019 /* FocusSetSessionResolver.swift */,
 				F05E75000000000000000020 /* FocusSetSessionResolverTests.swift */,
@@ -1308,7 +1305,7 @@
 				D04BAD65AA870A49D2F89DBC /* ensure_generated_files_are_up_to_date.sh */,
 				D04BA4D5DF349429527824A2 /* determine_next_version.sh */,
 				D04BAAE6E6823304D66B74F8 /* update_website.sh */,
-				D04BA6ED38651224DB117A5A /* upload_symbols_to_appcenter.sh */,
+				B3C0C00F0000000000000001 /* upload_symbols_to_sentry.sh */,
 				BF0C81D602ED642A48D50B78 /* notarytool */,
 				1C9618B3872558FBDE74D073 /* install_swiftformat.js */,
 				1C961AD30050B3BAC2A8EDD4 /* swiftformat.js */,
@@ -1472,6 +1469,9 @@
 			dependencies = (
 			);
 			name = "unit-tests";
+			packageProductDependencies = (
+				B3C0C0030000000000000001 /* Sentry */,
+			);
 			productName = "unit-tests";
 			productReference = BF0C832DEED422648209CCD2 /* unit-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1491,6 +1491,9 @@
 			dependencies = (
 			);
 			name = "scry-tab";
+			packageProductDependencies = (
+				B3C0C0020000000000000001 /* Sentry */,
+			);
 			productName = "scry-tab";
 			productReference = D04BA82F792DF53958D92572 /* ScryTab.app */;
 			productType = "com.apple.product-type.application";
@@ -1535,7 +1538,7 @@
 			packageReferences = (
 				5FDF9EA42FB3575B00703843 /* XCLocalSwiftPackageReference "Sparkle" */,
 				5FDF9EA72FB3577600703843 /* XCLocalSwiftPackageReference "ShortcutRecorder" */,
-				5FDF9EAC2FB3582300703843 /* XCLocalSwiftPackageReference "AppCenter" */,
+				B3C0C0010000000000000001 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			productRefGroup = D04BA1A461BBB5A9BE15E015 /* Products */;
 			projectDirPath = "";
@@ -1646,8 +1649,6 @@
 				F05E75000000000000000105 /* FocusSetResolverTests.swift in Sources */,
 				F05E75000000000000000110 /* FocusSetSettingsResolver.swift in Sources */,
 				F05E75000000000000000111 /* FocusSetSettingsResolverTests.swift in Sources */,
-				F05E75000000000000000113 /* FocusSetCandidateCounter.swift in Sources */,
-				F05E75000000000000000114 /* FocusSetCandidateCounterTests.swift in Sources */,
 				F05E75000000000000000120 /* FocusSetSessionResolver.swift in Sources */,
 				F05E75000000000000000121 /* FocusSetSessionResolverTests.swift in Sources */,
 				F05E75000000000000000126 /* FocusSetPresentationSnapshot.swift in Sources */,
@@ -1714,6 +1715,8 @@
 				5FCEFA110000000000000001 /* PreferencesMigrations.swift in Sources */,
 				5FCEFA110000000000000021 /* PreferencesMigrationsTests.swift in Sources */,
 				AECF000000000000000000A3 /* Endpoints.swift in Sources */,
+				B3C0C00C0000000000000001 /* SentryCrashReporter.swift in Sources */,
+				B3C0C00D0000000000000001 /* SentryCrashReporterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1746,7 +1749,6 @@
 				F05E75000000000000000101 /* FocusSet.swift in Sources */,
 				F05E75000000000000000103 /* FocusSetResolver.swift in Sources */,
 				F05E75000000000000000109 /* FocusSetSettingsResolver.swift in Sources */,
-				F05E75000000000000000112 /* FocusSetCandidateCounter.swift in Sources */,
 				F05E75000000000000000115 /* FocusSetSettingsView.swift in Sources */,
 				F05E75000000000000000119 /* FocusSetSessionResolver.swift in Sources */,
 				F05E75000000000000000124 /* FocusSetPresentationSnapshotBuilder.swift in Sources */,
@@ -1826,11 +1828,11 @@
 				D04BAFF70A98CF287F85DA22 /* ExceptionEditorView.swift in Sources */,
 				D04BAFF90A98CF287F85DA24 /* SidebarList.swift in Sources */,
 				D04BA00000000000C0DE0002 /* SettingsSearch.swift in Sources */,
-				D04BA56789A2AF52557A9BFF /* AppCenterCrashes.swift in Sources */,
+				B3C0C00B0000000000000001 /* SentryCrashReporter.swift in Sources */,
 				E70C8A2200000000000SP002 /* SparkleDelegate.swift in Sources */,
 				AECF000000000000000000A2 /* Endpoints.swift in Sources */,
 				AECF000000000000000000B2 /* Secrets.swift in Sources */,
-				D04BADA3F2DAB820D6FC6E75 /* AppCenterApplication.m in Sources */,
+				B3C0C00E0000000000000001 /* ScryTabApplication.m in Sources */,
 				6E800CF06EE430DCCF9CE47B /* ObjCExceptionCatcher.m in Sources */,
 				D04BAA16F21AC41A23DDA63D /* ControlsTab.swift in Sources */,
 				5FC5980000000000000A0002 /* NativeHotkeyResolver.swift in Sources */,
@@ -2302,11 +2304,18 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = vendor/ShortcutRecorder;
 		};
-		5FDF9EAC2FB3582300703843 /* XCLocalSwiftPackageReference "AppCenter" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = vendor/AppCenter;
-		};
 /* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B3C0C0010000000000000001 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa.git";
+			requirement = {
+				kind = exactVersion;
+				version = 9.21.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		5FDF9EA52FB3575B00703843 /* Sparkle */ = {
@@ -2322,13 +2331,15 @@
 			package = 5FDF9EA72FB3577600703843 /* XCLocalSwiftPackageReference "ShortcutRecorder" */;
 			productName = ShortcutRecorder;
 		};
-		5FDF9EAD2FB3582300703843 /* AppCenter */ = {
+		B3C0C0020000000000000001 /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AppCenter;
+			package = B3C0C0010000000000000001 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
 		};
-		5FDF9EAF2FB3582300703843 /* AppCenterCrashes */ = {
+		B3C0C0030000000000000001 /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AppCenterCrashes;
+			package = B3C0C0010000000000000001 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

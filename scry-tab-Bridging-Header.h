@@ -1,2 +1,2 @@
-#import "AppCenterApplication.h"
 #import "ObjCExceptionCatcher.h"
+#import "ScryTabApplication.h"

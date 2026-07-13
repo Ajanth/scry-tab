@@ -881,17 +881,10 @@ class SettingsWindow: NSWindow {
             ?? FocusSetsTab.tabSegmentSearchableStrings[controlIdentifier]
         var matchingSegmentIndexes = [Int]()
         return SettingsSearchHighlightTarget({ query in
-            matchingSegmentIndexes = []
-            segmentLabels.enumerated().forEach { index, label in
-                if !label.isEmpty, SettingsSearch.match(query, in: label) != nil {
-                    matchingSegmentIndexes.append(index)
-                    return
-                }
-                if let perSegmentStrings, index < perSegmentStrings.count,
-                   perSegmentStrings[index].contains(where: { SettingsSearch.match(query, in: $0) != nil }) {
-                    matchingSegmentIndexes.append(index)
-                }
-            }
+            matchingSegmentIndexes = SettingsSearch.matchingSegmentIndexes(
+                query: query,
+                segmentLabels: segmentLabels,
+                perSegmentStrings: perSegmentStrings)
             if matchingSegmentIndexes.isEmpty { return [] }
             return [0..<1]
         }, { _ in

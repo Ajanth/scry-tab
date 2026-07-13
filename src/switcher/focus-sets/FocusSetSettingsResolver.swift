@@ -48,6 +48,17 @@ enum FocusSetSettingsResolver {
         uniqueSavedApplications(rules).count
     }
 
+    static func registerCategorySearchContent(for controlIdentifier: ObjectIdentifier,
+                                              focusSetManagerStrings: [String],
+                                              behaviorStrings: [String],
+                                              in registrations: inout [ObjectIdentifier: [[String]]]) {
+        registrations[controlIdentifier] = [focusSetManagerStrings, behaviorStrings]
+    }
+
+    static func clearCategorySearchContent(_ registrations: inout [ObjectIdentifier: [[String]]]) {
+        registrations.removeAll()
+    }
+
     static func movedFocusSets(moving identifier: UUID,
                                by offset: Int,
                                in sets: [FocusSet]) -> [FocusSet]? {

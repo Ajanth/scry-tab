@@ -8,7 +8,7 @@ OTHER_CODE_SIGN_FLAGS = --timestamp --deep --options runtime // for notarization
 SWIFT_COMPILATION_MODE = wholemodule
 SWIFT_OPTIMIZATION_LEVEL = -O
 GCC_OPTIMIZATION_LEVEL = s // optimize for size; Xcode default for Release but explicit
-LLVM_LTO = YES_THIN // ThinLTO: cross-module DCE + inlining across all static-linked .o (host + AppCenter + ShortcutRecorder)
+LLVM_LTO = YES_THIN // ThinLTO: cross-module DCE + inlining across all static-linked .o (host + Sentry + ShortcutRecorder)
 STRIP_SWIFT_SYMBOLS = YES // explicit; Xcode default for Release
 DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
 CLANG_DEBUG_INFORMATION_LEVEL = line-tables-only // shrinks dSYM for clang/Obj-C; no Swift equivalent ships in Xcode
@@ -17,5 +17,5 @@ COPY_PHASE_STRIP = YES
 STRIP_INSTALLED_PRODUCT = YES
 STRIP_STYLE = all
 
-// Per-developer overrides (CODE_SIGN_IDENTITY, APPCENTER_SECRET, DOMAIN, API_DOMAIN, …).
+// Per-developer overrides (CODE_SIGN_IDENTITY, SENTRY_DSN, DOMAIN, API_DOMAIN, …).
 #include? "local.xcconfig"

@@ -8,7 +8,7 @@
 
 ## File map
 - Model/store: `FocusSet.swift`, `FocusSetsStore.swift`.
-- Membership/counts: `FocusSetResolver.swift`, `FocusSetCandidateCounter.swift`, `Windows.swift`.
+- Membership: `FocusSetResolver.swift`, `Windows.swift`.
 - State/invoke: `FocusSetSessionResolver.swift`, `FocusSetPresentationSnapshotBuilder.swift`, `SwitcherSession.swift`, `App.swift`.
 - Settings/edit/delete: `FocusSetSettingsView.swift`, `FocusSetSettingsResolver.swift`.
 - Hotkeys: `ControlsTab.swift`, `KeyboardEventsTestable.swift`, `ShortcutAction.swift`, `ATShortcut.swift`.
@@ -17,4 +17,3 @@
 - Each configured binding is keyed by its saved set UUID. A stale UUID must not target another set.
 - Repeating the active set's shortcut cycles that scoped grid.
 - A direct shortcut requires a non-modifier key. Its chord remains active until all bound modifiers release, then applies the Focus Sets-global Focus, Hold, or Search setting.
-- The direct runtime snapshot skips candidate counting. Settings counts still use the shared presentation snapshot builder.

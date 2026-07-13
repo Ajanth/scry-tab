@@ -16,7 +16,6 @@ final class FocusSetSettingsView: NSView {
         NSLocalizedString("Create a Focus Set to browse the applications you use together.", comment: ""),
         NSLocalizedString("Shortcut", comment: ""),
         NSLocalizedString("Not assigned", comment: ""),
-        NSLocalizedString("Matching windows", comment: ""),
         NSLocalizedString("Edit Focus Set…", comment: ""),
         NSLocalizedString("Editing “%@”", comment: ""),
         NSLocalizedString("Move Up", comment: ""),
@@ -35,8 +34,6 @@ final class FocusSetSettingsView: NSView {
         NSLocalizedString("%d applications selected", comment: ""),
         NSLocalizedString("No matching applications.", comment: ""),
         NSLocalizedString("Not currently open", comment: ""),
-        NSLocalizedString("1 matching window", comment: ""),
-        NSLocalizedString("%d matching windows", comment: ""),
         NSLocalizedString("Cancel", comment: ""),
         NSLocalizedString("Apply", comment: ""),
     ]
@@ -57,8 +54,6 @@ final class FocusSetSettingsView: NSView {
     private let contentWidth: CGFloat
     private var configuration = FocusSetsConfiguration()
     private var selectedFocusSetIdentifier: UUID?
-    private var candidateCounts = [UUID: Int]()
-    private var candidateCountsByBundleIdentifier = [String: Int]()
     private var content: NSView?
     private var contentConstraints = [NSLayoutConstraint]()
     private let focusSetsCategoryIndex = 0
@@ -74,25 +69,14 @@ final class FocusSetSettingsView: NSView {
     private weak var focusSetRowsScrollView: NSScrollView?
     private weak var focusSetSidebarSection: SidebarListContainer?
     private weak var focusSetDetailPane: NSView?
-    private weak var includedApplicationsLabel: NSTextField?
-    private weak var matchingWindowsLabel: NSTextField?
     private var focusSetRowsScrollObserver: NSObjectProtocol?
     private weak var focusSetCountButtons: NSSegmentedControl?
-    private let candidateCountRefreshThrottler = Throttler(delayInMs: 200)
-    private var inventoryObserver: NSObjectProtocol?
 
     init(width: CGFloat) {
         contentWidth = width
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         widthAnchor.constraint(equalToConstant: width).isActive = true
-        inventoryObserver = NotificationCenter.default.addObserver(
-            forName: App.windowInventoryDidChangeNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.scheduleCandidateCountRefresh()
-        }
         refresh()
     }
 
@@ -101,9 +85,6 @@ final class FocusSetSettingsView: NSView {
     }
 
     deinit {
-        if let inventoryObserver {
-            NotificationCenter.default.removeObserver(inventoryObserver)
-        }
         if let focusSetRowsScrollObserver {
             NotificationCenter.default.removeObserver(focusSetRowsScrollObserver)
         }
@@ -116,38 +97,15 @@ final class FocusSetSettingsView: NSView {
         selectedFocusSetIdentifier = FocusSetSettingsResolver.selectedFocusSetIdentifier(
             preferredIdentifier: selectedFocusSetIdentifier,
             sets: configuration.sets)
-        refreshCandidateCounts()
         if content == nil {
             rebuildContent()
         } else if setsChanged {
             refreshFocusSetManager()
-        } else {
-            refreshCandidateCountPresentation()
         }
     }
 
     func registerSidebarRowsSearchContent() {
         focusSetRows.forEach { $0.registerSearchContent() }
-    }
-
-    private func scheduleCandidateCountRefresh() {
-        guard updatesCandidateCountsWhileVisible else { return }
-        candidateCountRefreshThrottler.throttleOrProceed { [weak self] in
-            self?.refreshVisibleCandidateCounts()
-        }
-    }
-
-    private func refreshVisibleCandidateCounts() {
-        guard updatesCandidateCountsWhileVisible else { return }
-        refreshCandidateCounts()
-        refreshCandidateCountPresentation()
-    }
-
-    private var updatesCandidateCountsWhileVisible: Bool {
-        guard window?.isVisible == true,
-              window?.attachedSheet == nil,
-              !isHiddenOrHasHiddenAncestor else { return false }
-        return true
     }
 
     private func rebuildContent() {
@@ -194,10 +152,11 @@ final class FocusSetSettingsView: NSView {
             guard let self, let control else { return }
             self.selectCategory(control.selectedSegment)
         }
-        FocusSetsTab.tabSegmentSearchableStrings[ObjectIdentifier(control)] = [
-            Self.focusSetManagerSearchableStrings,
-            Self.behaviorSearchableStrings,
-        ]
+        FocusSetSettingsResolver.registerCategorySearchContent(
+            for: ObjectIdentifier(control),
+            focusSetManagerStrings: Self.focusSetManagerSearchableStrings,
+            behaviorStrings: Self.behaviorSearchableStrings,
+            in: &FocusSetsTab.tabSegmentSearchableStrings)
         categoryControl = control
         return control
     }
@@ -366,7 +325,7 @@ final class FocusSetSettingsView: NSView {
         }
         for (index, focusSet) in configuration.sets.enumerated() {
             let row = focusSetRows[index]
-            row.setContent(focusSet.name, candidateCountLabel(for: focusSet))
+            row.setContent(focusSet.name, includedApplicationLabel(for: focusSet))
             row.setSelected(focusSet.id == selectedFocusSetIdentifier)
             rowsStack.addArrangedSubview(row)
             row.widthAnchor.constraint(equalTo: rowsStack.widthAnchor).isActive = true
@@ -429,8 +388,6 @@ final class FocusSetSettingsView: NSView {
     private func rebuildFocusSetDetail() {
         guard let pane = focusSetDetailPane else { return }
         pane.subviews.forEach { $0.removeFromSuperview() }
-        includedApplicationsLabel = nil
-        matchingWindowsLabel = nil
         let table = makeFocusSetDetailTable()
         pane.addSubview(table)
         NSLayoutConstraint.activate([
@@ -458,17 +415,12 @@ final class FocusSetSettingsView: NSView {
         }
         let shortcut = makeDetailValueLabel(focusSet.shortcutKeyEquivalent ?? NSLocalizedString("Not assigned", comment: ""))
         let applications = makeDetailValueLabel(includedApplicationLabel(for: focusSet))
-        let windows = makeDetailValueLabel(matchingWindowLabel(for: focusSet))
-        includedApplicationsLabel = applications
-        matchingWindowsLabel = windows
         _ = table.addRow(leftText: NSLocalizedString("Name", comment: ""),
                          rightViews: [makeDetailValueLabel(focusSet.name)])
         _ = table.addRow(leftText: NSLocalizedString("Shortcut", comment: ""),
                          rightViews: [shortcut])
         _ = table.addRow(leftText: NSLocalizedString("Included Applications", comment: ""),
                          rightViews: [applications])
-        _ = table.addRow(leftText: NSLocalizedString("Matching windows", comment: ""),
-                         rightViews: [windows])
         if let index = configuration.sets.firstIndex(where: { $0.id == focusSet.id }) {
             let move = NSLocalizedString("Move Up", comment: "") + " / " + NSLocalizedString("Move Down", comment: "")
             _ = table.addRow(leftText: move, rightViews: [makeReorderMenu(for: focusSet, at: index)])
@@ -517,37 +469,10 @@ final class FocusSetSettingsView: NSView {
         return button
     }
 
-    private func refreshCandidateCounts() {
-        let snapshot = FocusSetPresentationSnapshotBuilder.make(configuration: configuration)
-        candidateCounts = Dictionary(uniqueKeysWithValues: configuration.sets.map {
-            ($0.id, snapshot.candidateCounts[.set(id: $0.id)] ?? 0)
-        })
-        candidateCountsByBundleIdentifier = snapshot.candidateCountsByBundleIdentifier
-    }
-
-    private func candidateCountLabel(for focusSet: FocusSet) -> String {
-        includedApplicationLabel(for: focusSet) + " · " + matchingWindowLabel(for: focusSet)
-    }
-
     private func includedApplicationLabel(for focusSet: FocusSet) -> String {
         let count = FocusSetSettingsResolver.includedApplicationCount(focusSet.rules)
         if count == 1 { return NSLocalizedString("1 included application", comment: "") }
         return String(format: NSLocalizedString("%d included applications", comment: ""), count)
-    }
-
-    private func matchingWindowLabel(for focusSet: FocusSet) -> String {
-        let count = candidateCounts[focusSet.id] ?? 0
-        if count == 1 { return NSLocalizedString("1 matching window", comment: "") }
-        return String(format: NSLocalizedString("%d matching windows", comment: ""), count)
-    }
-
-    private func refreshCandidateCountPresentation() {
-        for (index, focusSet) in configuration.sets.enumerated() where index < focusSetRows.count {
-            focusSetRows[index].setSummary(candidateCountLabel(for: focusSet))
-        }
-        guard let focusSet = selectedFocusSet else { return }
-        includedApplicationsLabel?.stringValue = includedApplicationLabel(for: focusSet)
-        matchingWindowsLabel?.stringValue = matchingWindowLabel(for: focusSet)
     }
 
     private func liveApplications() -> [FocusSetApplication] {
@@ -560,9 +485,8 @@ final class FocusSetSettingsView: NSView {
                   let name = application.localizedName?.trimmingCharacters(in: .whitespacesAndNewlines),
                   !name.isEmpty else { continue }
             applications.append(FocusSetApplication(bundleIdentifier: bundleIdentifier,
-                                                          name: name,
-                                                          icon: application.runningApplication.icon ?? AppDisplayInfo.genericIcon,
-                                                          candidateCount: candidateCountsByBundleIdentifier[bundleIdentifier] ?? 0))
+                                                    name: name,
+                                                    icon: application.runningApplication.icon ?? AppDisplayInfo.genericIcon))
         }
         return applications
     }
@@ -609,7 +533,6 @@ final class FocusSetSettingsView: NSView {
     }
 
     private func showFocusSetEditor(_ focusSet: FocusSet) {
-        refreshCandidateCounts()
         let sheet = FocusSetEditorSheet(
             focusSet: focusSet,
             applications: liveApplications(),
@@ -717,8 +640,6 @@ final class FocusSetSettingsView: NSView {
         focusSetRowsScrollView = nil
         focusSetSidebarSection = nil
         focusSetDetailPane = nil
-        includedApplicationsLabel = nil
-        matchingWindowsLabel = nil
         focusSetCountButtons = nil
     }
 
@@ -732,14 +653,12 @@ private struct FocusSetApplication {
     let bundleIdentifier: String
     let name: String
     let icon: NSImage
-    let candidateCount: Int
 }
 
 private struct FocusSetApplicationEntry {
     let identity: FocusSetApplicationIdentity
     let name: String
     let icon: NSImage
-    let candidateCount: Int
     let isAvailable: Bool
     let isSelected: Bool
 }
@@ -1070,7 +989,6 @@ private final class FocusSetEditorSheet: SheetWindow {
                 identity: row.identity,
                 name: displayName(row),
                 icon: application?.icon ?? AppDisplayInfo.genericIcon,
-                candidateCount: application?.candidateCount ?? 0,
                 isAvailable: row.isAvailable,
                 isSelected: row.isSelected)
         }
@@ -1085,14 +1003,18 @@ private final class FocusSetEditorSheet: SheetWindow {
         let title = NSTextField(labelWithString: entry.name)
         title.font = NSFont.systemFont(ofSize: 13)
         title.lineBreakMode = .byTruncatingTail
-        let subtitle = NSTextField(labelWithString: subtitle(for: entry))
-        subtitle.font = NSFont.systemFont(ofSize: 12)
-        subtitle.textColor = .secondaryLabelColor
-        let labels = NSStackView(views: [title, subtitle])
+        let labels = NSStackView(views: [title])
         labels.orientation = .vertical
         labels.alignment = .leading
         labels.spacing = 1
         labels.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        let subtitle = subtitle(for: entry)
+        if !subtitle.isEmpty {
+            let label = NSTextField(labelWithString: subtitle)
+            label.font = NSFont.systemFont(ofSize: 12)
+            label.textColor = .secondaryLabelColor
+            labels.addArrangedSubview(label)
+        }
         let toggle = Switch(entry.isSelected)
         toggle.target = self
         toggle.action = #selector(selectionChanged(_:))
@@ -1131,9 +1053,8 @@ private final class FocusSetEditorSheet: SheetWindow {
     }
 
     private func subtitle(for entry: FocusSetApplicationEntry) -> String {
-        if !entry.isAvailable { return NSLocalizedString("Not currently open", comment: "") }
-        if entry.candidateCount == 1 { return NSLocalizedString("1 matching window", comment: "") }
-        return String(format: NSLocalizedString("%d matching windows", comment: ""), entry.candidateCount)
+        guard !entry.isAvailable else { return "" }
+        return NSLocalizedString("Not currently open", comment: "")
     }
 
     private func displayName(_ row: FocusSetApplicationPickerRow) -> String {

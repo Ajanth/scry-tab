@@ -20,6 +20,6 @@ enum FocusSetsTab {
 
     static func cleanup() {
         settingsView = nil
-        tabSegmentSearchableStrings.removeAll()
+        FocusSetSettingsResolver.clearCategorySearchContent(&tabSegmentSearchableStrings)
     }
 }
