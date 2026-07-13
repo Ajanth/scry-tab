@@ -604,7 +604,7 @@ class SettingsWindow: NSWindow {
                 App.licence,
                 NSLocalizedString("Website", comment: ""),
                 NSLocalizedString("Usage", comment: ""),
-            ]),
+            ] + AcknowledgmentsTab.searchableStrings),
         ]
     }
 

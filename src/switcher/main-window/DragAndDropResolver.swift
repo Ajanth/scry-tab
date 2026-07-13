@@ -5,6 +5,12 @@ import Cocoa
 /// without AppKit drag sessions, timers, or an event tap (same idea as `AxEventRouting`). The two call
 /// sites turn these decisions into real `NSDragOperation`s, timers, and tap pass-through.
 enum DragAndDropResolver {
+    enum DropLaunchCompletion: Equatable {
+        case failed
+        case preserveCurrentSession
+        case hideInitiatingSession
+    }
+
     /// what a drag-over of the tiles should do for the cursor position handed to us.
     enum DragOver: Equatable {
         /// no tile under the cursor (off the grid) — report no drop and clear any hover.
@@ -50,5 +56,10 @@ enum DragAndDropResolver {
     /// window, the app's bundle URL, and at least one URL; otherwise it's rejected (the drag snaps back).
     static func canDrop(hasTarget: Bool, hasWindow: Bool, hasAppBundleURL: Bool, urlCount: Int) -> Bool {
         hasTarget && hasWindow && hasAppBundleURL && urlCount > 0
+    }
+
+    static func dropLaunchCompletion(succeeded: Bool, isInitiatingSessionCurrent: Bool) -> DropLaunchCompletion {
+        guard succeeded else { return .failed }
+        return isInitiatingSessionCurrent ? .hideInitiatingSession : .preserveCurrentSession
     }
 }

@@ -761,9 +761,21 @@ class TilesDocumentView: FlippedView {
         guard DragAndDropResolver.canDrop(hasTarget: target != nil, hasWindow: target?.window_ != nil, hasAppBundleURL: appUrl != nil, urlCount: urls.count),
               let appUrl else { return false }
         let configuration = NSWorkspace.OpenConfiguration()
-        NSWorkspace.shared.open(urls, withApplicationAt: appUrl, configuration: configuration) { application, _ in
-            guard application != nil else { return }
-            DispatchQueue.main.async { App.hideUi() }
+        let session = SwitcherSession.current
+        NSWorkspace.shared.open(urls, withApplicationAt: appUrl, configuration: configuration) { application, error in
+            DispatchQueue.main.async {
+                switch DragAndDropResolver.dropLaunchCompletion(
+                    succeeded: application != nil,
+                    isInitiatingSessionCurrent: session != nil && session === SwitcherSession.current) {
+                case .failed:
+                    Logger.error { "Failed to open dropped files with \(appUrl.path): \(error?.localizedDescription ?? "unknown error")" }
+                    NSSound.beep()
+                case .preserveCurrentSession:
+                    break
+                case .hideInitiatingSession:
+                    App.hideUi()
+                }
+            }
         }
         return true
     }

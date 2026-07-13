@@ -100,6 +100,10 @@ private extension SettingsRoute {
     }
 }
 
+enum SettingsAboutSearch {
+    static let acknowledgmentKeywords = ["Acknowledgments", "ShortcutRecorder", "Sparkle", "Sentry Cocoa"]
+}
+
 struct SettingsSearchDescriptor {
     let id: String
     let route: SettingsRoute

@@ -93,7 +93,21 @@ final class DragAndDropResolverTests: XCTestCase {
         XCTAssertFalse(DragAndDropResolver.canDrop(hasTarget: true, hasWindow: true, hasAppBundleURL: true, urlCount: 0))
     }
 
-    // MARK: - E. Use-case integration (the discussed scenarios as decision sequences)
+    // MARK: - E. Drop completion
+
+    func testFailedDropLaunchKeepsSwitcherVisible() {
+        XCTAssertEqual(DragAndDropResolver.dropLaunchCompletion(succeeded: false, isInitiatingSessionCurrent: true), .failed)
+    }
+
+    func testCurrentSessionHidesAfterSuccessfulDropLaunch() {
+        XCTAssertEqual(DragAndDropResolver.dropLaunchCompletion(succeeded: true, isInitiatingSessionCurrent: true), .hideInitiatingSession)
+    }
+
+    func testStaleSessionSurvivesSuccessfulDropLaunch() {
+        XCTAssertEqual(DragAndDropResolver.dropLaunchCompletion(succeeded: true, isInitiatingSessionCurrent: false), .preserveCurrentSession)
+    }
+
+    // MARK: - F. Use-case integration (the discussed scenarios as decision sequences)
 
     func testUseCaseDragPresentWhenSwitcherAppears() {
         // frame 1: cursor already over a tile when the switcher shows → no grab (deadzone not cleared)
