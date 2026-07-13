@@ -54,8 +54,7 @@ class ImageTextButtonView: NSStackView {
     static let spacing = CGFloat(7)
     static let cornerRadius = DesignSystem.Metrics.joinedOuterRowRadius
     static let tileCornerRadius = DesignSystem.Metrics.sectionRadius
-    static let borderWidth = CGFloat(1)
-    static let selectedBorderWidth = CGFloat(2)
+    static let borderWidth = DesignSystem.Metrics.selectionIndicatorBorderWidth
     static let outerPadding = CGFloat(6)
     static let previewInset = CGFloat(5)
     static let labelTopSpacing = CGFloat(10)
@@ -240,19 +239,13 @@ class ImageTextButtonView: NSStackView {
         return max(buttonCornerRadius - contentPreviewInset, DesignSystem.Metrics.controlRadius + 1)
     }
 
-    private func mixedColor(_ base: NSColor, _ accent: NSColor, fraction: CGFloat) -> NSColor {
-        return base.blended(withFraction: fraction, of: accent) ?? base
-    }
-
     func updateStyle() {
         let isSelected = button.state == .on
         let isKey = window?.isKeyWindow ?? false
-        let isDark = DesignSystem.isDark(effectiveAppearance)
-        let accent = DesignSystem.color(.accentPrimary, appearance: effectiveAppearance)
         let surfaceFlat = DesignSystem.color(.surfaceFlat, appearance: effectiveAppearance)
         let surfaceSelected = DesignSystem.color(.surfaceSelected, appearance: effectiveAppearance)
-        let fillColor = isSelected ? mixedColor(surfaceSelected, accent.withAlphaComponent(isDark ? 0.82 : 0.68), fraction: isDark ? 0.32 : 0.18) : surfaceFlat
-        let borderColor = isSelected ? mixedColor(DesignSystem.color(.borderSelected, appearance: effectiveAppearance), accent, fraction: 0.28) : DesignSystem.color(.borderSubtle, appearance: effectiveAppearance)
+        let fillColor = isSelected ? surfaceSelected : surfaceFlat
+        let borderColor = DesignSystem.color(isSelected ? .borderSelected : .borderSubtle, appearance: effectiveAppearance)
         layer?.backgroundColor = NSColor.clear.cgColor
         layer?.borderColor = NSColor.clear.cgColor
         layer?.borderWidth = 0
@@ -263,7 +256,7 @@ class ImageTextButtonView: NSStackView {
         button.layer?.cornerRadius = buttonCornerRadius
         button.layer?.backgroundColor = DesignSystem.resolvedCGColor(fillColor, in: self)
         button.layer?.borderColor = DesignSystem.resolvedCGColor(borderColor, in: self)
-        button.layer?.borderWidth = isSelected ? ImageTextButtonView.selectedBorderWidth : ImageTextButtonView.borderWidth
+        button.layer?.borderWidth = ImageTextButtonView.borderWidth
         imageContainer.layer?.cornerRadius = previewCornerRadius
         imageView?.layer?.cornerRadius = previewCornerRadius
         label.textColor = isSelected ? DesignSystem.color(.textPrimary, appearance: effectiveAppearance) : DesignSystem.color(.textSecondary, appearance: effectiveAppearance)

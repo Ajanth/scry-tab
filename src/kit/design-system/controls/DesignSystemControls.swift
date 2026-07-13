@@ -92,7 +92,7 @@ private final class DesignSystemSelectedControlIndicator {
 
     func install(on view: NSView) {
         layer.zPosition = 1
-        layer.borderWidth = DesignSystem.Metrics.focusIndicatorBorderWidth
+        layer.borderWidth = DesignSystem.Metrics.selectionIndicatorBorderWidth
         layer.opacity = 0
         view.layer?.addSublayer(layer)
     }
@@ -105,8 +105,8 @@ private final class DesignSystemSelectedControlIndicator {
         layer.bounds = NSRect(origin: .zero, size: rect.size)
         layer.position = NSPoint(x: rect.midX, y: rect.midY)
         layer.cornerRadius = DesignSystem.Metrics.controlRadius - 1
-        layer.borderColor = DesignSystem.semanticCGColor(.accentPrimary, in: view)
-        layer.borderWidth = DesignSystem.Metrics.focusIndicatorBorderWidth
+        layer.borderColor = DesignSystem.semanticCGColor(.borderSelected, in: view)
+        layer.borderWidth = DesignSystem.Metrics.selectionIndicatorBorderWidth
         layer.opacity = 1
         CATransaction.commit()
         guard animated && !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else { return }
@@ -150,7 +150,6 @@ private final class DesignSystemSelectedControlIndicator {
 
 final class DesignSystemFlatButton: NSButton {
     var drawsAppOwnedSurface: Bool { true }
-    var usesExternalFocusIndicator = false
     var isChoiceSelected = false {
         didSet {
             refreshTitle()
@@ -378,7 +377,7 @@ final class DesignSystemFlatButton: NSButton {
     }
 
     var hasKeyboardFocus: Bool { isEnabled && window?.firstResponder == self && NSApp.isActive }
-    private var showsOwnFocusAccent: Bool { hasKeyboardFocus && !usesExternalFocusIndicator }
+    private var showsOwnFocusAccent: Bool { hasKeyboardFocus }
 }
 
 enum DesignSystemDisclosureCaretDirection: Equatable {
@@ -645,7 +644,6 @@ final class DesignSystemChipSelectControl: NSControl {
             let button = DesignSystemControlStyler.makeButton(label, target: self, action: #selector(chipPressed(_:)))
             button.setButtonType(.toggle)
             button.tag = index
-            button.usesExternalFocusIndicator = true
             button.setContentHuggingPriority(.required, for: .horizontal)
             button.setContentCompressionResistancePriority(.required, for: .horizontal)
             return (button, stabilizedButtonWidth(button, minimumWidth: chipWidth))
@@ -850,7 +848,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     }
 
     private func drawPlateau() {
-        let lineWidth = usesAnimatedSelectionIndicator ? CGFloat(1) : (isFocused ? CGFloat(1.5) : CGFloat(1))
+        let lineWidth = isFocused ? DesignSystem.Metrics.focusIndicatorBorderWidth : CGFloat(1)
         let inset = lineWidth / 2
         let rect = bounds.insetBy(dx: inset, dy: inset)
         let path = NSBezierPath(roundedRect: rect, xRadius: DesignSystem.Metrics.controlRadius, yRadius: DesignSystem.Metrics.controlRadius)
@@ -970,7 +968,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     }
 
     private func borderColor() -> NSColor {
-        usesAnimatedSelectionIndicator ? DesignSystem.color(.borderSubtle, appearance: effectiveAppearance) : (isFocused ? DesignSystem.color(.focusAccent, appearance: effectiveAppearance) : DesignSystem.color(.borderSubtle, appearance: effectiveAppearance))
+        isFocused ? DesignSystem.color(.focusAccent, appearance: effectiveAppearance) : DesignSystem.color(.borderSubtle, appearance: effectiveAppearance)
     }
 
     private func updateSelectionIndicator(animated: Bool) {

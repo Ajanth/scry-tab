@@ -15,6 +15,7 @@ enum DesignSystem {
         static let rowVerticalPadding = CGFloat(4)
         static let standardControlMinHeight = CGFloat(32)
         static let controlRadius = CGFloat(8)
+        static let selectionIndicatorBorderWidth = CGFloat(1)
         static let focusIndicatorBorderWidth = CGFloat(3)
         static let controlTextInset = CGFloat(10)
         static let searchGlyphInset = CGFloat(8)
@@ -76,7 +77,7 @@ enum DesignSystem {
             return dark
                 ? NSColor(srgbRed: 0.31, green: 0.31, blue: 0.30, alpha: 1.0)
                 : NSColor(white: 0.0, alpha: 0.13)
-        case .borderSelected: return .systemAccentColor.withAlphaComponent(dark ? 0.34 : 0.28)
+        case .borderSelected: return NSColor(white: dark ? 0.82 : 0.0, alpha: dark ? 0.34 : 0.18)
         case .focusAccent: return .systemAccentColor.withAlphaComponent(dark ? 0.58 : 0.46)
         case .textPrimary: return .labelColor
         case .textSecondary: return .secondaryLabelColor
