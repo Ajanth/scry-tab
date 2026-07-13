@@ -31,6 +31,7 @@ final class DesignSystemTests: XCTestCase {
     func testControlGeometryTokensMatchMigrationPlan() {
         XCTAssertEqual(DesignSystem.Metrics.standardControlMinHeight, 32)
         XCTAssertEqual(DesignSystem.Metrics.controlRadius, 8)
+        XCTAssertEqual(DesignSystem.Metrics.selectionIndicatorBorderWidth, 1)
         XCTAssertEqual(DesignSystem.Metrics.focusIndicatorBorderWidth, 3)
         XCTAssertEqual(DesignSystem.Metrics.controlTextInset, 10)
         XCTAssertEqual(DesignSystem.Metrics.buttonHorizontalPadding, 14)
@@ -157,13 +158,13 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertTrue(control.drawsAppOwnedSurface)
     }
 
-    func testSegmentedControlUsesCompositorSelectionIndicator() {
+    func testSegmentedControlUsesQuietCompositorSelectionIndicator() {
         let control = DesignSystemSegmentedControl(labels: ["One", "Two"], trackingMode: .selectOne, target: nil, action: nil)
         let indicator = try! XCTUnwrap(control.layer?.sublayers?.first)
         XCTAssertTrue(control.usesAnimatedSelectionIndicator)
         XCTAssertTrue(control.wantsLayer)
         XCTAssertNotNil(control.layer)
-        XCTAssertEqual(indicator.borderWidth, DesignSystem.Metrics.focusIndicatorBorderWidth)
+        XCTAssertEqual(indicator.borderWidth, DesignSystem.Metrics.selectionIndicatorBorderWidth)
     }
 
     func testSegmentedControlDoesNotAnimateProgrammaticSelection() throws {
@@ -206,13 +207,13 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(control.intrinsicContentSize.height, DesignSystem.Metrics.standardControlMinHeight)
     }
 
-    func testChipSelectUsesCompositorSelectionIndicator() {
+    func testChipSelectUsesQuietCompositorSelectionIndicator() {
         let control = DesignSystemChipSelectControl(labels: ["Start", "Middle", "End"])
         let indicator = try! XCTUnwrap(control.layer?.sublayers?.first)
         XCTAssertTrue(control.usesAnimatedSelectionIndicator)
         XCTAssertTrue(control.wantsLayer)
         XCTAssertNotNil(control.layer)
-        XCTAssertEqual(indicator.borderWidth, DesignSystem.Metrics.focusIndicatorBorderWidth)
+        XCTAssertEqual(indicator.borderWidth, DesignSystem.Metrics.selectionIndicatorBorderWidth)
     }
 
     func testChipSelectClampsSelectionToAvailableChoices() {
@@ -243,12 +244,15 @@ final class DesignSystemTests: XCTestCase {
         let plateau = try! XCTUnwrap(DesignSystem.color(.surfacePlateau, appearance: darkAppearance).usingColorSpace(.extendedSRGB))
         let flat = try! XCTUnwrap(DesignSystem.color(.surfaceFlat, appearance: darkAppearance).usingColorSpace(.extendedSRGB))
         let selected = try! XCTUnwrap(DesignSystem.color(.surfaceSelected, appearance: darkAppearance).usingColorSpace(.extendedSRGB))
+        let selectedBorder = try! XCTUnwrap(DesignSystem.color(.borderSelected, appearance: darkAppearance).usingColorSpace(.extendedSRGB))
         XCTAssertEqual(plateau.alphaComponent, 1)
         XCTAssertEqual(flat.alphaComponent, 1)
         XCTAssertEqual(selected.alphaComponent, 1)
         XCTAssertGreaterThan(flat.redComponent, plateau.redComponent)
         XCTAssertGreaterThan(selected.redComponent, flat.redComponent)
-        XCTAssertLessThan(DesignSystem.color(.borderSelected, appearance: darkAppearance).alphaComponent,
+        XCTAssertEqual(selectedBorder.redComponent, selectedBorder.greenComponent, accuracy: 0.0001)
+        XCTAssertEqual(selectedBorder.greenComponent, selectedBorder.blueComponent, accuracy: 0.0001)
+        XCTAssertLessThan(selectedBorder.alphaComponent,
                           DesignSystem.color(.focusAccent, appearance: darkAppearance).alphaComponent)
     }
 
