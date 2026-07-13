@@ -259,7 +259,7 @@ final class FocusSetSettingsView: NSView {
             scrollView.leadingAnchor.constraint(equalTo: section.leadingAnchor, constant: DesignSystem.Metrics.rowHorizontalPadding),
             scrollView.trailingAnchor.constraint(equalTo: section.trailingAnchor, constant: -DesignSystem.Metrics.rowHorizontalPadding),
             scrollView.bottomAnchor.constraint(equalTo: section.bottomAnchor, constant: -DesignSystem.Metrics.rowHorizontalPadding),
-            buttons.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: TableGroupView.sidebarToolRowHorizontalPadding),
+            buttons.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: DesignSystem.Metrics.headerFooterGap),
             buttons.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -TableGroupView.sidebarToolRowHorizontalPadding),
             buttons.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -TableGroupView.padding),
         ])
