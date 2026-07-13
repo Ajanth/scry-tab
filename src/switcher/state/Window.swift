@@ -235,9 +235,7 @@ class Window {
             altTabWindow.makeKeyAndOrderFront(nil)
         } else if self.isWindowlessApp || cgWindowId == nil {
             if let bundleUrl = application.bundleURL, self.isWindowlessApp {
-                if (try? NSWorkspace.shared.launchApplication(at: bundleUrl, configuration: [:])) == nil {
-                    application.runningApplication.activate(options: .activateAllWindows)
-                }
+                openApplication(at: bundleUrl)
             } else {
                 application.runningApplication.activate(options: .activateAllWindows)
             }
@@ -279,6 +277,18 @@ class Window {
                     GetProcessForPID(originFrontPid, &originPsn)
                     SLSSpaceSetFrontPSN(CGS_CONNECTION, originSpaceId, originPsn)
                 }
+            }
+        }
+    }
+
+    private func openApplication(at url: URL) {
+        let runningApplication = application.runningApplication
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.activates = true
+        NSWorkspace.shared.openApplication(at: url, configuration: configuration) { application, _ in
+            guard application == nil else { return }
+            DispatchQueue.main.async {
+                runningApplication.activate(options: .activateAllWindows)
             }
         }
     }

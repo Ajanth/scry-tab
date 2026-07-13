@@ -70,11 +70,10 @@ func noAnimation<T: CALayer>(_ make: () -> T) -> T {
     return make()
 }
 
-// 10.13-safe stand-ins (the test target's deployment floor matches the app's 10.13). The real
-// extensions in HelperExtensions.swift `#available`-gate the 10.14+ system colors; the tests
-// never inspect these values, so plain 10.13-era colors suffice.
+// The test target shares the app's macOS 11 deployment floor. The tests never inspect these
+// stand-in colors, so the missing helpers use simple semantic colors.
 extension NSColor {
-    class var systemAccentColor: NSColor { .alternateSelectedControlColor }
+    class var systemAccentColor: NSColor { .controlAccentColor }
     class var tableBorderColor: NSColor { .gridColor }
     class var tableBackgroundColor: NSColor { .windowBackgroundColor }
     class var tableSeparatorColor: NSColor { .gridColor }

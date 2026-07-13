@@ -214,7 +214,7 @@ private final class AppearancePreviewPanelView: AppearancePreviewFlippedView {
         effectView?.frame = bounds
         if let frosted = effectView as? AppearancePreviewFrostedGlassView {
             frosted.apply(
-                material: isDark ? .dark : .mediumLight,
+                material: .menu,
                 cornerRadius: cornerRadius)
         }
         if #available(macOS 26.0, *),
