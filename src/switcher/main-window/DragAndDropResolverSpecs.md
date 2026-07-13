@@ -34,6 +34,9 @@ the global mouse tap must yield the drop's mouse-up (`passesThroughMouseUp`), an
 - **A drop opens files with the tile's app**, so it needs a target tile, that tile's window, the app's
   bundle URL, and at least one URL; a non-URL drag (text/image) or any missing piece is rejected (the drag
   snaps back).
+- **Asynchronous drop completion preserves session ownership.** A failed launch keeps the switcher visible
+  and reports the failure. A successful launch closes only the switcher session that initiated the drop;
+  a later invocation stays open.
 
 ## Test scenarios
 
@@ -63,7 +66,12 @@ Mirrors `DragAndDropResolverTests.swift` 1:1.
 - **testNoBundleUrlRejectsDrop** — app without a bundle URL → reject.
 - **testNoUrlsRejectsDrop** — non-URL drag / empty pasteboard (0 URLs) → reject.
 
-### E. Use-case integration (the discussed scenarios as decision sequences)
+### E. Drop completion
+- **testFailedDropLaunchKeepsSwitcherVisible** — an asynchronous launch failure reports failure and leaves the switcher open.
+- **testCurrentSessionHidesAfterSuccessfulDropLaunch** — a successful launch hides the session that initiated it.
+- **testStaleSessionSurvivesSuccessfulDropLaunch** — a late successful launch does not hide a newer session.
+
+### F. Use-case integration (the discussed scenarios as decision sequences)
 - **testUseCaseDragPresentWhenSwitcherAppears** — drag present on show → `.inDeadzone`; after clearing the deadzone → `.track`.
 - **testUseCaseDropOnTileConcludes** — the regression: the tap yields the up (down unseen), and a valid target drops.
 - **testUseCaseReleaseOnPaddingEndsDragWithoutOpening** — release on the padding / outside the panel: the up is yielded so the drag ends, but no target means nothing opens.

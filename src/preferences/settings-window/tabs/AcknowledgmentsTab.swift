@@ -3,6 +3,7 @@ import Cocoa
 class AcknowledgmentsTab {
     // going taller than this will crop the view on small screens or low scaling modes on retina displays
     static let maxTabHeight = CGFloat(450)
+    static let searchableStrings = SettingsAboutSearch.acknowledgmentKeywords
 
     static func initTab() -> NSView {
         makeScrollableView(makeContentView(), maxTabHeight)

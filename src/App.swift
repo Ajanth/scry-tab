@@ -31,6 +31,7 @@ class App: ScryTabApplication {
     private static let switcherUiRefreshThrottler = Throttler(delayInMs: 200)
 
     override init() {
+        UserDefaults.standard.register(defaults: ["NSApplicationCrashOnExceptions": true])
         super.init()
         delegate = self
     }
