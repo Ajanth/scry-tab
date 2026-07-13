@@ -760,9 +760,12 @@ class TilesDocumentView: FlippedView {
         let urls = (sender.draggingPasteboard.readObjects(forClasses: [NSURL.self]) as? [URL]) ?? []
         guard DragAndDropResolver.canDrop(hasTarget: target != nil, hasWindow: target?.window_ != nil, hasAppBundleURL: appUrl != nil, urlCount: urls.count),
               let appUrl else { return false }
-        let open = try? NSWorkspace.shared.open(urls, withApplicationAt: appUrl, options: [], configuration: [:])
-        if open != nil { App.hideUi() }
-        return open != nil
+        let configuration = NSWorkspace.OpenConfiguration()
+        NSWorkspace.shared.open(urls, withApplicationAt: appUrl, configuration: configuration) { application, _ in
+            guard application != nil else { return }
+            DispatchQueue.main.async { App.hideUi() }
+        }
+        return true
     }
 
     override func concludeDragOperation(_ sender: NSDraggingInfo?) {

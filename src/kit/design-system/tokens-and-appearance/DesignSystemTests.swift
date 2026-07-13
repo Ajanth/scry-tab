@@ -166,6 +166,18 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(indicator.borderWidth, DesignSystem.Metrics.focusIndicatorBorderWidth)
     }
 
+    func testSegmentedControlDoesNotAnimateProgrammaticSelection() throws {
+        let control = DesignSystemSegmentedControl(labels: ["One", "Two"], trackingMode: .selectOne, target: nil, action: nil)
+        control.frame = NSRect(x: 0, y: 0, width: 200, height: DesignSystem.Metrics.standardControlMinHeight)
+        control.setWidth(100, forSegment: 0)
+        control.setWidth(100, forSegment: 1)
+        control.selectedSegment = 0
+        control.layoutSubtreeIfNeeded()
+        control.selectedSegment = 1
+        let indicator = try XCTUnwrap(control.layer?.sublayers?.first)
+        XCTAssertNil(indicator.animation(forKey: "selectedControlIndicator.position"))
+    }
+
     func testSegmentedControlImageContentPreservesAspectRatio() {
         let control = DesignSystemSegmentedControl(labels: [""], trackingMode: .momentary, target: nil, action: nil)
         let rect = control.fittedImageRect(CGSize(width: 9, height: 1),

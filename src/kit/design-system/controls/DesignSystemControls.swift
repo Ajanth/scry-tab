@@ -98,7 +98,6 @@ private final class DesignSystemSelectedControlIndicator {
     }
 
     func show(in rect: NSRect, on view: NSView, animated: Bool) {
-        let previousBounds = layer.presentation()?.bounds ?? layer.bounds
         let previousPosition = layer.presentation()?.position ?? layer.position
         let wasVisible = layer.opacity > 0
         CATransaction.begin()
@@ -112,8 +111,7 @@ private final class DesignSystemSelectedControlIndicator {
         CATransaction.commit()
         guard animated && !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else { return }
         if wasVisible {
-            animateMotion(keyPath: "bounds", from: previousBounds, to: layer.bounds)
-            animateMotion(keyPath: "position", from: previousPosition, to: layer.position)
+            animatePosition(from: previousPosition, to: layer.position)
         } else {
             animateVisibility(from: 0, to: 1)
         }
@@ -129,15 +127,15 @@ private final class DesignSystemSelectedControlIndicator {
         animateVisibility(from: 1, to: 0)
     }
 
-    private func animateMotion(keyPath: String, from: Any, to: Any) {
-        let animation = CASpringAnimation(keyPath: keyPath)
+    private func animatePosition(from: Any, to: Any) {
+        let animation = CASpringAnimation(keyPath: "position")
         animation.fromValue = from
         animation.toValue = to
         animation.mass = Motion.springMass
         animation.stiffness = Motion.springStiffness
         animation.damping = Motion.springDamping
         animation.duration = animation.settlingDuration
-        layer.add(animation, forKey: "selectedControlIndicator.\(keyPath)")
+        layer.add(animation, forKey: "selectedControlIndicator.position")
     }
 
     private func animateVisibility(from: CGFloat, to: CGFloat) {
@@ -705,6 +703,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     var usesAnimatedSelectionIndicator: Bool { trackingMode == .selectOne }
     private var hoveredSegment = -1
     private var pressedSegment = -1
+    private var isTrackingNativeSelection = false
     private var trackingArea: NSTrackingArea?
     private let selectionIndicator = DesignSystemSelectedControlIndicator()
     private var windowObservers = [NSObjectProtocol]()
@@ -724,7 +723,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
 
     override var selectedSegment: Int {
         didSet {
-            updateSelectionIndicator(animated: true)
+            if !isTrackingNativeSelection { updateSelectionIndicator(animated: false) }
             needsDisplay = true
         }
     }
@@ -765,7 +764,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     override func becomeFirstResponder() -> Bool {
         let became = super.becomeFirstResponder()
         if became {
-            updateSelectionIndicator(animated: true)
+            updateSelectionIndicator(animated: false)
             needsDisplay = true
         }
         return became
@@ -774,7 +773,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     override func resignFirstResponder() -> Bool {
         let resigned = super.resignFirstResponder()
         if resigned {
-            updateSelectionIndicator(animated: true)
+            updateSelectionIndicator(animated: false)
             needsDisplay = true
         }
         return resigned
@@ -806,14 +805,22 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     override func mouseDown(with event: NSEvent) {
         pressedSegment = segmentIndex(at: convert(event.locationInWindow, from: nil))
         needsDisplay = true
+        isTrackingNativeSelection = true
         super.mouseDown(with: event)
+        isTrackingNativeSelection = false
         pressedSegment = -1
         needsDisplay = true
     }
 
+    override func keyDown(with event: NSEvent) {
+        isTrackingNativeSelection = true
+        super.keyDown(with: event)
+        isTrackingNativeSelection = false
+    }
+
     override func sendAction(_ action: Selector?, to target: Any?) -> Bool {
         let sent = super.sendAction(action, to: target)
-        updateSelectionIndicator(animated: true)
+        updateSelectionIndicator(animated: isTrackingNativeSelection)
         return sent
     }
 

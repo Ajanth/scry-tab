@@ -19,7 +19,7 @@ Owns shared AppKit visual tokens used by production surfaces.
 - Shared Settings chip selects compose app-owned flat choice buttons, clamp selection to valid choices, keep peer chip widths stable across selection changes, and use the same selected-value indicator as segmented controls.
 - Dark-mode Settings surfaces use opaque matte grays instead of translucent white overlays so cards and controls stay dense against the window background.
 - Selection and focus emphasize different states: selection stays neutral while focus uses the stronger accent treatment.
-- Shared segmented controls move one selected-segment outline between choices after native mouse or keyboard actions with a no-bounce spring, use the main switcher's opaque system-accent color and 3-point app-icon border width, and respect Reduce Motion.
+- Shared segmented controls place their selected outline immediately for initial and programmatic state changes. Native mouse and keyboard choices move it between segments with a no-bounce position spring, without animating its size; it uses the main switcher's opaque system-accent color and 3-point app-icon border width, and respects Reduce Motion.
 - Template images in segmented controls use semantic text colors and retain their source aspect ratio.
 
 ## Test scenarios
@@ -39,11 +39,12 @@ Mirrors `DesignSystemTests.swift` 1:1.
 - **testMainSearchFieldUsesSwitcherChrome** — shared switcher-search styling retains immediate query delivery, the native rounded bezel, and single-line editing.
 - **testFlatSurfaceViewUsesSharedControlChrome** — read-only widgets use the shared flat surface, border, and control radius.
 - **testSegmentedControlUsesAppOwnedSurface** — segmented choices keep `NSSegmentedControl` behavior while drawing through the app-owned design-system surface.
-- **testSegmentedControlUsesCompositorSelectionIndicator** — select-one segments update one layer-backed selection outline after native actions so it follows the selected segment without redrawing their chrome and begins with the switcher's app-icon border width.
+- **testSegmentedControlUsesCompositorSelectionIndicator** — select-one segments update one layer-backed selection outline after native actions so it follows the selected segment without resizing or redrawing their chrome and begins with the switcher's app-icon border width.
+- **testSegmentedControlDoesNotAnimateProgrammaticSelection** — initial and programmatic segment changes immediately place the selection outline instead of animating it from a stale frame.
 - **testSegmentedControlImageContentPreservesAspectRatio** — narrow symbols such as minus remain narrow instead of stretching into a square.
 - **testSegmentedControlImageContentUsesSemanticTint** — enabled and disabled template images use the matching semantic text role.
 - **testChipSelectUsesAppOwnedChoiceButtons** — chip choices are composed from app-owned flat buttons and expose stable selected choice state.
-- **testChipSelectUsesCompositorSelectionIndicator** — chip choices share the segmented control's layer-backed selection outline so selected values animate without control-specific chrome.
+- **testChipSelectUsesCompositorSelectionIndicator** — chip choices share the segmented control's layer-backed selection outline so selected values move without resizing or control-specific chrome.
 - **testChipSelectClampsSelectionToAvailableChoices** — invalid selected indexes clamp into the available chip range.
 - **testChipSelectKeepsStableEqualWidthsAcrossSelectionChanges** — peer chip widths stay fixed when the selected choice changes, so the row does not reflow.
 - **testDarkModeSurfacesUseOpaqueMattePalette** — dark-mode Settings surfaces are fully opaque and step upward in brightness from plateau to flat to selected.
