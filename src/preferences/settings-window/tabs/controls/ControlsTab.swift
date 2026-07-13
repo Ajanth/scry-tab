@@ -359,17 +359,10 @@ class ControlsTab {
     }
 
     private static func makeCenteredDetailPage(_ content: NSView) -> NSView {
-        let page = NSView()
-        page.translatesAutoresizingMaskIntoConstraints = false
-        page.widthAnchor.constraint(equalToConstant: SettingsWindow.contentWidth).isActive = true
-        content.translatesAutoresizingMaskIntoConstraints = false
-        page.addSubview(content)
-        NSLayoutConstraint.activate([
-            content.topAnchor.constraint(equalTo: page.topAnchor, constant: shortcutEditorTopBottomPadding),
-            content.centerXAnchor.constraint(equalTo: page.centerXAnchor),
-            content.bottomAnchor.constraint(equalTo: page.bottomAnchor, constant: -shortcutEditorTopBottomPadding),
-        ])
-        return page
+        DesignSystemCenteredDetailPage(
+            content: content,
+            width: SettingsWindow.contentWidth,
+            verticalInset: shortcutEditorTopBottomPadding)
     }
 
     private static func makeShortcutSidebar() -> NSView {

@@ -9,6 +9,7 @@ Owns shared AppKit visual tokens used by production surfaces.
 - Window material tint is restrained and appearance-aware.
 - Settings page icons resolve to the production page order and deliberate base colors.
 - Standard metrics expose the shared row, section, icon, selection, and focus geometry.
+- Centered Settings detail pages cap content at the shared narrow-column width and keep it centered with compact vertical insets.
 - Shared editable text fields keep the flat surface treatment while restoring deliberate horizontal padding.
 - Shared Settings action buttons draw through the app-owned flat surface with deliberate horizontal padding instead of stock button chrome.
 - Shared Settings disclosure sections center their action within the content width, use the shared compact chevron geometry and title gap, reveal their content in place, and skip animation when Reduce Motion is enabled.
@@ -31,6 +32,7 @@ Mirrors `DesignSystemTests.swift` 1:1.
 - **testSettingsPageIconDescriptorsFollowPageIdentity** — each Settings page maps to its expected symbol.
 - **testStandardGeometryTokensMatchMigrationPlan** — shared geometry tokens match the migration slice values.
 - **testControlGeometryTokensMatchMigrationPlan** — shared controls use the standard height, compact flat-control radius, quiet selection-indicator width, switcher-standard focus-indicator width, and one disclosure-caret geometry and title gap.
+- **testCenteredDetailPageBoundsAndCentersContent** — centered Settings detail pages cap wide content at the shared maximum, preserve narrow content widths, and center the content with the shared top inset.
 - **testFlatButtonUsesAppOwnedSurfaceAndDestructiveAccent** — Settings action buttons use the app-owned flat control surface and preserve destructive semantics through the shared primitive.
 - **testFlatButtonIntrinsicContentIncludesHorizontalPadding** — Settings action buttons reserve app-owned horizontal padding so long titles do not sit against the border.
 - **testDisclosureSectionTogglesItsContentAndTitle** — disclosure sections start collapsed with the shared compact trailing down-chevron and title gap while preserving standard right padding; they reveal content on demand while keeping a fixed button width, their title, upward caret, and VoiceOver expanded state synchronized.

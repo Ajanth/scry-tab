@@ -28,6 +28,8 @@ enum DesignSystem {
         static let disclosureCaretTitleSpacing = CGFloat(6)
         static let splitDividerThickness = CGFloat(1)
         static let settingsEditorSidebarHeight = CGFloat(470)
+        static let centeredSettingsContentMaxWidth = CGFloat(536)
+        static let centeredDetailPageVerticalInset = CGFloat(10)
     }
 
     enum ColorRole {

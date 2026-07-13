@@ -696,6 +696,43 @@ final class DesignSystemChipSelectControl: NSControl {
     }
 }
 
+final class DesignSystemCenteredDetailPage: NSView {
+    private let content: NSView
+    private let pageWidth: CGFloat
+    private let verticalInset: CGFloat
+
+    static func contentWidth(for availableWidth: CGFloat) -> CGFloat {
+        min(max(availableWidth, 0), DesignSystem.Metrics.centeredSettingsContentMaxWidth)
+    }
+
+    init(content: NSView,
+         width: CGFloat,
+         verticalInset: CGFloat = DesignSystem.Metrics.centeredDetailPageVerticalInset) {
+        self.content = content
+        pageWidth = width
+        self.verticalInset = verticalInset
+        super.init(frame: .zero)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    private func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        content.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(content)
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalToConstant: pageWidth),
+            content.topAnchor.constraint(equalTo: topAnchor, constant: verticalInset),
+            content.centerXAnchor.constraint(equalTo: centerXAnchor),
+            content.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -verticalInset),
+            content.widthAnchor.constraint(lessThanOrEqualToConstant: Self.contentWidth(for: pageWidth)),
+        ])
+    }
+}
+
 final class DesignSystemSegmentedControl: NSSegmentedControl {
     var drawsAppOwnedSurface: Bool { true }
     var usesAnimatedSelectionIndicator: Bool { trackingMode == .selectOne }

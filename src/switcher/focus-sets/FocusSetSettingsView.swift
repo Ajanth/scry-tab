@@ -173,8 +173,10 @@ final class FocusSetSettingsView: NSView {
         behaviorView?.isHidden = selectedCategoryIndex != behaviorCategoryIndex
     }
 
-    private func makeBehaviorTable() -> TableGroupView {
-        let table = TableGroupView(title: Self.behaviorTableTitle, width: contentWidth)
+    private func makeBehaviorTable() -> NSView {
+        let table = TableGroupView(
+            title: Self.behaviorTableTitle,
+            width: DesignSystemCenteredDetailPage.contentWidth(for: contentWidth))
         let releaseStyle = LabelAndControl.makeDropdown("focusSetsShortcutStyle", ShortcutStylePreference.allCases)
         _ = table.addRow(
             leftText: NSLocalizedString("After keys are released", comment: ""),
@@ -191,7 +193,7 @@ final class FocusSetSettingsView: NSView {
             leftText: NSLocalizedString("Appearance and organization", comment: ""),
             rightViews: [appearanceButton],
             subText: Self.appearanceAndOrganizationSubtitle)
-        return table
+        return DesignSystemCenteredDetailPage(content: table, width: contentWidth)
     }
 
     private func makeFocusSetManager() -> NSView {
