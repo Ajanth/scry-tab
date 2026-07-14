@@ -19,3 +19,4 @@ pause every preview or run exactly one selected style.
 - **testPlayingIndexRunsOnlySelectedPreview** - Selecting a style runs only its matching preview.
 - **testInvalidPlayingIndexPausesEveryPreview** - An out-of-range selection cannot accidentally start a preview.
 - **testRightToLeftReversesStatusSymbolOrder** - Right-to-left previews reverse status symbol order to match mirrored geometry.
+- **testStatusHighlightsTrackVisibleSymbolIndexes** - Hover highlights track their visible symbol when rows show different status combinations.
