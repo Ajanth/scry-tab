@@ -94,4 +94,44 @@ final class AppearancePreviewStateResolverTests: XCTestCase {
                 layoutDirection: .leftToRight),
             ["fullscreen", "space"])
     }
+
+    /// Hover highlights track their visible symbol when rows show different status combinations.
+    func testStatusHighlightsTrackVisibleSymbolIndexes() {
+        XCTAssertEqual(
+            AppearancePreviewStatusHighlightResolver.indexes(
+                for: .none,
+                hasStatusIcon: true,
+                showsSpaceNumber: true),
+            Set<Int>())
+        XCTAssertEqual(
+            AppearancePreviewStatusHighlightResolver.indexes(
+                for: .statusIcons,
+                hasStatusIcon: true,
+                showsSpaceNumber: true),
+            Set([0]))
+        XCTAssertEqual(
+            AppearancePreviewStatusHighlightResolver.indexes(
+                for: .statusIcons,
+                hasStatusIcon: false,
+                showsSpaceNumber: true),
+            Set<Int>())
+        XCTAssertEqual(
+            AppearancePreviewStatusHighlightResolver.indexes(
+                for: .spaceNumbers,
+                hasStatusIcon: true,
+                showsSpaceNumber: true),
+            Set([1]))
+        XCTAssertEqual(
+            AppearancePreviewStatusHighlightResolver.indexes(
+                for: .spaceNumbers,
+                hasStatusIcon: false,
+                showsSpaceNumber: true),
+            Set([0]))
+        XCTAssertEqual(
+            AppearancePreviewStatusHighlightResolver.indexes(
+                for: .spaceNumbers,
+                hasStatusIcon: false,
+                showsSpaceNumber: false),
+            Set<Int>())
+    }
 }

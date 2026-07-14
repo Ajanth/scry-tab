@@ -30,6 +30,26 @@ struct AppearancePreviewAppearanceSnapshot: Equatable {
     }
 }
 
+enum AppearancePreviewStatusHighlight: Equatable {
+    case none
+    case statusIcons
+    case spaceNumbers
+}
+
+enum AppearancePreviewStatusHighlightResolver {
+    static func indexes(for highlight: AppearancePreviewStatusHighlight,
+                        hasStatusIcon: Bool,
+                        showsSpaceNumber: Bool) -> Set<Int> {
+        switch highlight {
+            case .none: return []
+            case .statusIcons: return hasStatusIcon ? [0] : []
+            case .spaceNumbers:
+                guard showsSpaceNumber else { return [] }
+                return [hasStatusIcon ? 1 : 0]
+        }
+    }
+}
+
 enum AppearancePreviewStateResolver {
     static func resolvedIsDark(theme: AppearancePreviewTheme,
                                systemIsDark: Bool) -> Bool {

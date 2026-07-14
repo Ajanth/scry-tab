@@ -4,6 +4,17 @@ struct AppearancePreviewItem {
     let title: String
     let icon: NSImage
     let statusSymbols: [String]
+    let highlightedStatusSymbolIndexes: Set<Int>
+
+    init(title: String,
+         icon: NSImage,
+         statusSymbols: [String],
+         highlightedStatusSymbolIndexes: Set<Int> = []) {
+        self.title = title
+        self.icon = icon
+        self.statusSymbols = statusSymbols
+        self.highlightedStatusSymbolIndexes = highlightedStatusSymbolIndexes
+    }
 }
 
 struct AppearancePreviewModel {

@@ -6,7 +6,7 @@ final class AppearanceLivePreviewView: NSView {
     static let pauseAccessibilityLabel = NSLocalizedString("Pause preview animation", comment: "")
     static let resumeAccessibilityLabel = NSLocalizedString("Resume preview animation", comment: "")
     static let previewAccessibilityLabel = NSLocalizedString("Preview of the selected appearance style", comment: "")
-    private static let previewItems = PreviewArtwork.demoItems.map { item in
+    private static let defaultPreviewItems = PreviewArtwork.demoItems.map { item in
         var statusSymbols = [String]()
         if item.isFullscreen { statusSymbols.append(AppearancePreviewStatusSymbols.fullscreen) }
         statusSymbols.append(AppearancePreviewStatusSymbols.space(item.spaceNumber))
@@ -20,6 +20,7 @@ final class AppearanceLivePreviewView: NSView {
     private var switcherView: AppearancePreviewSwitcherView?
     private let startsPaused: Bool
     private let showsPauseButton: Bool
+    private var previewItems: [AppearancePreviewItem]
     private let pauseButton: ClickHoverImageView = {
         let glyph = AppearanceLivePreviewPauseGlyphView(symbol: .pause)
         glyph.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +36,8 @@ final class AppearanceLivePreviewView: NSView {
          size: AppearanceSizePreference = .medium,
          theme: AppearanceThemePreference = .system,
          startsPaused: Bool = false,
-         showsPauseButton: Bool = true) {
+         showsPauseButton: Bool = true,
+         items: [AppearancePreviewItem]? = nil) {
         self.currentAppearance = AppearancePreviewAppearanceSnapshot(
             style: style.previewStyle,
             size: size.previewSize,
@@ -43,6 +45,7 @@ final class AppearanceLivePreviewView: NSView {
             systemIsDark: false)
         self.startsPaused = startsPaused
         self.showsPauseButton = showsPauseButton
+        self.previewItems = items ?? Self.defaultPreviewItems
         super.init(frame: .zero)
         resolveSystemTheme()
         setupView()
@@ -103,6 +106,11 @@ final class AppearanceLivePreviewView: NSView {
         switcherView?.setPlaybackPaused(paused)
     }
 
+    func updateItems(_ items: [AppearancePreviewItem]) {
+        previewItems = items
+        refreshSwitcher()
+    }
+
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         setAccessibilityLabel(Self.previewAccessibilityLabel)
@@ -145,10 +153,10 @@ final class AppearanceLivePreviewView: NSView {
     }
 
     private func makePreviewItems() -> [AppearancePreviewItem] {
-        Self.previewItems
+        previewItems
     }
 
-    private static func previewIcon(bundleId: String) -> NSImage {
+    static func previewIcon(bundleId: String) -> NSImage {
         guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleId) else {
             return NSWorkspace.shared.icon(forFileType: "app")
         }

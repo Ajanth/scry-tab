@@ -10,91 +10,74 @@ struct ShowHideRowInfo {
     var rightViews = [NSView]()
 }
 
-class IllustratedImageThemeView: ClickHoverImageView {
-    override var acceptsFirstResponder: Bool { false }
-    static let padding = CGFloat(4)
-    /// Shown when the current Appearance style doesn't support a Show/Hide option (the illustration
-    /// is for another style). Exposed so `CustomizeStyleSheet.searchableStrings` can reference it
-    /// without re-`NSLocalizedString`-ing the same English text.
+final class IllustratedImageThemeView: NSView {
     static let placeholderLabelText = NSLocalizedString("Applies in other Appearances", comment: "")
     private let style: AppearanceStylePreference
-    private let imageView: NSImageView
-    private var isFocused = false
-    private var placeholderLabel: NSTextField!
+    private let livePreviewView: AppearanceLivePreviewView
+    private let previewItemIcons: [NSImage]
+    private let placeholderLabel: NSTextField
 
     init(_ style: AppearanceStylePreference, _ width: CGFloat) {
         self.style = style
-        imageView = NSImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.imageScaling = .scaleProportionallyUpOrDown
-        imageView.wantsLayer = true
-        imageView.layer?.masksToBounds = true
-        imageView.layer?.cornerRadius = TableGroupView.cornerRadius
-        super.init(infoCircle: imageView)
-        translatesAutoresizingMaskIntoConstraints = false
-        wantsLayer = true
-        let imageWidth = width - IllustratedImageThemeView.padding
-        let imageHeight = imageWidth / 1.6
-        NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: imageWidth),
-            imageView.heightAnchor.constraint(equalToConstant: imageHeight),
-            imageView.topAnchor.constraint(equalTo: topAnchor, constant: IllustratedImageThemeView.padding),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -IllustratedImageThemeView.padding),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: IllustratedImageThemeView.padding),
-            imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -IllustratedImageThemeView.padding),
-        ])
-        let placeholder = NSTextField(labelWithString: IllustratedImageThemeView.placeholderLabelText)
+        let icons = AppearanceLivePreviewArtwork.illustratedPreviewItems.map {
+            AppearanceLivePreviewView.previewIcon(bundleId: $0.bundleId)
+        }
+        previewItemIcons = icons
+        let initialState = Self.previewState(style: style, imageName: nil)
+        livePreviewView = AppearanceLivePreviewView(
+            style: style,
+            size: AppearanceTab.selectedAppearanceSize(),
+            theme: AppearanceTab.selectedAppearanceTheme(),
+            startsPaused: true,
+            showsPauseButton: false,
+            items: Self.previewItems(for: initialState, icons: icons))
+        let placeholder = NSTextField(labelWithString: Self.placeholderLabelText)
         placeholder.font = NSFont.systemFont(ofSize: NSFont.systemFontSize + 3)
         placeholder.textColor = .secondaryLabelColor
         placeholder.alignment = .center
         placeholder.translatesAutoresizingMaskIntoConstraints = false
         placeholder.isHidden = true
-        addSubview(placeholder)
-        NSLayoutConstraint.activate([
-            placeholder.centerXAnchor.constraint(equalTo: centerXAnchor),
-            placeholder.centerYAnchor.constraint(equalTo: centerYAnchor),
-            placeholder.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: IllustratedImageThemeView.padding + 8),
-            placeholder.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -(IllustratedImageThemeView.padding + 8)),
-        ])
         placeholderLabel = placeholder
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        addSubview(livePreviewView)
+        addSubview(placeholderLabel)
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalToConstant: width),
+            heightAnchor.constraint(equalTo: widthAnchor,
+                                     multiplier: 1 / AppearanceLivePreviewArtwork.Metrics.wallpaperAspectRatio),
+            livePreviewView.topAnchor.constraint(equalTo: topAnchor),
+            livePreviewView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            livePreviewView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            livePreviewView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            placeholderLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            placeholderLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            placeholderLabel.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 8),
+            placeholderLabel.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -8),
+        ])
         highlight(false)
-        onClick = { [weak self] _, _ in self?.highlight(false) }
     }
 
     required init?(coder: NSCoder) {
         fatalError("Class only supports programmatic initialization")
     }
 
-    private func setBorder() {
-        layer?.cornerRadius = TableGroupView.cornerRadius + 3
-        let color = DesignSystem.color(isFocused ? .borderSelected : .borderSubtle, appearance: effectiveAppearance)
-        layer?.borderColor = DesignSystem.resolvedCGColor(color, in: self)
-        layer?.borderWidth = isFocused ? 2 : 1
-    }
-
-    private func setFocused(_ focused: Bool) {
-        isFocused = focused
-    }
-
     func highlight(_ highlighted: Bool, _ imageName: String = "") {
-        if highlighted && imageName.isEmpty {
-            return
-        }
-        setFocused(highlighted)
-        setBorder()
+        guard !highlighted || !imageName.isEmpty else { return }
         placeholderLabel.isHidden = true
-        infoCircle.isHidden = false
-        imageView.image = AppearanceLivePreviewArtwork.illustratedPreviewImage(previewState(highlighted ? imageName : nil))
+        livePreviewView.isHidden = false
+        livePreviewView.updateItems(Self.previewItems(
+            for: Self.previewState(style: style, imageName: highlighted ? imageName : nil),
+            icons: previewItemIcons))
     }
 
     func showPlaceholder() {
-        setFocused(true)
-        setBorder()
-        infoCircle.isHidden = true
+        livePreviewView.isHidden = true
         placeholderLabel.isHidden = false
     }
 
-    private func previewState(_ imageName: String?) -> AppearanceLivePreviewArtwork.IllustratedPreviewState {
+    private static func previewState(style: AppearanceStylePreference,
+                                     imageName: String?) -> AppearanceLivePreviewArtwork.IllustratedPreviewState {
         var state = style == .appIcons
             ? AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
                                                                    titleMode: .focusedAppName,
@@ -102,7 +85,7 @@ class IllustratedImageThemeView: ClickHoverImageView {
                                                                    showsSpaceNumbers: false,
                                                                    highlight: .none)
             : AppearanceLivePreviewArtwork.IllustratedPreviewState(style: style,
-                                                                   titleMode: .appNameAndWindowTitle,
+                                                                   titleMode: titleMode(for: Preferences.showTitles),
                                                                    showsStatusIcons: true,
                                                                    showsSpaceNumbers: true,
                                                                    highlight: .none)
@@ -157,6 +140,54 @@ class IllustratedImageThemeView: ClickHoverImageView {
                                                                          highlight: .none)
         }
         return state
+    }
+
+    private static func titleMode(for preference: ShowTitlesPreference) -> AppearanceLivePreviewArtwork.IllustratedTitleMode {
+        switch preference {
+            case .windowTitle: return .windowTitle
+            case .appName: return .appName
+            case .appNameAndWindowTitle: return .appNameAndWindowTitle
+        }
+    }
+
+    private static func previewItems(for state: AppearanceLivePreviewArtwork.IllustratedPreviewState,
+                                     icons: [NSImage]) -> [AppearancePreviewItem] {
+        zip(AppearanceLivePreviewArtwork.illustratedPreviewItems, icons).map { item, icon in
+            let symbols = statusSymbols(for: item, state: state)
+            return AppearancePreviewItem(
+                title: title(for: item, mode: state.titleMode),
+                icon: icon,
+                statusSymbols: symbols,
+                highlightedStatusSymbolIndexes: AppearancePreviewStatusHighlightResolver.indexes(
+                    for: statusHighlight(for: state),
+                    hasStatusIcon: state.showsStatusIcons && item.statusSymbol != nil,
+                    showsSpaceNumber: state.showsSpaceNumbers))
+        }
+    }
+
+    private static func title(for item: AppearanceLivePreviewArtwork.IllustratedPreviewItem,
+                              mode: AppearanceLivePreviewArtwork.IllustratedTitleMode) -> String {
+        switch mode {
+            case .focusedAppName, .appName: return item.appName
+            case .windowTitle: return item.windowTitle
+            case .appNameAndWindowTitle: return "\(item.appName) - \(item.windowTitle)"
+        }
+    }
+
+    private static func statusSymbols(for item: AppearanceLivePreviewArtwork.IllustratedPreviewItem,
+                                      state: AppearanceLivePreviewArtwork.IllustratedPreviewState) -> [String] {
+        var symbols = [String]()
+        if state.showsStatusIcons, let symbol = item.statusSymbol { symbols.append(symbol) }
+        if state.showsSpaceNumbers { symbols.append(AppearancePreviewStatusSymbols.space(item.spaceNumber)) }
+        return symbols
+    }
+
+    private static func statusHighlight(for state: AppearanceLivePreviewArtwork.IllustratedPreviewState) -> AppearancePreviewStatusHighlight {
+        switch state.highlight {
+            case .none: return .none
+            case .statusIcons: return .statusIcons
+            case .spaceNumbers: return .spaceNumbers
+        }
     }
 
     static func resetImage(_ illustratedImageView: IllustratedImageThemeView, _ event: NSEvent, _ view: NSView) {
@@ -611,19 +642,19 @@ class AppearanceTab: NSObject {
         return table
     }
 
-    fileprivate static func selectedAppearanceStyle() -> AppearanceStylePreference {
+    static func selectedAppearanceStyle() -> AppearanceStylePreference {
         let index = CachedUserDefaults.intFromMacroPref("appearanceStyle", AppearanceStylePreference.allCases)
         guard AppearanceStylePreference.allCases.indices.contains(index) else { return .appIcons }
         return AppearanceStylePreference.allCases[index]
     }
 
-    fileprivate static func selectedAppearanceSize() -> AppearanceSizePreference {
+    static func selectedAppearanceSize() -> AppearanceSizePreference {
         let index = CachedUserDefaults.intFromMacroPref("appearanceSize", AppearanceSizePreference.allCases)
         guard AppearanceSizePreference.allCases.indices.contains(index) else { return .medium }
         return AppearanceSizePreference.allCases[index]
     }
 
-    fileprivate static func selectedAppearanceTheme() -> AppearanceThemePreference {
+    static func selectedAppearanceTheme() -> AppearanceThemePreference {
         let index = CachedUserDefaults.intFromMacroPref("appearanceTheme", AppearanceThemePreference.allCases)
         guard AppearanceThemePreference.allCases.indices.contains(index) else { return .system }
         return AppearanceThemePreference.allCases[index]

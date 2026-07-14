@@ -428,6 +428,7 @@ private final class AppearancePreviewTileView: AppearancePreviewFlippedView {
         }
         titleLabel.stringValue = item.title
         statusView.symbols = item.statusSymbols
+        statusView.highlightedSymbolIndexes = item.highlightedStatusSymbolIndexes
     }
 
     func apply(layout: AppearancePreviewTileLayout,
@@ -570,6 +571,9 @@ private final class AppearancePreviewStatusView: NSView {
     var symbols = [String]() {
         didSet { needsDisplay = true }
     }
+    var highlightedSymbolIndexes = Set<Int>() {
+        didSet { needsDisplay = true }
+    }
 
     private var contentScale = CGFloat(1)
     private var fontPointSize = CGFloat(12)
@@ -608,6 +612,9 @@ private final class AppearancePreviewStatusView: NSView {
         let displayedSymbols = AppearancePreviewStateResolver.orderedStatusSymbols(
             symbols,
             layoutDirection: layoutDirection)
+        let displayedIndexes = layoutDirection == .rightToLeft
+            ? Array(symbols.indices.reversed())
+            : Array(symbols.indices)
         displayedSymbols.enumerated().forEach { index, symbol in
             let value = NSAttributedString(
                 string: symbol,
@@ -616,12 +623,30 @@ private final class AppearancePreviewStatusView: NSView {
             let slotWidth = iconCellWidth * contentScale
             let slotX = CGFloat(index)
                 * (slotWidth + Self.baseSpacing * contentScale)
+            if highlightedSymbolIndexes.contains(displayedIndexes[index]) {
+                drawHighlight(in: NSRect(
+                    x: slotX,
+                    y: 0,
+                    width: slotWidth,
+                    height: bounds.height))
+            }
             value.draw(
                 at: pixelAligned(
                     NSPoint(
                         x: slotX + (slotWidth - size.width) / 2,
                         y: (bounds.height - size.height) / 2)))
         }
+    }
+
+    private func drawHighlight(in rect: NSRect) {
+        let inset = max(1, contentScale)
+        let highlightRect = rect.insetBy(dx: inset, dy: inset)
+        guard highlightRect.width > 0, highlightRect.height > 0 else { return }
+        let radius = min(4 * contentScale, min(highlightRect.width, highlightRect.height) / 2)
+        let path = NSBezierPath(roundedRect: highlightRect, xRadius: radius, yRadius: radius)
+        path.lineWidth = max(1, contentScale)
+        NSColor.systemRed.withAlphaComponent(0.85).setStroke()
+        path.stroke()
     }
 
     private func pixelAligned(_ point: NSPoint) -> NSPoint {
