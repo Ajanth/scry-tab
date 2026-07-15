@@ -19,7 +19,6 @@
 "Add an app from disk" = "Добавить приложение с диска";
 "Add Focus Set" = "Добавить набор фокуса";
 "Add or remove Focus Sets" = "Добавить или удалить наборы фокуса";
-"Additional controls" = "Дополнительные элементы управления";
 "Advanced" = "Дополнительно";
 "After keys are released" = "После отпускания клавиш";
 "All apps" = "Все приложения";
@@ -67,7 +66,6 @@
 "Crash reports policy" = "Политика отчётов о сбоях";
 "Create a Focus Set to browse the applications you use together." = "Создайте набор фокуса для просмотра приложений, которыми вы пользуетесь вместе.";
 "Create GitHub issue" = "Создать issue на GitHub";
-"Cursor follows focus" = "Курсор следует за фокусом";
 "Customize more…" = "Дополнительная настройка…";
 "Dark" = "Тёмная";
 "Debug tools" = "Инструменты отладки";
@@ -93,7 +91,6 @@
 "Focus Set actions" = "Действия набора фокуса";
 "Focus Set Behavior" = "Поведение наборов фокуса";
 "Focus Sets" = "Наборы фокуса";
-"Fullscreen/Defullscreen window" = "Развернуть/свернуть окно на весь экран";
 "General" = "Основные";
 "Gesture" = "Жест";
 "Gestures" = "Жесты";
@@ -106,7 +103,6 @@
 "Hide Space number labels" = "Скрывать номера пространств";
 "Hide status icons" = "Скрывать значки статуса";
 "Hide windows" = "Скрывать окна";
-"Hide/Show app" = "Скрыть/показать приложение";
 "Hold" = "Удерживать";
 "I can move myself to the Applications folder if you'd like." = "Я могу самостоятельно переместиться в папку «Программы», если хотите.";
 "I think the app could be improved with…" = "Я думаю, приложение можно улучшить, добавив…";
@@ -118,11 +114,9 @@
 "Large" = "Большой";
 "Later" = "Позже";
 "Light" = "Светлая";
-"Lock search" = "Зафиксировать поиск";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS резервирует ⌘⌥⎋, ⌘⌥⇧⎋ и ⌘⌥⇧⌃⎋ для «Завершить принудительно», и их нельзя отвязать. ScryTab не может их использовать.\n\nВаше изменение назначит одно из них на: %@.";
 "Medium" = "Средний";
 "Middle" = "Середина";
-"Minimize/Deminimize window" = "Свернуть/развернуть окно";
 "Miscellaneous" = "Прочее";
 "Move Down" = "Переместить вниз";
 "Move to Applications Folder" = "Переместить в папку «Программы»";
@@ -130,7 +124,6 @@
 "Move Up" = "Переместить вверх";
 "Multiple screens" = "Несколько экранов";
 "Name" = "Имя";
-"Navigation & pointer" = "Навигация и указатель";
 "Never" = "Никогда";
 "Never send crash reports" = "Никогда не отправлять отчёты о сбоях";
 "New Focus Set" = "Новый набор фокуса";
@@ -145,7 +138,6 @@
 "Not currently open" = "Сейчас не открыто";
 "Not now" = "Не сейчас";
 "OK" = "OK";
-"Only on different screen" = "Только на другом экране";
 "Open Accessibility Settings…" = "Открыть настройки Универсального доступа…";
 "Open Appearance Settings" = "Открыть настройки внешнего вида";
 "Open Trackpad Settings…" = "Открыть настройки Трекпада…";
@@ -160,7 +152,6 @@
 "Please fill in the form" = "Заполните форму";
 "Preview of the selected appearance style" = "Предпросмотр выбранного стиля внешнего вида";
 "Quit %@" = "Завершить %@";
-"Quit app" = "Завершить приложение";
 "Recently Created First" = "Сначала недавно созданные";
 "Recently Focused First" = "Сначала недавно активные";
 "Report a bug" = "Сообщить об ошибке";
@@ -178,9 +169,6 @@
 "Search applications" = "Искать приложения";
 "Select next window" = "Выбрать следующее окно";
 "Select previous window" = "Выбрать предыдущее окно";
-"Select windows on mouse hover" = "Выбирать окна при наведении курсора";
-"Select windows using arrow keys" = "Выбирать окна клавишами со стрелками";
-"Select windows using vim keys" = "Выбирать окна клавишами Vim";
 "Send feedback" = "Отправить отзыв";
 "Send feedback…" = "Отправить отзыв…";
 "Sending…" = "Отправка…";
@@ -228,7 +216,6 @@
 "Title truncation" = "Обрезка заголовков";
 "Titles" = "Заголовки";
 "Trackpad" = "Трекпад";
-"Trackpad haptic feedback" = "Тактильный отклик трекпада";
 "Trigger" = "Триггер";
 "Unassign existing shortcut and continue" = "Снять текущее сочетание и продолжить";
 "Unavailable application" = "Недоступное приложение";
@@ -237,8 +224,6 @@
 "Usage" = "Использование";
 "Version" = "Версия";
 "View existing discussions" = "Просмотр существующих обсуждений";
-"Vim keys" = "Клавиши Vim";
-"Vim keys already assigned to other actions:\n%@" = "Клавиши Vim уже назначены другим действиям:\n%@";
 "Visibility" = "Видимость";
 "Visible Spaces" = "Видимые пространства";
 "Website" = "Сайт";

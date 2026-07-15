@@ -19,7 +19,6 @@
 "Add an app from disk" = "ディスクから App を追加";
 "Add Focus Set" = "フォーカスセットを追加";
 "Add or remove Focus Sets" = "フォーカスセットを追加または削除";
-"Additional controls" = "追加のコントロール";
 "Advanced" = "詳細";
 "After keys are released" = "キーを離した後";
 "All apps" = "すべての App";
@@ -67,7 +66,6 @@
 "Crash reports policy" = "クラッシュレポートのポリシー";
 "Create a Focus Set to browse the applications you use together." = "よく一緒に使うアプリケーションを確認するためのフォーカスセットを作成します。";
 "Create GitHub issue" = "GitHub Issue を作成";
-"Cursor follows focus" = "カーソルがフォーカスに従う";
 "Customize more…" = "さらにカスタマイズ…";
 "Dark" = "ダーク";
 "Debug tools" = "デバッグツール";
@@ -93,7 +91,6 @@
 "Focus Set actions" = "フォーカスセットの操作";
 "Focus Set Behavior" = "フォーカスセットの動作";
 "Focus Sets" = "フォーカスセット";
-"Fullscreen/Defullscreen window" = "ウインドウのフルスクリーン切り替え";
 "General" = "一般";
 "Gesture" = "ジェスチャ";
 "Gestures" = "ジェスチャ";
@@ -106,7 +103,6 @@
 "Hide Space number labels" = "Space 番号ラベルを非表示";
 "Hide status icons" = "ステータスアイコンを非表示";
 "Hide windows" = "ウインドウを非表示";
-"Hide/Show app" = "App の表示/非表示";
 "Hold" = "押し続ける";
 "I can move myself to the Applications folder if you'd like." = "ご希望であれば、アプリケーションフォルダに自動で移動できます。";
 "I think the app could be improved with…" = "App の改善案…";
@@ -118,11 +114,9 @@
 "Large" = "大";
 "Later" = "後で";
 "Light" = "ライト";
-"Lock search" = "検索をロック";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS は ⌘⌥⎋、⌘⌥⇧⎋、⌘⌥⇧⌃⎋ を強制終了用に予約しており、解除できません。ScryTab では使用できません。\n\n変更しようとしている割り当て: %@。";
 "Medium" = "中";
 "Middle" = "中央";
-"Minimize/Deminimize window" = "ウインドウの最小化切り替え";
 "Miscellaneous" = "その他";
 "Move Down" = "下へ移動";
 "Move to Applications Folder" = "アプリケーションフォルダに移動";
@@ -130,7 +124,6 @@
 "Move Up" = "上へ移動";
 "Multiple screens" = "複数の画面";
 "Name" = "名前";
-"Navigation & pointer" = "ナビゲーションとポインタ";
 "Never" = "しない";
 "Never send crash reports" = "クラッシュレポートを送信しない";
 "New Focus Set" = "新規フォーカスセット";
@@ -145,7 +138,6 @@
 "Not currently open" = "現在開いていません";
 "Not now" = "今はしない";
 "OK" = "OK";
-"Only on different screen" = "別の画面のときのみ";
 "Open Accessibility Settings…" = "アクセシビリティ設定を開く…";
 "Open Appearance Settings" = "「外観」設定を開く";
 "Open Trackpad Settings…" = "トラックパッド設定を開く…";
@@ -160,7 +152,6 @@
 "Please fill in the form" = "フォームを入力してください";
 "Preview of the selected appearance style" = "選択した外観スタイルのプレビュー";
 "Quit %@" = "%@ を終了";
-"Quit app" = "App を終了";
 "Recently Created First" = "作成日順(新しい順)";
 "Recently Focused First" = "最近フォーカスした順";
 "Report a bug" = "バグを報告";
@@ -178,9 +169,6 @@
 "Search applications" = "アプリケーションを検索";
 "Select next window" = "次のウインドウを選択";
 "Select previous window" = "前のウインドウを選択";
-"Select windows on mouse hover" = "マウスホバーでウインドウを選択";
-"Select windows using arrow keys" = "矢印キーでウインドウを選択";
-"Select windows using vim keys" = "Vim キーでウインドウを選択";
 "Send feedback" = "フィードバックを送信";
 "Send feedback…" = "フィードバックを送信…";
 "Sending…" = "送信中…";
@@ -228,7 +216,6 @@
 "Title truncation" = "タイトルの省略";
 "Titles" = "タイトル";
 "Trackpad" = "トラックパッド";
-"Trackpad haptic feedback" = "トラックパッドの触覚フィードバック";
 "Trigger" = "トリガー";
 "Unassign existing shortcut and continue" = "既存のショートカットを解除して続行";
 "Unavailable application" = "利用できないアプリケーション";
@@ -237,8 +224,6 @@
 "Usage" = "使用状況";
 "Version" = "バージョン";
 "View existing discussions" = "既存のディスカッションを表示";
-"Vim keys" = "Vim キー";
-"Vim keys already assigned to other actions:\n%@" = "Vim キーはすでに他のアクションに割り当てられています:\n%@";
 "Visibility" = "表示範囲";
 "Visible Spaces" = "表示中の Space";
 "Website" = "Web サイト";

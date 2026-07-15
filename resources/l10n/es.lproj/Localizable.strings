@@ -19,7 +19,6 @@
 "Add an app from disk" = "Añadir una app desde el disco";
 "Add Focus Set" = "Añadir conjunto de enfoque";
 "Add or remove Focus Sets" = "Añadir o eliminar conjuntos de enfoque";
-"Additional controls" = "Controles adicionales";
 "Advanced" = "Avanzado";
 "After keys are released" = "Tras soltar las teclas";
 "All apps" = "Todas las apps";
@@ -67,7 +66,6 @@
 "Crash reports policy" = "Política de informes de problema";
 "Create a Focus Set to browse the applications you use together." = "Crea un conjunto de enfoque para explorar las aplicaciones que utilizas conjuntamente.";
 "Create GitHub issue" = "Crear incidencia en GitHub";
-"Cursor follows focus" = "El cursor sigue al foco";
 "Customize more…" = "Personalizar más…";
 "Dark" = "Oscuro";
 "Debug tools" = "Herramientas de depuración";
@@ -93,7 +91,6 @@
 "Focus Set actions" = "Acciones del conjunto de enfoque";
 "Focus Set Behavior" = "Comportamiento de los conjuntos de enfoque";
 "Focus Sets" = "Conjuntos de enfoque";
-"Fullscreen/Defullscreen window" = "Activar/desactivar pantalla completa de la ventana";
 "General" = "General";
 "Gesture" = "Gesto";
 "Gestures" = "Gestos";
@@ -106,7 +103,6 @@
 "Hide Space number labels" = "Ocultar las etiquetas de número de Espacio";
 "Hide status icons" = "Ocultar los iconos de estado";
 "Hide windows" = "Ocultar ventanas";
-"Hide/Show app" = "Ocultar/Mostrar app";
 "Hold" = "Mantener pulsado";
 "I can move myself to the Applications folder if you'd like." = "Puedo moverme a la carpeta Aplicaciones si lo prefieres.";
 "I think the app could be improved with…" = "Creo que la app se podría mejorar con…";
@@ -118,11 +114,9 @@
 "Large" = "Grande";
 "Later" = "Más tarde";
 "Light" = "Claro";
-"Lock search" = "Bloquear búsqueda";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserva ⌘⌥⎋, ⌘⌥⇧⎋ y ⌘⌥⇧⌃⎋ para Forzar salida y no se pueden reasignar. ScryTab no puede usarlas.\n\nTu cambio asignaría una de estas a: %@.";
 "Medium" = "Medio";
 "Middle" = "Centro";
-"Minimize/Deminimize window" = "Minimizar/restaurar ventana";
 "Miscellaneous" = "Varios";
 "Move Down" = "Mover abajo";
 "Move to Applications Folder" = "Mover a la carpeta Aplicaciones";
@@ -130,7 +124,6 @@
 "Move Up" = "Mover arriba";
 "Multiple screens" = "Varias pantallas";
 "Name" = "Nombre";
-"Navigation & pointer" = "Navegación y puntero";
 "Never" = "Nunca";
 "Never send crash reports" = "No enviar nunca los informes de problema";
 "New Focus Set" = "Nuevo conjunto de enfoque";
@@ -145,7 +138,6 @@
 "Not currently open" = "No está abierta actualmente";
 "Not now" = "Ahora no";
 "OK" = "OK";
-"Only on different screen" = "Solo en otra pantalla";
 "Open Accessibility Settings…" = "Abrir Ajustes de Accesibilidad…";
 "Open Appearance Settings" = "Abrir ajustes de apariencia";
 "Open Trackpad Settings…" = "Abrir Ajustes de Trackpad…";
@@ -160,7 +152,6 @@
 "Please fill in the form" = "Rellena el formulario";
 "Preview of the selected appearance style" = "Vista previa del estilo de apariencia seleccionado";
 "Quit %@" = "Salir de %@";
-"Quit app" = "Salir de la app";
 "Recently Created First" = "Creadas recientemente primero";
 "Recently Focused First" = "Enfocadas recientemente primero";
 "Report a bug" = "Informar de un error";
@@ -178,9 +169,6 @@
 "Search applications" = "Buscar aplicaciones";
 "Select next window" = "Seleccionar la ventana siguiente";
 "Select previous window" = "Seleccionar la ventana anterior";
-"Select windows on mouse hover" = "Seleccionar ventanas al pasar el ratón";
-"Select windows using arrow keys" = "Seleccionar ventanas con las teclas de flecha";
-"Select windows using vim keys" = "Seleccionar ventanas con las teclas Vim";
 "Send feedback" = "Enviar comentarios";
 "Send feedback…" = "Enviar comentarios…";
 "Sending…" = "Enviando…";
@@ -228,7 +216,6 @@
 "Title truncation" = "Truncado de títulos";
 "Titles" = "Títulos";
 "Trackpad" = "Trackpad";
-"Trackpad haptic feedback" = "Respuesta háptica del Trackpad";
 "Trigger" = "Activador";
 "Unassign existing shortcut and continue" = "Desasignar el atajo existente y continuar";
 "Unavailable application" = "Aplicación no disponible";
@@ -237,8 +224,6 @@
 "Usage" = "Uso";
 "Version" = "Versión";
 "View existing discussions" = "Ver discusiones existentes";
-"Vim keys" = "Teclas Vim";
-"Vim keys already assigned to other actions:\n%@" = "Teclas Vim ya asignadas a otras acciones:\n%@";
 "Visibility" = "Visibilidad";
 "Visible Spaces" = "Espacios visibles";
 "Website" = "Sitio web";

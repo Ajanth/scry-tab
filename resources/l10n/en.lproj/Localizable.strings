@@ -19,7 +19,6 @@
 "Add an app from disk" = "Add an app from disk";
 "Add Focus Set" = "Add Focus Set";
 "Add or remove Focus Sets" = "Add or remove Focus Sets";
-"Additional controls" = "Additional controls";
 "Advanced" = "Advanced";
 "After keys are released" = "After keys are released";
 "All apps" = "All apps";
@@ -67,7 +66,6 @@
 "Crash reports policy" = "Crash reports policy";
 "Create a Focus Set to browse the applications you use together." = "Create a Focus Set to browse the applications you use together.";
 "Create GitHub issue" = "Create GitHub issue";
-"Cursor follows focus" = "Cursor follows focus";
 "Customize more…" = "Customize more…";
 "Dark" = "Dark";
 "Debug tools" = "Debug tools";
@@ -93,7 +91,6 @@
 "Focus Set actions" = "Focus Set actions";
 "Focus Set Behavior" = "Focus Set Behavior";
 "Focus Sets" = "Focus Sets";
-"Fullscreen/Defullscreen window" = "Fullscreen/Defullscreen window";
 "General" = "General";
 "Gesture" = "Gesture";
 "Gestures" = "Gestures";
@@ -106,7 +103,6 @@
 "Hide Space number labels" = "Hide Space number labels";
 "Hide status icons" = "Hide status icons";
 "Hide windows" = "Hide windows";
-"Hide/Show app" = "Hide/Show app";
 "Hold" = "Hold";
 "I can move myself to the Applications folder if you'd like." = "I can move myself to the Applications folder if you'd like.";
 "I think the app could be improved with…" = "I think the app could be improved with…";
@@ -118,11 +114,9 @@
 "Large" = "Large";
 "Later" = "Later";
 "Light" = "Light";
-"Lock search" = "Lock search";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@.";
 "Medium" = "Medium";
 "Middle" = "Middle";
-"Minimize/Deminimize window" = "Minimize/Deminimize window";
 "Miscellaneous" = "Miscellaneous";
 "Move Down" = "Move Down";
 "Move to Applications Folder" = "Move to Applications Folder";
@@ -130,7 +124,6 @@
 "Move Up" = "Move Up";
 "Multiple screens" = "Multiple screens";
 "Name" = "Name";
-"Navigation & pointer" = "Navigation & pointer";
 "Never" = "Never";
 "Never send crash reports" = "Never send crash reports";
 "New Focus Set" = "New Focus Set";
@@ -145,7 +138,6 @@
 "Not currently open" = "Not currently open";
 "Not now" = "Not now";
 "OK" = "OK";
-"Only on different screen" = "Only on different screen";
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
 "Open Appearance Settings" = "Open Appearance Settings";
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
@@ -160,7 +152,6 @@
 "Please fill in the form" = "Please fill in the form";
 "Preview of the selected appearance style" = "Preview of the selected appearance style";
 "Quit %@" = "Quit %@";
-"Quit app" = "Quit app";
 "Recently Created First" = "Recently Created First";
 "Recently Focused First" = "Recently Focused First";
 "Report a bug" = "Report a bug";
@@ -178,9 +169,6 @@
 "Search applications" = "Search applications";
 "Select next window" = "Select next window";
 "Select previous window" = "Select previous window";
-"Select windows on mouse hover" = "Select windows on mouse hover";
-"Select windows using arrow keys" = "Select windows using arrow keys";
-"Select windows using vim keys" = "Select windows using vim keys";
 "Send feedback" = "Send feedback";
 "Send feedback…" = "Send feedback…";
 "Sending…" = "Sending…";
@@ -228,7 +216,6 @@
 "Title truncation" = "Title truncation";
 "Titles" = "Titles";
 "Trackpad" = "Trackpad";
-"Trackpad haptic feedback" = "Trackpad haptic feedback";
 "Trigger" = "Trigger";
 "Unassign existing shortcut and continue" = "Unassign existing shortcut and continue";
 "Unavailable application" = "Unavailable application";
@@ -237,8 +224,6 @@
 "Usage" = "Usage";
 "Version" = "Version";
 "View existing discussions" = "View existing discussions";
-"Vim keys" = "Vim keys";
-"Vim keys already assigned to other actions:\n%@" = "Vim keys already assigned to other actions:\n%@";
 "Visibility" = "Visibility";
 "Visible Spaces" = "Visible Spaces";
 "Website" = "Website";

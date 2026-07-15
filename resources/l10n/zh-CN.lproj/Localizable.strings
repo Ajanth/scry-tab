@@ -19,7 +19,6 @@
 "Add an app from disk" = "从磁盘添加应用";
 "Add Focus Set" = "添加专注集";
 "Add or remove Focus Sets" = "添加或移除专注集";
-"Additional controls" = "其他控制";
 "Advanced" = "高级";
 "After keys are released" = "释放按键后";
 "All apps" = "所有应用";
@@ -67,7 +66,6 @@
 "Crash reports policy" = "崩溃报告策略";
 "Create a Focus Set to browse the applications you use together." = "创建专注集以浏览您常一起使用的应用。";
 "Create GitHub issue" = "创建 GitHub issue";
-"Cursor follows focus" = "光标跟随焦点";
 "Customize more…" = "更多自定义…";
 "Dark" = "深色";
 "Debug tools" = "调试工具";
@@ -93,7 +91,6 @@
 "Focus Set actions" = "专注集操作";
 "Focus Set Behavior" = "专注集行为";
 "Focus Sets" = "专注集";
-"Fullscreen/Defullscreen window" = "全屏/退出全屏窗口";
 "General" = "通用";
 "Gesture" = "手势";
 "Gestures" = "手势";
@@ -106,7 +103,6 @@
 "Hide Space number labels" = "隐藏桌面编号标签";
 "Hide status icons" = "隐藏状态图标";
 "Hide windows" = "隐藏窗口";
-"Hide/Show app" = "隐藏/显示应用";
 "Hold" = "按住";
 "I can move myself to the Applications folder if you'd like." = "如果您愿意,我可以将自己移动到应用程序文件夹。";
 "I think the app could be improved with…" = "我认为该应用可以通过以下方式改进…";
@@ -118,11 +114,9 @@
 "Large" = "大";
 "Later" = "稍后";
 "Light" = "浅色";
-"Lock search" = "锁定搜索";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS 将 ⌘⌥⎋、⌘⌥⇧⎋ 和 ⌘⌥⇧⌃⎋ 保留用于强制退出，无法解除绑定。ScryTab 无法使用它们。\n\n您的更改会将其中之一分配给：%@。";
 "Medium" = "中";
 "Middle" = "中间";
-"Minimize/Deminimize window" = "最小化/还原窗口";
 "Miscellaneous" = "其他";
 "Move Down" = "下移";
 "Move to Applications Folder" = "移动到应用程序文件夹";
@@ -130,7 +124,6 @@
 "Move Up" = "上移";
 "Multiple screens" = "多个屏幕";
 "Name" = "名称";
-"Navigation & pointer" = "导航与指针";
 "Never" = "从不";
 "Never send crash reports" = "从不发送崩溃报告";
 "New Focus Set" = "新建专注集";
@@ -145,7 +138,6 @@
 "Not currently open" = "当前未打开";
 "Not now" = "暂不";
 "OK" = "好";
-"Only on different screen" = "仅在不同屏幕上";
 "Open Accessibility Settings…" = "打开辅助功能设置…";
 "Open Appearance Settings" = "打开“外观”设置";
 "Open Trackpad Settings…" = "打开触控板设置…";
@@ -160,7 +152,6 @@
 "Please fill in the form" = "请填写表单";
 "Preview of the selected appearance style" = "所选外观样式的预览";
 "Quit %@" = "退出 %@";
-"Quit app" = "退出应用";
 "Recently Created First" = "最近创建优先";
 "Recently Focused First" = "最近聚焦优先";
 "Report a bug" = "报告错误";
@@ -178,9 +169,6 @@
 "Search applications" = "搜索应用程序";
 "Select next window" = "选择下一个窗口";
 "Select previous window" = "选择上一个窗口";
-"Select windows on mouse hover" = "鼠标悬停时选择窗口";
-"Select windows using arrow keys" = "使用方向键选择窗口";
-"Select windows using vim keys" = "使用 Vim 键选择窗口";
 "Send feedback" = "发送反馈";
 "Send feedback…" = "发送反馈…";
 "Sending…" = "发送中…";
@@ -228,7 +216,6 @@
 "Title truncation" = "标题截断";
 "Titles" = "标题";
 "Trackpad" = "触控板";
-"Trackpad haptic feedback" = "触控板触感反馈";
 "Trigger" = "触发";
 "Unassign existing shortcut and continue" = "取消现有快捷键分配并继续";
 "Unavailable application" = "不可用的应用程序";
@@ -237,8 +224,6 @@
 "Usage" = "使用情况";
 "Version" = "版本";
 "View existing discussions" = "查看现有讨论";
-"Vim keys" = "Vim 键";
-"Vim keys already assigned to other actions:\n%@" = "Vim 键已分配给其他操作：\n%@";
 "Visibility" = "可见性";
 "Visible Spaces" = "可见的桌面";
 "Website" = "网站";

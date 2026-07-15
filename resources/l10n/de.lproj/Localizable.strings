@@ -19,7 +19,6 @@
 "Add an app from disk" = "App vom Datenträger hinzufügen";
 "Add Focus Set" = "Fokus-Set hinzufügen";
 "Add or remove Focus Sets" = "Fokus-Sets hinzufügen oder entfernen";
-"Additional controls" = "Zusätzliche Bedienelemente";
 "Advanced" = "Erweitert";
 "After keys are released" = "Nach Loslassen der Tasten";
 "All apps" = "Alle Apps";
@@ -67,7 +66,6 @@
 "Crash reports policy" = "Richtlinie für Absturzberichte";
 "Create a Focus Set to browse the applications you use together." = "Erstellen Sie ein Fokus-Set für die Apps, die Sie zusammen verwenden.";
 "Create GitHub issue" = "GitHub-Issue erstellen";
-"Cursor follows focus" = "Zeiger folgt dem Fokus";
 "Customize more…" = "Mehr anpassen…";
 "Dark" = "Dunkel";
 "Debug tools" = "Debug-Tools";
@@ -93,7 +91,6 @@
 "Focus Set actions" = "Fokus-Set-Aktionen";
 "Focus Set Behavior" = "Verhalten von Fokus-Sets";
 "Focus Sets" = "Fokus-Sets";
-"Fullscreen/Defullscreen window" = "Fenster in Vollbild/aus Vollbild";
 "General" = "Allgemein";
 "Gesture" = "Geste";
 "Gestures" = "Gesten";
@@ -106,7 +103,6 @@
 "Hide Space number labels" = "Space-Nummern ausblenden";
 "Hide status icons" = "Statussymbole ausblenden";
 "Hide windows" = "Fenster ausblenden";
-"Hide/Show app" = "App ausblenden/einblenden";
 "Hold" = "Halten";
 "I can move myself to the Applications folder if you'd like." = "Ich kann mich auf Wunsch selbst in den Programme-Ordner verschieben.";
 "I think the app could be improved with…" = "Ich denke, die App könnte verbessert werden mit…";
@@ -118,11 +114,9 @@
 "Large" = "Groß";
 "Later" = "Später";
 "Light" = "Hell";
-"Lock search" = "Suche sperren";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserviert ⌘⌥⎋, ⌘⌥⇧⎋ und ⌘⌥⇧⌃⎋ für „Sofort beenden“ und sie können nicht freigegeben werden. ScryTab kann sie nicht verwenden.\n\nIhre Änderung würde eines davon zuweisen an: %@.";
 "Medium" = "Mittel";
 "Middle" = "Mitte";
-"Minimize/Deminimize window" = "Fenster minimieren/wiederherstellen";
 "Miscellaneous" = "Sonstiges";
 "Move Down" = "Nach unten";
 "Move to Applications Folder" = "In Programme-Ordner verschieben";
@@ -130,7 +124,6 @@
 "Move Up" = "Nach oben";
 "Multiple screens" = "Mehrere Bildschirme";
 "Name" = "Name";
-"Navigation & pointer" = "Navigation & Zeiger";
 "Never" = "Nie";
 "Never send crash reports" = "Absturzberichte nie senden";
 "New Focus Set" = "Neues Fokus-Set";
@@ -145,7 +138,6 @@
 "Not currently open" = "Zurzeit nicht geöffnet";
 "Not now" = "Jetzt nicht";
 "OK" = "OK";
-"Only on different screen" = "Nur auf anderem Bildschirm";
 "Open Accessibility Settings…" = "Einstellungen für Bedienungshilfen öffnen…";
 "Open Appearance Settings" = "Darstellungseinstellungen öffnen";
 "Open Trackpad Settings…" = "Einstellungen für Trackpad öffnen…";
@@ -160,7 +152,6 @@
 "Please fill in the form" = "Bitte füllen Sie das Formular aus";
 "Preview of the selected appearance style" = "Vorschau des ausgewählten Erscheinungsstils";
 "Quit %@" = "%@ beenden";
-"Quit app" = "App beenden";
 "Recently Created First" = "Zuletzt erstellte zuerst";
 "Recently Focused First" = "Zuletzt fokussierte zuerst";
 "Report a bug" = "Fehler melden";
@@ -178,9 +169,6 @@
 "Search applications" = "Apps suchen";
 "Select next window" = "Nächstes Fenster auswählen";
 "Select previous window" = "Vorheriges Fenster auswählen";
-"Select windows on mouse hover" = "Fenster beim Überfahren mit der Maus auswählen";
-"Select windows using arrow keys" = "Fenster mit Pfeiltasten auswählen";
-"Select windows using vim keys" = "Fenster mit Vim-Tasten auswählen";
 "Send feedback" = "Feedback senden";
 "Send feedback…" = "Feedback senden…";
 "Sending…" = "Wird gesendet…";
@@ -228,7 +216,6 @@
 "Title truncation" = "Titelkürzung";
 "Titles" = "Titel";
 "Trackpad" = "Trackpad";
-"Trackpad haptic feedback" = "Haptisches Trackpad-Feedback";
 "Trigger" = "Auslöser";
 "Unassign existing shortcut and continue" = "Vorhandenes Tastenkürzel aufheben und fortfahren";
 "Unavailable application" = "Nicht verfügbare App";
@@ -237,8 +224,6 @@
 "Usage" = "Nutzung";
 "Version" = "Version";
 "View existing discussions" = "Vorhandene Diskussionen anzeigen";
-"Vim keys" = "Vim-Tasten";
-"Vim keys already assigned to other actions:\n%@" = "Vim-Tasten sind bereits anderen Aktionen zugewiesen:\n%@";
 "Visibility" = "Sichtbarkeit";
 "Visible Spaces" = "Sichtbare Spaces";
 "Website" = "Website";
