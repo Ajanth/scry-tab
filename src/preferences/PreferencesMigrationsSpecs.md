@@ -13,6 +13,7 @@
 - **Version gating (`shouldRun`)** uses `String.compare(_, options: .numeric)`. A migration with threshold `T` runs iff the stored version is **≤ T** (i.e. compare is *not* `.orderedDescending`). The `.numeric` option is load-bearing: lexically `"9" > "10"`, but numerically `9 < 10`, so a user on `9.x` still gets a `10.x` migration.
 - **Order matters**: `updateToNewPreferences` runs migrations newest-threshold-first; some depend on keys earlier ones leave behind. The per-migration tests isolate each, but the registration list in `updateToNewPreferences` is the integration contract.
 - **Shared presentation migration** runs once behind `sharedPresentationDefaultsMigrated`. It seeds shared ordering/grouping from shortcut 1, removes redundant equal values, and retains different shortcut values as explicit overrides.
+- **Obsolete when-active shortcuts scrub** runs once behind `obsoleteWhenActiveShortcutsRemoved`. It `removeObject`s the five retired static shortcut keys (`lockSearchShortcut`, `minDeminWindowShortcut`, `toggleFullscreenWindowShortcut`, `quitAppShortcut`, `hideShowAppShortcut`) so stale UserDefaults cannot resurrect them.
 - **Idempotency**: `migrateExceptionsTitleArray` must be safe to re-run — already-migrated (array-form) data fails to decode into the legacy (`String?`) shape, triggering an early return that leaves data untouched.
 - **A quirk worth knowing** (pinned by a test): the global→per-shortcut grouping migration copies the global value into the indexed keys, but because index 0's key *is* the old global key, that key is removed at the end — so slot 0 ends up unset while slots 2…10 hold the value.
 - **Testability**: production reads/writes `UserDefaults.standard`; the tests inject an isolated suite via `PreferencesMigrations.defaults` (reset in `tearDown`) so they never touch the dev machine's real prefs.
@@ -34,6 +35,10 @@ Mirrors `PreferencesMigrationsTests.swift` 1:1.
 - **testSharedPresentationDefaultsPreserveDistinctShortcutValues** — shortcut 1 seeds shared ordering/grouping and different shortcut values survive as explicit overrides, including legacy Bool tab-group normalization.
 - **testSharedPresentationDefaultsUseNormalFallbacksAndRemoveEqualOverrides** — absent legacy values use the normal defaults and redundant equal stored values are removed.
 - **testSharedPresentationDefaultsMigrationRunsOnlyOnce** — the persistent marker prevents a later launch from overwriting shared-setting edits.
+
+### B2. Obsolete when-active shortcuts scrub
+- **testObsoleteWhenActiveShortcutsRemovesKeysAndSetsMarker** — marker unset → five obsolete shortcut keys removed and marker set.
+- **testObsoleteWhenActiveShortcutsMigrationRunsOnlyOnce** — marker already set → no-op (reintroduced keys left untouched).
 
 ### C. Grouping moved global → per-shortcut
 - **testGroupingCopiesGlobalShowAppsOrWindowsToPerShortcutKeysAndRemovesGlobal** — global value lands in `showAppsOrWindows2…10`; the global key is removed (slot 0 ends nil — the documented quirk).
@@ -65,10 +70,6 @@ Mirrors `PreferencesMigrationsTests.swift` 1:1.
 ### I. Gestures split
 - **testGesturesFourFingerRemapsToHorizontal** — `"2"` (4-finger) → `"3"` (4-finger-horizontal).
 - **testGesturesOtherValueUnchanged** — other values untouched.
-
-### J. cursorFollowFocus toggle → dropdown
-- **testCursorFollowFocusTrueBecomesAlways** — `"true"` → `1`.
-- **testCursorFollowFocusFalseBecomesNever** — `"false"` → `0`.
 
 ### K. Menubar icon hidden-value → shown toggle
 - **testMenubarIconHiddenValueSplitsIntoShownToggle** — `menubarIcon == "3"` → `menubarIcon "0"` + `menubarIconShown "false"`.

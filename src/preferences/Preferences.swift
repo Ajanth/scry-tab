@@ -10,17 +10,8 @@ class Preferences {
             "focusWindowShortcut": defaultShortcut(returnKeyEquivalent()),
             "previousWindowShortcut": defaultShortcut("⇧"),
             "cancelShortcut": defaultShortcut("⎋"),
-            "lockSearchShortcut": defaultShortcut("Space"),
             "closeWindowShortcut": defaultShortcut("W"),
-            "minDeminWindowShortcut": defaultShortcut("M"),
-            "toggleFullscreenWindowShortcut": defaultShortcut("F"),
-            "quitAppShortcut": defaultShortcut("Q"),
-            "hideShowAppShortcut": defaultShortcut("H"),
             "searchShortcut": defaultShortcut("S"),
-            "arrowKeysEnabled": "true",
-            "vimKeysEnabled": "false",
-            "mouseHoverEnabled": "false",
-            "cursorFollowFocus": CursorFollowFocus.never.indexAsString,
             "hideColoredCircles": "false",
             "appearanceStyle": AppearanceStylePreference.appIcons.indexAsString,
             "appearanceSize": AppearanceSizePreference.auto.indexAsString,
@@ -41,7 +32,6 @@ class Preferences {
             "crashPolicy": CrashPolicyPreference.ask.indexAsString,
             "hideSpaceNumberLabels": "false",
             "hideStatusIcons": "false",
-            "trackpadHapticFeedbackEnabled": "true",
             "settingsWindowShownOnFirstLaunch": "false",
             "appearanceOverrideResetChoiceRemembered": "false",
             "appearanceOverrideResetRemovesOverrides": "false",
@@ -74,8 +64,7 @@ class Preferences {
     // system preferences
     static var finderShowsQuitMenuItem: Bool { UserDefaults(suiteName: "com.apple.Finder")?.bool(forKey: "QuitMenuItem") ?? false }
     static let staticShortcutKeys = [
-        "focusWindowShortcut", "previousWindowShortcut", "cancelShortcut", "lockSearchShortcut", "closeWindowShortcut",
-        "minDeminWindowShortcut", "toggleFullscreenWindowShortcut", "quitAppShortcut", "hideShowAppShortcut", "searchShortcut",
+        "focusWindowShortcut", "previousWindowShortcut", "cancelShortcut", "closeWindowShortcut", "searchShortcut",
     ]
     static var allShortcutPreferenceKeys: [String] {
         staticShortcutKeys + (0..<maxShortcutCount).flatMap { [indexToName("holdShortcut", $0), indexToName("nextWindowShortcut", $0)] }
@@ -91,20 +80,8 @@ class Preferences {
     static var focusWindowShortcut: Shortcut? { CachedUserDefaults.shortcut("focusWindowShortcut") }
     static var previousWindowShortcut: Shortcut? { CachedUserDefaults.shortcut("previousWindowShortcut") }
     static var cancelShortcut: Shortcut? { CachedUserDefaults.shortcut("cancelShortcut") }
-    static var lockSearchShortcut: Shortcut? { CachedUserDefaults.shortcut("lockSearchShortcut") }
     static var closeWindowShortcut: Shortcut? { CachedUserDefaults.shortcut("closeWindowShortcut") }
-    static var minDeminWindowShortcut: Shortcut? { CachedUserDefaults.shortcut("minDeminWindowShortcut") }
-    static var toggleFullscreenWindowShortcut: Shortcut? { CachedUserDefaults.shortcut("toggleFullscreenWindowShortcut") }
-    static var quitAppShortcut: Shortcut? { CachedUserDefaults.shortcut("quitAppShortcut") }
-    static var hideShowAppShortcut: Shortcut? { CachedUserDefaults.shortcut("hideShowAppShortcut") }
     static var searchShortcut: Shortcut? { CachedUserDefaults.shortcut("searchShortcut") }
-    // periphery:ignore
-    static var arrowKeysEnabled: Bool { CachedUserDefaults.bool("arrowKeysEnabled") }
-    // periphery:ignore
-    static var vimKeysEnabled: Bool { CachedUserDefaults.bool("vimKeysEnabled") }
-    static var mouseHoverEnabled: Bool { CachedUserDefaults.bool("mouseHoverEnabled") }
-    static var cursorFollowFocus: CursorFollowFocus { CachedUserDefaults.macroPref("cursorFollowFocus", CursorFollowFocus.allCases) }
-    static var trackpadHapticFeedbackEnabled: Bool { CachedUserDefaults.bool("trackpadHapticFeedbackEnabled") }
     static var hideColoredCircles: Bool { CachedUserDefaults.bool("hideColoredCircles") }
     static var hideSpaceNumberLabels: Bool { CachedUserDefaults.bool("hideSpaceNumberLabels") }
     static var hideStatusIcons: Bool { CachedUserDefaults.bool("hideStatusIcons") }
