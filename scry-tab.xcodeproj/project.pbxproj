@@ -62,7 +62,6 @@
 		5F117E41000000000000F102 /* PhantomWindowDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F117E41000000000000F101 /* PhantomWindowDetectorTests.swift */; };
 		5F17452E2F1A908D00128EF8 /* WindowDiscriminator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F17452D2F1A907800128EF8 /* WindowDiscriminator.swift */; };
 		5F21C9E02C6E94240091F72F /* ShortcutsWhenActiveSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F21C9DF2C6E94240091F72F /* ShortcutsWhenActiveSheet.swift */; };
-		5F21C9E22C6E94410091F72F /* AdditionalControlsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F21C9E12C6E94410091F72F /* AdditionalControlsSheet.swift */; };
 		5F21C9E42C6E94700091F72F /* CustomizeStyleSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F21C9E32C6E94700091F72F /* CustomizeStyleSheet.swift */; };
 		5F21C9E82C6E96A00091F72F /* SheetWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F21C9E72C6E96A00091F72F /* SheetWindow.swift */; };
 		5F4753072CEE5A2E002C6C5E /* AppearanceTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C8D57C86AF492D43A576D /* AppearanceTestable.swift */; };
@@ -373,7 +372,6 @@
 		5F117E41000000000000F101 /* PhantomWindowDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomWindowDetectorTests.swift; sourceTree = "<group>"; };
 		5F17452D2F1A907800128EF8 /* WindowDiscriminator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowDiscriminator.swift; sourceTree = "<group>"; };
 		5F21C9DF2C6E94240091F72F /* ShortcutsWhenActiveSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsWhenActiveSheet.swift; sourceTree = "<group>"; };
-		5F21C9E12C6E94410091F72F /* AdditionalControlsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalControlsSheet.swift; sourceTree = "<group>"; };
 		5F21C9E32C6E94700091F72F /* CustomizeStyleSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeStyleSheet.swift; sourceTree = "<group>"; };
 		5F21C9E72C6E96A00091F72F /* SheetWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetWindow.swift; sourceTree = "<group>"; };
 		5F58D00000000000000D0001 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
@@ -775,7 +773,6 @@
 				5FC5980000000000000A0001 /* NativeHotkeyResolver.swift */,
 				5FC5980000000000000A0101 /* NativeHotkeyResolverTests.swift */,
 				5F21C9DF2C6E94240091F72F /* ShortcutsWhenActiveSheet.swift */,
-				5F21C9E12C6E94410091F72F /* AdditionalControlsSheet.swift */,
 			);
 			path = controls;
 			sourceTree = "<group>";
@@ -1733,7 +1730,6 @@
 				5F58D00000000000000D0019 /* DesignSystemControls.swift in Sources */,
 				D04BABED81800E18732912CC /* CGWindowID.swift in Sources */,
 				D04BA26A691D56031FCCF00C /* Sysctl.swift in Sources */,
-				5F21C9E22C6E94410091F72F /* AdditionalControlsSheet.swift in Sources */,
 				D04BA8480A8FF466CA89DA5B /* main.swift in Sources */,
 				D04BAFB973C3D28718FAEB87 /* Windows.swift in Sources */,
 				5E1EC110000000000000C002 /* SelectionResolver.swift in Sources */,
