@@ -17,7 +17,8 @@ class GeneralTab {
         crashPolicyDropdown = LabelAndControl.makeDropdown("crashPolicy", CrashPolicyPreference.allCases)
         let crashPolicy = TableGroupView.Row(leftTitle: NSLocalizedString("Crash reports policy", comment: ""),
             rightViews: [crashPolicyDropdown!])
-        let table = TableGroupView(width: SettingsWindow.contentWidth)
+        let contentWidth = DesignSystemCenteredDetailPage.contentWidth(for: SettingsWindow.contentWidth)
+        let table = TableGroupView(width: contentWidth)
         table.addRow(startAtLogin)
         table.addNewTable()
         table.addRow(language)
@@ -38,8 +39,8 @@ class GeneralTab {
             right: TableGroupView.toolRowHorizontalPadding,
             left: TableGroupView.toolRowHorizontalPadding,
             spacing: TableGroupView.toolRowSpacing)
-        let view = TableGroupSetView(originalViews: [table, tools], padding: 0, bottomPadding: 0)
-        return view
+        let content = TableGroupSetView(originalViews: [table, tools], padding: 0, bottomPadding: 0)
+        return DesignSystemCenteredDetailPage(content: content, width: SettingsWindow.contentWidth)
     }
 
     static func cleanup() {
