@@ -252,7 +252,5 @@ class GestureTracker {
 }
 
 fileprivate func performHapticFeedback() {
-    if Preferences.trackpadHapticFeedbackEnabled {
-        NSHapticFeedbackManager.defaultPerformer.perform(.generic, performanceTime: .default)
-    }
+    NSHapticFeedbackManager.defaultPerformer.perform(.generic, performanceTime: .default)
 }

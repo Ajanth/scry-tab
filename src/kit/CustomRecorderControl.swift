@@ -45,41 +45,9 @@ class CustomRecorderControl: RecorderControl {
         set(allowedModifierFlags: CustomRecorderControl.allowedModifiers.subtracting(restrictedModifiers), requiredModifierFlags: [], allowsEmptyModifierFlags: true)
     }
 
-    /// How to clear the conflicting shortcut when the user picks "Unassign and continue". Resolved
-    /// from the id alone — arrow/vim are toggled off via their checkboxes; everything else is cleared
-    /// through `Preferences` by id (so a shortcut that isn't on screen is handled correctly). The
-    /// human-readable label shown in the dialog comes separately from `ControlsTab.conflictLabel`.
-    private enum ShortcutConflict {
-        case arrow
-        case vim
-        case regular(id: String)
-
-        static func classify(_ id: String) -> ShortcutConflict {
-            if ["←", "→", "↑", "↓"].contains(id) { return .arrow }
-            if id.starts(with: "vimCycle") { return .vim }
-            return .regular(id: id)
-        }
-    }
-
     func alertIfSameShortcutAlreadyAssigned(_ candidateShortcut: Shortcut, _ shortcutAlreadyAssigned: String) {
-        let conflict = ShortcutConflict.classify(shortcutAlreadyAssigned)
         guard confirmUnassigningShortcut(shortcutAlreadyAssigned) else { return }
-        switch conflict {
-        case .arrow:
-            if let cb = ControlsTab.arrowKeysCheckbox {
-                cb.state = .off
-                ControlsTab.arrowKeysEnabledCallback(cb)
-                LabelAndControl.controlWasChanged(cb, nil)
-            }
-        case .vim:
-            if let cb = ControlsTab.vimKeysCheckbox {
-                cb.state = .off
-                ControlsTab.vimKeysEnabledCallback(cb)
-                LabelAndControl.controlWasChanged(cb, nil)
-            }
-        case .regular(let conflictingId):
-            ControlsTab.unassignShortcut(conflictingId)
-        }
+        ControlsTab.unassignShortcut(shortcutAlreadyAssigned)
         updateShortcut(self, candidateShortcut, self, id)
     }
 
@@ -99,6 +67,19 @@ class CustomRecorderControl: RecorderControl {
         cancelButton.keyEquivalent = "\u{1b}"
         let userChoice = alert.runModal()
         return userChoice == .alertFirstButtonReturn
+    }
+
+    /// Fixed arrow-key actions cannot be unassigned. Refuse the candidate with an existing-localization
+    /// alert that offers only dismissal.
+    func alertConflictWithFixedArrowKeys(_ shortcutAlreadyAssigned: String) {
+        let label = ControlsTab.conflictLabel(shortcutAlreadyAssigned) ?? "an unknown action"
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = NSLocalizedString("Conflicting shortcut", comment: "")
+        alert.informativeText = String(format: NSLocalizedString("Shortcut already assigned to: %@", comment: ""),
+                                       label.replacingOccurrences(of: " ", with: "\u{00A0}"))
+        alert.addButton(withTitle: NSLocalizedString("OK", comment: "")).setAccessibilityFocused(true)
+        _ = alert.runModal()
     }
 
     func updateShortcut(_ control: CustomRecorderControl, _ objectValue: Shortcut?, _ senderControl: NSControl, _ id: String) {
@@ -142,11 +123,11 @@ extension CustomRecorderControl: RecorderControlDelegate {
         }
         switch acceptance {
         case .accepted: save(shortcut)
-        case .modifiersOnlyButContainsKeycode: return false
-        case .nonModifierKeyRequired: return false
+        case .modifiersOnlyButContainsKeycode, .nonModifierKeyRequired: break
         case .conflictWithExistingShortcut(let s): alertIfSameShortcutAlreadyAssigned(shortcut, s)
+        case .conflictWithFixedArrowKeys(let s): alertConflictWithFixedArrowKeys(s)
         case .reservedByMacos(let s): alertIfShortcutReservedByMacos(shortcut, s)
         }
-        return true
+        return CustomRecorderControlTestable.shouldAcceptOrdinaryRecorderValue(acceptance)
     }
 }

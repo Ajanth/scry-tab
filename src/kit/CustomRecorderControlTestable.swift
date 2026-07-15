@@ -4,7 +4,7 @@ import ShortcutRecorder
 
 class CustomRecorderControlTestable {
     /// A `holdShortcut`/`nextWindowShortcut` candidate id must resolve to an in-range shortcut index;
-    /// every other id (the static "when active" shortcuts, arrow, vim) is well-formed by definition.
+    /// every other id (the static "when active" shortcuts, arrow keys) is well-formed by definition.
     /// This is the contract the recycled `ShortcutEditor` must uphold: the id handed to the conflict
     /// check is the bound preference key, not a stale placeholder. The regression that hid the
     /// conflict dialog was exactly a malformed id — the recorder's frozen `"nextWindowShortcut0"`,
@@ -32,6 +32,9 @@ class CustomRecorderControlTestable {
         // TODO: a user can assign a shortcut that's both .conflictWithExistingShortcut and .reservedByMacos
         // It's a mess to deal with. Current implem may let them bypass isReservedByMacos. Would be nice to think about what UX to do here
         if let alreadyAssigned = isAlreadyUsedByAnotherShortcut(newCombos, oldCombos) {
+            if isFixedArrowKeyAction(alreadyAssigned) {
+                return .conflictWithFixedArrowKeys(shortcutAlreadyAssigned: alreadyAssigned)
+            }
             return .conflictWithExistingShortcut(shortcutAlreadyAssigned: alreadyAssigned)
         }
         if let shortcutUsingEscape = isReservedByMacos(newCombos) {
@@ -81,7 +84,7 @@ class CustomRecorderControlTestable {
     /// the `nextWindowShortcut` always (its chord is what's being recomputed, whether the candidate
     /// is the hold or the press), but the `holdShortcut` only when the candidate replaces it. A
     /// press edit keeps its hold, and that hold still combines with the local shortcuts (arrows /
-    /// vim / statics) — excluding it meant e.g. press=→ with arrow-keys selection enabled was only
+    /// statics) — excluding it meant e.g. press=→ with fixed arrow-key selection was only
     /// flagged when ANOTHER shortcut shared the same hold modifiers (the default double-⌥ holds
     /// caught ⌥+→ by luck while ⌃+→ recorded with no conflict dialog).
     static func isRecomputedInNewCombinations(_ candidateId: String, _ existingId: String) -> Bool {
@@ -139,6 +142,24 @@ class CustomRecorderControlTestable {
         return nil
     }
 
+    static func isFixedArrowKeyAction(_ id: String) -> Bool {
+        ["←", "→", "↑", "↓"].contains(id)
+    }
+
+    /// Ordinary (Settings) recorder path: whether ShortcutRecorder should accept after side-effect
+    /// handlers run. Fixed-arrow conflicts are always refused so the forbidden binding is not
+    /// persisted; displaceable conflict and macOS-reserved cases stay `true` so their confirm
+    /// handlers can still commit. Extracted because `alertConflictWithFixedArrowKeys` presents a
+    /// modal alert and cannot be exercised through the live delegate in unit tests.
+    static func shouldAcceptOrdinaryRecorderValue(_ acceptance: ShortcutAcceptance) -> Bool {
+        switch acceptance {
+        case .accepted, .conflictWithExistingShortcut, .reservedByMacos:
+            return true
+        case .modifiersOnlyButContainsKeycode, .nonModifierKeyRequired, .conflictWithFixedArrowKeys:
+            return false
+        }
+    }
+
     /// commandTab and commandKeyAboveTab are self-contained in the "nextWindowShortcut" shortcuts
     /// but the keys of commandShiftTab can be spread between holdShortcut and a local shortcut
     static func combinedModifiersMatch(_ modifiers1: UInt32, _ modifiers2: UInt32) -> Bool {
@@ -156,6 +177,7 @@ enum ShortcutAcceptance: Equatable {
     case modifiersOnlyButContainsKeycode
     case nonModifierKeyRequired
     case conflictWithExistingShortcut(shortcutAlreadyAssigned: String)
+    case conflictWithFixedArrowKeys(shortcutAlreadyAssigned: String)
     case reservedByMacos(shortcutUsingEscape: String)
 
     static func == (lhs: ShortcutAcceptance, rhs: ShortcutAcceptance) -> Bool {
@@ -164,7 +186,8 @@ enum ShortcutAcceptance: Equatable {
              (.modifiersOnlyButContainsKeycode, .modifiersOnlyButContainsKeycode),
              (.nonModifierKeyRequired, .nonModifierKeyRequired),
              (.reservedByMacos, .reservedByMacos),
-             (.conflictWithExistingShortcut, .conflictWithExistingShortcut):
+             (.conflictWithExistingShortcut, .conflictWithExistingShortcut),
+             (.conflictWithFixedArrowKeys, .conflictWithFixedArrowKeys):
             return true
         default:
             return false
