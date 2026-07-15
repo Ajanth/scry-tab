@@ -250,8 +250,7 @@ class Windows {
         if !fromMouse {
             TilesView.overView.resetHoveredWindow()
         }
-        if (!fromMouse || Preferences.mouseHoverEnabled)
-               && (newIndex != session.selectedIndex || lastWindowActivityType == .hover) {
+        if !fromMouse && (newIndex != session.selectedIndex || lastWindowActivityType == .hover) {
             let oldIndex = session.selectedIndex
             session.selectedIndex = newIndex
             session.selectedTarget = list[newIndex].id

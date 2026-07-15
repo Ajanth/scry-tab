@@ -839,6 +839,9 @@ private final class FocusSetEditorSheet: SheetWindow {
             shortcutKeyEquivalent = shortcut.keyEquivalent
             conflictingShortcutActionIdentifier = actionIdentifier
             return true
+        case .conflictWithFixedArrowKeys(let actionIdentifier):
+            modifierRecorder.alertConflictWithFixedArrowKeys(actionIdentifier)
+            return false
         case .reservedByMacos(let actionIdentifier):
             guard modifierRecorder.confirmUnassigningShortcutReservedByMacos(actionIdentifier) else { return false }
             shortcutKeyEquivalent = shortcut.keyEquivalent

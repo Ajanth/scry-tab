@@ -10,12 +10,10 @@ is the pure decision kernel for its state machine, extracted from `TilesView` (s
 AppKit side effects (make the search field first responder, place the caret, refresh the UI, toggle
 the Edit menu, call `App.cycleSelection`).
 
-### The three modes
+### The two modes
 
 - **`.off`** — no search field interaction; the switcher behaves normally.
 - **`.editing`** — the search field is the first responder and editable; typing filters the list.
-- **`.locked`** — the query is frozen and the field is read-only; focus moves to the selected
-  tile so arrow keys navigate results while the filter stays put.
 
 ### How you enter search (this decides Escape's behavior)
 
@@ -29,9 +27,9 @@ the Edit menu, call `App.cycleSelection`).
   exits search back to the normal switcher (a second Escape then closes it). If the session *started
   in search*, Escape closes the whole switcher immediately — there's no "normal switcher" to fall back to.
 - **Refresh only from `.off`**: entering editing refreshes the UI only when coming from `.off`
-  (`enterEditing(refreshUi:)` carries the original `wasOff` flag); re-entering from `.locked` does not.
+  (`enterEditing(refreshUi:)` carries the original `wasOff` flag).
 - **Key routing precedence** (while editing): IME-composing or an open context menu wins first (never
-  steal composing keystrokes) → arrows drive selection → Tab is swallowed → the cancel/lockSearch/focus
+  steal composing keystrokes) → arrows drive selection → Tab is swallowed → the cancel/focus
   shortcuts pass to the shortcut pipeline → everything else (typed text, **cmd+A/C/V/X**) goes to the
   `NSSearchField`, which handles select-all/copy/paste/cut natively. ScryTab does not intercept those.
 - **Field editability** tracks mode exactly: editable iff `.editing`.
@@ -52,51 +50,40 @@ Mirrors `SearchModeResolverTests.swift` 1:1.
 ### B. Toggle route (search shortcut)
 - **testToggleFromOffEntersEditing** — `.off` → `.enterEditing`.
 - **testToggleFromEditingDisables** — `.editing` → `.disable`.
-- **testToggleFromLockedReEntersEditing** — `.locked` → `.enterEditing`.
 
 ### C. Enter editing
 - **testEnterFromOffEntersEditingAndRefreshes** — `.off` → `enterEditing(refreshUi: true)`.
-- **testEnterFromLockedEntersEditingWithoutRefresh** — `.locked` → `enterEditing(refreshUi: false)`.
 - **testEnterWhenAlreadyEditingJustPlacesCaret** — `.editing` → `placeCaretOnly`.
 
 ### D. Disable
 - **testDisableFromEditingExitsToOff** — `.editing` → `.exitToOff`.
-- **testDisableFromLockedExitsToOff** — `.locked` → `.exitToOff`.
 - **testDisableWhenAlreadyOffIsNoOp** — `.off` → `.noOp`.
 
-### E. Lock / unlock
-- **testLockFromEditingLocksResults** — `.editing` → `.lockResults`.
-- **testLockFromLockedUnlocksToEditing** — `.locked` → `.unlockToEditing`.
-- **testLockFromOffIsNoOp** — `.off` → `.noOp`.
-
-### F. Escape depends on how search was entered
+### E. Escape depends on how search was entered
 - **testEscapeEditingToggledMidSessionExitsSearch** — editing + mid-session → `.exitSearch`.
-- **testEscapeLockedToggledMidSessionExitsSearch** — locked + mid-session → `.exitSearch`.
 - **testEscapeEditingStartedInSearchClosesSwitcher** — editing + started-in-search → `.closeSwitcher`.
-- **testEscapeLockedStartedInSearchClosesSwitcher** — locked + started-in-search → `.closeSwitcher`.
 - **testEscapeOffToggledMidSessionClosesSwitcher** — off → `.closeSwitcher`.
 - **testEscapeOffStartedInSearchClosesSwitcher** — off → `.closeSwitcher`.
 
-### G. Key routing: navigation & tab
+### F. Key routing: navigation & tab
 - **testKeyLeftArrowCyclesLeft** — left arrow → `cycleSelection(.left)`.
 - **testKeyRightArrowCyclesRight** — right arrow → `cycleSelection(.right)`.
 - **testKeyUpArrowCyclesUp** — up arrow → `cycleSelection(.up)`.
 - **testKeyDownArrowCyclesDown** — down arrow → `cycleSelection(.down)`.
 - **testKeyTabIsSwallowed** — Tab → `.handled`.
 
-### H. Key routing: shortcut pass-through
+### G. Key routing: shortcut pass-through
 - **testKeyCancelPassesToShortcuts** — cancel shortcut → `.passToShortcuts`.
-- **testKeyLockSearchPassesToShortcuts** — lock-search shortcut → `.passToShortcuts`.
 - **testKeyFocusPassesToShortcuts** — focus shortcut → `.passToShortcuts`.
 - **testKeyArrowWinsOverMatchingShortcut** — an arrow also bound as a shortcut still cycles (arrow precedence).
 
-### I. Key routing: text editing passes to the field
+### H. Key routing: text editing passes to the field
 - **testKeyPlainTextPassesToField** — typed characters and cmd+A/C/V/X (none of arrow/tab/shortcut) → `.passToField` (NSSearchField handles editing natively).
 
-### J. IME composing / open context menu beat everything
+### I. IME composing / open context menu beat everything
 - **testKeyMarkedTextBeatsArrow** — composing → `.passToField` even for an arrow.
 - **testKeyOpenMenuBeatsTab** — open menu → `.passToField` even for Tab.
 - **testKeyMarkedTextBeatsShortcut** — composing → `.passToField` even for a matching shortcut.
 
-### K. Search-field editability
-- **testFieldEditableOnlyWhenEditing** — editable iff `.editing` (off/locked are read-only).
+### J. Search-field editability
+- **testFieldEditableOnlyWhenEditing** — editable iff `.editing` (off is read-only).

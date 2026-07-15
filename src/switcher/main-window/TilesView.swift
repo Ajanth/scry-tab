@@ -39,7 +39,6 @@ class TilesView {
 
     static var isSearchModeOn: Bool { searchMode != .off }
     static var isSearchEditing: Bool { searchMode == .editing }
-    static var isSearchLocked: Bool { searchMode == .locked }
 
     static func startSearchSession(_ startInSearchMode: Bool) {
         searchField.stringValue = ""
@@ -75,19 +74,6 @@ class TilesView {
         focusSelectedTileIfPossible()
     }
 
-    static func lockSearchMode() {
-        switch SearchModeResolver.lock(mode: searchMode) {
-            case .lockResults:
-                searchMode = .locked
-                updateSearchFieldEditability()
-                focusSelectedTileIfPossible()
-            case .unlockToEditing:
-                enableSearchEditing()
-            default:
-                return
-        }
-    }
-
     static func enableSearchEditing() {
         switch SearchModeResolver.enableEditing(mode: searchMode) {
             case .placeCaretOnly:
@@ -115,7 +101,6 @@ class TilesView {
             arrow: arrowCycleDirection(event.keyCode),
             isTab: Int(event.keyCode) == kVK_Tab,
             matchesCancel: matchesShortcut(event, "cancelShortcut"),
-            matchesLockSearch: matchesShortcut(event, "lockSearchShortcut"),
             matchesFocus: matchesShortcut(event, "focusWindowShortcut"))
         switch decision {
             case .cycleSelection(let direction):
