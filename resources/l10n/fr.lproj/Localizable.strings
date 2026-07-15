@@ -19,7 +19,6 @@
 "Add an app from disk" = "Ajouter une app depuis le disque";
 "Add Focus Set" = "Ajouter un ensemble de concentration";
 "Add or remove Focus Sets" = "Ajouter ou supprimer des ensembles de concentration";
-"Additional controls" = "Contrôles supplémentaires";
 "Advanced" = "Avancé";
 "After keys are released" = "Après le relâchement des touches";
 "All apps" = "Toutes les apps";
@@ -67,7 +66,6 @@
 "Crash reports policy" = "Politique des rapports de plantage";
 "Create a Focus Set to browse the applications you use together." = "Créez un ensemble de concentration pour parcourir les applications que vous utilisez ensemble.";
 "Create GitHub issue" = "Créer un ticket GitHub";
-"Cursor follows focus" = "Le curseur suit la sélection";
 "Customize more…" = "Personnaliser davantage…";
 "Dark" = "Sombre";
 "Debug tools" = "Outils de débogage";
@@ -93,7 +91,6 @@
 "Focus Set actions" = "Actions de l’ensemble de concentration";
 "Focus Set Behavior" = "Comportement des ensembles de concentration";
 "Focus Sets" = "Ensembles de concentration";
-"Fullscreen/Defullscreen window" = "Mettre/Quitter le plein écran";
 "General" = "Général";
 "Gesture" = "Geste";
 "Gestures" = "Gestes";
@@ -106,7 +103,6 @@
 "Hide Space number labels" = "Masquer les numéros de Bureau";
 "Hide status icons" = "Masquer les icônes d'état";
 "Hide windows" = "Masquer les fenêtres";
-"Hide/Show app" = "Masquer/Afficher l'app";
 "Hold" = "Maintenir";
 "I can move myself to the Applications folder if you'd like." = "Je peux me déplacer vers le dossier Applications si vous le souhaitez.";
 "I think the app could be improved with…" = "Je pense que l'app pourrait être améliorée avec…";
@@ -118,11 +114,9 @@
 "Large" = "Grand";
 "Later" = "Plus tard";
 "Light" = "Clair";
-"Lock search" = "Verrouiller la recherche";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS réserve ⌘⌥⎋, ⌘⌥⇧⎋ et ⌘⌥⇧⌃⎋ pour Forcer à quitter et ils ne peuvent pas être réaffectés. ScryTab ne peut pas les utiliser.\n\nVotre modification en affecterait un à : %@.";
 "Medium" = "Moyen";
 "Middle" = "Milieu";
-"Minimize/Deminimize window" = "Réduire/Restaurer la fenêtre";
 "Miscellaneous" = "Divers";
 "Move Down" = "Déplacer vers le bas";
 "Move to Applications Folder" = "Déplacer vers le dossier Applications";
@@ -130,7 +124,6 @@
 "Move Up" = "Déplacer vers le haut";
 "Multiple screens" = "Plusieurs écrans";
 "Name" = "Nom";
-"Navigation & pointer" = "Navigation et pointeur";
 "Never" = "Jamais";
 "Never send crash reports" = "Ne jamais envoyer de rapport de plantage";
 "New Focus Set" = "Nouvel ensemble de concentration";
@@ -145,7 +138,6 @@
 "Not currently open" = "Pas ouverte actuellement";
 "Not now" = "Pas maintenant";
 "OK" = "OK";
-"Only on different screen" = "Uniquement sur un autre écran";
 "Open Accessibility Settings…" = "Ouvrir les réglages d'accessibilité…";
 "Open Appearance Settings" = "Ouvrir les réglages d’apparence";
 "Open Trackpad Settings…" = "Ouvrir les réglages du Trackpad…";
@@ -160,7 +152,6 @@
 "Please fill in the form" = "Veuillez remplir le formulaire";
 "Preview of the selected appearance style" = "Aperçu du style d’apparence sélectionné";
 "Quit %@" = "Quitter %@";
-"Quit app" = "Quitter l'app";
 "Recently Created First" = "Récemment créées d'abord";
 "Recently Focused First" = "Récemment sélectionnées d'abord";
 "Report a bug" = "Signaler un bug";
@@ -178,9 +169,6 @@
 "Search applications" = "Rechercher des applications";
 "Select next window" = "Sélectionner la fenêtre suivante";
 "Select previous window" = "Sélectionner la fenêtre précédente";
-"Select windows on mouse hover" = "Sélectionner les fenêtres au survol de la souris";
-"Select windows using arrow keys" = "Sélectionner les fenêtres avec les touches fléchées";
-"Select windows using vim keys" = "Sélectionner les fenêtres avec les touches Vim";
 "Send feedback" = "Envoyer un commentaire";
 "Send feedback…" = "Envoyer un commentaire…";
 "Sending…" = "Envoi…";
@@ -228,7 +216,6 @@
 "Title truncation" = "Troncature du titre";
 "Titles" = "Titres";
 "Trackpad" = "Trackpad";
-"Trackpad haptic feedback" = "Retour haptique du Trackpad";
 "Trigger" = "Déclencheur";
 "Unassign existing shortcut and continue" = "Désaffecter le raccourci existant et continuer";
 "Unavailable application" = "Application indisponible";
@@ -237,8 +224,6 @@
 "Usage" = "Utilisation";
 "Version" = "Version";
 "View existing discussions" = "Voir les discussions existantes";
-"Vim keys" = "Touches Vim";
-"Vim keys already assigned to other actions:\n%@" = "Touches Vim déjà affectées à d'autres actions :\n%@";
 "Visibility" = "Visibilité";
 "Visible Spaces" = "Bureaux visibles";
 "Website" = "Site web";

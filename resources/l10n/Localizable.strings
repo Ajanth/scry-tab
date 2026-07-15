@@ -62,9 +62,6 @@
 "Add or remove Focus Sets" = "Add or remove Focus Sets";
 
 /* No comment provided by engineer. */
-"Additional controls" = "Additional controls";
-
-/* No comment provided by engineer. */
 "Advanced" = "Advanced";
 
 /* No comment provided by engineer. */
@@ -206,9 +203,6 @@
 "Create GitHub issue" = "Create GitHub issue";
 
 /* No comment provided by engineer. */
-"Cursor follows focus" = "Cursor follows focus";
-
-/* No comment provided by engineer. */
 "Customize more…" = "Customize more…";
 
 /* No comment provided by engineer. */
@@ -284,7 +278,6 @@
 "Focus Sets" = "Focus Sets";
 
 /* No comment provided by engineer. */
-"Fullscreen/Defullscreen window" = "Fullscreen/Defullscreen window";
 
 /* No comment provided by engineer. */
 "General" = "General";
@@ -323,7 +316,6 @@
 "Hide windows" = "Hide windows";
 
 /* No comment provided by engineer. */
-"Hide/Show app" = "Hide/Show app";
 
 /* No comment provided by engineer. */
 "Hold" = "Hold";
@@ -359,7 +351,6 @@
 "Light" = "Light";
 
 /* No comment provided by engineer. */
-"Lock search" = "Lock search";
 
 /* No comment provided by engineer. */
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@.";
@@ -371,7 +362,6 @@
 "Middle" = "Middle";
 
 /* No comment provided by engineer. */
-"Minimize/Deminimize window" = "Minimize/Deminimize window";
 
 /* No comment provided by engineer. */
 "Miscellaneous" = "Miscellaneous";
@@ -393,9 +383,6 @@
 
 /* No comment provided by engineer. */
 "Name" = "Name";
-
-/* No comment provided by engineer. */
-"Navigation & pointer" = "Navigation & pointer";
 
 /* No comment provided by engineer. */
 "Never" = "Never";
@@ -440,9 +427,6 @@
 "OK" = "OK";
 
 /* No comment provided by engineer. */
-"Only on different screen" = "Only on different screen";
-
-/* No comment provided by engineer. */
 "Open Accessibility Settings…" = "Open Accessibility Settings…";
 
 /* No comment provided by engineer. */
@@ -485,7 +469,6 @@
 "Quit %@" = "Quit %@";
 
 /* No comment provided by engineer. */
-"Quit app" = "Quit app";
 
 /* No comment provided by engineer. */
 "Recently Created First" = "Recently Created First";
@@ -537,15 +520,6 @@
 
 /* No comment provided by engineer. */
 "Select previous window" = "Select previous window";
-
-/* No comment provided by engineer. */
-"Select windows on mouse hover" = "Select windows on mouse hover";
-
-/* No comment provided by engineer. */
-"Select windows using arrow keys" = "Select windows using arrow keys";
-
-/* No comment provided by engineer. */
-"Select windows using vim keys" = "Select windows using vim keys";
 
 /* No comment provided by engineer. */
 "Send feedback" = "Send feedback";
@@ -689,9 +663,6 @@
 "Trackpad" = "Trackpad";
 
 /* No comment provided by engineer. */
-"Trackpad haptic feedback" = "Trackpad haptic feedback";
-
-/* No comment provided by engineer. */
 "Trigger" = "Trigger";
 
 /* No comment provided by engineer. */
@@ -714,12 +685,6 @@
 
 /* No comment provided by engineer. */
 "View existing discussions" = "View existing discussions";
-
-/* No comment provided by engineer. */
-"Vim keys" = "Vim keys";
-
-/* No comment provided by engineer. */
-"Vim keys already assigned to other actions:\n%@" = "Vim keys already assigned to other actions:\n%@";
 
 /* No comment provided by engineer. */
 "Visibility" = "Visibility";
