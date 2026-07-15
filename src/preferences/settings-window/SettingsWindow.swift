@@ -578,7 +578,6 @@ class SettingsWindow: NSWindow {
                 NSLocalizedString("Ordering", comment: ""),
             ]),
             SettingsSearchDescriptor(id: "controls-active", route: .controls(.activeShortcuts), sectionID: "controls", title: NSLocalizedString("Shortcuts while ScryTab is active", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + ShortcutsWhenActiveSheet.searchableStrings),
-            SettingsSearchDescriptor(id: "controls-navigation-pointer", route: .controls(.navigationPointer), sectionID: "controls", title: NSLocalizedString("Navigation & pointer", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + AdditionalControlsSheet.searchableStrings),
             SettingsSearchDescriptor(id: "focus-sets", route: .focusSets, sectionID: "focusSets", title: NSLocalizedString("Focus Sets", comment: ""), keywords: FocusSetSettingsView.searchableStrings),
             SettingsSearchDescriptor(id: "general", route: .general, sectionID: "general", title: NSLocalizedString("General", comment: ""), keywords: [
                 NSLocalizedString("Start at login", comment: ""),
@@ -1058,7 +1057,6 @@ class SettingsWindow: NSWindow {
         guard let action = button.action else { return nil }
         if action == #selector(AppearanceTab.showCustomizeStyleSheet) { return AppearanceTab.customizeStyleSheet }
         if action == #selector(ControlsTab.showShortcutsSettings) { return ControlsTab.shortcutsWhenActiveSheet }
-        if action == #selector(ControlsTab.showAdditionalControlsSettings) { return ControlsTab.additionalControlsSheet }
         return nil
     }
 

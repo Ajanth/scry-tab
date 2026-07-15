@@ -20,7 +20,6 @@ enum ControlsDestination: Equatable {
     case shortcut(id: String, pane: ControlsPaneDestination?)
     case gesture
     case activeShortcuts
-    case navigationPointer
 }
 
 enum ExceptionDestination: Equatable {

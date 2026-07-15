@@ -7,7 +7,7 @@ import ShortcutRecorder
 /// Owns the primary Shortcuts / Gestures / Advanced navigation, the shortcut list and count
 /// buttons, one recycled `ShortcutEditor` (re-bound across shortcuts 0..N-1 as the user picks
 /// rows), and a fixed-bind editor view for the gesture. Also keeps the global shortcut-registry
-/// logic and the arrow/vim helper callbacks consumed by other modules.
+/// logic consumed by other modules.
 class ControlsTab {
     // MARK: - Public runtime state consumed by other modules
 
@@ -23,11 +23,7 @@ class ControlsTab {
     /// currently-bound shortcut; operations on other shortcuts go through `Preferences` directly.
     static var shortcutControls = [String: (CustomRecorderControl, String)]()
 
-    static var arrowKeysCheckbox: Switch!
-    static var vimKeysCheckbox: Switch!
-
     static var shortcutsWhenActiveSheet: ShortcutsWhenActiveSheet!
-    static var additionalControlsSheet: AdditionalControlsSheet!
 
     /// Map from a navigation `NSSegmentedControl` to the per-segment list of searchable strings.
     /// Consulted by `SettingsWindow.highlightTarget(_ segmentedControl:)` to bubble a search match
@@ -49,13 +45,11 @@ class ControlsTab {
     private static let advancedCategoryIndex = 2
     private static let gestureSelectionIndex = -1
     private static let activeShortcutsSelectionIndex = -2
-    private static let navigationPointerSelectionIndex = -3
     private static let shortcutsCategoryLabel = NSLocalizedString("Shortcuts", comment: "")
     private static let gesturesCategoryLabel = NSLocalizedString("Gestures", comment: "")
     private static let advancedCategoryLabel = NSLocalizedString("Advanced", comment: "")
     private static let staticManagedShortcutPreferences = [
-        "focusWindowShortcut", "previousWindowShortcut", "cancelShortcut", "searchShortcut", "lockSearchShortcut",
-        "closeWindowShortcut", "minDeminWindowShortcut", "toggleFullscreenWindowShortcut", "quitAppShortcut", "hideShowAppShortcut",
+        "focusWindowShortcut", "previousWindowShortcut", "cancelShortcut", "searchShortcut", "closeWindowShortcut",
     ]
     /// Canonical id → localized label for fixed shortcuts. Single source of truth:
     /// `ShortcutsWhenActiveSheet` reads its row titles from here, and `conflictLabel(_:)`
@@ -65,12 +59,7 @@ class ControlsTab {
         "previousWindowShortcut": NSLocalizedString("Select previous window", comment: ""),
         "cancelShortcut": NSLocalizedString("Cancel", comment: ""),
         "searchShortcut": NSLocalizedString("Search", comment: ""),
-        "lockSearchShortcut": NSLocalizedString("Lock search", comment: ""),
         "closeWindowShortcut": NSLocalizedString("Close window", comment: ""),
-        "minDeminWindowShortcut": NSLocalizedString("Minimize/Deminimize window", comment: ""),
-        "toggleFullscreenWindowShortcut": NSLocalizedString("Fullscreen/Defullscreen window", comment: ""),
-        "quitAppShortcut": NSLocalizedString("Quit app", comment: ""),
-        "hideShowAppShortcut": NSLocalizedString("Hide/Show app", comment: ""),
     ]
     private static let removableShortcutPreferences = [
         "shortcutIdentifier",
@@ -83,20 +72,12 @@ class ControlsTab {
         "shortcutStyleOverride",
     ]
     private static let arrowKeys = ["←", "→", "↑", "↓"]
-    private static let arrowKeyCodes: Set<KeyCode> = [.leftArrow, .rightArrow, .upArrow, .downArrow]
-    private static let vimKeyActions = [
-        "h": "vimCycleLeft",
-        "l": "vimCycleRight",
-        "k": "vimCycleUp",
-        "j": "vimCycleDown",
-    ]
 
     // MARK: - Editor + sidebar state
 
     private static var editor: ShortcutEditor!
     private static var gestureEditorView: NSView?
     private static var activeShortcutsView: NSView?
-    private static var navigationPointerView: NSView?
     private static var gestureEditorTabControl: NSSegmentedControl?
     /// Outer container of the gesture editor — used by `ensureGesturePaneBuilt` to append a pane
     /// to it the first time the user selects that segment. Kept weak via the static-let pattern
@@ -107,9 +88,7 @@ class ControlsTab {
     private static var gestureOrderingPane: OrderingPane?
     private static var selectedShortcutIndex = 0
     private static var lastSelectedShortcutIndex = 0
-    private static var lastAdvancedSelectionIndex = activeShortcutsSelectionIndex
     private static var categoryControl: NSSegmentedControl?
-    private static var advancedControl: NSSegmentedControl?
     private static var shortcutsPageView: NSView?
     private static var gesturesPageView: NSView?
     private static var advancedPageView: NSView?
@@ -127,8 +106,7 @@ class ControlsTab {
     static func initializePreferencesDependentState() {
         applyActiveShortcutPreferences()
         staticManagedShortcutPreferences.forEach { applyShortcutPreference($0) }
-        applyArrowKeysPreferenceWithoutDialogs()
-        applyVimKeysPreferenceWithoutDialogs()
+        registerFixedArrowKeyShortcuts()
         observeFocusSetConfiguration()
         applyFocusSetShortcutPreferences()
     }
@@ -142,13 +120,11 @@ class ControlsTab {
         tabSegmentSearchableStrings[shortcutEntry.key] = shortcutEntry.perSegmentStrings
         let gestureView = makeGestureEditor()
         let activeView = ShortcutsWhenActiveSheet.makeContentView(width: shortcutEditorContentWidth)
-        let navigationView = AdditionalControlsSheet.makeContentView(width: shortcutEditorContentWidth)
         gestureEditorView = gestureView
         activeShortcutsView = activeView
-        navigationPointerView = navigationView
         let shortcutsPage = makeShortcutsView()
         let gesturesPage = makeCenteredDetailPage(gestureView)
-        let advancedPage = makeAdvancedPage(activeView: activeView, navigationView: navigationView)
+        let advancedPage = makeAdvancedPage(activeView: activeView)
         shortcutsPageView = shortcutsPage
         gesturesPageView = gesturesPage
         advancedPageView = advancedPage
@@ -170,23 +146,18 @@ class ControlsTab {
             shortcutRowsScrollObserver = nil
         }
         shortcutsWhenActiveSheet = nil
-        additionalControlsSheet = nil
-        arrowKeysCheckbox = nil
-        vimKeysCheckbox = nil
         shortcutControls.removeAll()
         shortcutRows.removeAll()
         tabSegmentSearchableStrings.removeAll()
         editor = nil
         gestureEditorView = nil
         activeShortcutsView = nil
-        navigationPointerView = nil
         gestureEditorTabControl = nil
         gestureEditorContainer = nil
         gestureFilteringPane = nil
         gestureAppearancePane = nil
         gestureOrderingPane = nil
         categoryControl = nil
-        advancedControl = nil
         shortcutsPageView = nil
         gesturesPageView = nil
         advancedPageView = nil
@@ -226,10 +197,6 @@ class ControlsTab {
             refreshAppearanceControls()
         case let k where isOverrideKey(k):
             refreshAppearanceControls()
-        case "arrowKeysEnabled" where arrowKeysCheckbox == nil:
-            applyArrowKeysPreferenceWithoutDialogs()
-        case "vimKeysEnabled" where vimKeysCheckbox == nil:
-            applyVimKeysPreferenceWithoutDialogs()
         default:
             break
         }
@@ -255,23 +222,14 @@ class ControlsTab {
         gesturesPageView?.isHidden = category != gesturesCategoryIndex
         advancedPageView?.isHidden = category != advancedCategoryIndex
         activeShortcutsView?.isHidden = selectedShortcutIndex != activeShortcutsSelectionIndex
-        navigationPointerView?.isHidden = selectedShortcutIndex != navigationPointerSelectionIndex
-        advancedControl?.selectedSegment = advancedSegmentIndex()
         if category == gesturesCategoryIndex { syncGestureEditorTabSegment() }
     }
 
     private static func selectedCategoryIndex() -> Int {
         switch selectedShortcutIndex {
         case gestureSelectionIndex: return gesturesCategoryIndex
-        case activeShortcutsSelectionIndex, navigationPointerSelectionIndex: return advancedCategoryIndex
+        case activeShortcutsSelectionIndex: return advancedCategoryIndex
         default: return shortcutsCategoryIndex
-        }
-    }
-
-    private static func advancedSegmentIndex() -> Int {
-        switch selectedShortcutIndex {
-        case navigationPointerSelectionIndex: return 1
-        default: return 0
         }
     }
 
@@ -321,41 +279,14 @@ class ControlsTab {
         tabSegmentSearchableStrings[ObjectIdentifier(control)] = [
             [shortcutsCategoryLabel, NSLocalizedString("Shortcut", comment: "")] + FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings,
             [gesturesCategoryLabel, gestureTitle()] + FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings,
-            [advancedCategoryLabel] + ShortcutsWhenActiveSheet.searchableStrings + AdditionalControlsSheet.searchableStrings,
+            [advancedCategoryLabel] + ShortcutsWhenActiveSheet.searchableStrings,
         ]
         categoryControl = control
         return control
     }
 
-    private static func makeAdvancedPage(activeView: NSView, navigationView: NSView) -> NSView {
-        let labels = [activeShortcutsTitle(), navigationPointerTitle()]
-        let control = DesignSystemSegmentedControl(labels: labels, trackingMode: .selectOne, target: nil, action: nil)
-        control.selectedSegment = advancedSegmentIndex()
-        LabelAndControl.applySystemSelectedSegmentStyle(control)
-        control.widthAnchor.constraint(equalToConstant: shortcutEditorContentWidth).isActive = true
-        let segmentWidth = shortcutEditorContentWidth / CGFloat(labels.count)
-        for index in labels.indices { control.setWidth(segmentWidth, forSegment: index) }
-        control.onAction = { [weak control] _ in
-            guard let control else { return }
-            switch control.selectedSegment {
-            case 0:
-                selectActiveShortcuts()
-            case 1:
-                selectNavigationPointer()
-            default:
-                selectNavigationPointer()
-            }
-        }
-        tabSegmentSearchableStrings[ObjectIdentifier(control)] = [
-            [activeShortcutsTitle()] + ShortcutsWhenActiveSheet.searchableStrings,
-            [navigationPointerTitle()] + AdditionalControlsSheet.searchableStrings,
-        ]
-        advancedControl = control
-        let content = NSStackView(views: [control, activeView, navigationView])
-        content.orientation = .vertical
-        content.alignment = .leading
-        content.spacing = TableGroupSetView.othersSpacing
-        return makeCenteredDetailPage(content)
+    private static func makeAdvancedPage(activeView: NSView) -> NSView {
+        return makeCenteredDetailPage(activeView)
     }
 
     private static func makeCenteredDetailPage(_ content: NSView) -> NSView {
@@ -556,8 +487,7 @@ class ControlsTab {
     }
 
     private static func isFixedDestinationSelection(_ index: Int) -> Bool {
-        index == gestureSelectionIndex || index == activeShortcutsSelectionIndex ||
-            index == navigationPointerSelectionIndex
+        index == gestureSelectionIndex || index == activeShortcutsSelectionIndex
     }
 
     private static func refreshShortcutRows() {
@@ -631,12 +561,7 @@ class ControlsTab {
         case gesturesCategoryIndex:
             selectGesture()
         case advancedCategoryIndex:
-            switch lastAdvancedSelectionIndex {
-            case navigationPointerSelectionIndex:
-                selectNavigationPointer()
-            default:
-                selectActiveShortcuts()
-            }
+            selectActiveShortcuts()
         default:
             break
         }
@@ -651,15 +576,6 @@ class ControlsTab {
 
     private static func selectActiveShortcuts(syncRoute: Bool = true) {
         selectedShortcutIndex = activeShortcutsSelectionIndex
-        lastAdvancedSelectionIndex = activeShortcutsSelectionIndex
-        refreshShortcutSelection()
-        refreshShortcutCountButtons()
-        if syncRoute { syncSelectedDestinationRoute() }
-    }
-
-    private static func selectNavigationPointer(syncRoute: Bool = true) {
-        selectedShortcutIndex = navigationPointerSelectionIndex
-        lastAdvancedSelectionIndex = navigationPointerSelectionIndex
         refreshShortcutSelection()
         refreshShortcutCountButtons()
         if syncRoute { syncSelectedDestinationRoute() }
@@ -685,8 +601,6 @@ class ControlsTab {
             return .gesture
         case activeShortcutsSelectionIndex:
             return .activeShortcuts
-        case navigationPointerSelectionIndex:
-            return .navigationPointer
         default:
             guard (0..<Preferences.shortcutCount).contains(selectedShortcutIndex) else { return nil }
             return .shortcut(id: Preferences.shortcutIdentifier(at: selectedShortcutIndex), pane: currentShortcutPane())
@@ -729,8 +643,6 @@ class ControlsTab {
             selectGesture(syncRoute: false)
         case .activeShortcuts:
             selectActiveShortcuts(syncRoute: false)
-        case .navigationPointer:
-            selectNavigationPointer(syncRoute: false)
         }
     }
 
@@ -818,8 +730,6 @@ class ControlsTab {
     }
 
     private static func gestureTitle() -> String { NSLocalizedString("Gesture", comment: "") }
-    private static func activeShortcutsTitle() -> String { NSLocalizedString("Shortcuts When Active", comment: "") }
-    private static func navigationPointerTitle() -> String { NSLocalizedString("Navigation & pointer", comment: "") }
 
     /// Register the current shortcut rows into the active search-index builder. Invoked by
     /// `SettingsWindow.refreshSectionSearchContent("controls")`
@@ -958,11 +868,6 @@ class ControlsTab {
         SettingsWindow.shared.beginSheetWithSearchHighlight(shortcutsWhenActiveSheet)
     }
 
-    @objc static func showAdditionalControlsSettings() {
-        if additionalControlsSheet == nil { additionalControlsSheet = AdditionalControlsSheet() }
-        SettingsWindow.shared.beginSheetWithSearchHighlight(additionalControlsSheet)
-    }
-
     private static func addShortcut(_ triggerPhase: ShortcutTriggerPhase, _ scope: ShortcutScope, _ shortcut: Shortcut, _ controlId: String, _ index: Int?) {
         let atShortcut = ATShortcut(shortcut, controlId, scope, triggerPhase, index)
         removeShortcutIfExists(controlId)
@@ -1040,87 +945,6 @@ class ControlsTab {
         return baseShortcut
     }
 
-    @objc static func arrowKeysEnabledCallback(_ sender: NSControl) {
-        if (sender as! Switch).state == .on {
-            if isClearArrowKeysSuccessful() {
-                arrowKeys.forEach { addShortcut(.down, .local, Shortcut(keyEquivalent: $0)!, $0, nil) }
-            } else {
-                (sender as! Switch).state = .off
-                Preferences.set("arrowKeysEnabled", "false", false)
-            }
-        } else {
-            arrowKeys.forEach { removeShortcutIfExists($0) }
-        }
-    }
-
-    private static func isClearArrowKeysSuccessful() -> Bool {
-        var conflicts = [String: String]()
-        shortcuts.forEach {
-            guard arrowKeyCodes.contains($1.shortcut.keyCode) else { return }
-            guard !arrowKeys.contains($1.id) else { return }
-            if let label = conflictLabel($1.id) {
-                conflicts[$1.id] = label
-            }
-        }
-        if !conflicts.isEmpty {
-            if SettingsWindow.shared == nil || !shouldClearConflictingShortcuts(conflicts.map { $0.value }, NSLocalizedString("Arrow keys already assigned to other actions:\n%@", comment: "")) {
-                return false
-            }
-            conflicts.forEach {
-                removeShortcutIfExists($0.key)
-                let existing = shortcutControls[$0.key]
-                if existing != nil {
-                    existing!.0.objectValue = nil
-                    shortcutChangedCallback(existing!.0)
-                    LabelAndControl.controlWasChanged(existing!.0, $0.key)
-                }
-            }
-        }
-        return true
-    }
-
-    @objc static func vimKeysEnabledCallback(_ sender: NSControl) {
-        if (sender as! Switch).state == .on {
-            if isClearVimKeysSuccessful() {
-                vimKeyActions.forEach { addShortcut(.down, .local, Shortcut(keyEquivalent: $0)!, $1, nil) }
-            } else {
-                (sender as! Switch).state = .off
-                Preferences.remove("vimKeysEnabled")
-            }
-        } else {
-            vimKeyActions.forEach { removeShortcutIfExists($1) }
-        }
-    }
-
-    private static func isClearVimKeysSuccessful() -> Bool {
-        var conflicts = [String: String]()
-        shortcuts.forEach {
-            let keymap = $1.shortcut.characters
-            if keymap != nil && vimKeyActions.keys.contains(keymap!) {
-                let control_id = $1.id
-                guard !vimKeyActions.values.contains(control_id) else { return }
-                if let label = conflictLabel(control_id) {
-                    conflicts[control_id] = label
-                }
-            }
-        }
-        if !conflicts.isEmpty {
-            if SettingsWindow.shared == nil || !shouldClearConflictingShortcuts(conflicts.map { $0.value }, NSLocalizedString("Vim keys already assigned to other actions:\n%@", comment: "")) {
-                return false
-            }
-            conflicts.forEach {
-                removeShortcutIfExists($0.key)
-                let existing = shortcutControls[$0.key]
-                if existing != nil {
-                    existing!.0.objectValue = nil
-                    shortcutChangedCallback(existing!.0)
-                    LabelAndControl.controlWasChanged(existing!.0, $0.key)
-                }
-            }
-        }
-        return true
-    }
-
     /// Human-readable label for the action bound to `id`, resolved purely from the model — the id's
     /// shape plus `staticShortcutLabels` — NOT from `shortcutControls`. This is what lets the conflict
     /// dialog name a shortcut that isn't currently displayed in the recycled editor (which keeps only
@@ -1131,7 +955,6 @@ class ControlsTab {
     /// alone doesn't disambiguate when several shortcuts exist.
     static func conflictLabel(_ id: String) -> String? {
         if arrowKeys.contains(id) { return NSLocalizedString("Arrow keys", comment: "") }
-        if vimKeyActions.values.contains(id) { return NSLocalizedString("Vim keys", comment: "") }
         if id.hasPrefix("holdShortcut") || id.hasPrefix("nextWindowShortcut") {
             return shortcutTitle(Preferences.nameToIndex(id)) + " - " + ShortcutEditor.triggerLabel
         }
@@ -1160,20 +983,6 @@ class ControlsTab {
     }
 
     static func unassignShortcutConflict(_ id: String) {
-        if arrowKeys.contains(id) {
-            arrowKeysCheckbox?.state = .off
-            Preferences.set("arrowKeysEnabled", "false")
-            arrowKeys.forEach(removeShortcutIfExists)
-            applyFocusSetShortcutPreferences()
-            return
-        }
-        if vimKeyActions.values.contains(id) {
-            vimKeysCheckbox?.state = .off
-            Preferences.set("vimKeysEnabled", "false")
-            vimKeyActions.values.forEach(removeShortcutIfExists)
-            applyFocusSetShortcutPreferences()
-            return
-        }
         unassignShortcut(id)
     }
 
@@ -1186,19 +995,6 @@ class ControlsTab {
             return FocusSet(id: focusSet.id, name: focusSet.name, rules: focusSet.rules, shortcutKeyEquivalent: nil)
         }
         _ = store.set(FocusSetsConfiguration(version: configuration.version, sets: sets))
-    }
-
-    private static func shouldClearConflictingShortcuts(_ conflicts: [String], _ messageFormat: String) -> Bool {
-        let alert = NSAlert()
-        alert.alertStyle = .warning
-        alert.messageText = NSLocalizedString("Conflicting shortcut", comment: "")
-        let informativeText = conflicts.map { "• " + $0 }.joined(separator: "\n")
-        alert.informativeText = String(format: messageFormat, informativeText.replacingOccurrences(of: " ", with: "\u{00A0}"))
-        alert.addButton(withTitle: NSLocalizedString("Unassign existing shortcut and continue", comment: "")).setAccessibilityFocused(true)
-        let cancelButton = alert.addButton(withTitle: NSLocalizedString("Cancel", comment: ""))
-        cancelButton.keyEquivalent = "\u{1b}"
-        let userChoice = alert.runModal()
-        return userChoice == .alertFirstButtonReturn
     }
 
     private static func removeShortcutIfExists(_ controlId: String) {
@@ -1256,46 +1052,8 @@ class ControlsTab {
         return Shortcut(code: baseShortcut.keyCode, modifierFlags: [holdShortcut.modifierFlags, baseShortcut.modifierFlags], characters: baseShortcut.characters, charactersIgnoringModifiers: baseShortcut.charactersIgnoringModifiers)
     }
 
-    private static func applyArrowKeysPreferenceWithoutDialogs() {
-        guard Preferences.arrowKeysEnabled else {
-            arrowKeys.forEach { removeShortcutIfExists($0) }
-            return
-        }
-        if hasArrowKeysConflictWithoutUi() {
-            arrowKeys.forEach { removeShortcutIfExists($0) }
-            Preferences.set("arrowKeysEnabled", "false", false)
-            return
-        }
+    private static func registerFixedArrowKeyShortcuts() {
         arrowKeys.forEach { addShortcut(.down, .local, Shortcut(keyEquivalent: $0)!, $0, nil) }
-    }
-
-    private static func hasArrowKeysConflictWithoutUi() -> Bool {
-        return shortcuts.values.contains {
-            guard arrowKeyCodes.contains($0.shortcut.keyCode) else { return false }
-            return !arrowKeys.contains($0.id)
-        }
-    }
-
-    private static func applyVimKeysPreferenceWithoutDialogs() {
-        guard Preferences.vimKeysEnabled else {
-            vimKeyActions.forEach { removeShortcutIfExists($1) }
-            return
-        }
-        if hasVimKeysConflictWithoutUi() {
-            vimKeyActions.forEach { removeShortcutIfExists($1) }
-            Preferences.set("vimKeysEnabled", "false", false)
-            return
-        }
-        vimKeyActions.forEach { addShortcut(.down, .local, Shortcut(keyEquivalent: $0)!, $1, nil) }
-    }
-
-    private static func hasVimKeysConflictWithoutUi() -> Bool {
-        return shortcuts.values.contains {
-            if let key = $0.shortcut.characters, vimKeyActions.keys.contains(key) {
-                return !vimKeyActions.values.contains($0.id)
-            }
-            return false
-        }
     }
 
     @objc private static func openSystemGestures(_ sender: NSButton) {
