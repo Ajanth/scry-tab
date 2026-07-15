@@ -23,7 +23,17 @@ class PreferencesMigrations {
             }
         }
         migrateSharedPresentationDefaults()
+        migrateObsoleteWhenActiveShortcuts()
         Self.defaults.set(App.version, forKey: preferencesKey)
+    }
+
+    static func migrateObsoleteWhenActiveShortcuts() {
+        let marker = "obsoleteWhenActiveShortcutsRemoved"
+        guard !Self.defaults.bool(forKey: marker) else { return }
+        ["lockSearchShortcut", "minDeminWindowShortcut", "toggleFullscreenWindowShortcut", "quitAppShortcut", "hideShowAppShortcut"].forEach {
+            Self.defaults.removeObject(forKey: $0)
+        }
+        Self.defaults.set("true", forKey: marker)
     }
 
     static func migrateSharedPresentationDefaults() {
@@ -76,7 +86,6 @@ class PreferencesMigrations {
             ("10.12.0", migrateExceptionsTitleArray),
             ("10.2.0", migrateBlacklistToExceptions),
             ("9.0.0", migrateShortcutIndexes),
-            ("7.27.0", migrateCursorFollowFocus),
             ("7.26.0", migrateShowWindowlessApps),
             ("7.25.0", migrateHideWindowlessApps),
             ("7.13.1", migrateGestures),
@@ -172,15 +181,6 @@ class PreferencesMigrations {
         }
         if hasThirdShortcut {
             Self.defaults.set("3", forKey: "shortcutCount")
-        }
-    }
-
-    // cursorFollowFocus was a toggle. It's now a dropdown
-    // before: cursorFollowFocusEnabled: true/false
-    // after: cursorFollowFocus: 0 (never), 1 (always), 2 (differentScreen)
-    static func migrateCursorFollowFocus() {
-        if let old = Self.defaults.string(forKey: "cursorFollowFocusEnabled") {
-            Self.defaults.set(old == "true" ? 1 : 0, forKey: "cursorFollowFocus")
         }
     }
 

@@ -11,8 +11,8 @@ import XCTest
 /// the former needs the real NSKeyedArchiver/ShortcutRecorder codec (stubbed compile-only here), the
 /// latter mutates real Login Items via deprecated LaunchServices APIs.
 ///
-/// Groups: A version gating · B shared presentation defaults · C grouping→per-shortcut · D/E/F exceptions ·
-/// G/H show-windows dropdowns · I gestures · J cursor · K menubar · L/M sizes · N shortcuts · P dropdowns ·
+/// Groups: A version gating · B shared presentation defaults · B2 obsolete when-active shortcuts · C grouping→per-shortcut · D/E/F exceptions ·
+/// G/H show-windows dropdowns · I gestures · K menubar · L/M sizes · N shortcuts · P dropdowns ·
 /// Q drop-thumbnails appearance style.
 final class PreferencesMigrationsTests: XCTestCase {
     var defaults: UserDefaults!
@@ -101,6 +101,38 @@ final class PreferencesMigrationsTests: XCTestCase {
 
         XCTAssertEqual(defaults.string(forKey: "sharedWindowOrder"), "3")
         XCTAssertEqual(defaults.string(forKey: "windowOrder"), "0")
+    }
+
+    // MARK: - B2. Obsolete when-active shortcuts scrub
+
+    /// First run removes the five retired shortcut keys and sets the one-shot marker.
+    func testObsoleteWhenActiveShortcutsRemovesKeysAndSetsMarker() {
+        defaults.set("seed", forKey: "lockSearchShortcut")
+        defaults.set("seed", forKey: "minDeminWindowShortcut")
+        defaults.set("seed", forKey: "toggleFullscreenWindowShortcut")
+        defaults.set("seed", forKey: "quitAppShortcut")
+        defaults.set("seed", forKey: "hideShowAppShortcut")
+
+        PreferencesMigrations.migrateObsoleteWhenActiveShortcuts()
+
+        XCTAssertNil(defaults.object(forKey: "lockSearchShortcut"))
+        XCTAssertNil(defaults.object(forKey: "minDeminWindowShortcut"))
+        XCTAssertNil(defaults.object(forKey: "toggleFullscreenWindowShortcut"))
+        XCTAssertNil(defaults.object(forKey: "quitAppShortcut"))
+        XCTAssertNil(defaults.object(forKey: "hideShowAppShortcut"))
+        XCTAssertEqual(defaults.string(forKey: "obsoleteWhenActiveShortcutsRemoved"), "true")
+    }
+
+    /// Marker already set → migration is a no-op even if obsolete keys are reintroduced.
+    func testObsoleteWhenActiveShortcutsMigrationRunsOnlyOnce() {
+        defaults.set("true", forKey: "obsoleteWhenActiveShortcutsRemoved")
+        defaults.set("reintroduced", forKey: "lockSearchShortcut")
+        defaults.set("reintroduced", forKey: "hideShowAppShortcut")
+
+        PreferencesMigrations.migrateObsoleteWhenActiveShortcuts()
+
+        XCTAssertEqual(defaults.string(forKey: "lockSearchShortcut"), "reintroduced")
+        XCTAssertEqual(defaults.string(forKey: "hideShowAppShortcut"), "reintroduced")
     }
 
     // MARK: - C. Grouping moved global -> per-shortcut
@@ -240,20 +272,6 @@ final class PreferencesMigrationsTests: XCTestCase {
         defaults.set("1", forKey: "nextWindowGesture")
         PreferencesMigrations.migrateGestures()
         XCTAssertEqual(defaults.string(forKey: "nextWindowGesture"), "1")
-    }
-
-    // MARK: - J. cursorFollowFocus toggle -> dropdown
-
-    func testCursorFollowFocusTrueBecomesAlways() {
-        defaults.set("true", forKey: "cursorFollowFocusEnabled")
-        PreferencesMigrations.migrateCursorFollowFocus()
-        XCTAssertEqual(defaults.integer(forKey: "cursorFollowFocus"), 1)
-    }
-
-    func testCursorFollowFocusFalseBecomesNever() {
-        defaults.set("false", forKey: "cursorFollowFocusEnabled")
-        PreferencesMigrations.migrateCursorFollowFocus()
-        XCTAssertEqual(defaults.integer(forKey: "cursorFollowFocus"), 0)
     }
 
     // MARK: - K. Menubar icon hidden-value -> shown toggle
