@@ -9,7 +9,6 @@ import Foundation
 enum SearchMode {
     case off
     case editing
-    case locked
 }
 
 /// How search was entered this session — decides what Escape does.
@@ -29,8 +28,6 @@ enum SearchModeDecision: Equatable {
     case noOp                          // nothing to do (e.g. disabling when already off)
     case enterEditing(refreshUi: Bool) // refresh only when coming from `.off` (the original `wasOff`)
     case exitToOff
-    case lockResults                   // editing -> locked
-    case unlockToEditing               // locked -> editing
     case placeCaretOnly                // already editing: just re-place the caret
 }
 
@@ -39,7 +36,7 @@ enum SearchEscapeDecision: Equatable { case exitSearch, closeSwitcher }
 enum SearchKeyDecision: Equatable {
     case cycleSelection(CycleDirection)
     case handled          // swallow (Tab)
-    case passToShortcuts  // hand to the shortcut pipeline (cancel / lockSearch / focus)
+    case passToShortcuts  // hand to the shortcut pipeline (cancel / focus)
     case passToField      // hand to the NSSearchField (text, cmd+A/C/V/X, IME, while a menu is open)
 }
 
@@ -48,7 +45,7 @@ enum SearchModeResolver {
         startInSearch ? .editing : .off
     }
 
-    /// Search shortcut: editing → turn off; off/locked → (re)enter editing.
+    /// Search shortcut: editing → turn off; off → enter editing.
     static func toggle(mode: SearchMode) -> SearchToggleRoute {
         mode == .editing ? .disable : .enterEditing
     }
@@ -63,15 +60,6 @@ enum SearchModeResolver {
         mode == .off ? .noOp : .exitToOff
     }
 
-    /// Editing↔locked toggle; no-op when off.
-    static func lock(mode: SearchMode) -> SearchModeDecision {
-        switch mode {
-            case .editing: return .lockResults
-            case .locked: return .unlockToEditing
-            case .off: return .noOp
-        }
-    }
-
     /// Escape exits search only when it was toggled on mid-session. If the session *started* in
     /// search (`.searchOnRelease`), or search is off, Escape closes the whole switcher.
     static func escape(mode: SearchMode, entry: SearchEntryStyle) -> SearchEscapeDecision {
@@ -79,7 +67,7 @@ enum SearchModeResolver {
     }
 
     /// Key routing while the search field is being edited. IME/menu come first so composing
-    /// keystrokes are never stolen; then arrows drive selection, Tab is swallowed, the three
+    /// keystrokes are never stolen; then arrows drive selection, Tab is swallowed, the
     /// pass-through shortcuts go to the shortcut pipeline, and everything else (typed text,
     /// cmd+A/C/V/X) goes to the field. Defaults express "no signal" so callers only spell out
     /// the facts that are true for this key-down.
@@ -88,12 +76,11 @@ enum SearchModeResolver {
                          arrow: CycleDirection? = nil,   // non-nil iff the key is an arrow
                          isTab: Bool = false,
                          matchesCancel: Bool = false,
-                         matchesLockSearch: Bool = false,
                          matchesFocus: Bool = false) -> SearchKeyDecision {
         if hasMarkedText || isMenuOpen { return .passToField }
         if let arrow { return .cycleSelection(arrow) }
         if isTab { return .handled }
-        if matchesCancel || matchesLockSearch || matchesFocus { return .passToShortcuts }
+        if matchesCancel || matchesFocus { return .passToShortcuts }
         return .passToField
     }
 

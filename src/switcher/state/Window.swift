@@ -186,49 +186,6 @@ class Window {
         }
     }
 
-    func canBeMinDeminOrFullscreened() -> Bool {
-        return !self.isWindowlessApp && !self.isTabbed
-    }
-
-    func minDemin() {
-        if !canBeMinDeminOrFullscreened() {
-            NSSound.beep()
-            return
-        }
-        if let altTabWindow = altTabWindow() {
-            self.isMinimized ? altTabWindow.deminiaturize(nil) : altTabWindow.miniaturize(nil)
-            return
-        }
-        BackgroundWork.accessibilityCommandsQueue.addOperation { [weak self] in
-            guard let self else { return }
-            if self.isFullscreen {
-                try? self.axUiElement!.setAttribute(kAXFullscreenAttribute, false)
-                // minimizing is ignored if sent immediatly; we wait for the de-fullscreen animation to be over
-                BackgroundWork.accessibilityCommandsQueue.addOperationAfter(deadline: .now() + .seconds(1)) { [weak self] in
-                    guard let self else { return }
-                    try? self.axUiElement!.setAttribute(kAXMinimizedAttribute, true)
-                }
-            } else {
-                try? self.axUiElement!.setAttribute(kAXMinimizedAttribute, !self.isMinimized)
-            }
-        }
-    }
-
-    func toggleFullscreen() {
-        if !canBeMinDeminOrFullscreened() {
-            NSSound.beep()
-            return
-        }
-        if let altTabWindow = altTabWindow() {
-            altTabWindow.toggleFullScreen(nil)
-            return
-        }
-        BackgroundWork.accessibilityCommandsQueue.addOperation { [weak self] in
-            guard let self else { return }
-            try? self.axUiElement!.setAttribute(kAXFullscreenAttribute, !self.isFullscreen)
-        }
-    }
-
     func focus() {
         if let altTabWindow = altTabWindow() {
             App.shared.activate(ignoringOtherApps: true)

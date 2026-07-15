@@ -4,9 +4,9 @@ import XCTest
 /// `SearchModeResolver` kernel. Pure data in, `Equatable` decision out — no AppKit, no globals.
 /// `TilesView` / `ShortcutAction` execute these decisions; this suite is the spec for what they do.
 ///
-/// Groups: A entry · B toggle route · C enter-editing · D disable · E lock/unlock · F
-/// escape-depends-on-entry · G nav/tab · H shortcut pass-through · I text pass-through
-/// (cmd+A/C/V/X) · J IME/menu early return · K field editability.
+/// Groups: A entry · B toggle route · C enter-editing · D disable · E escape-depends-on-entry ·
+/// F nav/tab · G shortcut pass-through · H text pass-through (cmd+A/C/V/X) · I IME/menu early
+/// return · J field editability.
 final class SearchModeResolverTests: XCTestCase {
 
     // MARK: - A. Session entry
@@ -29,18 +29,10 @@ final class SearchModeResolverTests: XCTestCase {
         XCTAssertEqual(SearchModeResolver.toggle(mode: .editing), .disable)
     }
 
-    func testToggleFromLockedReEntersEditing() {
-        XCTAssertEqual(SearchModeResolver.toggle(mode: .locked), .enterEditing)
-    }
-
     // MARK: - C. Enter editing
 
     func testEnterFromOffEntersEditingAndRefreshes() {
         XCTAssertEqual(SearchModeResolver.enableEditing(mode: .off), .enterEditing(refreshUi: true))
-    }
-
-    func testEnterFromLockedEntersEditingWithoutRefresh() {
-        XCTAssertEqual(SearchModeResolver.enableEditing(mode: .locked), .enterEditing(refreshUi: false))
     }
 
     func testEnterWhenAlreadyEditingJustPlacesCaret() {
@@ -53,45 +45,19 @@ final class SearchModeResolverTests: XCTestCase {
         XCTAssertEqual(SearchModeResolver.disable(mode: .editing), .exitToOff)
     }
 
-    func testDisableFromLockedExitsToOff() {
-        XCTAssertEqual(SearchModeResolver.disable(mode: .locked), .exitToOff)
-    }
-
     func testDisableWhenAlreadyOffIsNoOp() {
         XCTAssertEqual(SearchModeResolver.disable(mode: .off), .noOp)
     }
 
-    // MARK: - E. Lock / unlock
-
-    func testLockFromEditingLocksResults() {
-        XCTAssertEqual(SearchModeResolver.lock(mode: .editing), .lockResults)
-    }
-
-    func testLockFromLockedUnlocksToEditing() {
-        XCTAssertEqual(SearchModeResolver.lock(mode: .locked), .unlockToEditing)
-    }
-
-    func testLockFromOffIsNoOp() {
-        XCTAssertEqual(SearchModeResolver.lock(mode: .off), .noOp)
-    }
-
-    // MARK: - F. Escape depends on how search was entered
+    // MARK: - E. Escape depends on how search was entered
 
     func testEscapeEditingToggledMidSessionExitsSearch() {
         XCTAssertEqual(SearchModeResolver.escape(mode: .editing, entry: .toggledMidSession), .exitSearch)
     }
 
-    func testEscapeLockedToggledMidSessionExitsSearch() {
-        XCTAssertEqual(SearchModeResolver.escape(mode: .locked, entry: .toggledMidSession), .exitSearch)
-    }
-
     func testEscapeEditingStartedInSearchClosesSwitcher() {
         // searchOnRelease: search is the session, so Escape closes the whole switcher.
         XCTAssertEqual(SearchModeResolver.escape(mode: .editing, entry: .startedInSearch), .closeSwitcher)
-    }
-
-    func testEscapeLockedStartedInSearchClosesSwitcher() {
-        XCTAssertEqual(SearchModeResolver.escape(mode: .locked, entry: .startedInSearch), .closeSwitcher)
     }
 
     func testEscapeOffToggledMidSessionClosesSwitcher() {
@@ -102,7 +68,7 @@ final class SearchModeResolverTests: XCTestCase {
         XCTAssertEqual(SearchModeResolver.escape(mode: .off, entry: .startedInSearch), .closeSwitcher)
     }
 
-    // MARK: - G. Key routing: navigation & tab
+    // MARK: - F. Key routing: navigation & tab
 
     func testKeyLeftArrowCyclesLeft() {
         XCTAssertEqual(SearchModeResolver.routeKey(arrow: .left), .cycleSelection(.left))
@@ -124,14 +90,10 @@ final class SearchModeResolverTests: XCTestCase {
         XCTAssertEqual(SearchModeResolver.routeKey(isTab: true), .handled)
     }
 
-    // MARK: - H. Key routing: shortcut pass-through
+    // MARK: - G. Key routing: shortcut pass-through
 
     func testKeyCancelPassesToShortcuts() {
         XCTAssertEqual(SearchModeResolver.routeKey(matchesCancel: true), .passToShortcuts)
-    }
-
-    func testKeyLockSearchPassesToShortcuts() {
-        XCTAssertEqual(SearchModeResolver.routeKey(matchesLockSearch: true), .passToShortcuts)
     }
 
     func testKeyFocusPassesToShortcuts() {
@@ -143,15 +105,15 @@ final class SearchModeResolverTests: XCTestCase {
         XCTAssertEqual(SearchModeResolver.routeKey(arrow: .left, matchesCancel: true), .cycleSelection(.left))
     }
 
-    // MARK: - I. Key routing: text editing passes to the field (cmd+A/C/V/X, typed characters)
+    // MARK: - H. Key routing: text editing passes to the field (cmd+A/C/V/X, typed characters)
 
     func testKeyPlainTextPassesToField() {
-        // A normal character / cmd+A / cmd+C / cmd+V / cmd+X is none of arrow/tab/cancel/lock/focus,
+        // A normal character / cmd+A / cmd+C / cmd+V / cmd+X is none of arrow/tab/cancel/focus,
         // so it falls through to the search field, where NSSearchField handles editing natively.
         XCTAssertEqual(SearchModeResolver.routeKey(), .passToField)
     }
 
-    // MARK: - J. IME composing / open context menu beat everything (early return)
+    // MARK: - I. IME composing / open context menu beat everything (early return)
 
     func testKeyMarkedTextBeatsArrow() {
         XCTAssertEqual(SearchModeResolver.routeKey(hasMarkedText: true, arrow: .left), .passToField)
@@ -165,11 +127,10 @@ final class SearchModeResolverTests: XCTestCase {
         XCTAssertEqual(SearchModeResolver.routeKey(hasMarkedText: true, matchesCancel: true), .passToField)
     }
 
-    // MARK: - K. Search-field editability
+    // MARK: - J. Search-field editability
 
     func testFieldEditableOnlyWhenEditing() {
         XCTAssertTrue(SearchModeResolver.isFieldEditable(.editing))
         XCTAssertFalse(SearchModeResolver.isFieldEditable(.off))
-        XCTAssertFalse(SearchModeResolver.isFieldEditable(.locked))
     }
 }
