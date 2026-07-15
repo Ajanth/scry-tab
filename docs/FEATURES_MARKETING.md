@@ -20,7 +20,7 @@ ScryTab is **free, with no trial, no paywall, and no feature tiers.** Every capa
 | **Speed** | The switcher appears instantly with no animation delay, and the app stays responsive in the background (no App Nap). |
 | **Precision** | Per-shortcut filters let users show only what is relevant: current Space, current screen, certain apps, no minimized windows, etc. |
 | **Flexibility** | Up to 9 independent shortcut profiles, each with its own filters, appearance, and ordering — so a developer and a designer workflow can live side by side. |
-| **Keyboard-first, trackpad-friendly** | Full keyboard navigation, Vim keys, and a dedicated trackpad gesture profile make it feel at home for any input style. |
+| **Keyboard-first, trackpad-friendly** | Full keyboard navigation with arrow keys, and a dedicated trackpad gesture profile make it feel at home for any input style. |
 | **Free forever** | No licensing, activation, payment, or feature gating of any kind. |
 
 ---
@@ -122,16 +122,15 @@ Each shortcut profile can override the global appearance independently, so you c
 
 ScryTab is built for keyboard-first users:
 
-- **Arrow key navigation** (optional, can be toggled on/off).
-- **Vim-style h/j/k/l navigation** (optional).
+- **Arrow key navigation** — always on; cannot be turned off.
 - **Key repeat** — hold the trigger or navigation key to cycle continuously.
-- **In-switcher actions** — close a window, minimize/deminimize, toggle fullscreen, quit an app, or hide/show an app without leaving the switcher.
-- **Cursor follow-focus** — optionally warp the cursor to the focused window after switching (Never / Always / Only on a different screen).
-- **Conflict detection** — enabling arrow or Vim navigation automatically detects and offers to unassign conflicting shortcuts.
+- **In-switcher actions** — close a window without leaving the switcher.
+- **Cursor moves on focus** — focusing a selected window always moves the cursor to it.
+- **Conflict detection** — the shortcut recorder detects conflicts with existing shortcuts and refuses chords that collide with the fixed arrow keys.
 - **Reserved chord protection** — the shortcut recorder warns if you try to use a macOS system-reserved chord (like ⌘⌥⎋).
 - **Escape handling** — if any shortcut uses Escape, ScryTab absorbs it so macOS Game Overlay does not intercept it first.
 
-> **Copy angle:** "Every action, without leaving the keyboard. Switch, close, minimize, quit — all from the switcher."
+> **Copy angle:** "Every action, without leaving the keyboard. Switch, search, close — all from the switcher."
 
 ---
 
@@ -149,7 +148,7 @@ Gesture behavior:
 - Mimics native macOS Space-swipe thresholds so it feels familiar.
 - Rejects accidental triggers from prior two-finger scrolls.
 - While the switcher is open, further swipes navigate selection one row or column at a time.
-- Optional **haptic feedback** on trigger and navigation.
+- **Haptic feedback** on trigger and navigation when the hardware supports it.
 - Scroll-wheel input from the trackpad is blocked while gesture switching is active so it does not leak into the front app.
 
 > **Copy angle:** "Swipe to switch. ScryTab brings its full power to trackpad users with the same gesture vocabulary macOS already uses."
@@ -161,7 +160,7 @@ Gesture behavior:
 - **Click to focus** — left-click any tile to switch to it.
 - **Middle-click to close** — middle-click a tile to close that window (or quit the app if it is a windowless entry).
 - **Click outside to dismiss** — click anywhere outside the panel to close it.
-- **Hover selection** — optionally select tiles as the pointer moves over them.
+- **Visual hover** — the pointer can highlight tiles without changing selection.
 - **Dead zone after keyboard/gesture navigation** — a 25 px pointer dead zone prevents accidental hover changes right after a keyboard or trackpad navigation.
 - **Drag and drop** — drag files onto the panel; dragging over a tile selects it after a 2-second hold and drops the file into the target app.
 
@@ -177,14 +176,11 @@ From inside the switcher, users can act on any window:
 |---|---|
 | Focus window | Release trigger or Enter or left-click |
 | Close window | Configurable keyboard shortcut or middle-click |
-| Minimize / Deminimize | Configurable keyboard shortcut |
-| Toggle fullscreen | Configurable keyboard shortcut |
-| Quit app | Configurable keyboard shortcut |
-| Hide / Show app | Configurable keyboard shortcut |
+| Quit windowless app | Middle-click on a windowless tile |
 
 Focusing a window on another Space crosses Space boundaries automatically. Minimized windows are deminimized before being raised.
 
-> **Copy angle:** "Don't just switch — act. Close, minimize, quit, and more, all without touching the app."
+> **Copy angle:** "Don't just switch — act. Close windows without leaving the switcher."
 
 ---
 
