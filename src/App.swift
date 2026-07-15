@@ -383,10 +383,7 @@ class App: ScryTabApplication {
         hideUi()
         if let window = selectedWindow, MissionControl.state() == .inactive || MissionControl.state() == .showDesktop {
             window.focus()
-            if Preferences.cursorFollowFocus == .always || (
-                Preferences.cursorFollowFocus == .differentScreen && (Spaces.screenSpacesMap.first { $0.value.contains { space in window.spaceIds.contains(space) } })?.key != NSScreen.active()?.cachedUuid()) {
-                moveCursorToSelectedWindow(window)
-            }
+            moveCursorToSelectedWindow(window)
         }
     }
 

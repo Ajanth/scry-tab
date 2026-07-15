@@ -44,11 +44,40 @@ final class CustomRecorderControlTests: XCTestCase {
     }
 
     func testIsShortcutAcceptable_conflictWithExistingShortcut() {
-        XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("vimCycleRight", Shortcut(keyEquivalent: "l")!), .accepted)
         XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("nextWindowShortcut2", Shortcut(keyEquivalent: "⇧⇥")!), .accepted)
-        XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("vimCycleLeft", Shortcut(keyEquivalent: "h")!), .conflictWithExistingShortcut(shortcutAlreadyAssigned: "hideShowAppShortcut"))
+        XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("previousWindowShortcut", Shortcut(keyEquivalent: "h")!), .accepted)
         XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("nextWindowShortcut2", Shortcut(keyEquivalent: "⇥")!), .conflictWithExistingShortcut(shortcutAlreadyAssigned: "nextWindowShortcut"))
         XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("nextWindowShortcut", Shortcut(keyEquivalent: "⇧")!), .conflictWithExistingShortcut(shortcutAlreadyAssigned: "previousWindowShortcut"))
+    }
+
+    /// Fixed arrow-key actions are non-displaceable: colliding with them returns a distinct refusal
+    /// case so the UI can alert without offering to unassign arrows.
+    func testIsShortcutAcceptable_conflictWithFixedArrowKeys() {
+        ControlsTab.shortcuts["nextWindowShortcut"] = nil
+        defer { ControlsTab.shortcuts = ControlsTab.defaultShortcuts }
+        XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("nextWindowShortcut", Shortcut(keyEquivalent: "→")!),
+            .conflictWithFixedArrowKeys(shortcutAlreadyAssigned: "→"))
+        XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("closeWindowShortcut", Shortcut(keyEquivalent: "←")!),
+            .conflictWithFixedArrowKeys(shortcutAlreadyAssigned: "←"))
+        // Generic conflicts remain the displaceable path.
+        ControlsTab.shortcuts = ControlsTab.defaultShortcuts
+        XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("nextWindowShortcut2", Shortcut(keyEquivalent: "⇥")!),
+            .conflictWithExistingShortcut(shortcutAlreadyAssigned: "nextWindowShortcut"))
+    }
+
+    /// Regression: after alerting on `.conflictWithFixedArrowKeys`, the ordinary recorder must
+    /// refuse (`false`) so ShortcutRecorder does not persist the forbidden arrow binding. Generic
+    /// conflict and macOS-reserved cases stay `true` (their alert handlers commit only on confirm).
+    func testShouldAcceptOrdinaryRecorderValue_refusesFixedArrowConflict() {
+        XCTAssertFalse(CustomRecorderControlTestable.shouldAcceptOrdinaryRecorderValue(
+            .conflictWithFixedArrowKeys(shortcutAlreadyAssigned: "→")))
+        XCTAssertTrue(CustomRecorderControlTestable.shouldAcceptOrdinaryRecorderValue(
+            .conflictWithExistingShortcut(shortcutAlreadyAssigned: "nextWindowShortcut")))
+        XCTAssertTrue(CustomRecorderControlTestable.shouldAcceptOrdinaryRecorderValue(
+            .reservedByMacos(shortcutUsingEscape: "cancelShortcut")))
+        XCTAssertTrue(CustomRecorderControlTestable.shouldAcceptOrdinaryRecorderValue(.accepted))
+        XCTAssertFalse(CustomRecorderControlTestable.shouldAcceptOrdinaryRecorderValue(.modifiersOnlyButContainsKeycode))
+        XCTAssertFalse(CustomRecorderControlTestable.shouldAcceptOrdinaryRecorderValue(.nonModifierKeyRequired))
     }
 
     /// Regression: S1 = ⌥+Tab, S2 = ⌘+Tab. Changing S2's *hold* from ⌘ to ⌥ makes it ⌥+Tab, which must
@@ -70,24 +99,23 @@ final class CustomRecorderControlTests: XCTestCase {
         XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("holdShortcut2", Shortcut(keyEquivalent: "⌃")!), .accepted)
     }
 
-    /// Regression: S1 = ⌃+→, enable "Select windows using arrow keys", accept the dialog's
-    /// "Unassign and continue" (clears S1's press, keeps its ⌃ hold), then re-record → as the
+    /// Regression: S1 = ⌃+→, with fixed arrow-key selection always registered, then re-record → as the
     /// press. Under S1's OWN hold, → is ambiguous (cycle vs select), so it must be rejected —
     /// but `oldCombinationsExcludingTargetOfCandidate` excluded the same-index hold for a press
     /// candidate, so arrows were only combined with the OTHER shortcuts' holds. With every
     /// default hold being ⌥, the ⌥+→ variant was caught by luck via Shortcut 2's identical hold,
     /// while ⌃+→ (a hold no other shortcut shares) recorded silently with no conflict dialog.
     func testIsShortcutAcceptable_pressConflictsWithLocalShortcutsUnderItsOwnHold() {
-        // the post-"unassign and continue" state: the press is gone from the registry, the hold remains
+        // the press is gone from the registry, the hold remains
         ControlsTab.shortcuts["nextWindowShortcut"] = nil
         defer { ControlsTab.shortcuts = ControlsTab.defaultShortcuts }
         // ⌥ hold: was already caught pre-fix, but only via holdShortcut2's identical ⌥ — pin it
         XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("nextWindowShortcut", Shortcut(keyEquivalent: "→")!),
-            .conflictWithExistingShortcut(shortcutAlreadyAssigned: "→"))
+            .conflictWithFixedArrowKeys(shortcutAlreadyAssigned: "→"))
         // ⌃ hold, shared with no other shortcut: the conflict must be found via S1's own hold
         ControlsTab.shortcuts["holdShortcut"] = ATShortcut(Shortcut(keyEquivalent: "⌃")!, "holdShortcut", .global, .up, 0)
         XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("nextWindowShortcut", Shortcut(keyEquivalent: "→")!),
-            .conflictWithExistingShortcut(shortcutAlreadyAssigned: "→"))
+            .conflictWithFixedArrowKeys(shortcutAlreadyAssigned: "→"))
         // same mechanism covers the static locals (Space = focus selected window)
         XCTAssertEqual(CustomRecorderControlTestable.isShortcutAcceptable("nextWindowShortcut", Shortcut(keyEquivalent: " ")!),
             .conflictWithExistingShortcut(shortcutAlreadyAssigned: "focusWindowShortcut"))
@@ -160,10 +188,9 @@ final class CustomRecorderControlTests: XCTestCase {
         XCTAssertFalse(CustomRecorderControlTestable.isWellFormedCandidateId("holdShortcut0"))
         // Beyond shortcutCount is also malformed.
         XCTAssertFalse(CustomRecorderControlTestable.isWellFormedCandidateId("nextWindowShortcut4"))  // index 3
-        // Static "when active" / arrow / vim ids are well-formed regardless of any index.
+        // Static "when active" / arrow ids are well-formed regardless of any index.
         XCTAssertTrue(CustomRecorderControlTestable.isWellFormedCandidateId("cancelShortcut"))
         XCTAssertTrue(CustomRecorderControlTestable.isWellFormedCandidateId("←"))
-        XCTAssertTrue(CustomRecorderControlTestable.isWellFormedCandidateId("vimCycleLeft"))
     }
 
     // MARK: - combinedModifiersMatch

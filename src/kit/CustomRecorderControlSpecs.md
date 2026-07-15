@@ -18,8 +18,13 @@ existing ScryTab shortcut or a macOS-reserved one.
   multi-modifier chords are rejected before conflict resolution, while ordinary hold and
   active-switcher recorders retain existing behavior.
 - A combo that **conflicts** with an already-bound ScryTab shortcut is rejected.
-- A press (`nextWindowShortcut`) candidate is checked against the local shortcuts (arrow keys, vim
-  keys, statics like Space) combined with its **own** hold — not just the other shortcuts' holds.
+- A conflict with a **fixed arrow-key** action is refused with a distinct
+  `.conflictWithFixedArrowKeys` case so the UI alerts without offering to unassign arrows.
+  After the alert, the ordinary recorder path returns `false` so ShortcutRecorder does not
+  persist the binding. Generic conflicts keep the existing unassign-and-continue path
+  (acceptance remains `true`; the alert handler commits only on confirm).
+- A press (`nextWindowShortcut`) candidate is checked against the local shortcuts (arrow keys,
+  statics like Space) combined with its **own** hold — not just the other shortcuts' holds.
   A press edit replaces only the press, so the same-index hold's combinations stay in the "old"
   set; only a hold candidate excludes the hold it replaces.
 - A combo **reserved by macOS** is rejected.
@@ -39,15 +44,17 @@ Mirrors `CustomRecorderControlTests.swift` 1:1.
 - **testIsShortcutAcceptable_accepted** — a valid key+modifier combo is accepted.
 - **testIsShortcutAcceptable_modifiersOnlyButContainsKeycode** — modifiers-only flags but with a real keycode → accepted.
 - **testIsShortcutAcceptable_directFocusSetRequiresOneModifierAndNonModifierKey** — a direct Focus Set binding requires exactly one modifier plus a real key, while ordinary recorder acceptance remains unchanged.
-- **testIsShortcutAcceptable_conflictWithExistingShortcut** — collides with an existing shortcut → rejected.
+- **testIsShortcutAcceptable_conflictWithExistingShortcut** — collides with an existing shortcut → rejected; freed `h` (formerly vim) remains assignable.
+- **testIsShortcutAcceptable_conflictWithFixedArrowKeys** — colliding with a fixed arrow-key action → `.conflictWithFixedArrowKeys`; generic conflicts stay `.conflictWithExistingShortcut`.
+- **testShouldAcceptOrdinaryRecorderValue_refusesFixedArrowConflict** — ordinary recorder acceptance returns `false` for `.conflictWithFixedArrowKeys` (and the other hard refusals); `.conflictWithExistingShortcut` and `.reservedByMacos` stay `true` so their confirm handlers can still commit.
 - **testIsShortcutAcceptable_holdChangeStripsOldHoldFromCombinedNextWindow** — changing a shortcut's hold (e.g. ⌘→⌥) so its chord now duplicates another shortcut is detected; the same-index nextWindow is stored COMBINED with the old hold, so the old hold is stripped before applying the new one (else ⌥⌘+Tab is compared instead of ⌥+Tab and the conflict is missed).
-- **testIsShortcutAcceptable_pressConflictsWithLocalShortcutsUnderItsOwnHold** — recording a press that collides with a local shortcut (arrow keys, statics like Space) under the SAME shortcut's hold is rejected. Regression: the old-combos exclusion dropped the candidate's own hold, so the collision was only caught when another shortcut happened to share the same hold modifiers — the default double-⌥ holds masked the bug (⌥+→ flagged by luck), while ⌃+→ recorded with no conflict dialog after the arrow-keys toggle had unassigned it.
+- **testIsShortcutAcceptable_pressConflictsWithLocalShortcutsUnderItsOwnHold** — recording a press that collides with a local shortcut (fixed arrow keys, statics like Space) under the SAME shortcut's hold is rejected. Regression: the old-combos exclusion dropped the candidate's own hold, so the collision was only caught when another shortcut happened to share the same hold modifiers — the default double-⌥ holds masked the bug (⌥+→ flagged by luck), while ⌃+→ recorded with no conflict dialog.
 - **testIsShortcutAcceptable_reservedByMacos** — a macOS-reserved combo → rejected.
 - **testIsShortcutAcceptable_cmdHoldShortcutNoLongerBlockedByGameOverlay** — regression #5585: a Cmd hold shortcut is accepted (Game Overlay no longer blocks it).
 
 ### isWellFormedCandidateId
 Guards the recycled-`ShortcutEditor` regression where a stale recorder id (id/identifier drift) reached the conflict check and silently suppressed the dialog.
-- **testIsWellFormedCandidateId** — hold/next ids must resolve to an in-range index; the `"…Shortcut0"` placeholders (index -1) and out-of-range ids are rejected; static/arrow/vim ids are always well-formed.
+- **testIsWellFormedCandidateId** — hold/next ids must resolve to an in-range index; the `"…Shortcut0"` placeholders (index -1) and out-of-range ids are rejected; static/arrow ids are always well-formed.
 
 ### combinedModifiersMatch
 Used by the keyboard matcher to recognize a chord whose modifiers are physically split between the configured `holdShortcut` and a local shortcut (e.g. commandShiftTab = ⌘⌥-hold + ⇧).
