@@ -46,8 +46,8 @@ Users can create up to **9 independent keyboard shortcut profiles**. Each profil
 
 - **Its own trigger** — any key combination you choose (default: Option-Tab and the key above Tab).
 - **Its own filter rules** — which apps, Spaces, screens, and window states to show.
-- **Its own appearance** — icon grid or title list, small/medium/large/auto size, light/dark/system theme.
-- **Its own ordering** — most recently focused, most recently created, alphabetical, or Space order.
+- **Its own appearance** — icon grid or title list, small/medium/large size, light/dark/system theme.
+- **Its own ordering** — most recently focused, most recently created, or alphabetical.
 - **Its own release behavior** — switch instantly on key-up, hold the panel open, or open directly in search mode.
 
 Extra profiles beyond the first are added from the Controls settings and can be removed at any time.
@@ -64,7 +64,6 @@ Each shortcut profile can filter windows by:
 - **Space scope** — visible Spaces only, non-visible Spaces only, or all Spaces.
 - **Screen scope** — all screens, or just the screen where ScryTab appears.
 - **Window state** — choose to show, hide, or push to the end: minimized, hidden, fullscreen, and windowless app entries.
-- **Grouping** — collapse tabbed windows into one entry or show them separately; collapse each app down to just its main window.
 - **Exceptions** — hide specific apps entirely, hide them only when they have no windows, hide by window title pattern, or suppress ScryTab shortcuts while that app is in front (useful for remote desktop, virtualization, and screen-sharing apps).
 
 Ordering modes:
@@ -72,7 +71,6 @@ Ordering modes:
 - **Recently focused** (default, feels like native Command-Tab)
 - **Recently created**
 - **Alphabetical**
-- **Space order**
 
 > **Copy angle:** "Show the windows you use. Hide the ones you don't. ScryTab's filters put you in control."
 

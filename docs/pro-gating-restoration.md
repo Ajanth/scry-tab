@@ -53,7 +53,7 @@ The gate kinds were:
 The previous enum cases were:
 
 - `appIconsAndTitlesStyle`: degradable and hard-gated; Pro value was `AppearanceStylePreference.titles`.
-- `autoSize`: degradable; Pro value was `AppearanceSizePreference.auto`.
+- `autoSize`: degradable; Pro value was a removed adaptive appearance-size option that no longer exists.
 - `searchOnReleaseShortcut`: degradable and hard-gated; Pro value was `ShortcutStylePreference.searchOnRelease`.
 - `extraShortcut(index: Int)`: hard-gated; shortcut slots with index >= 1.
 - `searchInSwitcher`: hard-gated.
@@ -202,7 +202,7 @@ Restore `src/preferences/settings-window/tabs/UpgradeTab.swift` for purchase, ac
 
 Restore `src/pro/ui/ProBadgeView.swift` and `ProBadgeViewSegmentSpecs/Tests` for Settings badges. Badges were used in:
 
-- `AppearanceTab` for Pro appearance styles, Auto size, and search-on-release.
+- `AppearanceTab` for Pro appearance styles, size options, and search-on-release.
 - `ShortcutEditor` for per-shortcut override panes.
 - `ShortcutsWhenActiveSheet` for search and lock-search rows.
 - `SidebarList` for extra shortcut rows.
