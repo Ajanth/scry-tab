@@ -44,7 +44,6 @@
 "Arrow keys" = "矢印キー";
 "Arrow keys already assigned to other actions:\n%@" = "矢印キーはすでに他のアクションに割り当てられています:\n%@";
 "Ask before enabling crash reports" = "クラッシュレポートを有効にする前に確認";
-"Auto" = "自動";
 "Auto-install updates periodically" = "アップデートを定期的に自動インストール";
 "Behavior" = "動作";
 "Brief description of the bug" = "バグの簡単な説明";
@@ -95,8 +94,6 @@
 "Gesture" = "ジェスチャ";
 "Gestures" = "ジェスチャ";
 "Go back" = "戻る";
-"Group apps" = "App をグループ化";
-"Group tabs" = "タブをグループ化";
 "Help improve ScryTab" = "ScryTab の改善に協力";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "クラッシュレポートを自動送信して、ScryTab の改善にご協力ください。これは後で「設定」で変更できます。";
 "Hide" = "非表示";
@@ -143,7 +140,6 @@
 "Open Trackpad Settings…" = "トラックパッド設定を開く…";
 "Order windows by" = "ウインドウの並び順";
 "Ordering" = "並べ替え";
-"Ordering & Grouping" = "並び順とグループ化";
 "Past month" = "過去1か月";
 "Past week" = "過去1週間";
 "Past year" = "過去1年";
@@ -180,18 +176,14 @@
 "Shortcuts When Active" = "アクティブ時のショートカット";
 "Shortcuts while ScryTab is active" = "ScryTabがアクティブなときのショートカット";
 "Show" = "表示";
-"Show all windows" = "すべてのウインドウを表示";
 "Show apps with no open window" = "開いているウインドウのない App を表示";
 "Show at the end" = "末尾に表示";
 "Show Fewer Options" = "オプションを減らす";
 "Show fullscreen windows" = "フルスクリーンのウインドウを表示";
 "Show hidden windows" = "非表示のウインドウを表示";
-"Show main window" = "メインウインドウを表示";
 "Show minimized windows" = "最小化されたウインドウを表示";
 "Show More Options" = "その他のオプションを表示";
 "Show on" = "表示する画面";
-"Show separate window for each tab" = "タブごとに別のウインドウを表示";
-"Show single window for all tabs" = "すべてのタブを 1 つのウインドウで表示";
 "Show titles" = "タイトルを表示";
 "Show windows from applications" = "対象のアプリケーション";
 "Show windows from screens" = "対象の画面";
@@ -200,7 +192,6 @@
 "Size" = "サイズ";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "一部のショートカットではこの設定が上書きされています。上書きを削除して新しい全体設定をすべてのショートカットに適用するか、上書きを維持してください。";
-"Space Order" = "Space 順";
 "Start" = "先頭";
 "Start at login" = "ログイン時に起動";
 "Style" = "スタイル";

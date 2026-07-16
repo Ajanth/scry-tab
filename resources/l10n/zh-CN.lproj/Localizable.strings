@@ -44,7 +44,6 @@
 "Arrow keys" = "方向键";
 "Arrow keys already assigned to other actions:\n%@" = "方向键已分配给其他操作：\n%@";
 "Ask before enabling crash reports" = "在启用崩溃报告前询问";
-"Auto" = "自动";
 "Auto-install updates periodically" = "定期自动安装更新";
 "Behavior" = "行为";
 "Brief description of the bug" = "简要描述错误";
@@ -95,8 +94,6 @@
 "Gesture" = "手势";
 "Gestures" = "手势";
 "Go back" = "返回";
-"Group apps" = "应用分组";
-"Group tabs" = "标签分组";
 "Help improve ScryTab" = "帮助改进 ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "通过自动发送崩溃报告来帮助改进 ScryTab。你可以稍后在“设置”中更改此选项。";
 "Hide" = "隐藏";
@@ -143,7 +140,6 @@
 "Open Trackpad Settings…" = "打开触控板设置…";
 "Order windows by" = "窗口排序方式";
 "Ordering" = "排序";
-"Ordering & Grouping" = "排序与分组";
 "Past month" = "过去一个月";
 "Past week" = "过去一周";
 "Past year" = "过去一年";
@@ -180,18 +176,14 @@
 "Shortcuts When Active" = "激活时的快捷键";
 "Shortcuts while ScryTab is active" = "ScryTab 处于活跃状态时的快捷键";
 "Show" = "显示";
-"Show all windows" = "显示所有窗口";
 "Show apps with no open window" = "显示没有打开窗口的应用";
 "Show at the end" = "在末尾显示";
 "Show Fewer Options" = "显示更少选项";
 "Show fullscreen windows" = "显示全屏窗口";
 "Show hidden windows" = "显示隐藏窗口";
-"Show main window" = "显示主窗口";
 "Show minimized windows" = "显示最小化窗口";
 "Show More Options" = "显示更多选项";
 "Show on" = "显示于";
-"Show separate window for each tab" = "每个标签显示单独的窗口";
-"Show single window for all tabs" = "所有标签显示单个窗口";
 "Show titles" = "显示标题";
 "Show windows from applications" = "显示来自应用的窗口";
 "Show windows from screens" = "显示来自屏幕的窗口";
@@ -200,7 +192,6 @@
 "Size" = "大小";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "部分快捷键覆盖了此设置。移除这些覆盖以将新的全局值应用到所有快捷键，或保留这些覆盖。";
-"Space Order" = "桌面顺序";
 "Start" = "起始";
 "Start at login" = "登录时启动";
 "Style" = "样式";

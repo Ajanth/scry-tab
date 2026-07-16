@@ -44,7 +44,6 @@
 "Arrow keys" = "Arrow keys";
 "Arrow keys already assigned to other actions:\n%@" = "Arrow keys already assigned to other actions:\n%@";
 "Ask before enabling crash reports" = "Ask before enabling crash reports";
-"Auto" = "Auto";
 "Auto-install updates periodically" = "Auto-install updates periodically";
 "Behavior" = "Behavior";
 "Brief description of the bug" = "Brief description of the bug";
@@ -95,8 +94,6 @@
 "Gesture" = "Gesture";
 "Gestures" = "Gestures";
 "Go back" = "Go back";
-"Group apps" = "Group apps";
-"Group tabs" = "Group tabs";
 "Help improve ScryTab" = "Help improve ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings.";
 "Hide" = "Hide";
@@ -143,7 +140,6 @@
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
 "Order windows by" = "Order windows by";
 "Ordering" = "Ordering";
-"Ordering & Grouping" = "Ordering & Grouping";
 "Past month" = "Past month";
 "Past week" = "Past week";
 "Past year" = "Past year";
@@ -180,18 +176,14 @@
 "Shortcuts When Active" = "Shortcuts When Active";
 "Shortcuts while ScryTab is active" = "Shortcuts while ScryTab is active";
 "Show" = "Show";
-"Show all windows" = "Show all windows";
 "Show apps with no open window" = "Show apps with no open window";
 "Show at the end" = "Show at the end";
 "Show Fewer Options" = "Show Fewer Options";
 "Show fullscreen windows" = "Show fullscreen windows";
 "Show hidden windows" = "Show hidden windows";
-"Show main window" = "Show main window";
 "Show minimized windows" = "Show minimized windows";
 "Show More Options" = "Show More Options";
 "Show on" = "Show on";
-"Show separate window for each tab" = "Show separate window for each tab";
-"Show single window for all tabs" = "Show single window for all tabs";
 "Show titles" = "Show titles";
 "Show windows from applications" = "Show windows from applications";
 "Show windows from screens" = "Show windows from screens";
@@ -200,7 +192,6 @@
 "Size" = "Size";
 "Small" = "Small";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
-"Space Order" = "Space Order";
 "Start" = "Start";
 "Start at login" = "Start at login";
 "Style" = "Style";
