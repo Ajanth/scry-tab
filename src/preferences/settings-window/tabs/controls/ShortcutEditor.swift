@@ -55,7 +55,7 @@ final class ShortcutEditor {
     static let triggerLabel = ShortcutTriggerRow.triggerLabel
     static let tabLabelFiltering = NSLocalizedString("Filtering", comment: "")
     static let tabLabelAppearance = NSLocalizedString("Appearance", comment: "")
-    static let tabLabelOrdering = NSLocalizedString("Ordering & Grouping", comment: "")
+    static let tabLabelOrdering = NSLocalizedString("Ordering", comment: "")
 
     init(width: CGFloat) {
         editorWidth = width
@@ -390,49 +390,31 @@ final class FilteringPane {
     }
 }
 
-// MARK: - Ordering & Grouping pane
+// MARK: - Ordering pane
 
 final class OrderingPane {
-    private static let labelGroupApps = NSLocalizedString("Group apps", comment: "")
-    private static let labelGroupTabs = NSLocalizedString("Group tabs", comment: "")
     private static let labelWindowOrder = NSLocalizedString("Order windows by", comment: "")
 
     /// See `FilteringPane.searchableStrings`.
     static let searchableStrings: [String] = [
-        labelGroupApps, labelGroupTabs, labelWindowOrder,
-    ] + GroupAppsPreference.allCases.map { $0.localizedString }
-      + GroupTabsPreference.allCases.map { $0.localizedString }
-      + WindowOrderPreference.allCases.map { $0.localizedString }
+        labelWindowOrder,
+    ] + WindowOrderPreference.allCases.map { $0.localizedString }
 
     let view: NSView
-    private let showAppsOrWindows: ShortcutBoundDropdown
-    private let showTabsAsWindows: ShortcutBoundDropdown
     private let windowOrder: ShortcutBoundDropdown
 
     init(width: CGFloat) {
-        showAppsOrWindows = ShortcutBoundDropdown(
-            baseName: "showAppsOrWindows",
-            cases: GroupAppsPreference.allCases,
-            inheritedIndex: { Preferences.sharedGroupApps.index })
-        showTabsAsWindows = ShortcutBoundDropdown(
-            baseName: "showTabsAsWindows",
-            cases: GroupTabsPreference.allCases,
-            inheritedIndex: { Preferences.sharedGroupTabs.index })
         windowOrder = ShortcutBoundDropdown(
             baseName: "windowOrder",
             cases: WindowOrderPreference.allCases,
             inheritedIndex: { Preferences.sharedWindowOrder.index })
 
         let table = TableGroupView(width: width)
-        table.addRow(TableGroupView.Row(leftTitle: Self.labelGroupApps, rightViews: [showAppsOrWindows]))
-        table.addRow(TableGroupView.Row(leftTitle: Self.labelGroupTabs, rightViews: [showTabsAsWindows]))
         table.addRow(TableGroupView.Row(leftTitle: Self.labelWindowOrder, rightViews: [windowOrder]))
         view = table
     }
 
     func bind(toShortcut index: Int) {
-        showAppsOrWindows.bind(toShortcut: index)
-        showTabsAsWindows.bind(toShortcut: index)
         windowOrder.bind(toShortcut: index)
     }
 }

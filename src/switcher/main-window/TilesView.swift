@@ -357,12 +357,7 @@ class TilesView {
     }
 
     static func updateItemsAndLayout(_ preservedScrollOrigin: CGPoint?) {
-        var widthMax = TilesPanel.maxRowWidth().rounded()
-        if Preferences.appearanceSize(SwitcherSession.current?.presentationSource ?? .shortcut(0)) == .auto {
-            resolveAutoSize(widthMax)
-            Self.updateCachedSizes()
-            widthMax = TilesPanel.maxRowWidth().rounded()
-        }
+        let widthMax = TilesPanel.maxRowWidth().rounded()
         if let (maxX, maxY, labelHeight, rowSignature) = layoutTileViews(widthMax) {
             layoutParentViews(maxX, widthMax, maxY, labelHeight)
             centerRows(TilesView.rowWidth)
@@ -397,48 +392,6 @@ class TilesView {
         let clampedOrigin = CGPoint(x: min(max(0, scrollOrigin.x), maxX), y: min(max(0, scrollOrigin.y), maxY))
         scrollView.contentView.scroll(to: clampedOrigin)
         scrollView.reflectScrolledClipView(scrollView.contentView)
-    }
-
-    private static func resolveAutoSize(_ widthMax: CGFloat) {
-        let searchReservedHeight: CGFloat = searchMode == .off ? 0 : searchBarHeight() + 10
-        let heightMax = max(0, TilesPanel.maxRowHeight() - searchReservedHeight)
-        for size in [AppearanceSizePreference.large, .medium, .small] {
-            Appearance.applySize(size)
-            Self.updateCachedSizes()
-            let maxY = dryRunLayoutTileViews(widthMax)
-            if size == .small || maxY <= heightMax { return }
-        }
-    }
-
-    private static func dryRunLayoutTileViews(_ widthMax: CGFloat) -> CGFloat {
-        let labelHeight = Self.layoutCache.labelHeight
-        let height = TileView.height(labelHeight)
-        let isLeftToRight = App.shared.userInterfaceLayoutDirection == .leftToRight
-        let startingX = isLeftToRight ? Appearance.interCellPadding : widthMax - Appearance.interCellPadding
-        var currentX = startingX
-        var currentY = Appearance.interCellPadding
-        var maxY = currentY + height + Appearance.interCellPadding
-        var index = 0
-        while index < TilesView.recycledViews.count {
-            guard SwitcherSession.isActive else { return maxY }
-            defer { index += 1 }
-            let view = TilesView.recycledViews[index]
-            guard index < Windows.list.count else { break }
-            let window = Windows.list[index]
-            guard Windows.shouldDisplay(window) else { view.frame = .zero; continue }
-            view.updateRecycledCellWithNewContent(window, index, height)
-            let width = view.frame.size.width
-            let projectedX = projectedWidth(currentX, width).rounded(.down)
-            if needNewLine(projectedX, widthMax) {
-                currentX = startingX
-                currentY = (currentY + height + Appearance.interCellPadding).rounded(.down)
-                currentX = projectedWidth(currentX, width).rounded(.down)
-                maxY = max(currentY + height + Appearance.interCellPadding, maxY)
-            } else {
-                currentX = projectedX
-            }
-        }
-        return maxY
     }
 
     private static func layoutTileViews(_ widthMax: CGFloat) -> (CGFloat, CGFloat, CGFloat, [Int])? {

@@ -2,7 +2,7 @@ import Foundation
 
 /// Decides the display order of windows in the switcher. When a search query is active, ranks by
 /// match-then-relevance; otherwise applies the user's chosen order (recently-focused / recently-created
-/// / alphabetical / by-space), after pushing any "show at the end" buckets (windowless / hidden /
+/// / alphabetical), after pushing any "show at the end" buckets (windowless / hidden /
 /// minimized) to the back, with a stable `lastFocusOrder` tiebreak. Pure kernel — mirrors the original
 /// `Windows.sort` closure term-for-term.
 ///
@@ -11,7 +11,7 @@ import Foundation
 /// keep because `OrderWindow`s are precomputed once per window and read repeatedly during sort.
 /// The other config knobs are plain labeled params with defaults.
 
-enum OrderSortType: Equatable { case recentlyFocused, recentlyCreated, alphabetical, space }
+enum OrderSortType: Equatable { case recentlyFocused, recentlyCreated, alphabetical }
 
 /// A window's data + its app's data + its (query-dependent) search rank, for ordering.
 struct OrderWindow: Equatable {
@@ -44,20 +44,6 @@ enum WindowOrderResolver {
         var order = ComparisonResult.orderedSame
         if sortType == .alphabetical {
             order = compareByAppNameThenTitle(a, b)
-        }
-        if sortType == .space {
-            if a.state.isOnAllSpaces && b.state.isOnAllSpaces {
-                order = .orderedSame
-            } else if a.state.isOnAllSpaces {
-                order = .orderedAscending
-            } else if b.state.isOnAllSpaces {
-                order = .orderedDescending
-            } else if let s0 = a.state.spaceIndexes.first, let s1 = b.state.spaceIndexes.first {
-                order = intOrder(s0, s1)
-            }
-            if order == .orderedSame {
-                order = compareByAppNameThenTitle(a, b)
-            }
         }
         if order == .orderedSame {
             order = intOrder(a.state.lastFocusOrder, b.state.lastFocusOrder)

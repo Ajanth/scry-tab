@@ -35,7 +35,7 @@ The predicate, in order:
    make sense for real windows.
 7. For **real windows**: also exclude fullscreen / minimized (when set), windows not in a visible space
    (`.visible`) or in a visible space (`.nonVisible`), windows off the preferred screen
-   (`.showingScryTab`), and non-frontmost native **tabs** (unless tabs are shown as separate windows).
+   (`.showingScryTab`), and non-frontmost native **tabs**.
 
 Precedence matters: `isPhantom` wins over everything (even a would-be-shown windowless row), and a
 false Focus Set membership is a strict AND gate before app, windowless, and screen predicates.
@@ -90,8 +90,7 @@ Mirrors `WindowFilterResolverTests.swift` 1:1. Each test flips one knob from an 
 - **testOnlyPreferredScreenShowsOnScreenWindow** — `.showingScryTab` keeps an on-screen window.
 
 ### J. Tabs (macOS native tabs)
-- **testNonFrontmostTabHiddenWhenGrouping** — a non-frontmost tab is hidden when tabs are grouped.
-- **testTabbedShownWhenSeparateTabs** — shown when "tabs as separate windows" is set.
+- **testNonFrontmostTabIsHidden** — a non-frontmost tab is always hidden.
 
 ### K. Combinations
 - **testAllFiltersOnAndWindowPassesEachShows** — every filter on, a window that satisfies all of them shows.

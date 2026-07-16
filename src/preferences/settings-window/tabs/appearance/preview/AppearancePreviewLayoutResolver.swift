@@ -9,7 +9,6 @@ enum AppearancePreviewSize: Equatable {
     case small
     case medium
     case large
-    case auto
 }
 
 enum AppearancePreviewLayoutDirection: Equatable {
@@ -117,7 +116,7 @@ enum AppearancePreviewLayoutResolver {
                     } else {
                         isMacOS26 = false
                     }
-                    let windowPadding = size == .large || size == .auto ? CGFloat(28) : 25
+                    let windowPadding = size == .large ? CGFloat(28) : 25
                     let iconSize: CGFloat
                     let panelCornerRadius: CGFloat
                     let cellCornerRadius: CGFloat
@@ -130,7 +129,7 @@ enum AppearancePreviewLayoutResolver {
                             iconSize = 110
                             panelCornerRadius = isMacOS26 ? 55 : 23
                             cellCornerRadius = isMacOS26 ? 35 : 10
-                        case .large, .auto:
+                        case .large:
                             iconSize = 150
                             panelCornerRadius = isMacOS26 ? 75 : 23
                             cellCornerRadius = isMacOS26 ? 45 : 10
@@ -152,7 +151,7 @@ enum AppearancePreviewLayoutResolver {
                     switch size {
                         case .small: iconSize = 18
                         case .medium: iconSize = 24
-                        case .large, .auto: iconSize = 30
+                        case .large: iconSize = 30
                     }
                     return Metrics(
                         windowPadding: 18,
@@ -173,7 +172,7 @@ enum AppearancePreviewLayoutResolver {
             switch size {
                 case .small: return 13
                 case .medium: return 14
-                case .large, .auto: return 16
+                case .large: return 16
             }
         }
 
@@ -181,7 +180,7 @@ enum AppearancePreviewLayoutResolver {
             switch size {
                 case .small: return 16
                 case .medium: return 17
-                case .large, .auto: return 19
+                case .large: return 19
             }
         }
 
@@ -189,7 +188,7 @@ enum AppearancePreviewLayoutResolver {
             switch size {
                 case .small: return 11
                 case .medium: return 12
-                case .large, .auto: return 14
+                case .large: return 14
             }
         }
 
@@ -197,7 +196,7 @@ enum AppearancePreviewLayoutResolver {
             switch size {
                 case .small: return 12.10107421875
                 case .medium: return 13.201171875
-                case .large, .auto: return 15.4013671875
+                case .large: return 15.4013671875
             }
         }
 
@@ -205,7 +204,7 @@ enum AppearancePreviewLayoutResolver {
             switch size {
                 case .small: return 0
                 case .medium: return 5
-                case .large, .auto: return 10
+                case .large: return 10
             }
         }
     }

@@ -54,9 +54,8 @@ class Appearance {
     private static func updateSize(_ style: AppearanceStylePreference) {
         let isHorizontalScreen = NSScreen.preferred.isHorizontal()
         maxWidthOnScreen = AppearanceTestable.comfortableWidth(NSScreen.preferred.physicalSize().map { $0.width })
-        let sizeToApply: AppearanceSizePreference = currentSize == .auto ? .large : currentSize
-        resolvedSize = sizeToApply
-        applyConcreteSize(sizeToApply, isHorizontalScreen, style)
+        resolvedSize = currentSize
+        applyConcreteSize(currentSize, isHorizontalScreen, style)
         updateFont(style)
     }
 
@@ -118,7 +117,7 @@ class Appearance {
                     windowCornerRadius = 55
                     cellCornerRadius = 35
                 }
-            case .large, .auto:
+            case .large:
                 windowPadding = 28
                 iconSize = 150
                 fontHeight = 16
@@ -144,7 +143,7 @@ class Appearance {
             case .medium:
                 iconSize = 24
                 fontHeight = 14
-            case .large, .auto:
+            case .large:
                 iconSize = 30
                 fontHeight = 16
         }

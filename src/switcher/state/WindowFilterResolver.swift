@@ -23,7 +23,6 @@ enum WindowFilterResolver {
                            onlyVisibleSpaces: Bool = false,      // spacesToShow == .visible
                            onlyNonVisibleSpaces: Bool = false,   // spacesToShow == .nonVisible
                            onlyPreferredScreen: Bool = false,    // screensToShow == .showingScryTab
-                           separateTabs: Bool = false,           // groupTabs == .separateWindows
                            frontmostPid: pid_t? = nil,
                            visibleSpaceIds: [UInt64] = [],       // CGSSpaceID === UInt64
                            exceptions: [ExceptionEntry] = [],
@@ -42,7 +41,7 @@ enum WindowFilterResolver {
                 !(onlyVisibleSpaces && !inAnyVisibleSpace(s, visibleSpaceIds)) &&
                 !(onlyNonVisibleSpaces && inAnyVisibleSpace(s, visibleSpaceIds)) &&
                 !(onlyPreferredScreen && !isOnPreferredScreen()) &&
-                (separateTabs || !s.isTabbed))
+                !s.isTabbed)
     }
 
     private static func inAnyVisibleSpace(_ s: WindowState, _ visibleSpaceIds: [UInt64]) -> Bool {

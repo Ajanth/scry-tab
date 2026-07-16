@@ -6,7 +6,7 @@ import XCTest
 /// in, `Bool` out.
 ///
 /// Groups: A search ranking · B show-at-the-end buckets · C recentlyFocused · D recentlyCreated ·
-/// E alphabetical · F space · G tiebreak/symmetry.
+/// E alphabetical · G tiebreak/symmetry.
 final class WindowOrderResolverTests: XCTestCase {
 
     private func w(searchMatches: Bool = false, searchRelevance: Double = 0,
@@ -102,45 +102,6 @@ final class WindowOrderResolverTests: XCTestCase {
         XCTAssertTrue(WindowOrderResolver.isOrderedBefore(w(lastFocusOrder: 0, appName: "Same", windowTitle: "Same"),
                                                           w(lastFocusOrder: 1, appName: "Same", windowTitle: "Same"),
                                                           sortType: .alphabetical))
-    }
-
-    // MARK: - F. Space
-
-    func testSpaceAllSpacesWindowsFirst() {
-        XCTAssertTrue(WindowOrderResolver.isOrderedBefore(w(isOnAllSpaces: true),
-                                                          w(isOnAllSpaces: false, spaceIndexes: [0]),
-                                                          sortType: .space))
-    }
-
-    func testSpaceLowerSpaceIndexFirst() {
-        XCTAssertTrue(WindowOrderResolver.isOrderedBefore(w(spaceIndexes: [0]), w(spaceIndexes: [2]),
-                                                          sortType: .space))
-    }
-
-    func testSpaceTiebreaksByAppName() {
-        XCTAssertTrue(WindowOrderResolver.isOrderedBefore(w(spaceIndexes: [1], appName: "Aaa"),
-                                                          w(spaceIndexes: [1], appName: "Bbb"),
-                                                          sortType: .space))
-    }
-
-    /// Both windows on all spaces → no space-index ordering, fall through to alphabetical tiebreak.
-    func testSpaceBothOnAllSpacesTiebreaksByAppName() {
-        XCTAssertTrue(WindowOrderResolver.isOrderedBefore(w(isOnAllSpaces: true, appName: "Aaa"),
-                                                          w(isOnAllSpaces: true, appName: "Bbb"),
-                                                          sortType: .space))
-        XCTAssertFalse(WindowOrderResolver.isOrderedBefore(w(isOnAllSpaces: true, appName: "Bbb"),
-                                                           w(isOnAllSpaces: true, appName: "Aaa"),
-                                                           sortType: .space))
-    }
-
-    /// Symmetric to `testSpaceAllSpacesWindowsFirst`: when only `b` is on all spaces, `a` sorts
-    /// AFTER `b` (b first). The existing test covers only the "a on all spaces" side of the
-    /// branch — this pins the mirrored case so the comparator can't silently regress to
-    /// asymmetric behavior (which would break strict-weak-ordering and `Array.sort`).
-    func testSpaceOnlyBOnAllSpacesSortsBFirst() {
-        XCTAssertFalse(WindowOrderResolver.isOrderedBefore(w(isOnAllSpaces: false, spaceIndexes: [0]),
-                                                           w(isOnAllSpaces: true),
-                                                           sortType: .space))
     }
 
     // MARK: - G. Tiebreak / symmetry

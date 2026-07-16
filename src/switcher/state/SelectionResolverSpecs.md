@@ -40,7 +40,7 @@ C target removed · D search mode · E edge cases · plus direct helper-kernel c
 - **testInitialPickSingleVisible** — one window → `resetThenSelect(0)`.
 - **testInitialPickTwoVisibleDefaultRules** — default Cmd-Tab cycles to slot 1.
 - **testInitialPickTopTwoMinimized** — both top windows minimized → land on index 0, not cycle past.
-- **testInitialPickUseLastFocusedRule** — alpha/space ordering → pick lowest `lastFocusOrder`.
+- **testInitialPickUseLastFocusedRule** — recently-created/alphabetical ordering → pick lowest `lastFocusOrder`.
 - **testInitialPickAllInvisible** — everything filtered out → `clearTargetAndHover`.
 - **testInitialPickSkipsWindowlessInLastFocusedRule** — windowless entries skipped when scanning.
 

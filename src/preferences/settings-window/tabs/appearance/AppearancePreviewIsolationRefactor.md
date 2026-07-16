@@ -269,7 +269,7 @@ Also verify:
 - Appearance → Controls → Appearance and Controls → Appearance → Controls.
 - Light and dark appearance.
 - Reduce Motion and Increase Contrast.
-- Small, Medium, Large, and Auto appearance sizes.
+- Small, Medium, and Large appearance sizes.
 - Retina pixel alignment and no thumbnail blur.
 
 ## Non-goals

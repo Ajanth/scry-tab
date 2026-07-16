@@ -123,7 +123,7 @@ class Applications {
             guard wid != 0 && wid != TilesPanel.shared.windowNumber else { return }
             let level = wid.level()
             let isSelf = app.pid == ProcessInfo.processInfo.processIdentifier
-            let keys = [kAXTitleAttribute, kAXSubroleAttribute, kAXRoleAttribute, kAXSizeAttribute, kAXPositionAttribute, kAXFullscreenAttribute, kAXMinimizedAttribute, kAXMainAttribute] + (isSelf ? [] : [kAXChildrenAttribute])
+            let keys = [kAXTitleAttribute, kAXSubroleAttribute, kAXRoleAttribute, kAXSizeAttribute, kAXPositionAttribute, kAXFullscreenAttribute, kAXMinimizedAttribute] + (isSelf ? [] : [kAXChildrenAttribute])
             let a = try axWindow.attributes(keys)
             let tabSiblingTitles = isSelf ? nil : TabGroup.extractTabTitles(a.children)
             DispatchQueue.main.async { [weak app] in
@@ -131,7 +131,6 @@ class Applications {
                 windowAttributesThrottler.throttleOrProceed(key: "\(wid)-generic") {
                     let findOrCreate = Windows.findOrCreate(axWindow, wid, app, level, a.title, a.subrole, a.role, a.size, a.position, a.isFullscreen, a.isMinimized)
                     guard let window = findOrCreate.0 else { return }
-                    window.isMainWindow = a.isMain ?? false
                     var tabStateChanged = false
                     if tabSiblingTitles != nil || window.tabbedSiblingWids != nil {
                         tabStateChanged = TabGroup.updateState(window, tabSiblingTitles)

@@ -78,12 +78,12 @@ final class SettingsSearchHighlightTests: XCTestCase {
     // MARK: - Tier A: LightLabel highlight target (what rounded-section rows use)
 
     func testLightLabelTargetAppliesAndClearsRanges() {
-        let label = LightLabel("Group apps")
+        let label = LightLabel("Order windows by")
         guard let target = SettingsSearchHighlight.highlightTarget(label) else {
             return XCTFail("a non-empty LightLabel must produce a highlight target")
         }
-        XCTAssertTrue(target.hasMatch("Group"))
-        target.updateHighlight("Group")
+        XCTAssertTrue(target.hasMatch("Order"))
+        target.updateHighlight("Order")
         XCTAssertEqual(label.highlightRanges, [NSRange(location: 0, length: 5)],
             "regression: LightLabel must receive the matched range so it can draw the yellow background inline on its next draw")
         target.updateHighlight("zzz")

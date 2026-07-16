@@ -18,18 +18,15 @@ Decision order:
 2. **Show-at-the-end buckets** → windows whose type is set to "show at the end" (windowless / hidden /
    minimized) sink below the rest.
 3. **Sort type** → `recentlyFocused` (lowest `lastFocusOrder`), `recentlyCreated` (highest
-   `creationOrder`), `alphabetical` (app name, then title; `localizedStandardCompare`), or `space`
-   (all-spaces windows first, then lowest space index, then alphabetical).
-4. **Tiebreak** → `lastFocusOrder` (for the alphabetical/space paths).
+   `creationOrder`), or `alphabetical` (app name, then title; `localizedStandardCompare`).
+4. **Tiebreak** → `lastFocusOrder` (for the alphabetical path).
 
 ## Behavior & edge cases
 
 - Buckets only separate when the relevant "show at the end" preference is set *and* the two windows
   differ on that trait; otherwise ordering falls through to the sort type.
 - `recentlyFocused`/`recentlyCreated` return directly (no alphabetical tiebreak); the `lastFocusOrder`
-  tiebreak applies to the alphabetical/space paths.
-- `space`: windows on all spaces sort ahead of space-bound ones; ties within a space fall back to
-  alphabetical, then `lastFocusOrder`.
+  tiebreak applies to the alphabetical path.
 - Equal facts → not ordered before each other (strict weak ordering, required by `Array.sort`).
 
 ## Test scenarios
@@ -58,13 +55,6 @@ Mirrors `WindowOrderResolverTests.swift` 1:1.
 - **testAlphabeticalByAppName** — by app name.
 - **testAlphabeticalTitleBreaksTieWithinSameApp** — same app → by window title.
 - **testAlphabeticalTiebreaksByLastFocusOrder** — identical app+title → `lastFocusOrder`.
-
-### F. Space
-- **testSpaceAllSpacesWindowsFirst** — all-spaces windows precede space-bound ones (a on all spaces).
-- **testSpaceLowerSpaceIndexFirst** — lower space index first.
-- **testSpaceTiebreaksByAppName** — same space → alphabetical.
-- **testSpaceBothOnAllSpacesTiebreaksByAppName** — both on all spaces → no space-index ordering; fall through to alphabetical.
-- **testSpaceOnlyBOnAllSpacesSortsBFirst** — mirror of `testSpaceAllSpacesWindowsFirst`: only b on all spaces → b sorts first (pins comparator symmetry).
 
 ### G. Tiebreak / symmetry
 - **testEqualWindowsAreNotOrderedBeforeEachOther** — equal facts are not ordered before each other.

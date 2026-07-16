@@ -77,25 +77,8 @@ class Windows {
             window.recomputeIsPhantom()
             refreshIfWindowShouldBeShownToTheUser(window, filters)
         }
-        refreshWhichWindowsToShowTheUser(filters)
         sort()
         return true
-    }
-
-    static func refreshWhichWindowsToShowTheUser(_ filters: WindowFilters = .snapshot()) {
-        if filters.onlyMainWindowPerApplication {
-            // Group windows by application and select the optimal main window
-            let windowsGroupedByApp = Dictionary(grouping: list) { $0.application.pid }
-            windowsGroupedByApp.forEach { (app, windows) in
-                if windows.count > 1, let mainWindow = findMainWindow(windows) {
-                    windows.forEach { window in
-                        if window.cgWindowId != mainWindow.cgWindowId {
-                            window.shouldShowTheUser = false
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private static func refreshIfWindowShouldBeShownToTheUser(_ window: Window, _ f: WindowFilters) {
@@ -113,40 +96,11 @@ class Windows {
             onlyVisibleSpaces: f.spacesToShow == .visible,
             onlyNonVisibleSpaces: f.spacesToShow == .nonVisible,
             onlyPreferredScreen: f.screensToShow == .showingScryTab,
-            separateTabs: f.groupTabs == .separateWindows,
             frontmostPid: Applications.frontmostPid,
             visibleSpaceIds: Spaces.visibleSpaces,
             exceptions: f.exceptions,
             matchesFocusSet: f.matchesFocusSet(window.application.bundleIdentifier),
             isOnPreferredScreen: window.isOnScreen(NSScreen.preferred))
-    }
-
-    /// Selects the most appropriate main window from a given list of windows.
-    ///
-    /// The selection criteria are as follows:
-    /// 1. Prefer the focused window if it exists.
-    /// 2. Prefer the main window of the application if the focused window is not found.
-    ///
-    /// - Parameter windows: An array of `Window` objects to select from.
-    /// - Returns: The most appropriate `Window` object based on the selection criteria, or `nil` if the array is empty.
-    static func findMainWindow(_ windows: [Window]) -> Window? {
-        let sortedWindows = windows.sorted { (window1, window2) -> Bool in
-            // Prefer the focus window
-            if window1.application.focusedWindow?.cgWindowId == window1.cgWindowId {
-                return true
-            } else if window2.application.focusedWindow?.cgWindowId == window2.cgWindowId {
-                return false
-            }
-            // Prefer the main window (cached AXMain flag — refreshed off-main with the window's other
-            // attributes; avoids AX IPC in this comparator on the show path, see #5721 audit)
-            if window1.isMainWindow && !window2.isMainWindow {
-                return true
-            } else if !window1.isMainWindow && window2.isMainWindow {
-                return false
-            }
-            return true
-        }
-        return sortedWindows.first { $0.shouldShowTheUser }
     }
 
     /// selection + hover methods (all operate on `SwitcherSession.current`)
@@ -356,7 +310,6 @@ class Windows {
             case .recentlyFocused: return .recentlyFocused
             case .recentlyCreated: return .recentlyCreated
             case .alphabetical: return .alphabetical
-            case .space: return .space
         }
     }
 
@@ -481,8 +434,6 @@ struct WindowFilters {
     let showMinimizedWindows: ShowHowPreference
     let spacesToShow: SpacesToShowPreference
     let screensToShow: ScreensToShowPreference
-    let groupTabs: GroupTabsPreference
-    let onlyMainWindowPerApplication: Bool
     let focusSetScope: FocusSetScope
     let focusSetResolver: FocusSetResolver?
 
@@ -502,8 +453,6 @@ struct WindowFilters {
                 showMinimizedWindows: policy.hideMinimized ? .hide : .show,
                 spacesToShow: policy.onlyVisibleSpaces ? .visible : (policy.onlyNonVisibleSpaces ? .nonVisible : .all),
                 screensToShow: policy.onlyPreferredScreen ? .showingScryTab : .all,
-                groupTabs: Preferences.sharedGroupTabs,
-                onlyMainWindowPerApplication: Preferences.sharedGroupApps == .mainWindow,
                 focusSetScope: focusSetScope,
                 focusSetResolver: focusSetResolver)
         }
@@ -517,8 +466,6 @@ struct WindowFilters {
             showMinimizedWindows: Preferences.showMinimizedWindows[i],
             spacesToShow: Preferences.spacesToShow[i],
             screensToShow: Preferences.screensToShow[i],
-            groupTabs: Preferences.groupTabs(i),
-            onlyMainWindowPerApplication: Preferences.groupApps(i) == .mainWindow,
             focusSetScope: focusSetScope,
             focusSetResolver: focusSetResolver)
     }
