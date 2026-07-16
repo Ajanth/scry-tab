@@ -42,10 +42,10 @@ final class OverrideClickResolverTests: XCTestCase {
     /// UserDefaults.
     func testNoOpWhenRegisteredDefaultDiffersFromGlobal() {
         let decision = OverrideClickResolver.decide(
-            newIndex: 3,                    // user clicks Auto (currently displayed)
+            newIndex: 2,                    // user clicks Large (currently displayed)
             hasOverride: false,
             storedOverrideValue: "1",       // registered default = Medium (= UserDefaults value)
-            globalIndex: 3,                 // global = Auto = displayed
+            globalIndex: 2,                 // global = Large = displayed
             valueAtIndex: identity)
         XCTAssertEqual(decision, .skip,
             "regression: previously `controlWasChanged` compared against UserDefaults (= registered " +
@@ -71,7 +71,7 @@ final class OverrideClickResolverTests: XCTestCase {
         let decision = OverrideClickResolver.decide(
             newIndex: 0,
             hasOverride: true,
-            storedOverrideValue: "3",
+            storedOverrideValue: "2",
             globalIndex: 1,
             valueAtIndex: identity)
         XCTAssertEqual(decision, .write(value: "0"))
@@ -110,7 +110,7 @@ final class OverrideClickResolverTests: XCTestCase {
         let decision = OverrideClickResolver.decide(
             newIndex: 1,
             hasOverride: true,
-            storedOverrideValue: "3",
+            storedOverrideValue: "2",
             globalIndex: 1,
             valueAtIndex: identity)
         XCTAssertEqual(decision, .remove)
@@ -126,7 +126,7 @@ final class OverrideClickResolverTests: XCTestCase {
             hasOverride: false,
             storedOverrideValue: nil,
             globalIndex: 0,
-            valueAtIndex: { ["small", "medium", "large", "auto"][$0] })
+            valueAtIndex: { ["small", "medium", "large"][$0] })
         XCTAssertEqual(decision, .write(value: "large"))
     }
 

@@ -16,7 +16,7 @@ struct SelectionInputs: Equatable {
     let selectedIndex: Int
     let selectedTarget: String?
     /// True iff the active presentation source's effective window order is not recently focused.
-    /// AND `Applications.frontmostPid != nil`. Gates the alpha/space-ordering initial-pick path.
+    /// AND `Applications.frontmostPid != nil`. Gates the recently-created/alphabetical-ordering initial-pick path.
     let useLastFocusedRule: Bool
     let restoreDefaultOnSearchClear: Bool
     let bestMatchOnSearchChange: Bool

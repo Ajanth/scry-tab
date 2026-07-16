@@ -207,14 +207,9 @@ final class WindowFilterResolverTests: XCTestCase {
 
     // MARK: - J. Tabs (macOS native tabs)
 
-    func testNonFrontmostTabHiddenWhenGrouping() {
+    func testNonFrontmostTabIsHidden() {
         XCTAssertFalse(WindowFilterResolver.shouldShow(ws(isTabbed: true), appState(),
-                                                       separateTabs: false, isOnPreferredScreen: true))
-    }
-
-    func testTabbedShownWhenSeparateTabs() {
-        XCTAssertTrue(WindowFilterResolver.shouldShow(ws(isTabbed: true), appState(),
-                                                      separateTabs: true, isOnPreferredScreen: true))
+                                                       isOnPreferredScreen: true))
     }
 
     // MARK: - K. Combinations
@@ -223,7 +218,7 @@ final class WindowFilterResolverTests: XCTestCase {
         XCTAssertTrue(WindowFilterResolver.shouldShow(
             ws(spaceIds: [1]), appState(pid: 100),
             onlyFrontmostApp: true, hideHidden: true, hideWindowless: true, hideFullscreen: true,
-            hideMinimized: true, onlyVisibleSpaces: true, onlyPreferredScreen: true, separateTabs: false,
+            hideMinimized: true, onlyVisibleSpaces: true, onlyPreferredScreen: true,
             frontmostPid: 100, visibleSpaceIds: [1], isOnPreferredScreen: true))
     }
 

@@ -3,10 +3,10 @@
 ## Summary
 
 The settings-only appearance preview resolves final, pixel-aligned geometry from local snapshots of
-the live switcher's Small, Medium, Large, and Auto App Icons and Titles visual metrics. Auto matches
-the production three-item preview's Large resolution. The resolver uniformly applies host-only
-scaling without reading live preferences or switcher state, and selects the live material,
-panel-shadow, border, radius, typography, and status-symbol decisions for Tahoe and pre-Tahoe.
+the live switcher's Small, Medium, and Large App Icons and Titles visual metrics. The resolver
+uniformly applies host-only scaling without reading live preferences or switcher state, and selects
+the live material, panel-shadow, border, radius, typography, and status-symbol decisions for Tahoe
+and pre-Tahoe.
 
 ## Test scenarios
 

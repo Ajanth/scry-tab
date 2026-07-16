@@ -12,8 +12,6 @@ class PreferencesEvents {
         "appearanceSize",
         "appearanceTheme",
         "sharedWindowOrder",
-        "sharedGroupApps",
-        "sharedGroupTabs",
         "showOnScreen",
     ]
 
@@ -28,14 +26,10 @@ class PreferencesEvents {
         return false
     }
 
-    /// True if `key` is an indexed per-shortcut grouping pref (`showAppsOrWindows`, `showTabsAsWindows`
-    /// + index suffix). These moved from global to per-shortcut, so a change on any index needs the
-    /// same UI reset that the old global key used to trigger.
-    private static func isPerShortcutGroupingKey(_ key: String) -> Bool {
-        for baseName in ["showAppsOrWindows", "showTabsAsWindows", "windowOrder"] {
-            for i in 0...Preferences.maxShortcutCount {
-                if Preferences.indexToName(baseName, i) == key { return true }
-            }
+    /// True if `key` is an indexed per-shortcut window-order pref (`windowOrder` + index suffix).
+    private static func isPerShortcutOrderingKey(_ key: String) -> Bool {
+        for i in 0...Preferences.maxShortcutCount {
+            if Preferences.indexToName("windowOrder", i) == key { return true }
         }
         return false
     }
@@ -67,7 +61,7 @@ class PreferencesEvents {
         case "startAtLogin": LoginItem.applyCurrentPreference()
         case "updatePolicy": applyUpdatePolicyPreference()
         case let k where preferencesRequiringUiReset.contains(k) && TilesPanel.shared != nil: App.resetPreferencesDependentComponents()
-        case let k where (isOverrideKey(k) || isPerShortcutGroupingKey(k)) && TilesPanel.shared != nil: App.resetPreferencesDependentComponents()
+        case let k where (isOverrideKey(k) || isPerShortcutOrderingKey(k)) && TilesPanel.shared != nil: App.resetPreferencesDependentComponents()
         default: break
         }
     }

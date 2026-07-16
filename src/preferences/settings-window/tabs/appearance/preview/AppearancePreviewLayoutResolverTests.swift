@@ -73,7 +73,6 @@ final class AppearancePreviewLayoutResolverTests: XCTestCase {
             (.small, 70, 13, 24, 0),
             (.medium, 110, 14, 35, 5),
             (.large, 150, 16, 45, 10),
-            (.auto, 150, 16, 45, 10),
         ]
         for (size, iconSize, fontSize, cellRadius, outerLabelInset) in cases {
             let layout = resolve(.appIcons, size: size, host: mainHost, focusedIndex: 1)
@@ -83,9 +82,6 @@ final class AppearancePreviewLayoutResolverTests: XCTestCase {
             XCTAssertEqual(layout.visualStyle.fontPointSize, fontSize)
             XCTAssertEqual(layout.selectionCornerRadius / layout.contentScale, cellRadius, accuracy: 1)
         }
-        XCTAssertEqual(
-            resolve(.appIcons, size: .auto, host: mainHost, focusedIndex: 1),
-            resolve(.appIcons, size: .large, host: mainHost, focusedIndex: 1))
     }
 
     /// Titles reproduces production icon, font, label, row, and status metrics for every size.
@@ -94,7 +90,6 @@ final class AppearancePreviewLayoutResolverTests: XCTestCase {
             (.small, 18, 13, 32, 11),
             (.medium, 24, 14, 38, 12),
             (.large, 30, 16, 44, 14),
-            (.auto, 30, 16, 44, 14),
         ]
         for (size, iconSize, fontSize, rowHeight, statusFontSize) in cases {
             let layout = resolve(.titles, size: size, host: mainHost, focusedIndex: 0)
@@ -103,14 +98,11 @@ final class AppearancePreviewLayoutResolverTests: XCTestCase {
             XCTAssertEqual(layout.visualStyle.fontPointSize, fontSize)
             XCTAssertEqual(layout.visualStyle.statusFontPointSize, statusFontSize)
         }
-        XCTAssertEqual(
-            resolve(.titles, size: .auto, host: mainHost, focusedIndex: 0),
-            resolve(.titles, size: .large, host: mainHost, focusedIndex: 0))
     }
 
     /// Pre-Tahoe App Icons keeps production legacy insets and radii across every concrete size.
     func testLegacyAppIconsAllSizesMatchProductionMetrics() {
-        for size in [AppearancePreviewSize.small, .medium, .large, .auto] {
+        for size in [AppearancePreviewSize.small, .medium, .large] {
             let layout = resolve(
                 .appIcons,
                 size: size,

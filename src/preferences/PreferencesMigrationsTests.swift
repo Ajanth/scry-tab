@@ -11,7 +11,7 @@ import XCTest
 /// the former needs the real NSKeyedArchiver/ShortcutRecorder codec (stubbed compile-only here), the
 /// latter mutates real Login Items via deprecated LaunchServices APIs.
 ///
-/// Groups: A version gating · B shared presentation defaults · B2 obsolete when-active shortcuts · C grouping→per-shortcut · D/E/F exceptions ·
+/// Groups: A version gating · B shared presentation defaults · B2 obsolete when-active shortcuts · D/E/F exceptions ·
 /// G/H show-windows dropdowns · I gestures · K menubar · L/M sizes · N shortcuts · P dropdowns ·
 /// Q drop-thumbnails appearance style.
 final class PreferencesMigrationsTests: XCTestCase {
@@ -52,43 +52,27 @@ final class PreferencesMigrationsTests: XCTestCase {
 
     // MARK: - B. Shared presentation defaults
 
-    /// Shortcut 1 seeds each shared value while distinct legacy shortcut values become explicit overrides.
+    /// Shortcut 1 seeds the shared window-order value while a distinct legacy shortcut value becomes an explicit override.
     func testSharedPresentationDefaultsPreserveDistinctShortcutValues() {
         defaults.set("2", forKey: "windowOrder")
         defaults.set("1", forKey: "windowOrder2")
-        defaults.set("0", forKey: "showAppsOrWindows")
-        defaults.set("1", forKey: "showAppsOrWindows2")
-        defaults.set("true", forKey: "showTabsAsWindows")
-        defaults.set("false", forKey: "showTabsAsWindows2")
 
         PreferencesMigrations.migrateSharedPresentationDefaults()
 
         XCTAssertEqual(defaults.string(forKey: "sharedWindowOrder"), "2")
-        XCTAssertEqual(defaults.string(forKey: "sharedGroupApps"), "0")
-        XCTAssertEqual(defaults.string(forKey: "sharedGroupTabs"), "1")
         XCTAssertNil(defaults.string(forKey: "windowOrder"))
         XCTAssertEqual(defaults.string(forKey: "windowOrder2"), "1")
-        XCTAssertNil(defaults.string(forKey: "showAppsOrWindows"))
-        XCTAssertEqual(defaults.string(forKey: "showAppsOrWindows2"), "1")
-        XCTAssertNil(defaults.string(forKey: "showTabsAsWindows"))
-        XCTAssertEqual(defaults.string(forKey: "showTabsAsWindows2"), "0")
         XCTAssertEqual(defaults.string(forKey: "sharedPresentationDefaultsMigrated"), "true")
     }
 
     /// Untouched legacy shortcuts inherit normal defaults and equal stored values are removed as redundant overrides.
     func testSharedPresentationDefaultsUseNormalFallbacksAndRemoveEqualOverrides() {
         defaults.set("0", forKey: "windowOrder2")
-        defaults.set("1", forKey: "showAppsOrWindows2")
-        defaults.set("0", forKey: "showTabsAsWindows2")
 
         PreferencesMigrations.migrateSharedPresentationDefaults()
 
         XCTAssertEqual(defaults.string(forKey: "sharedWindowOrder"), "0")
-        XCTAssertEqual(defaults.string(forKey: "sharedGroupApps"), "1")
-        XCTAssertEqual(defaults.string(forKey: "sharedGroupTabs"), "0")
         XCTAssertNil(defaults.string(forKey: "windowOrder2"))
-        XCTAssertNil(defaults.string(forKey: "showAppsOrWindows2"))
-        XCTAssertNil(defaults.string(forKey: "showTabsAsWindows2"))
     }
 
     /// The marker makes the migration idempotent so later shared-setting edits are never reseeded from shortcuts.
@@ -133,38 +117,6 @@ final class PreferencesMigrationsTests: XCTestCase {
 
         XCTAssertEqual(defaults.string(forKey: "lockSearchShortcut"), "reintroduced")
         XCTAssertEqual(defaults.string(forKey: "hideShowAppShortcut"), "reintroduced")
-    }
-
-    // MARK: - C. Grouping moved global -> per-shortcut
-
-    func testGroupingCopiesGlobalShowAppsOrWindowsToPerShortcutKeysAndRemovesGlobal() {
-        defaults.set("1", forKey: "showAppsOrWindows")
-        PreferencesMigrations.migrateGroupingToPerShortcut()
-        // index 0's key IS the global key, which is removed at the end — so it ends up nil.
-        XCTAssertNil(defaults.string(forKey: "showAppsOrWindows"))
-        XCTAssertEqual(defaults.string(forKey: "showAppsOrWindows2"), "1")
-        XCTAssertEqual(defaults.string(forKey: "showAppsOrWindows10"), "1")
-    }
-
-    func testGroupingDoesNotOverwriteExistingPerShortcutValue() {
-        defaults.set("1", forKey: "showAppsOrWindows")
-        defaults.set("2", forKey: "showAppsOrWindows2")
-        PreferencesMigrations.migrateGroupingToPerShortcut()
-        XCTAssertEqual(defaults.string(forKey: "showAppsOrWindows2"), "2")
-    }
-
-    func testGroupingConvertsShowTabsAsWindowsBoolGlobalToEnumIndex() {
-        defaults.set("false", forKey: "showTabsAsWindows")
-        PreferencesMigrations.migrateGroupingToPerShortcut()
-        XCTAssertNil(defaults.string(forKey: "showTabsAsWindows"))
-        XCTAssertEqual(defaults.string(forKey: "showTabsAsWindows2"), "0")
-        XCTAssertEqual(defaults.string(forKey: "showTabsAsWindows10"), "0")
-    }
-
-    func testGroupingConvertsPreExistingPerShortcutBoolString() {
-        defaults.set("true", forKey: "showTabsAsWindows3")
-        PreferencesMigrations.migrateGroupingToPerShortcut()
-        XCTAssertEqual(defaults.string(forKey: "showTabsAsWindows3"), "1")
     }
 
     // MARK: - D. Blacklist -> exceptions (rename)

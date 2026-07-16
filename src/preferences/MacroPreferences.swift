@@ -94,14 +94,12 @@ enum WindowOrderPreference: CaseIterable, MacroPreference {
     case recentlyFocused
     case recentlyCreated
     case alphabetical
-    case space
 
     var localizedString: LocalizedString {
         switch self {
             case .recentlyFocused: return NSLocalizedString("Recently Focused First", comment: "")
             case .recentlyCreated: return NSLocalizedString("Recently Created First", comment: "")
             case .alphabetical: return NSLocalizedString("Alphabetical Order", comment: "")
-            case .space: return NSLocalizedString("Space Order", comment: "")
         }
     }
 }
@@ -174,34 +172,6 @@ enum TitleTruncationPreference: CaseIterable, MacroPreference {
     }
 }
 
-enum GroupAppsPreference: CaseIterable, MacroPreference {
-    case mainWindow
-    case allWindows
-
-    var localizedString: LocalizedString {
-        switch self {
-            case .mainWindow: return NSLocalizedString("Show main window", comment: "")
-            case .allWindows: return NSLocalizedString("Show all windows", comment: "")
-        }
-    }
-}
-
-/// Mirrors `showTabsAsWindows` as a 2-case enum so the per-shortcut UI renders a dropdown rather
-/// than a switch. Persistence is by index (`"0"` / `"1"`), so `singleWindow` MUST stay at index 0
-/// and `separateWindows` at index 1 — the migration that converts the old `"true"`/`"false"` Bool
-/// strings relies on that mapping (true → separateWindows = "1", false → singleWindow = "0").
-enum GroupTabsPreference: CaseIterable, MacroPreference {
-    case singleWindow
-    case separateWindows
-
-    var localizedString: LocalizedString {
-        switch self {
-            case .singleWindow: return NSLocalizedString("Show single window for all tabs", comment: "")
-            case .separateWindows: return NSLocalizedString("Show separate window for each tab", comment: "")
-        }
-    }
-}
-
 enum ShowTitlesPreference: CaseIterable, MacroPreference {
     case windowTitle
     case appName
@@ -249,14 +219,12 @@ enum AppearanceSizePreference: CaseIterable, SfSymbolMacroPreference {
     case small
     case medium
     case large
-    case auto
 
     var localizedString: LocalizedString {
         switch self {
             case .small: return NSLocalizedString("Small", comment: "")
             case .medium: return NSLocalizedString("Medium", comment: "")
             case .large: return NSLocalizedString("Large", comment: "")
-            case .auto: return NSLocalizedString("Auto", comment: "")
         }
     }
 
@@ -265,7 +233,6 @@ enum AppearanceSizePreference: CaseIterable, SfSymbolMacroPreference {
             case .small: return .moonphaseWaningGibbousInverse
             case .medium: return .moonphaseLastQuarterInverse
             case .large: return .moonphaseWaningCrescentInverse
-            case .auto: return .sparkles
         }
     }
 }

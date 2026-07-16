@@ -43,28 +43,18 @@ class PreferencesMigrations {
             sharedKey: "sharedWindowOrder",
             legacyBaseName: "windowOrder",
             fallback: "0")
-        migrateSharedPresentationDefault(
-            sharedKey: "sharedGroupApps",
-            legacyBaseName: "showAppsOrWindows",
-            fallback: "1")
-        migrateSharedPresentationDefault(
-            sharedKey: "sharedGroupTabs",
-            legacyBaseName: "showTabsAsWindows",
-            fallback: "0",
-            normalize: normalizedLegacyTabGrouping)
         Self.defaults.set("true", forKey: marker)
     }
 
     private static func migrateSharedPresentationDefault(sharedKey: String,
                                                           legacyBaseName: String,
-                                                          fallback: String,
-                                                          normalize: (String) -> String = { $0 }) {
+                                                          fallback: String) {
         let firstKey = Preferences.indexToName(legacyBaseName, 0)
-        let sharedValue = normalize(Self.defaults.string(forKey: firstKey) ?? fallback)
+        let sharedValue = Self.defaults.string(forKey: firstKey) ?? fallback
         Self.defaults.set(sharedValue, forKey: sharedKey)
         for index in 0...Preferences.maxShortcutCount {
             let key = Preferences.indexToName(legacyBaseName, index)
-            let legacyValue = normalize(Self.defaults.string(forKey: key) ?? fallback)
+            let legacyValue = Self.defaults.string(forKey: key) ?? fallback
             if legacyValue == sharedValue {
                 Self.defaults.removeObject(forKey: key)
             } else {
@@ -73,16 +63,9 @@ class PreferencesMigrations {
         }
     }
 
-    private static func normalizedLegacyTabGrouping(_ value: String) -> String {
-        if value == "true" { return "1" }
-        if value == "false" { return "0" }
-        return value
-    }
-
     static func updateToNewPreferences(_ versionInPlist: String) {
         Logger.debug { "App-version:\(App.version), Plist-version:\(versionInPlist)" }
         for (version, migration) in [
-            ("10.13.0", migrateGroupingToPerShortcut),
             ("10.12.0", migrateExceptionsTitleArray),
             ("10.2.0", migrateBlacklistToExceptions),
             ("9.0.0", migrateShortcutIndexes),
@@ -117,39 +100,6 @@ class PreferencesMigrations {
     static func shouldRun(_ versionInPlist: String, _ versionThreshold: String) -> Bool {
         // x.compare(y) is .orderedDescending if x > y
         versionInPlist.compare(versionThreshold, options: .numeric) != .orderedDescending
-    }
-
-    // showAppsOrWindows + showTabsAsWindows moved from global to per-shortcut. Copy the previous
-    // global value into every indexed key so the user's chosen grouping behaviour survives the
-    // upgrade. `showTabsAsWindows` also changed type from `Bool` to `GroupTabsPreference` so we
-    // map "true" → "1" (separateWindows) and "false" → "0" (singleWindow) — for both the old
-    // global key being copied and any pre-existing per-shortcut keys that landed as Bool strings
-    // before this migration was wired up.
-    static func migrateGroupingToPerShortcut() {
-        if let old = Self.defaults.string(forKey: "showAppsOrWindows") {
-            for i in 0...Preferences.maxShortcutCount {
-                let key = Preferences.indexToName("showAppsOrWindows", i)
-                if Self.defaults.string(forKey: key) == nil {
-                    Self.defaults.set(old, forKey: key)
-                }
-            }
-            Self.defaults.removeObject(forKey: "showAppsOrWindows")
-        }
-        let oldGlobal = Self.defaults.string(forKey: "showTabsAsWindows")
-        let convertedGlobal = oldGlobal.map { ($0 == "true") ? "1" : "0" }
-        for i in 0...Preferences.maxShortcutCount {
-            let key = Preferences.indexToName("showTabsAsWindows", i)
-            if let existing = Self.defaults.string(forKey: key) {
-                if existing == "true" || existing == "false" {
-                    Self.defaults.set(existing == "true" ? "1" : "0", forKey: key)
-                }
-            } else if let convertedGlobal {
-                Self.defaults.set(convertedGlobal, forKey: key)
-            }
-        }
-        if oldGlobal != nil {
-            Self.defaults.removeObject(forKey: "showTabsAsWindows")
-        }
     }
 
     static func migrateBlacklistToExceptions() {

@@ -65,8 +65,8 @@ final class SelectionResolverTests: XCTestCase {
         XCTAssertEqual(SelectionResolver.decide(i), .resetThenSelect(0))
     }
 
-    /// A5. Alpha/space ordering with frontmost set — pick the lowest-`lastFocusOrder` visible
-    /// non-windowless window, regardless of its slot position in the alpha-sorted list.
+    /// A5. Recently-created/alphabetical ordering with frontmost set — pick the lowest-`lastFocusOrder` visible
+    /// non-windowless window, regardless of its slot position in the sorted list.
     func testInitialPickUseLastFocusedRule() {
         let list = [w("a", focusOrder: 5), w("b", focusOrder: 0), w("c", focusOrder: 3)]
         let i = inputs(list: list, useLastFocusedRule: true)

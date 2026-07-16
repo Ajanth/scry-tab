@@ -67,7 +67,6 @@ class ControlsTab {
         "appsToShow", "spacesToShow", "screensToShow",
         "showMinimizedWindows", "showHiddenWindows", "showFullscreenWindows", "showWindowlessApps",
         "windowOrder", "shortcutStyle",
-        "showAppsOrWindows", "showTabsAsWindows",
         "appearanceStyleOverride", "appearanceSizeOverride", "appearanceThemeOverride",
         "shortcutStyleOverride",
     ]
@@ -193,7 +192,7 @@ class ControlsTab {
             applyShortcutPreference(k)
             applyFocusSetShortcutPreferences()
         case "appearanceStyle", "appearanceSize", "appearanceTheme", "shortcutStyle",
-             "sharedWindowOrder", "sharedGroupApps", "sharedGroupTabs":
+             "sharedWindowOrder":
             refreshAppearanceControls()
         case let k where isOverrideKey(k):
             refreshAppearanceControls()

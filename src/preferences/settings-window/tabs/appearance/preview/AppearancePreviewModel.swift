@@ -78,7 +78,6 @@ extension AppearanceSizePreference {
             case .small: return .small
             case .medium: return .medium
             case .large: return .large
-            case .auto: return .auto
         }
     }
 }

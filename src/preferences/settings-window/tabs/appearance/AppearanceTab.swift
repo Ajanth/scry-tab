@@ -466,9 +466,10 @@ class AppearanceTab: NSObject {
     static let labelSize = NSLocalizedString("Size", comment: "")
     static let labelTheme = NSLocalizedString("Theme", comment: "")
     static let labelShortcutStyle = NSLocalizedString("After keys are released", comment: "")
-    static let labelGroupApps = NSLocalizedString("Group apps", comment: "")
-    static let labelGroupTabs = NSLocalizedString("Group tabs", comment: "")
     static let labelWindowOrder = NSLocalizedString("Order windows by", comment: "")
+    static let labelShowOn = NSLocalizedString("Show on", comment: "")
+    static let showMoreOptions = NSLocalizedString("Show More Options", comment: "")
+    static let showFewerOptions = NSLocalizedString("Show Fewer Options", comment: "")
 
     static var customizeStyleButton: NSButton!
     static var customizeStyleSheet: CustomizeStyleSheet!
@@ -492,15 +493,14 @@ class AppearanceTab: NSObject {
     private static func makeView() -> NSView {
         let previewPane = AppearanceStylePreviewPane()
         let appearanceView = makeAppearanceControlsView(previewPane)
-        let organizationView = makeWindowOrganizationView()
-        let multipleScreensView = makeMultipleScreensView()
+        let moreOptionsView = makeMoreOptionsView()
         // `padding: 0` — `TableGroupSetView` adds 20pt of horizontal inset by default before its
         // inner content stack. The enclosing section (from `SettingsWindow.addSection`) already
         // provides the section's left margin via `contentHorizontalPadding`, so adding another
         // 20pt here pushes the TGV content to `container.leading + 20`, while the section title
         // sits at `container.leading + TableGroupView.padding(10)` — a 10pt visible misalignment
         // between the title and the row content below it.
-        let leftColumn = TableGroupSetView(originalViews: [appearanceView, organizationView, multipleScreensView], titleTableGroupSpacing: 15, padding: 0, bottomPadding: 0)
+        let leftColumn = TableGroupSetView(originalViews: [appearanceView, moreOptionsView], titleTableGroupSpacing: 15, padding: 0, bottomPadding: 0)
         leftColumn.translatesAutoresizingMaskIntoConstraints = false
         // Plain container (not a stack view) because the preview pane's top must align with
         // `appearanceView`'s row panel rather than with `leftColumn`'s own top, which sits above
@@ -627,19 +627,14 @@ class AppearanceTab: NSObject {
         Preferences.removeAllOverrides(overrideBaseName)
     }
 
-    private static func makeMultipleScreensView() -> NSView {
-        let table = TableGroupView(title: NSLocalizedString("Multiple screens", comment: ""), width: appearanceControlsWidth)
-        _ = table.addRow(leftText: NSLocalizedString("Show on", comment: ""),
-            rightViews: LabelAndControl.makeDropdown("showOnScreen", ShowOnScreenPreference.allCases))
-        return table
-    }
-
-    private static func makeWindowOrganizationView() -> NSView {
-        let table = TableGroupView(title: NSLocalizedString("Window organization", comment: ""), width: appearanceControlsWidth)
-        table.addRow(leftText: labelGroupApps, rightViews: LabelAndControl.makeDropdown("sharedGroupApps", GroupAppsPreference.allCases))
-        table.addRow(leftText: labelGroupTabs, rightViews: LabelAndControl.makeDropdown("sharedGroupTabs", GroupTabsPreference.allCases))
+    private static func makeMoreOptionsView() -> NSView {
+        let table = TableGroupView(width: appearanceControlsWidth)
         table.addRow(leftText: labelWindowOrder, rightViews: LabelAndControl.makeDropdown("sharedWindowOrder", WindowOrderPreference.allCases))
-        return table
+        table.addRow(leftText: labelShowOn, rightViews: LabelAndControl.makeDropdown("showOnScreen", ShowOnScreenPreference.allCases))
+        return DesignSystemDisclosureSection(
+            collapsedTitle: showMoreOptions,
+            expandedTitle: showFewerOptions,
+            content: table)
     }
 
     static func selectedAppearanceStyle() -> AppearanceStylePreference {

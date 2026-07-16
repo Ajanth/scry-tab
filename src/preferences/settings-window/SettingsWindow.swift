@@ -556,17 +556,14 @@ class SettingsWindow: NSWindow {
                 NSLocalizedString("Size", comment: ""),
                 NSLocalizedString("Theme", comment: ""),
                 NSLocalizedString("After keys are released", comment: ""),
-                NSLocalizedString("Window organization", comment: ""),
-                AppearanceTab.labelGroupApps,
-                AppearanceTab.labelGroupTabs,
+                AppearanceTab.showMoreOptions,
+                AppearanceTab.showFewerOptions,
                 AppearanceTab.labelWindowOrder,
-                NSLocalizedString("Show on", comment: ""),
+                AppearanceTab.labelShowOn,
             ] + AppearanceStylePreference.allCases.map(\.localizedString)
               + AppearanceSizePreference.allCases.map(\.localizedString)
               + AppearanceThemePreference.allCases.map(\.localizedString)
               + ShortcutStylePreference.allCases.map(\.localizedString)
-              + GroupAppsPreference.allCases.map(\.localizedString)
-              + GroupTabsPreference.allCases.map(\.localizedString)
               + WindowOrderPreference.allCases.map(\.localizedString)
               + ShowOnScreenPreference.allCases.map(\.localizedString)
               + CustomizeStyleSheet.searchableStrings),
