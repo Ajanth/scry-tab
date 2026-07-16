@@ -137,7 +137,6 @@
 "Ask before enabling crash reports" = "Ask before enabling crash reports";
 
 /* No comment provided by engineer. */
-"Auto" = "Auto";
 
 /* No comment provided by engineer. */
 "Auto-install updates periodically" = "Auto-install updates periodically";
@@ -292,10 +291,8 @@
 "Go back" = "Go back";
 
 /* No comment provided by engineer. */
-"Group apps" = "Group apps";
 
 /* No comment provided by engineer. */
-"Group tabs" = "Group tabs";
 
 /* No comment provided by engineer. */
 "Help improve ScryTab" = "Help improve ScryTab";
@@ -441,9 +438,6 @@
 /* No comment provided by engineer. */
 "Ordering" = "Ordering";
 
-/* No comment provided by engineer. */
-"Ordering & Grouping" = "Ordering & Grouping";
-
 /* Usage period */
 "Past month" = "Past month";
 
@@ -555,7 +549,6 @@
 "Show" = "Show";
 
 /* No comment provided by engineer. */
-"Show all windows" = "Show all windows";
 
 /* No comment provided by engineer. */
 "Show apps with no open window" = "Show apps with no open window";
@@ -573,7 +566,6 @@
 "Show hidden windows" = "Show hidden windows";
 
 /* No comment provided by engineer. */
-"Show main window" = "Show main window";
 
 /* No comment provided by engineer. */
 "Show minimized windows" = "Show minimized windows";
@@ -585,10 +577,8 @@
 "Show on" = "Show on";
 
 /* No comment provided by engineer. */
-"Show separate window for each tab" = "Show separate window for each tab";
 
 /* No comment provided by engineer. */
-"Show single window for all tabs" = "Show single window for all tabs";
 
 /* No comment provided by engineer. */
 "Show titles" = "Show titles";
@@ -615,7 +605,6 @@
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
 
 /* No comment provided by engineer. */
-"Space Order" = "Space Order";
 
 /* No comment provided by engineer. */
 "Start" = "Start";

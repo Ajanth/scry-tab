@@ -44,7 +44,6 @@
 "Arrow keys" = "Pfeiltasten";
 "Arrow keys already assigned to other actions:\n%@" = "Pfeiltasten sind bereits anderen Aktionen zugewiesen:\n%@";
 "Ask before enabling crash reports" = "Vor dem Aktivieren von Absturzberichten fragen";
-"Auto" = "Automatisch";
 "Auto-install updates periodically" = "Updates regelmäßig automatisch installieren";
 "Behavior" = "Verhalten";
 "Brief description of the bug" = "Kurze Beschreibung des Fehlers";
@@ -95,8 +94,6 @@
 "Gesture" = "Geste";
 "Gestures" = "Gesten";
 "Go back" = "Zurück";
-"Group apps" = "Apps gruppieren";
-"Group tabs" = "Tabs gruppieren";
 "Help improve ScryTab" = "Helfen Sie, ScryTab zu verbessern";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Helfen Sie, ScryTab zu verbessern, indem Sie automatisch Absturzberichte senden. Sie können dies später in den Einstellungen ändern.";
 "Hide" = "Ausblenden";
@@ -143,7 +140,6 @@
 "Open Trackpad Settings…" = "Einstellungen für Trackpad öffnen…";
 "Order windows by" = "Fenster sortieren nach";
 "Ordering" = "Sortierung";
-"Ordering & Grouping" = "Sortierung & Gruppierung";
 "Past month" = "Letzter Monat";
 "Past week" = "Letzte Woche";
 "Past year" = "Letztes Jahr";
@@ -180,18 +176,14 @@
 "Shortcuts When Active" = "Tastenkürzel bei Aktivität";
 "Shortcuts while ScryTab is active" = "Kurzbefehle, während ScryTab aktiv ist";
 "Show" = "Anzeigen";
-"Show all windows" = "Alle Fenster anzeigen";
 "Show apps with no open window" = "Apps ohne geöffnetes Fenster anzeigen";
 "Show at the end" = "Am Ende anzeigen";
 "Show Fewer Options" = "Weniger Optionen anzeigen";
 "Show fullscreen windows" = "Vollbildfenster anzeigen";
 "Show hidden windows" = "Ausgeblendete Fenster anzeigen";
-"Show main window" = "Hauptfenster anzeigen";
 "Show minimized windows" = "Minimierte Fenster anzeigen";
 "Show More Options" = "Weitere Optionen anzeigen";
 "Show on" = "Anzeigen auf";
-"Show separate window for each tab" = "Separates Fenster für jeden Tab anzeigen";
-"Show single window for all tabs" = "Ein Fenster für alle Tabs anzeigen";
 "Show titles" = "Titel anzeigen";
 "Show windows from applications" = "Fenster von Apps anzeigen";
 "Show windows from screens" = "Fenster von Bildschirmen anzeigen";
@@ -200,7 +192,6 @@
 "Size" = "Größe";
 "Small" = "Klein";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Einige Tastenkürzel überschreiben diese Einstellung. Wenden Sie den neuen globalen Wert auf jedes Tastenkürzel an, indem Sie diese Überschreibungen entfernen, oder behalten Sie die Überschreibungen bei.";
-"Space Order" = "Space-Reihenfolge";
 "Start" = "Anfang";
 "Start at login" = "Beim Anmelden starten";
 "Style" = "Stil";

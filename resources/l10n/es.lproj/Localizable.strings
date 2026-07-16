@@ -44,7 +44,6 @@
 "Arrow keys" = "Teclas de flecha";
 "Arrow keys already assigned to other actions:\n%@" = "Teclas de flecha ya asignadas a otras acciones:\n%@";
 "Ask before enabling crash reports" = "Preguntar antes de activar los informes de fallos";
-"Auto" = "Automático";
 "Auto-install updates periodically" = "Instalar actualizaciones automáticamente";
 "Behavior" = "Comportamiento";
 "Brief description of the bug" = "Breve descripción del error";
@@ -95,8 +94,6 @@
 "Gesture" = "Gesto";
 "Gestures" = "Gestos";
 "Go back" = "Volver";
-"Group apps" = "Agrupar apps";
-"Group tabs" = "Agrupar pestañas";
 "Help improve ScryTab" = "Ayuda a mejorar ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Ayuda a mejorar ScryTab enviando automáticamente informes de fallos. Puedes cambiar esta opción más tarde en Configuración.";
 "Hide" = "Ocultar";
@@ -143,7 +140,6 @@
 "Open Trackpad Settings…" = "Abrir Ajustes de Trackpad…";
 "Order windows by" = "Ordenar ventanas por";
 "Ordering" = "Orden";
-"Ordering & Grouping" = "Orden y agrupación";
 "Past month" = "Último mes";
 "Past week" = "Última semana";
 "Past year" = "Último año";
@@ -180,18 +176,14 @@
 "Shortcuts When Active" = "Atajos cuando está activo";
 "Shortcuts while ScryTab is active" = "Atajos mientras ScryTab está activo";
 "Show" = "Mostrar";
-"Show all windows" = "Mostrar todas las ventanas";
 "Show apps with no open window" = "Mostrar apps sin ventanas abiertas";
 "Show at the end" = "Mostrar al final";
 "Show Fewer Options" = "Mostrar menos opciones";
 "Show fullscreen windows" = "Mostrar ventanas en pantalla completa";
 "Show hidden windows" = "Mostrar ventanas ocultas";
-"Show main window" = "Mostrar la ventana principal";
 "Show minimized windows" = "Mostrar ventanas minimizadas";
 "Show More Options" = "Mostrar más opciones";
 "Show on" = "Mostrar en";
-"Show separate window for each tab" = "Mostrar una ventana distinta para cada pestaña";
-"Show single window for all tabs" = "Mostrar una sola ventana para todas las pestañas";
 "Show titles" = "Mostrar títulos";
 "Show windows from applications" = "Mostrar ventanas de las aplicaciones";
 "Show windows from screens" = "Mostrar ventanas de las pantallas";
@@ -200,7 +192,6 @@
 "Size" = "Tamaño";
 "Small" = "Pequeño";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Algunos atajos anulan este ajuste. Aplica el nuevo valor global a todos los atajos eliminando esas anulaciones, o consérvalas.";
-"Space Order" = "Orden de los Espacios";
 "Start" = "Inicio";
 "Start at login" = "Abrir al iniciar sesión";
 "Style" = "Estilo";

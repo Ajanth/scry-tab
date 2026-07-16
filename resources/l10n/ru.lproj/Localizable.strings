@@ -44,7 +44,6 @@
 "Arrow keys" = "Клавиши со стрелками";
 "Arrow keys already assigned to other actions:\n%@" = "Клавиши со стрелками уже назначены другим действиям:\n%@";
 "Ask before enabling crash reports" = "Спрашивать перед включением отчетов о сбоях";
-"Auto" = "Авто";
 "Auto-install updates periodically" = "Периодически устанавливать обновления автоматически";
 "Behavior" = "Поведение";
 "Brief description of the bug" = "Краткое описание ошибки";
@@ -95,8 +94,6 @@
 "Gesture" = "Жест";
 "Gestures" = "Жесты";
 "Go back" = "Назад";
-"Group apps" = "Группировать приложения";
-"Group tabs" = "Группировать вкладки";
 "Help improve ScryTab" = "Помочь улучшить ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Помогите улучшить ScryTab, автоматически отправляя отчеты о сбоях. Позже этот параметр можно изменить в настройках.";
 "Hide" = "Скрыть";
@@ -143,7 +140,6 @@
 "Open Trackpad Settings…" = "Открыть настройки Трекпада…";
 "Order windows by" = "Сортировка окон";
 "Ordering" = "Порядок";
-"Ordering & Grouping" = "Сортировка и группировка";
 "Past month" = "За месяц";
 "Past week" = "За неделю";
 "Past year" = "За год";
@@ -180,18 +176,14 @@
 "Shortcuts When Active" = "Сочетания клавиш при активном переключателе";
 "Shortcuts while ScryTab is active" = "Сочетания клавиш, когда ScryTab активен";
 "Show" = "Показать";
-"Show all windows" = "Показать все окна";
 "Show apps with no open window" = "Показывать приложения без открытых окон";
 "Show at the end" = "Показывать в конце";
 "Show Fewer Options" = "Показать меньше параметров";
 "Show fullscreen windows" = "Показывать полноэкранные окна";
 "Show hidden windows" = "Показывать скрытые окна";
-"Show main window" = "Показать главное окно";
 "Show minimized windows" = "Показывать свёрнутые окна";
 "Show More Options" = "Показать больше параметров";
 "Show on" = "Показывать на";
-"Show separate window for each tab" = "Отдельное окно для каждой вкладки";
-"Show single window for all tabs" = "Одно окно для всех вкладок";
 "Show titles" = "Показывать заголовки";
 "Show windows from applications" = "Показывать окна приложений";
 "Show windows from screens" = "Показывать окна с экранов";
@@ -200,7 +192,6 @@
 "Size" = "Размер";
 "Small" = "Маленький";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Некоторые сочетания клавиш переопределяют этот параметр. Удалите эти переопределения, чтобы применить новое общее значение ко всем сочетаниям клавиш, или сохраните их.";
-"Space Order" = "Порядок пространств";
 "Start" = "Начало";
 "Start at login" = "Запускать при входе в систему";
 "Style" = "Стиль";
