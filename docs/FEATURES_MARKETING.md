@@ -7,7 +7,7 @@
 
 ## What Is ScryTab?
 
-**ScryTab is a window switcher for macOS.** It replaces the built-in Command-Tab experience with something faster, smarter, and fully customizable. Instead of cycling through apps blindly, ScryTab shows a clean panel of exactly the windows you care about — filtered by Space, screen, app, or whatever rule you set — so you can jump to the right place in a single keystroke or trackpad swipe.
+**ScryTab is a window switcher for macOS.** It replaces the built-in Command-Tab experience with something faster, smarter, and fully customizable. Instead of cycling through apps blindly, ScryTab shows a clean panel of exactly the windows you care about — filtered by Space, screen, app, or whatever rule you set — so you can jump to the right place in a single keystroke.
 
 ScryTab is **free, with no trial, no paywall, and no feature tiers.** Every capability described in this document is available to every user from day one.
 
@@ -20,7 +20,7 @@ ScryTab is **free, with no trial, no paywall, and no feature tiers.** Every capa
 | **Speed** | The switcher appears instantly with no animation delay, and the app stays responsive in the background (no App Nap). |
 | **Precision** | Per-shortcut filters let users show only what is relevant: current Space, current screen, certain apps, no minimized windows, etc. |
 | **Flexibility** | Up to 9 independent shortcut profiles, each with its own filters, appearance, and ordering — so a developer and a designer workflow can live side by side. |
-| **Keyboard-first, trackpad-friendly** | Full keyboard navigation with arrow keys, and a dedicated trackpad gesture profile make it feel at home for any input style. |
+| **Keyboard-first** | Full keyboard navigation with arrow keys keeps switching fast and direct. |
 | **Free forever** | No licensing, activation, payment, or feature gating of any kind. |
 
 ---
@@ -132,41 +132,20 @@ ScryTab is built for keyboard-first users:
 
 ---
 
-### 7 — Trackpad Gestures
-
-A dedicated gesture profile can trigger the switcher with:
-
-- 3-finger horizontal swipe
-- 3-finger vertical swipe
-- 4-finger horizontal swipe
-- 4-finger vertical swipe
-
-Gesture behavior:
-
-- Mimics native macOS Space-swipe thresholds so it feels familiar.
-- Rejects accidental triggers from prior two-finger scrolls.
-- While the switcher is open, further swipes navigate selection one row or column at a time.
-- **Haptic feedback** on trigger and navigation when the hardware supports it.
-- Scroll-wheel input from the trackpad is blocked while gesture switching is active so it does not leak into the front app.
-
-> **Copy angle:** "Swipe to switch. ScryTab brings its full power to trackpad users with the same gesture vocabulary macOS already uses."
-
----
-
-### 8 — Mouse and Click Support
+### 7 — Mouse and Click Support
 
 - **Click to focus** — left-click any tile to switch to it.
 - **Middle-click to close** — middle-click a tile to close that window (or quit the app if it is a windowless entry).
 - **Click outside to dismiss** — click anywhere outside the panel to close it.
 - **Visual hover** — the pointer can highlight tiles without changing selection.
-- **Dead zone after keyboard/gesture navigation** — a 25 px pointer dead zone prevents accidental hover changes right after a keyboard or trackpad navigation.
+- **Dead zone after keyboard navigation** — a 25 px pointer dead zone prevents accidental hover changes right after keyboard navigation.
 - **Drag and drop** — drag files onto the panel; dragging over a tile selects it after a 2-second hold and drops the file into the target app.
 
 > **Copy angle:** "Fully mouse-friendly. Click, middle-click, drag and drop — ScryTab works the way you do."
 
 ---
 
-### 9 — App and Window Actions
+### 8 — App and Window Actions
 
 From inside the switcher, users can act on any window:
 
@@ -182,7 +161,7 @@ Focusing a window on another Space crosses Space boundaries automatically. Minim
 
 ---
 
-### 10 — Exceptions (Per-App Rules)
+### 9 — Exceptions (Per-App Rules)
 
 The Exceptions settings tab lets users create per-app rules:
 
@@ -199,7 +178,7 @@ Exceptions can be added by picking from running apps or browsing for an app on d
 
 ---
 
-### 11 — Settings Search
+### 10 — Settings Search
 
 The Settings window includes a **live search bar** that filters all settings sections and highlights matching controls. Typing any term — even partially or with a typo — surfaces the relevant control across Appearance, Controls, General, and Exceptions instantly.
 
@@ -207,7 +186,7 @@ The Settings window includes a **live search bar** that filters all settings sec
 
 ---
 
-### 12 — General & System Integration
+### 11 — General & System Integration
 
 - **Start at login** — one toggle; no helper app or daemon required.
 - **Menubar item** — quick access to Show, Settings, updates, and feedback; icon style can be outlined, filled, or colored, or hidden entirely.
@@ -221,7 +200,7 @@ The Settings window includes a **live search bar** that filters all settings sec
 
 ---
 
-### 13 — CLI Access (Power Users)
+### 12 — CLI Access (Power Users)
 
 ScryTab exposes a local command-line interface for automation and scripting:
 
@@ -254,7 +233,7 @@ Choose the one that fits the context:
 - *"The window switcher macOS should have shipped with."*
 - *"Switch windows in one keystroke, not five."*
 - *"Command-Tab, rebuilt for how you actually work."*
-- *"Every window, filtered your way, at a gesture."*
+- *"Every window, filtered your way, in one keystroke."*
 - *"Free. No trial. Just fast."*
 
 ---
