@@ -2,6 +2,10 @@ import Cocoa
 import Carbon.HIToolbox.Events
 import ShortcutRecorder
 
+enum FeatureFlags {
+    static let gestures = false
+}
+
 class Preferences {
     static var defaultValues: [String: Any] = {
         var values: [String: Any] = [
@@ -72,7 +76,10 @@ class Preferences {
     // persisted values
     static var holdShortcut: [Shortcut?] { (0..<shortcutCount).map { CachedUserDefaults.shortcut(indexToName("holdShortcut", $0)) } }
     static var nextWindowShortcut: [Shortcut?] { (0..<shortcutCount).map { CachedUserDefaults.shortcut(indexToName("nextWindowShortcut", $0)) } }
-    static var nextWindowGesture: GesturePreference { CachedUserDefaults.macroPref("nextWindowGesture", GesturePreference.allCases) }
+    static var nextWindowGesture: GesturePreference {
+        guard FeatureFlags.gestures else { return .disabled }
+        return CachedUserDefaults.macroPref("nextWindowGesture", GesturePreference.allCases)
+    }
     static var focusWindowShortcut: Shortcut? { CachedUserDefaults.shortcut("focusWindowShortcut") }
     static var previousWindowShortcut: Shortcut? { CachedUserDefaults.shortcut("previousWindowShortcut") }
     static var cancelShortcut: Shortcut? { CachedUserDefaults.shortcut("cancelShortcut") }

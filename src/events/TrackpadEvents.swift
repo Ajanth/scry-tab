@@ -7,6 +7,7 @@ class TrackpadEvents {
     private static var cursorMovedDistance = CGFloat(0.0)
 
     static func observe() {
+        guard FeatureFlags.gestures else { return }
         observe_()
         TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled)
         ScrollwheelEvents.observe()

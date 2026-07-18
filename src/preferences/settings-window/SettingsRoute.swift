@@ -52,6 +52,11 @@ enum SettingsRoute: Equatable {
         guard shortcutExists(id) else { return .controls(nil) }
         return .controls(.shortcut(id: id, pane: pane))
     }
+
+    func normalizedUnavailableFeature(gesturesEnabled: Bool) -> SettingsRoute {
+        if case .controls(.gesture) = self, !gesturesEnabled { return .controls(nil) }
+        return self
+    }
 }
 
 final class SettingsNavigationController {

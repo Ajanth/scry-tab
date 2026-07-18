@@ -40,7 +40,7 @@ class PreferencesEvents {
         UserDefaultsEvents.observe()
         ControlsTab.initializePreferencesDependentState()
         applyUpdatePolicyPreference()
-        TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled)
+        if FeatureFlags.gestures { TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled) }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             LoginItem.applyCurrentPreference()
         }
@@ -57,7 +57,8 @@ class PreferencesEvents {
         }
         ControlsTab.preferenceChanged(key)
         switch key {
-        case "nextWindowGesture": TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled)
+        case "nextWindowGesture":
+            if FeatureFlags.gestures { TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled) }
         case "startAtLogin": LoginItem.applyCurrentPreference()
         case "updatePolicy": applyUpdatePolicyPreference()
         case let k where preferencesRequiringUiReset.contains(k) && TilesPanel.shared != nil: App.resetPreferencesDependentComponents()

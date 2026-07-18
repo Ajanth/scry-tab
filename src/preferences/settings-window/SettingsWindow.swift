@@ -384,7 +384,7 @@ class SettingsWindow: NSWindow {
     }
 
     private static func normalizedRoute(_ route: SettingsRoute) -> SettingsRoute {
-        route.normalizedDeletedShortcut {
+        route.normalizedUnavailableFeature(gesturesEnabled: FeatureFlags.gestures).normalizedDeletedShortcut {
             Preferences.shortcutIndex(forIdentifier: $0) != nil
         }
     }
@@ -551,7 +551,7 @@ class SettingsWindow: NSWindow {
     }
 
     private func staticPageSearchDescriptors() -> [SettingsSearchDescriptor] {
-        [
+        var descriptors = [
             SettingsSearchDescriptor(id: "appearance", route: .appearance, sectionID: "appearance", title: NSLocalizedString("Appearance", comment: ""), keywords: [
                 NSLocalizedString("Size", comment: ""),
                 NSLocalizedString("Theme", comment: ""),
@@ -567,13 +567,6 @@ class SettingsWindow: NSWindow {
               + WindowOrderPreference.allCases.map(\.localizedString)
               + ShowOnScreenPreference.allCases.map(\.localizedString)
               + CustomizeStyleSheet.searchableStrings),
-            SettingsSearchDescriptor(id: "controls-gesture", route: .controls(.gesture), sectionID: "controls", title: NSLocalizedString("Gesture", comment: ""), keywords: [
-                NSLocalizedString("Gestures", comment: ""),
-                NSLocalizedString("Trackpad", comment: ""),
-                NSLocalizedString("Filtering", comment: ""),
-                NSLocalizedString("Appearance", comment: ""),
-                NSLocalizedString("Ordering", comment: ""),
-            ]),
             SettingsSearchDescriptor(id: "controls-active", route: .controls(.activeShortcuts), sectionID: "controls", title: NSLocalizedString("Shortcuts while ScryTab is active", comment: ""), keywords: [NSLocalizedString("Advanced", comment: "")] + ShortcutsWhenActiveSheet.searchableStrings),
             SettingsSearchDescriptor(id: "focus-sets", route: .focusSets, sectionID: "focusSets", title: NSLocalizedString("Focus Sets", comment: ""), keywords: FocusSetSettingsView.searchableStrings),
             SettingsSearchDescriptor(id: "general", route: .general, sectionID: "general", title: NSLocalizedString("General", comment: ""), keywords: [
@@ -602,6 +595,16 @@ class SettingsWindow: NSWindow {
                 NSLocalizedString("Usage", comment: ""),
             ] + AcknowledgmentsTab.searchableStrings),
         ]
+        if FeatureFlags.gestures {
+            descriptors.append(SettingsSearchDescriptor(id: "controls-gesture", route: .controls(.gesture), sectionID: "controls", title: NSLocalizedString("Gesture", comment: ""), keywords: [
+                NSLocalizedString("Gestures", comment: ""),
+                NSLocalizedString("Trackpad", comment: ""),
+                NSLocalizedString("Filtering", comment: ""),
+                NSLocalizedString("Appearance", comment: ""),
+                NSLocalizedString("Ordering", comment: ""),
+            ]))
+        }
+        return descriptors
     }
 
     private func shortcutSearchDescriptors() -> [SettingsSearchDescriptor] {
