@@ -19,7 +19,7 @@ ScryTab is **free, with no trial, no paywall, and no feature tiers.** Every capa
 |---|---|
 | **Speed** | The switcher appears instantly with no animation delay, and the app stays responsive in the background (no App Nap). |
 | **Precision** | Per-shortcut filters let users show only what is relevant: current Space, current screen, certain apps, no minimized windows, etc. |
-| **Flexibility** | Up to 9 independent shortcut profiles, each with its own filters, appearance, and ordering — so a developer and a designer workflow can live side by side. |
+| **Flexibility** | Up to 9 independent shortcut profiles (each with its own filters, appearance, and ordering) plus Focus Sets for named app collections — so different workflows can live side by side. |
 | **Keyboard-first** | Full keyboard navigation with arrow keys keeps switching fast and direct. |
 | **Free forever** | No licensing, activation, payment, or feature gating of any kind. |
 
@@ -34,7 +34,7 @@ ScryTab presents a floating panel of your open windows the moment you trigger it
 - **Appears instantly** with no delay or fade animation.
 - **Stays out of your way** — it sits above all other content as a non-activating overlay, so the previously focused window never loses focus when the switcher opens.
 - **Shows the right windows** based on per-shortcut filter rules you configure once and forget.
-- **Handles edge cases gracefully** — phantom windows (invisible or synthetic macOS windows) are automatically detected and hidden; tabbed windows can appear as one group or as individual entries; windowless apps (running but with no open window) are shown with a clear indicator so you can still switch to or launch them.
+- **Handles edge cases gracefully** — phantom windows (invisible or synthetic macOS windows) are automatically detected and hidden; tabbed windows collapse to the frontmost native tab; windowless apps (running but with no open window) are shown with a clear indicator so you can still switch to or launch them.
 
 > **Copy angle:** "See only what matters. ScryTab strips away noise so you switch to the right window on the first try, every time."
 
@@ -56,7 +56,21 @@ Extra profiles beyond the first are added from the Controls settings and can be 
 
 ---
 
-### 3 — Powerful Filtering and Ordering
+### 3 — Focus Sets
+
+Focus Sets let users save named collections of apps and open a scoped switcher with one dedicated shortcut:
+
+- **Named app collections** — each set lists the apps that belong to it (for example, a “Work” set or a “Design” set).
+- **Direct shortcuts** — assign a one-modifier chord (for example ⌥1) that opens the standard switcher grid filtered to that set only.
+- **Shared release behavior** — Focus, Hold, or Search applies to every Focus Set shortcut from a single Behavior setting.
+- **Repeat to cycle** — pressing the same Focus Set shortcut again cycles selection inside that scoped grid.
+- **Transactional editing** — add or edit a set in one sheet (name, apps, optional shortcut); Cancel leaves saved sets unchanged.
+
+> **Copy angle:** "Your project's apps, one keystroke away — without rebuilding filters every time."
+
+---
+
+### 4 — Powerful Filtering and Ordering
 
 Each shortcut profile can filter windows by:
 
@@ -76,7 +90,7 @@ Ordering modes:
 
 ---
 
-### 4 — Fast In-Panel Search
+### 5 — Fast In-Panel Search
 
 Type to search from inside the switcher — no extra shortcut needed. Search works across **app names and window titles** simultaneously, with:
 
@@ -91,7 +105,7 @@ Type to search from inside the switcher — no extra shortcut needed. Search wor
 
 ---
 
-### 5 — Two Visual Styles
+### 6 — Two Visual Styles
 
 **App Icons** — large app icons arranged in a grid. At a glance, familiar and fast for recognition.
 
@@ -99,7 +113,7 @@ Type to search from inside the switcher — no extra shortcut needed. Search wor
 
 Both styles support:
 
-- **Size:** Small, Medium, Large, or **Auto** (ScryTab picks the largest size that fits the screen).
+- **Size:** Small, Medium, or Large.
 - **Theme:** Light, Dark, or System (follows macOS appearance).
 - **Title display:** Window title, app name only, or app name + window title.
 - **Title truncation:** Start, middle, or end.
@@ -116,7 +130,7 @@ Each shortcut profile can override the global appearance independently, so you c
 
 ---
 
-### 6 — Keyboard Controls
+### 7 — Keyboard Controls
 
 ScryTab is built for keyboard-first users:
 
@@ -132,7 +146,7 @@ ScryTab is built for keyboard-first users:
 
 ---
 
-### 7 — Mouse and Click Support
+### 8 — Mouse and Click Support
 
 - **Click to focus** — left-click any tile to switch to it.
 - **Middle-click to close** — middle-click a tile to close that window (or quit the app if it is a windowless entry).
@@ -145,7 +159,7 @@ ScryTab is built for keyboard-first users:
 
 ---
 
-### 8 — App and Window Actions
+### 9 — App and Window Actions
 
 From inside the switcher, users can act on any window:
 
@@ -161,7 +175,7 @@ Focusing a window on another Space crosses Space boundaries automatically. Minim
 
 ---
 
-### 9 — Exceptions (Per-App Rules)
+### 10 — Exceptions (Per-App Rules)
 
 The Exceptions settings tab lets users create per-app rules:
 
@@ -178,15 +192,15 @@ Exceptions can be added by picking from running apps or browsing for an app on d
 
 ---
 
-### 10 — Settings Search
+### 11 — Settings Search
 
-The Settings window includes a **live search bar** that filters all settings sections and highlights matching controls. Typing any term — even partially or with a typo — surfaces the relevant control across Appearance, Controls, General, and Exceptions instantly.
+The Settings window includes a **live search bar** that filters all settings sections and highlights matching controls. Typing any term — even partially or with a typo — surfaces the relevant control across Appearance, Controls, Focus Sets, General, and Exceptions instantly.
 
 > **Copy angle:** "Can't find a setting? Just type. ScryTab's settings search finds it in milliseconds."
 
 ---
 
-### 11 — General & System Integration
+### 12 — General & System Integration
 
 - **Start at login** — one toggle; no helper app or daemon required.
 - **Menubar item** — quick access to Show, Settings, updates, and feedback; icon style can be outlined, filled, or colored, or hidden entirely.
@@ -200,7 +214,7 @@ The Settings window includes a **live search bar** that filters all settings sec
 
 ---
 
-### 12 — CLI Access (Power Users)
+### 13 — CLI Access (Power Users)
 
 ScryTab exposes a local command-line interface for automation and scripting:
 
@@ -222,7 +236,7 @@ ScryTab exposes a local command-line interface for automation and scripting:
 | **Completely free** | No trial period, no locked features, no in-app purchase. The full feature set is available immediately. |
 | **Not an extension** | ScryTab is a standalone macOS app with a menubar item, not a Safari/browser extension. |
 | **Works across all Spaces** | By default the switcher shows windows from all Spaces. Per-shortcut filters can limit this to visible Spaces or the current Space only. |
-| **Tabbed windows** | Tabbed windows (e.g., Safari tabs as window groups) can appear as one unified entry or as individual windows — user's choice. |
+| **Tabbed windows** | Tabbed windows (e.g., Safari tab groups) always collapse to the frontmost native tab in the switcher. |
 
 ---
 
