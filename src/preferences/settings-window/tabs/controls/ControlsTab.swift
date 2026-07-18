@@ -42,7 +42,7 @@ class ControlsTab {
     static var shortcutEditorContentWidth: CGFloat { shortcutEditorWidth - 2 * shortcutEditorHorizontalPadding }
     private static let shortcutsCategoryIndex = 0
     private static let gesturesCategoryIndex = 1
-    private static let advancedCategoryIndex = 2
+    private static var advancedCategoryIndex: Int { FeatureFlags.gestures ? 2 : 1 }
     private static let gestureSelectionIndex = -1
     private static let activeShortcutsSelectionIndex = -2
     private static let shortcutsCategoryLabel = NSLocalizedString("Shortcuts", comment: "")
@@ -117,17 +117,18 @@ class ControlsTab {
         }
         let shortcutEntry = editor.tabSegmentSearchableStringsEntry
         tabSegmentSearchableStrings[shortcutEntry.key] = shortcutEntry.perSegmentStrings
-        let gestureView = makeGestureEditor()
+        let gestureView = FeatureFlags.gestures ? makeGestureEditor() : nil
         let activeView = ShortcutsWhenActiveSheet.makeContentView(width: shortcutEditorContentWidth)
         gestureEditorView = gestureView
         activeShortcutsView = activeView
         let shortcutsPage = makeShortcutsView()
-        let gesturesPage = makeCenteredDetailPage(gestureView)
+        let gesturesPage = gestureView.map { makeCenteredDetailPage($0) }
         let advancedPage = makeAdvancedPage(activeView: activeView)
         shortcutsPageView = shortcutsPage
         gesturesPageView = gesturesPage
         advancedPageView = advancedPage
-        let view = NSStackView(views: [makeCategoryControl(), shortcutsPage, gesturesPage, advancedPage])
+        let pages = [makeCategoryControl(), shortcutsPage] + (gesturesPage.map { [$0] } ?? []) + [advancedPage]
+        let view = NSStackView(views: pages)
         view.orientation = .vertical
         view.alignment = .leading
         view.spacing = TableGroupSetView.othersSpacing
@@ -218,15 +219,15 @@ class ControlsTab {
         let category = selectedCategoryIndex()
         categoryControl?.selectedSegment = category
         shortcutsPageView?.isHidden = category != shortcutsCategoryIndex
-        gesturesPageView?.isHidden = category != gesturesCategoryIndex
+        gesturesPageView?.isHidden = !FeatureFlags.gestures || category != gesturesCategoryIndex
         advancedPageView?.isHidden = category != advancedCategoryIndex
         activeShortcutsView?.isHidden = selectedShortcutIndex != activeShortcutsSelectionIndex
-        if category == gesturesCategoryIndex { syncGestureEditorTabSegment() }
+        if FeatureFlags.gestures && category == gesturesCategoryIndex { syncGestureEditorTabSegment() }
     }
 
     private static func selectedCategoryIndex() -> Int {
         switch selectedShortcutIndex {
-        case gestureSelectionIndex: return gesturesCategoryIndex
+        case gestureSelectionIndex where FeatureFlags.gestures: return gesturesCategoryIndex
         case activeShortcutsSelectionIndex: return advancedCategoryIndex
         default: return shortcutsCategoryIndex
         }
@@ -264,7 +265,7 @@ class ControlsTab {
     }
 
     private static func makeCategoryControl() -> NSSegmentedControl {
-        let labels = [shortcutsCategoryLabel, gesturesCategoryLabel, advancedCategoryLabel]
+        let labels = [shortcutsCategoryLabel] + (FeatureFlags.gestures ? [gesturesCategoryLabel] : []) + [advancedCategoryLabel]
         let control = DesignSystemSegmentedControl(labels: labels, trackingMode: .selectOne, target: nil, action: nil)
         control.selectedSegment = selectedCategoryIndex()
         LabelAndControl.applySystemSelectedSegmentStyle(control)
@@ -275,11 +276,12 @@ class ControlsTab {
             guard let control else { return }
             selectCategory(control.selectedSegment)
         }
-        tabSegmentSearchableStrings[ObjectIdentifier(control)] = [
-            [shortcutsCategoryLabel, NSLocalizedString("Shortcut", comment: "")] + FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings,
-            [gesturesCategoryLabel, gestureTitle()] + FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings,
-            [advancedCategoryLabel] + ShortcutsWhenActiveSheet.searchableStrings,
-        ]
+        var searchableStrings = [[shortcutsCategoryLabel, NSLocalizedString("Shortcut", comment: "")] + FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings]
+        if FeatureFlags.gestures {
+            searchableStrings.append([gesturesCategoryLabel, gestureTitle()] + FilteringPane.searchableStrings + AppearancePane.searchableStrings + OrderingPane.searchableStrings)
+        }
+        searchableStrings.append([advancedCategoryLabel] + ShortcutsWhenActiveSheet.searchableStrings)
+        tabSegmentSearchableStrings[ObjectIdentifier(control)] = searchableStrings
         categoryControl = control
         return control
     }
@@ -486,7 +488,7 @@ class ControlsTab {
     }
 
     private static func isFixedDestinationSelection(_ index: Int) -> Bool {
-        index == gestureSelectionIndex || index == activeShortcutsSelectionIndex
+        (FeatureFlags.gestures && index == gestureSelectionIndex) || index == activeShortcutsSelectionIndex
     }
 
     private static func refreshShortcutRows() {
@@ -557,7 +559,7 @@ class ControlsTab {
         switch index {
         case shortcutsCategoryIndex:
             selectShortcut(min(lastSelectedShortcutIndex, max(Preferences.shortcutCount - 1, 0)))
-        case gesturesCategoryIndex:
+        case gesturesCategoryIndex where FeatureFlags.gestures:
             selectGesture()
         case advancedCategoryIndex:
             selectActiveShortcuts()
@@ -567,6 +569,10 @@ class ControlsTab {
     }
 
     private static func selectGesture(syncRoute: Bool = true) {
+        guard FeatureFlags.gestures else {
+            selectShortcut(min(lastSelectedShortcutIndex, max(Preferences.shortcutCount - 1, 0)), syncRoute: syncRoute)
+            return
+        }
         selectedShortcutIndex = gestureSelectionIndex
         refreshShortcutSelection()
         refreshShortcutCountButtons()

@@ -20,6 +20,7 @@ Models Settings navigation independently from AppKit view construction.
 - Clearing search restores the previous non-search route.
 - A controls deep link to a deleted shortcut normalizes to the Controls root route.
 - A controls deep link to an existing shortcut preserves its requested pane.
+- A controls deep link to a disabled feature normalizes to the Controls root route.
 - Search descriptors include dynamic provider values in their searchable strings.
 - The About descriptor indexes the acknowledgments it presents in Settings.
 - Descriptor matching returns only matching descriptors, ordered by strongest score.
@@ -38,6 +39,7 @@ Mirrors `SettingsRouteTests.swift` 1:1.
 - **testEmptySearchRestoresPreviousNonSearchRoute** — empty or whitespace search restores the previous non-search route.
 - **testDeletedShortcutRouteFallsBackToControlsRoot** — a stale shortcut deep link normalizes to the Controls root route.
 - **testExistingShortcutRouteKeepsPane** — a valid shortcut deep link keeps its stable ID and requested pane.
+- **testDisabledGestureDestinationFallsBackToControlsRoot** — a gesture deep link falls back to Controls while disabled and remains available when re-enabled.
 - **testDescriptorSearchableStringsIncludeDynamicValues** — descriptor searchable strings include title, subtitle, keywords, and current provider values.
 - **testAcknowledgmentKeywordsMatchAboutRoute** — acknowledgment library names route Settings search to About.
 - **testDescriptorMatcherReturnsSortedMatches** — descriptor matching filters non-matches and sorts matches by score.

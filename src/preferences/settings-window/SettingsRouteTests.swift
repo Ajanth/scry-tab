@@ -55,6 +55,12 @@ final class SettingsRouteTests: XCTestCase {
         XCTAssertEqual(route.normalizedDeletedShortcut { $0 == "existing" }, .controls(.shortcut(id: "existing", pane: .appearance)))
     }
 
+    func testDisabledGestureDestinationFallsBackToControlsRoot() {
+        let route = SettingsRoute.controls(.gesture)
+        XCTAssertEqual(route.normalizedUnavailableFeature(gesturesEnabled: false), .controls(nil))
+        XCTAssertEqual(route.normalizedUnavailableFeature(gesturesEnabled: true), route)
+    }
+
     func testDescriptorSearchableStringsIncludeDynamicValues() {
         var dynamic = ["Shortcut 1", "⌥ + ⇥"]
         let descriptor = SettingsSearchDescriptor(id: "shortcut",

@@ -314,6 +314,7 @@ class App: ScryTabApplication {
     }
 
     static func handleNavigationGesture(_ direction: Direction) {
+        guard FeatureFlags.gestures else { return }
         if let session = SwitcherSession.current,
            session.focusSetSessionState != .ordinaryGrid {
             showUiOrCycleSelection(Preferences.gestureIndex, false)
