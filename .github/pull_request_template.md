@@ -1,4 +1,5 @@
-Thank you for opening a PR! Please make sure that:
+# Pull requests
 
-* The title and description of the PR convey what the change is about, by mentioning the ticket it addresses for instance.
-* The commits messages [follow the convention](https://www.conventionalcommits.org/en/v1.0.0-beta.4/#summary), so your PR can be merged.
+ScryTab is a private proprietary project. Pull requests and code contributions are not accepted.
+
+Please use the in-app feedback form or official channels for bug reports and feature suggestions instead.

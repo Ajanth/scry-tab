@@ -1,12 +1,18 @@
-You can [suggest an enhancement or discuss an issue on github](https://github.com/Ajanth/scry-tab/issues), or use the feedback form in the app.
+# ScryTab — closed source
+
+ScryTab source code is private and proprietary. Contributions are not accepted.
+
+You may download the free official binary from https://scrytab.pages.dev/. Feedback is welcome via the in-app feedback form or official channels; do not submit pull requests or patches.
+
+The notes below are internal build and product reference for the copyright holder.
 
 ## Technical overview
 
-This document gives a technical overview of the project, for newcomers who want to contribute.
+This document gives a technical overview of building and maintaining the project.
 
 ## Building the project
 
-This project has minimal dependency on Xcode-only features (e.g. InterfaceBuilder, Playgrounds). You can build it by doing:
+This project has minimal dependency on Xcode-only features (e.g. InterfaceBuilder, Playgrounds). Build by doing:
 
 * `scripts/codesign/setup_local.sh` to generate a local self-signed certificate, to avoid having to re-check the `System Preferences > Security & Privacy` permissions on every build
 * Either open `scry-tab.xcodeproj` with Xcode, or use the CLI: `xcodebuild -project scry-tab.xcodeproj -scheme Debug` to build the .app with the `Debug` build configuration

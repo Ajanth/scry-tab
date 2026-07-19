@@ -1,11 +1,14 @@
 ---
 name: Feature suggestion
-about: Suggest an idea for this project
+about: Suggest an idea for ScryTab (feedback only; no code contributions)
 title: ''
 labels: enhancement
 assignees: ''
 
 ---
+
+> ScryTab is a private proprietary project. Code contributions are not accepted.
+> Prefer the in-app feedback form when possible.
 
 **Is your feature suggestion related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]

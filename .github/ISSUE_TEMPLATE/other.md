@@ -7,4 +7,5 @@ assignees: ''
 
 ---
 
-
+> ScryTab is a private proprietary project. Code contributions are not accepted.
+> Prefer the in-app feedback form or official channels for product feedback.
