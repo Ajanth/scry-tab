@@ -3,7 +3,7 @@
 Regenerate docs/readme/main.svg, the consolidated SVG that drives README.md.
 
 The README is a single dark, on-brand image (hero + stats + CTAs + screenshot)
-that hands GitHub visitors off to https://scry-tab.app/. To stay seamless across
+that hands GitHub visitors off to https://scrytab.pages.dev/. To stay seamless across
 GitHub light & dark themes, every visible element is baked into one SVG —
 including the app icon and hero screenshot, embedded as base64 images.
 
