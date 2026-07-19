@@ -18,8 +18,7 @@ class AboutTab {
             secondaryLabel(NSLocalizedString("Version", comment: "") + " " + App.version),
             secondaryLabel(App.licence),
             HyperlinkLabel(NSLocalizedString("Website", comment: ""), Endpoints.website),
-        ], .vertical)
-        metadata.spacing = DesignSystem.Metrics.headerFooterGap
+        ], .vertical, false, spacing: DesignSystem.Metrics.headerFooterGap)
         metadata.setCustomSpacing(DesignSystem.Metrics.formOuterPadding, after: metadata.views[2])
         let hero = NSStackView(views: [appIcon, metadata])
         hero.translatesAutoresizingMaskIntoConstraints = false
