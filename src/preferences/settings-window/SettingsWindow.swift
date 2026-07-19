@@ -639,7 +639,7 @@ class SettingsWindow: NSWindow {
     }
 
     private func sidebarImage(_ definition: SettingsSectionDefinition) -> SettingsPageIconDescriptor {
-        guard let page = definition.route.page else { return SettingsPageIconDescriptor(symbolValue: definition.symbol.rawValue, baseColor: .secondaryLabelColor) }
+        guard let page = definition.route.page else { return SettingsPageIconDescriptor(systemSymbolName: "circle", baseColor: .secondaryLabelColor) }
         return SettingsPageIconDescriptor.descriptor(for: page)
     }
 

@@ -10,12 +10,12 @@ final class DesignSystemTests: XCTestCase {
     }
 
     func testSettingsPageIconDescriptorsFollowPageIdentity() {
-        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .appearance).symbolValue, "􀝥")
-        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .controls).symbolValue, "􀆔")
-        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .focusSets).symbolValue, "􀕬")
-        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .general).symbolValue, "􀣋")
-        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .exceptions).symbolValue, "􀉻")
-        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .about).symbolValue, "􀅴")
+        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .appearance).systemSymbolName, "paintpalette.fill")
+        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .controls).systemSymbolName, "command")
+        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .focusSets).systemSymbolName, "star.circle.fill")
+        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .general).systemSymbolName, "gearshape.fill")
+        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .exceptions).systemSymbolName, "hand.raised.fill")
+        XCTAssertEqual(SettingsPageIconDescriptor.descriptor(for: .about).systemSymbolName, "info.circle.fill")
     }
 
     func testStandardGeometryTokensMatchMigrationPlan() {

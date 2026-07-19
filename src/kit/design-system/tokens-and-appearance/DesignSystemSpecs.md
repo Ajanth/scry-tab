@@ -29,7 +29,7 @@ Owns shared AppKit visual tokens used by production surfaces.
 Mirrors `DesignSystemTests.swift` 1:1.
 
 - **testMaterialTintAlphaUsesLightAndDarkValues** — material tint alpha is 0.025 in Aqua and 0.10 in Dark Aqua.
-- **testSettingsPageIconDescriptorsFollowPageIdentity** — each Settings page maps to its expected symbol.
+- **testSettingsPageIconDescriptorsFollowPageIdentity** — each Settings page maps to its expected SF Symbol system name.
 - **testStandardGeometryTokensMatchMigrationPlan** — shared geometry tokens match the migration slice values.
 - **testControlGeometryTokensMatchMigrationPlan** — shared controls use the standard height, compact flat-control radius, quiet selection-indicator width, switcher-standard focus-indicator width, and one disclosure-caret geometry and title gap.
 - **testCenteredDetailPageBoundsAndCentersContent** — centered Settings detail pages cap wide content at the shared maximum, preserve narrow content widths, and center the content with the shared top inset.

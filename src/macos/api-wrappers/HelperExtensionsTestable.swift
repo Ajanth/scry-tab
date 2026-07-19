@@ -7,6 +7,8 @@ enum Symbols: String {
     case gearshape = "􀣋"
     case handRaised = "􀉻"
     case circledInfo = "􀅴"
+    case circledStar = "􀕬"
+    case filledCircledStar = "􀕭"
     case caretUp = "▴"
     case caretDown = "▾"
 }
