@@ -1,11 +1,14 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Report a problem with the official ScryTab binary
 title: ''
 labels: bug
 assignees: ''
 
 ---
+
+> ScryTab is a private proprietary project. Code contributions are not accepted.
+> Prefer the in-app feedback form when possible. Use this template only for issue tracking on official channels.
 
 **Describe the bug**
 
