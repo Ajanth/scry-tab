@@ -8,7 +8,6 @@
 "4-finger Horizontal Swipe" = "4本指の横スワイプ";
 "4-finger Vertical Swipe" = "4本指の縦スワイプ";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "診断用にデバッグプロファイル（バージョン、設定、ハードウェア）を添付しています。";
-"A new version of ScryTab is available" = "ScryTabの新しいバージョンがあります";
 "About" = "情報";
 "About %@" = "%@について";
 "Accessibility" = "アクセシビリティ";
@@ -68,6 +67,7 @@
 "Customize more…" = "さらにカスタマイズ…";
 "Dark" = "ダーク";
 "Debug tools" = "デバッグツール";
+"Details" = "詳細";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "直接起動のフォーカスセットショートカットでは、標準の外観とウインドウ整理が使われます。";
 "Disabled" = "無効";
 "Do Not Move" = "移動しない";
@@ -84,6 +84,7 @@
 "Exceptions" = "例外";
 "Export settings…" = "設定を書き出す…";
 "Failed to import settings" = "設定の読み込みに失敗しました";
+"Feedback type" = "フィードバックの種類";
 "Filtering" = "フィルタ";
 "Focus" = "フォーカス";
 "Focus selected window" = "選択中のウインドウにフォーカス";
@@ -93,7 +94,6 @@
 "General" = "一般";
 "Gesture" = "ジェスチャ";
 "Gestures" = "ジェスチャ";
-"Go back" = "戻る";
 "Help improve ScryTab" = "ScryTabの改善に協力";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "クラッシュレポートを自動送信してScryTabの改善にご協力ください。あとから設定で変更できます。";
 "Hide" = "非表示";
@@ -151,7 +151,6 @@
 "Recently Created First" = "作成が新しい順";
 "Recently Focused First" = "フォーカスが新しい順";
 "Report a bug" = "不具合を報告";
-"Report on current version" = "現在のバージョンのまま報告";
 "Reset settings and restart" = "設定をリセットして再起動";
 "Reset settings and restart…" = "設定をリセットして再起動…";
 "Restart Now" = "今すぐ再起動";
@@ -196,6 +195,7 @@
 "Start at login" = "ログイン時に起動";
 "Style" = "スタイル";
 "Suggest a change" = "改善を提案";
+"Summary" = "概要";
 "System" = "システム";
 "System Default" = "システム設定に従う";
 "The application needs to restart to apply the imported settings." = "読み込んだ設定を反映するには再起動が必要です。";
@@ -210,7 +210,6 @@
 "Trigger" = "起動方法";
 "Unassign existing shortcut and continue" = "既存の割り当てを解除して続行";
 "Unavailable application" = "利用できないアプリ";
-"Update now" = "今すぐアップデート";
 "Updates policy" = "アップデートの方針";
 "Usage" = "利用状況";
 "Version" = "バージョン";
@@ -230,5 +229,4 @@
 "Window title contains" = "ウインドウタイトルに含まれる";
 "You can’t undo this action." = "この操作は取り消せません。";
 "You may need to disable some conflicting system gestures" = "競合するシステムジェスチャをオフにする必要がある場合があります";
-"You're running v%1$@. v%2$@ is available. The bug you're seeing may already be fixed — please update first and check before reporting." = "現在はv%1$@です。v%2$@が利用可能です。不具合は修正済みの可能性があるため、報告前にアップデートして確認してください。";
 "Your feedback will be submitted as a public GitHub issue." = "フィードバックは公開のGitHub Issueとして投稿されます。";

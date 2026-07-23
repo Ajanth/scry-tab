@@ -8,7 +8,6 @@
 "4-finger Horizontal Swipe" = "Horizontales Streichen mit 4 Fingern";
 "4-finger Vertical Swipe" = "Vertikales Streichen mit 4 Fingern";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Ein Debug-Profil (Versionen, Einstellungen, Hardware) ist beigefügt, um die Diagnose zu erleichtern.";
-"A new version of ScryTab is available" = "Für ScryTab ist eine neue Version verfügbar";
 "About" = "Info";
 "About %@" = "Über %@";
 "Accessibility" = "Bedienungshilfen";
@@ -68,6 +67,7 @@
 "Customize more…" = "Weiter anpassen…";
 "Dark" = "Dunkel";
 "Debug tools" = "Werkzeuge fürs Debugging";
+"Details" = "Details";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Direkte Fokus-Set-Tastenkürzel nutzen die Standarddarstellung und -fensteranordnung.";
 "Disabled" = "Ausgeschaltet";
 "Do Not Move" = "Nicht verschieben";
@@ -84,6 +84,7 @@
 "Exceptions" = "Ausnahmen";
 "Export settings…" = "Einstellungen exportieren…";
 "Failed to import settings" = "Einstellungen konnten nicht importiert werden";
+"Feedback type" = "Art des Feedbacks";
 "Filtering" = "Filter";
 "Focus" = "Fokus";
 "Focus selected window" = "Ausgewähltes Fenster fokussieren";
@@ -93,7 +94,6 @@
 "General" = "Allgemein";
 "Gesture" = "Geste";
 "Gestures" = "Gesten";
-"Go back" = "Zurück";
 "Help improve ScryTab" = "Helfen Sie mit, ScryTab zu verbessern";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Helfen Sie mit, ScryTab zu verbessern, indem Absturzberichte automatisch gesendet werden. Sie können dies später in den Einstellungen ändern.";
 "Hide" = "Ausblenden";
@@ -151,7 +151,6 @@
 "Recently Created First" = "Zuletzt erstellte zuerst";
 "Recently Focused First" = "Zuletzt fokussierte zuerst";
 "Report a bug" = "Einen Fehler melden";
-"Report on current version" = "Mit aktueller Version melden";
 "Reset settings and restart" = "Einstellungen zurücksetzen und neu starten";
 "Reset settings and restart…" = "Einstellungen zurücksetzen und neu starten…";
 "Restart Now" = "Jetzt neu starten";
@@ -196,6 +195,7 @@
 "Start at login" = "Bei der Anmeldung starten";
 "Style" = "Stil";
 "Suggest a change" = "Eine Änderung vorschlagen";
+"Summary" = "Zusammenfassung";
 "System" = "System";
 "System Default" = "Systemvorgabe";
 "The application needs to restart to apply the imported settings." = "Zum Übernehmen der importierten Einstellungen muss die App neu gestartet werden.";
@@ -210,7 +210,6 @@
 "Trigger" = "Auslöser";
 "Unassign existing shortcut and continue" = "Bestehendes Tastenkürzel freigeben und fortfahren";
 "Unavailable application" = "App nicht verfügbar";
-"Update now" = "Jetzt aktualisieren";
 "Updates policy" = "Richtlinie für Updates";
 "Usage" = "Nutzung";
 "Version" = "Version";
@@ -230,5 +229,4 @@
 "Window title contains" = "Fenstertitel enthält";
 "You can’t undo this action." = "Diese Aktion lässt sich nicht rückgängig machen.";
 "You may need to disable some conflicting system gestures" = "Eventuell müssen kollidierende Systemgesten deaktiviert werden";
-"You're running v%1$@. v%2$@ is available. The bug you're seeing may already be fixed — please update first and check before reporting." = "Sie verwenden v%1$@. v%2$@ ist verfügbar. Der beobachtete Fehler könnte bereits behoben sein — bitte zuerst aktualisieren und prüfen, bevor Sie ihn melden.";
 "Your feedback will be submitted as a public GitHub issue." = "Ihr Feedback wird als öffentliches GitHub-Issue eingereicht.";

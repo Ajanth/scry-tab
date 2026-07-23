@@ -8,7 +8,6 @@
 "4-finger Horizontal Swipe" = "Balayage horizontal à 4 doigts";
 "4-finger Vertical Swipe" = "Balayage vertical à 4 doigts";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Un profil de diagnostic (versions, réglages, matériel) est joint pour faciliter l’analyse du problème.";
-"A new version of ScryTab is available" = "Une nouvelle version de ScryTab est disponible";
 "About" = "À propos";
 "About %@" = "À propos de %@";
 "Accessibility" = "Accessibilité";
@@ -68,6 +67,7 @@
 "Customize more…" = "Personnaliser davantage…";
 "Dark" = "Sombre";
 "Debug tools" = "Outils de débogage";
+"Details" = "Détails";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Les raccourcis directs d’ensemble de concentration utilisent l’apparence et l’organisation des fenêtres standard.";
 "Disabled" = "Désactivé";
 "Do Not Move" = "Ne pas déplacer";
@@ -84,6 +84,7 @@
 "Exceptions" = "Exceptions";
 "Export settings…" = "Exporter les réglages…";
 "Failed to import settings" = "Impossible d’importer les réglages";
+"Feedback type" = "Type de commentaire";
 "Filtering" = "Filtrage";
 "Focus" = "Focus";
 "Focus selected window" = "Activer la fenêtre sélectionnée";
@@ -93,7 +94,6 @@
 "General" = "Général";
 "Gesture" = "Geste";
 "Gestures" = "Gestes";
-"Go back" = "Retour";
 "Help improve ScryTab" = "Aidez-nous à améliorer ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Aidez-nous à améliorer ScryTab en envoyant automatiquement des rapports de plantage. Vous pourrez modifier ce choix plus tard dans Réglages.";
 "Hide" = "Masquer";
@@ -151,7 +151,6 @@
 "Recently Created First" = "Plus récemment créées en premier";
 "Recently Focused First" = "Plus récemment activées en premier";
 "Report a bug" = "Signaler un bug";
-"Report on current version" = "Signaler pour la version actuelle";
 "Reset settings and restart" = "Réinitialiser les réglages et redémarrer";
 "Reset settings and restart…" = "Réinitialiser les réglages et redémarrer…";
 "Restart Now" = "Redémarrer maintenant";
@@ -196,6 +195,7 @@
 "Start at login" = "Lancer à l’ouverture de session";
 "Style" = "Style";
 "Suggest a change" = "Proposer une modification";
+"Summary" = "Résumé";
 "System" = "Système";
 "System Default" = "Réglage système";
 "The application needs to restart to apply the imported settings." = "L’application doit redémarrer pour appliquer les réglages importés.";
@@ -210,7 +210,6 @@
 "Trigger" = "Déclencheur";
 "Unassign existing shortcut and continue" = "Retirer le raccourci existant et continuer";
 "Unavailable application" = "Application indisponible";
-"Update now" = "Mettre à jour maintenant";
 "Updates policy" = "Politique de mise à jour";
 "Usage" = "Utilisation";
 "Version" = "Version";
@@ -230,5 +229,4 @@
 "Window title contains" = "Le titre de la fenêtre contient";
 "You can’t undo this action." = "Cette action est irréversible.";
 "You may need to disable some conflicting system gestures" = "Il peut être nécessaire de désactiver certains gestes système en conflit";
-"You're running v%1$@. v%2$@ is available. The bug you're seeing may already be fixed — please update first and check before reporting." = "Vous utilisez la v%1$@. La v%2$@ est disponible. Le bug observé est peut-être déjà corrigé — mettez à jour d’abord, puis vérifiez avant de signaler.";
 "Your feedback will be submitted as a public GitHub issue." = "Votre commentaire sera publié sous forme d’issue GitHub publique.";

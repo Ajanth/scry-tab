@@ -8,7 +8,6 @@
 "4-finger Horizontal Swipe" = "Горизонтальное смахивание четырьмя пальцами";
 "4-finger Vertical Swipe" = "Вертикальное смахивание четырьмя пальцами";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "К отзыву приложен отладочный профиль (версии, настройки, оборудование) — это поможет разобрать проблему.";
-"A new version of ScryTab is available" = "Вышла новая версия ScryTab";
 "About" = "О программе";
 "About %@" = "О программе %@";
 "Accessibility" = "Универсальный доступ";
@@ -68,6 +67,7 @@
 "Customize more…" = "Ещё настройки…";
 "Dark" = "Тёмная";
 "Debug tools" = "Средства отладки";
+"Details" = "Подробности";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Прямые сочетания наборов фокуса используют стандартное оформление и упорядочивание окон.";
 "Disabled" = "Отключено";
 "Do Not Move" = "Не перемещать";
@@ -84,6 +84,7 @@
 "Exceptions" = "Исключения";
 "Export settings…" = "Экспортировать настройки…";
 "Failed to import settings" = "Не удалось импортировать настройки";
+"Feedback type" = "Тип отзыва";
 "Filtering" = "Фильтры";
 "Focus" = "Фокус";
 "Focus selected window" = "Сфокусировать выбранное окно";
@@ -93,7 +94,6 @@
 "General" = "Основные";
 "Gesture" = "Жест";
 "Gestures" = "Жесты";
-"Go back" = "Назад";
 "Help improve ScryTab" = "Помогите улучшить ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Помогите улучшить ScryTab, разрешив автоматическую отправку отчётов о сбоях. Позже это можно изменить в настройках.";
 "Hide" = "Скрыть";
@@ -151,7 +151,6 @@
 "Recently Created First" = "Сначала недавно созданные";
 "Recently Focused First" = "Сначала недавно в фокусе";
 "Report a bug" = "Сообщить об ошибке";
-"Report on current version" = "Сообщить в текущей версии";
 "Reset settings and restart" = "Сбросить настройки и перезапустить";
 "Reset settings and restart…" = "Сбросить настройки и перезапустить…";
 "Restart Now" = "Перезапустить сейчас";
@@ -196,6 +195,7 @@
 "Start at login" = "Запускать при входе в систему";
 "Style" = "Стиль";
 "Suggest a change" = "Предложить улучшение";
+"Summary" = "Краткое описание";
 "System" = "Система";
 "System Default" = "Как в системе";
 "The application needs to restart to apply the imported settings." = "Чтобы применить импортированные настройки, перезапустите приложение.";
@@ -210,7 +210,6 @@
 "Trigger" = "Активация";
 "Unassign existing shortcut and continue" = "Снять текущее сочетание и продолжить";
 "Unavailable application" = "Приложение недоступно";
-"Update now" = "Обновить сейчас";
 "Updates policy" = "Политика обновлений";
 "Usage" = "Использование";
 "Version" = "Версия";
@@ -230,5 +229,4 @@
 "Window title contains" = "Заголовок окна содержит";
 "You can’t undo this action." = "Это действие нельзя отменить.";
 "You may need to disable some conflicting system gestures" = "Возможно, придётся отключить конфликтующие системные жесты";
-"You're running v%1$@. v%2$@ is available. The bug you're seeing may already be fixed — please update first and check before reporting." = "У вас v%1$@, доступна v%2$@. Ошибка могла уже быть исправлена — сначала обновитесь и проверьте, затем сообщайте.";
 "Your feedback will be submitted as a public GitHub issue." = "Ваш отзыв будет отправлен как публичный issue на GitHub.";

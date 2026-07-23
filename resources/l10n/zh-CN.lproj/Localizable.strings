@@ -8,7 +8,6 @@
 "4-finger Horizontal Swipe" = "四指左右轻扫";
 "4-finger Vertical Swipe" = "四指上下轻扫";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "已附带调试概况（版本、设置、硬件），便于排查问题。";
-"A new version of ScryTab is available" = "ScryTab 有可用更新";
 "About" = "关于";
 "About %@" = "关于 %@";
 "Accessibility" = "辅助功能";
@@ -68,6 +67,7 @@
 "Customize more…" = "进一步自定义…";
 "Dark" = "深色";
 "Debug tools" = "调试工具";
+"Details" = "详细信息";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "直接打开聚焦组的快捷键沿用标准外观与窗口编排。";
 "Disabled" = "已禁用";
 "Do Not Move" = "不要移动";
@@ -84,6 +84,7 @@
 "Exceptions" = "例外";
 "Export settings…" = "导出设置…";
 "Failed to import settings" = "设置导入失败";
+"Feedback type" = "反馈类型";
 "Filtering" = "过滤";
 "Focus" = "聚焦";
 "Focus selected window" = "聚焦所选窗口";
@@ -93,7 +94,6 @@
 "General" = "通用";
 "Gesture" = "手势";
 "Gestures" = "手势";
-"Go back" = "返回";
 "Help improve ScryTab" = "协助改进 ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "自动发送崩溃报告，协助改进 ScryTab。之后可在“设置”中更改。";
 "Hide" = "隐藏";
@@ -151,7 +151,6 @@
 "Recently Created First" = "最近创建的在前";
 "Recently Focused First" = "最近聚焦的在前";
 "Report a bug" = "报告问题";
-"Report on current version" = "基于当前版本报告";
 "Reset settings and restart" = "重置设置并重新启动";
 "Reset settings and restart…" = "重置设置并重新启动…";
 "Restart Now" = "立即重新启动";
@@ -196,6 +195,7 @@
 "Start at login" = "登录时启动";
 "Style" = "样式";
 "Suggest a change" = "提出改进建议";
+"Summary" = "摘要";
 "System" = "系统";
 "System Default" = "系统默认";
 "The application needs to restart to apply the imported settings." = "需重新启动应用才能应用导入的设置。";
@@ -210,7 +210,6 @@
 "Trigger" = "触发方式";
 "Unassign existing shortcut and continue" = "取消现有快捷键并继续";
 "Unavailable application" = "应用不可用";
-"Update now" = "立即更新";
 "Updates policy" = "更新策略";
 "Usage" = "使用统计";
 "Version" = "版本";
@@ -230,5 +229,4 @@
 "Window title contains" = "窗口标题包含";
 "You can’t undo this action." = "此操作无法撤销。";
 "You may need to disable some conflicting system gestures" = "可能需要关闭部分冲突的系统手势";
-"You're running v%1$@. v%2$@ is available. The bug you're seeing may already be fixed — please update first and check before reporting." = "当前为 v%1$@，已有 v%2$@。你遇到的问题可能已修复——请先更新并确认后再报告。";
 "Your feedback will be submitted as a public GitHub issue." = "你的反馈将作为公开的 GitHub Issue 提交。";
