@@ -127,7 +127,7 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertNotNil(button.layer)
     }
 
-    func testTextFieldUsesFlatSurfaceAndHorizontalPadding() {
+    func testTextFieldUsesFlatSurfaceAndContentPadding() {
         let field = NSTextField()
         field.frame = NSRect(x: 0, y: 0, width: 200, height: 32)
         DesignSystemControlStyler.styleTextField(field)
@@ -135,7 +135,16 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertFalse(field.drawsBackground)
         XCTAssertEqual(field.layer?.cornerRadius, DesignSystem.Metrics.controlRadius)
         XCTAssertEqual(field.layer?.borderWidth, 1)
-        XCTAssertGreaterThanOrEqual(field.cell?.drawingRect(forBounds: field.bounds).minX ?? 0, DesignSystem.Metrics.controlTextInset)
+        let fieldRect = field.cell?.drawingRect(forBounds: field.bounds) ?? .zero
+        XCTAssertGreaterThanOrEqual(fieldRect.minX, DesignSystem.Metrics.controlTextInset)
+        XCTAssertGreaterThanOrEqual(fieldRect.minY, DesignSystem.Metrics.controlTextVerticalInset)
+        XCTAssertLessThanOrEqual(fieldRect.maxY, field.bounds.maxY - DesignSystem.Metrics.controlTextVerticalInset)
+        let multilineField = NSTextField()
+        multilineField.frame = NSRect(x: 0, y: 0, width: 200, height: 120)
+        DesignSystemControlStyler.styleTextField(multilineField)
+        let multilineRect = multilineField.cell?.drawingRect(forBounds: multilineField.bounds) ?? .zero
+        XCTAssertGreaterThanOrEqual(multilineRect.minY, DesignSystem.Metrics.controlTextVerticalInset)
+        XCTAssertLessThanOrEqual(multilineRect.maxY, multilineField.bounds.maxY - DesignSystem.Metrics.controlTextVerticalInset)
     }
 
     func testSearchFieldUsesFlatSurfaceWithoutStockBezel() {

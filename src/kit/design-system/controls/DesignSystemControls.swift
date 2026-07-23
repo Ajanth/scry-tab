@@ -19,7 +19,9 @@ private final class DesignSystemInsetTextFieldCell: NSTextFieldCell {
 
     private func textRect(forBounds rect: NSRect) -> NSRect {
         let base = super.drawingRect(forBounds: rect)
-        return base.insetBy(dx: DesignSystem.Metrics.controlTextInset, dy: 0)
+        return base.insetBy(
+            dx: DesignSystem.Metrics.controlTextInset,
+            dy: DesignSystem.Metrics.controlTextVerticalInset)
     }
 }
 

@@ -18,6 +18,7 @@ enum DesignSystem {
         static let selectionIndicatorBorderWidth = CGFloat(1)
         static let focusIndicatorBorderWidth = CGFloat(3)
         static let controlTextInset = CGFloat(10)
+        static let controlTextVerticalInset = CGFloat(8)
         static let searchGlyphInset = CGFloat(8)
         static let searchTextInset = CGFloat(4)
         static let buttonHorizontalPadding = CGFloat(14)
