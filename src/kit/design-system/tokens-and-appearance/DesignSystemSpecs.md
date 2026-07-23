@@ -10,7 +10,7 @@ Owns shared AppKit visual tokens used by production surfaces.
 - Settings page icons resolve to the production page order and deliberate base colors.
 - Standard metrics expose the shared row, section, icon, selection, and focus geometry.
 - Centered Settings detail pages cap content at the shared narrow-column width and keep it centered with compact vertical insets.
-- Shared editable text fields keep the flat surface treatment while restoring deliberate horizontal padding.
+- Shared editable text fields keep the flat surface treatment while restoring deliberate horizontal and vertical padding at every supported height.
 - Shared Settings action buttons draw through the app-owned flat surface with deliberate horizontal padding instead of stock button chrome.
 - Shared Settings disclosure sections center their action within the content width, use the shared compact chevron geometry and title gap, reveal their content in place, and skip animation when Reduce Motion is enabled.
 - Shared Settings popup buttons draw through the app-owned flat surface instead of stock popup chrome, expand while their native menu is open, and spring back after dismissal when Reduce Motion is off.
@@ -37,7 +37,7 @@ Mirrors `DesignSystemTests.swift` 1:1.
 - **testFlatButtonIntrinsicContentIncludesHorizontalPadding** — Settings action buttons reserve app-owned horizontal padding so long titles do not sit against the border.
 - **testDisclosureSectionTogglesItsContentAndTitle** — disclosure sections start collapsed with the shared compact trailing down-chevron and title gap while preserving standard right padding; they reveal content on demand while keeping a fixed button width, their title, upward caret, and VoiceOver expanded state synchronized.
 - **testPopupButtonUsesAppOwnedSurface** — Settings popup buttons keep native menu behavior while drawing through the app-owned flat surface and are layer-backed for compositor-only press feedback.
-- **testTextFieldUsesFlatSurfaceAndHorizontalPadding** — editable text fields keep the shared flat control chrome while preserving deliberate horizontal content padding.
+- **testTextFieldUsesFlatSurfaceAndContentPadding** — editable text fields keep the shared flat control chrome while preserving deliberate horizontal and vertical content padding at single-line and multiline heights.
 - **testSearchFieldUsesFlatSurfaceWithoutStockBezel** — sidebar search styling strips the stock rounded bezel and exterior focus ring, then replaces them with the shared flat field treatment and padded layout.
 - **testMainSearchFieldUsesSwitcherChrome** — shared switcher-search styling retains immediate query delivery, the native rounded bezel, and single-line editing.
 - **testFlatSurfaceViewUsesSharedControlChrome** — read-only widgets use the shared flat surface, border, and control radius.
