@@ -29,9 +29,6 @@
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "A debug profile (versions, settings, hardware) is attached to help diagnose the issue.";
 
 /* No comment provided by engineer. */
-"A new version of ScryTab is available" = "A new version of ScryTab is available";
-
-/* No comment provided by engineer. */
 "About" = "About";
 
 /* Menubar option. %@ is ScryTab */
@@ -137,8 +134,6 @@
 "Ask before enabling crash reports" = "Ask before enabling crash reports";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "Auto-install updates periodically" = "Auto-install updates periodically";
 
 /* No comment provided by engineer. */
@@ -211,6 +206,9 @@
 "Debug tools" = "Debug tools";
 
 /* No comment provided by engineer. */
+"Details" = "Details";
+
+/* No comment provided by engineer. */
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Direct Focus Set shortcuts use the standard appearance and window organization.";
 
 /* No comment provided by engineer. */
@@ -259,6 +257,9 @@
 "Failed to import settings" = "Failed to import settings";
 
 /* No comment provided by engineer. */
+"Feedback type" = "Feedback type";
+
+/* No comment provided by engineer. */
 "Filtering" = "Filtering";
 
 /* No comment provided by engineer. */
@@ -277,8 +278,6 @@
 "Focus Sets" = "Focus Sets";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "General" = "General";
 
 /* No comment provided by engineer. */
@@ -286,13 +285,6 @@
 
 /* No comment provided by engineer. */
 "Gestures" = "Gestures";
-
-/* No comment provided by engineer. */
-"Go back" = "Go back";
-
-/* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 
 /* No comment provided by engineer. */
 "Help improve ScryTab" = "Help improve ScryTab";
@@ -311,8 +303,6 @@
 
 /* No comment provided by engineer. */
 "Hide windows" = "Hide windows";
-
-/* No comment provided by engineer. */
 
 /* No comment provided by engineer. */
 "Hold" = "Hold";
@@ -348,8 +338,6 @@
 "Light" = "Light";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@.";
 
 /* No comment provided by engineer. */
@@ -357,8 +345,6 @@
 
 /* No comment provided by engineer. */
 "Middle" = "Middle";
-
-/* No comment provided by engineer. */
 
 /* No comment provided by engineer. */
 "Miscellaneous" = "Miscellaneous";
@@ -463,8 +449,6 @@
 "Quit %@" = "Quit %@";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "Recently Created First" = "Recently Created First";
 
 /* No comment provided by engineer. */
@@ -472,9 +456,6 @@
 
 /* No comment provided by engineer. */
 "Report a bug" = "Report a bug";
-
-/* No comment provided by engineer. */
-"Report on current version" = "Report on current version";
 
 /* No comment provided by engineer. */
 "Reset settings and restart" = "Reset settings and restart";
@@ -549,8 +530,6 @@
 "Show" = "Show";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "Show apps with no open window" = "Show apps with no open window";
 
 /* No comment provided by engineer. */
@@ -566,8 +545,6 @@
 "Show hidden windows" = "Show hidden windows";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "Show minimized windows" = "Show minimized windows";
 
 /* No comment provided by engineer. */
@@ -575,10 +552,6 @@
 
 /* No comment provided by engineer. */
 "Show on" = "Show on";
-
-/* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 
 /* No comment provided by engineer. */
 "Show titles" = "Show titles";
@@ -605,8 +578,6 @@
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
 
 /* No comment provided by engineer. */
-
-/* No comment provided by engineer. */
 "Start" = "Start";
 
 /* No comment provided by engineer. */
@@ -617,6 +588,9 @@
 
 /* No comment provided by engineer. */
 "Suggest a change" = "Suggest a change";
+
+/* No comment provided by engineer. */
+"Summary" = "Summary";
 
 /* No comment provided by engineer. */
 "System" = "System";
@@ -659,9 +633,6 @@
 
 /* No comment provided by engineer. */
 "Unavailable application" = "Unavailable application";
-
-/* No comment provided by engineer. */
-"Update now" = "Update now";
 
 /* No comment provided by engineer. */
 "Updates policy" = "Updates policy";
@@ -719,9 +690,6 @@
 
 /* No comment provided by engineer. */
 "You may need to disable some conflicting system gestures" = "You may need to disable some conflicting system gestures";
-
-/* No comment provided by engineer. */
-"You're running v%1$@. v%2$@ is available. The bug you're seeing may already be fixed — please update first and check before reporting." = "You're running v%1$@. v%2$@ is available. The bug you're seeing may already be fixed — please update first and check before reporting.";
 
 /* No comment provided by engineer. */
 "Your feedback will be submitted as a public GitHub issue." = "Your feedback will be submitted as a public GitHub issue.";

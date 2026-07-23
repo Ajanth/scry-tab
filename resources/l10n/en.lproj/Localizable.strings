@@ -8,7 +8,6 @@
 "4-finger Horizontal Swipe" = "4-finger Horizontal Swipe";
 "4-finger Vertical Swipe" = "4-finger Vertical Swipe";
 "A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "A debug profile (versions, settings, hardware) is attached to help diagnose the issue.";
-"A new version of ScryTab is available" = "A new version of ScryTab is available";
 "About" = "About";
 "About %@" = "About %@";
 "Accessibility" = "Accessibility";
@@ -68,6 +67,7 @@
 "Customize more…" = "Customize more…";
 "Dark" = "Dark";
 "Debug tools" = "Debug tools";
+"Details" = "Details";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Direct Focus Set shortcuts use the standard appearance and window organization.";
 "Disabled" = "Disabled";
 "Do Not Move" = "Do Not Move";
@@ -84,6 +84,7 @@
 "Exceptions" = "Exceptions";
 "Export settings…" = "Export settings…";
 "Failed to import settings" = "Failed to import settings";
+"Feedback type" = "Feedback type";
 "Filtering" = "Filtering";
 "Focus" = "Focus";
 "Focus selected window" = "Focus selected window";
@@ -93,7 +94,6 @@
 "General" = "General";
 "Gesture" = "Gesture";
 "Gestures" = "Gestures";
-"Go back" = "Go back";
 "Help improve ScryTab" = "Help improve ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings.";
 "Hide" = "Hide";
@@ -151,7 +151,6 @@
 "Recently Created First" = "Recently Created First";
 "Recently Focused First" = "Recently Focused First";
 "Report a bug" = "Report a bug";
-"Report on current version" = "Report on current version";
 "Reset settings and restart" = "Reset settings and restart";
 "Reset settings and restart…" = "Reset settings and restart…";
 "Restart Now" = "Restart Now";
@@ -196,6 +195,7 @@
 "Start at login" = "Start at login";
 "Style" = "Style";
 "Suggest a change" = "Suggest a change";
+"Summary" = "Summary";
 "System" = "System";
 "System Default" = "System Default";
 "The application needs to restart to apply the imported settings." = "The application needs to restart to apply the imported settings.";
@@ -210,7 +210,6 @@
 "Trigger" = "Trigger";
 "Unassign existing shortcut and continue" = "Unassign existing shortcut and continue";
 "Unavailable application" = "Unavailable application";
-"Update now" = "Update now";
 "Updates policy" = "Updates policy";
 "Usage" = "Usage";
 "Version" = "Version";
@@ -230,5 +229,4 @@
 "Window title contains" = "Window title contains";
 "You can’t undo this action." = "You can’t undo this action.";
 "You may need to disable some conflicting system gestures" = "You may need to disable some conflicting system gestures";
-"You're running v%1$@. v%2$@ is available. The bug you're seeing may already be fixed — please update first and check before reporting." = "You're running v%1$@. v%2$@ is available. The bug you're seeing may already be fixed — please update first and check before reporting.";
 "Your feedback will be submitted as a public GitHub issue." = "Your feedback will be submitted as a public GitHub issue.";
