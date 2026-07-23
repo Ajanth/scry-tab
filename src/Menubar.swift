@@ -72,10 +72,10 @@ class Menubar {
     }
 
     static private func loadAppIcon() {
-        let image = NSImage(named: NSImage.applicationIconName)!
-        image.isTemplate = false
-        statusItem.button!.image = image
+        guard let button = statusItem.button else { return }
+        let image = MenubarStatusIcon.makeImage(from: App.appIcon(for: MenubarStatusIcon.pointSize))
+        button.image = image
+        button.imageScaling = .scaleProportionallyUpOrDown
         statusItem.isVisible = true
-        statusItem.button!.imageScaling = .scaleProportionallyUpOrDown
     }
 }
