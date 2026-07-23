@@ -138,8 +138,7 @@ class App: ScryTabApplication {
     @objc static func showFeedbackPanel() {
         let wasFresh = FeedbackWindow.shared == nil
         initializeFeedbackWindowIfNeeded()
-        // Fresh init already runs reset(); skip the redundant second call so we don't
-        // double-fire the Sparkle preflight on the first ever open.
+        // Fresh init already runs reset(); skip rebuilding the composer twice on first open.
         if !wasFresh { FeedbackWindow.shared?.reset() }
         showSecondaryWindow(FeedbackWindow.shared!)
     }
