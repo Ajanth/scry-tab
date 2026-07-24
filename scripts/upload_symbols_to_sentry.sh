@@ -5,6 +5,7 @@ set -euo pipefail
 : "${SENTRY_AUTH_TOKEN:?SENTRY_AUTH_TOKEN must be configured}"
 : "${SENTRY_ORG:?SENTRY_ORG must be configured}"
 : "${SENTRY_PROJECT:?SENTRY_PROJECT must be configured}"
+: "${SENTRY_URL:?SENTRY_URL must be configured}"
 
 dsyms=()
 while IFS= read -r -d '' dsym; do
