@@ -7,7 +7,6 @@
 "3-finger Vertical Swipe" = "Deslizar verticalmente con 3 dedos";
 "4-finger Horizontal Swipe" = "Deslizar horizontalmente con 4 dedos";
 "4-finger Vertical Swipe" = "Deslizar verticalmente con 4 dedos";
-"A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Se incluye un perfil de depuración (versiones, ajustes, hardware) para facilitar el diagnóstico.";
 "About" = "Acerca de";
 "About %@" = "Acerca de %@";
 "Accessibility" = "Accesibilidad";
@@ -41,7 +40,6 @@
 "Apply this change to all shortcuts?" = "¿Aplicar este cambio a todos los atajos?";
 "Apply to All Shortcuts" = "Aplicar a todos los atajos";
 "Arrow keys" = "Teclas de dirección";
-"Arrow keys already assigned to other actions:\n%@" = "Las teclas de dirección ya están asignadas a otras acciones:\n%@";
 "Ask before enabling crash reports" = "Preguntar antes de activar los informes de fallos";
 "Auto-install updates periodically" = "Instalar actualizaciones automáticamente de forma periódica";
 "Behavior" = "Comportamiento";
@@ -58,12 +56,12 @@
 "Choose the applications whose windows belong to this Focus Set." = "Elige las apps cuyas ventanas forman parte de este conjunto de enfoque.";
 "Close window" = "Cerrar ventana";
 "Conflicting shortcut" = "Atajo en conflicto";
+"Continue on GitHub" = "Continuar en GitHub";
 "Controls" = "Controles";
 "Could not move to Applications folder" = "No se pudo mover a la carpeta Aplicaciones";
-"Couldn't submit feedback" = "No se pudo enviar la opinión";
+"Couldn't open GitHub" = "No se pudo abrir GitHub";
 "Crash reports policy" = "Política de informes de fallos";
 "Create a Focus Set to browse the applications you use together." = "Crea un conjunto de enfoque para recorrer las apps que usas juntas.";
-"Create GitHub issue" = "Crear una incidencia en GitHub";
 "Customize more…" = "Personalizar más…";
 "Dark" = "Oscuro";
 "Debug tools" = "Herramientas de depuración";
@@ -114,12 +112,10 @@
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserva ⌘⌥⎋, ⌘⌥⇧⎋ y ⌘⌥⇧⌃⎋ para Forzar salida y no se pueden desasignar. ScryTab no puede usarlas.\n\nTu cambio asignaría una de estas a: %@.";
 "Medium" = "Mediano";
 "Middle" = "Centro";
-"Miscellaneous" = "Otros";
 "Move Down" = "Bajar";
 "Move to Applications Folder" = "Mover a la carpeta Aplicaciones";
 "Move to Applications folder?" = "¿Mover a la carpeta Aplicaciones?";
 "Move Up" = "Subir";
-"Multiple screens" = "Varias pantallas";
 "Name" = "Nombre";
 "Never" = "Nunca";
 "Never send crash reports" = "Nunca enviar informes de fallos";
@@ -166,7 +162,6 @@
 "Select previous window" = "Seleccionar ventana anterior";
 "Send feedback" = "Enviar opinión";
 "Send feedback…" = "Enviar opinión…";
-"Sending…" = "Enviando…";
 "Settings imported" = "Ajustes importados";
 "Settings…" = "Ajustes…";
 "Shortcut" = "Atajo";
@@ -200,7 +195,6 @@
 "System Default" = "Predeterminado del sistema";
 "The application needs to restart to apply the imported settings." = "La app debe reiniciarse para aplicar los ajustes importados.";
 "The application needs to restart to apply the language change." = "La app debe reiniciarse para aplicar el cambio de idioma.";
-"The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "El servidor no aceptó el envío. Revisa tu conexión a internet e inténtalo de nuevo; tu borrador se conserva.";
 "Theme" = "Tema";
 "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Este permiso hace falta para activar ventanas al soltar el atajo. Activa “%@” en Ajustes del Sistema > Privacidad y seguridad > Accesibilidad. Una entrada “ScryTab” activada de otra compilación no sirve.";
 "This will keep your Downloads folder uncluttered." = "Así mantienes ordenada la carpeta Descargas.";
@@ -224,9 +218,10 @@
 "Window is minimized" = "La ventana está minimizada";
 "Window is on every Space" = "La ventana está en todos los Spaces";
 "Window is on Space %d" = "La ventana está en el Space %d";
-"Window organization" = "Organización de ventanas";
 "Window Title" = "Título de la ventana";
 "Window title contains" = "El título de la ventana contiene";
 "You can’t undo this action." = "Esta acción no se puede deshacer.";
 "You may need to disable some conflicting system gestures" = "Es posible que debas desactivar gestos del sistema en conflicto";
+"You'll review it on GitHub before publishing. Diagnostic data is not attached automatically." = "Podrás revisarlo en GitHub antes de publicarlo. Los datos de diagnóstico no se adjuntan automáticamente.";
+"Your draft is preserved. Check that a browser is available and try again." = "Se conserva tu borrador. Comprueba que haya un navegador disponible e inténtalo de nuevo.";
 "Your feedback will be submitted as a public GitHub issue." = "Tus comentarios se enviarán como una incidencia pública en GitHub.";

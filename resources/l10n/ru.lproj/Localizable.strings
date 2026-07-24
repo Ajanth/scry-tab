@@ -7,7 +7,6 @@
 "3-finger Vertical Swipe" = "Вертикальное смахивание тремя пальцами";
 "4-finger Horizontal Swipe" = "Горизонтальное смахивание четырьмя пальцами";
 "4-finger Vertical Swipe" = "Вертикальное смахивание четырьмя пальцами";
-"A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "К отзыву приложен отладочный профиль (версии, настройки, оборудование) — это поможет разобрать проблему.";
 "About" = "О программе";
 "About %@" = "О программе %@";
 "Accessibility" = "Универсальный доступ";
@@ -41,7 +40,6 @@
 "Apply this change to all shortcuts?" = "Применить изменение ко всем сочетаниям клавиш?";
 "Apply to All Shortcuts" = "Применить ко всем сочетаниям";
 "Arrow keys" = "Клавиши со стрелками";
-"Arrow keys already assigned to other actions:\n%@" = "Клавиши со стрелками уже заняты другими действиями:\n%@";
 "Ask before enabling crash reports" = "Спрашивать перед включением отчётов о сбоях";
 "Auto-install updates periodically" = "Периодически устанавливать обновления автоматически";
 "Behavior" = "Поведение";
@@ -58,12 +56,12 @@
 "Choose the applications whose windows belong to this Focus Set." = "Выберите приложения, окна которых входят в этот набор фокуса.";
 "Close window" = "Закрыть окно";
 "Conflicting shortcut" = "Конфликт сочетания клавиш";
+"Continue on GitHub" = "Продолжить на GitHub";
 "Controls" = "Элементы управления";
 "Could not move to Applications folder" = "Не удалось переместить в папку «Программы»";
-"Couldn't submit feedback" = "Не удалось отправить отзыв";
+"Couldn't open GitHub" = "Не удалось открыть GitHub";
 "Crash reports policy" = "Политика отчётов о сбоях";
 "Create a Focus Set to browse the applications you use together." = "Создайте набор фокуса, чтобы просматривать приложения, которыми вы пользуетесь вместе.";
-"Create GitHub issue" = "Создать issue на GitHub";
 "Customize more…" = "Ещё настройки…";
 "Dark" = "Тёмная";
 "Debug tools" = "Средства отладки";
@@ -114,12 +112,10 @@
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS резервирует ⌘⌥⎋, ⌘⌥⇧⎋ и ⌘⌥⇧⌃⎋ для «Завершить принудительно» — их нельзя отвязать. ScryTab не может их использовать.\n\nВаше изменение назначило бы одно из них на: %@.";
 "Medium" = "Средний";
 "Middle" = "Середина";
-"Miscellaneous" = "Разное";
 "Move Down" = "Ниже";
 "Move to Applications Folder" = "Переместить в папку «Программы»";
 "Move to Applications folder?" = "Переместить в папку «Программы»?";
 "Move Up" = "Выше";
-"Multiple screens" = "Несколько экранов";
 "Name" = "Имя";
 "Never" = "Никогда";
 "Never send crash reports" = "Не отправлять отчёты о сбоях";
@@ -166,7 +162,6 @@
 "Select previous window" = "Выбрать предыдущее окно";
 "Send feedback" = "Отправить отзыв";
 "Send feedback…" = "Отправить отзыв…";
-"Sending…" = "Отправка…";
 "Settings imported" = "Настройки импортированы";
 "Settings…" = "Настройки…";
 "Shortcut" = "Сочетание клавиш";
@@ -200,7 +195,6 @@
 "System Default" = "Как в системе";
 "The application needs to restart to apply the imported settings." = "Чтобы применить импортированные настройки, перезапустите приложение.";
 "The application needs to restart to apply the language change." = "Чтобы применить смену языка, перезапустите приложение.";
-"The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Сервер не принял отправку. Проверьте интернет и попробуйте снова — черновик сохранён.";
 "Theme" = "Тема";
 "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Это разрешение нужно, чтобы фокусировать окна после отпускания сочетания клавиш. Включите «%@» в Системные настройки > Конфиденциальность и безопасность > Универсальный доступ. Включённая запись «ScryTab» от другой сборки не подходит.";
 "This will keep your Downloads folder uncluttered." = "Так папка «Загрузки» останется без лишнего.";
@@ -224,9 +218,10 @@
 "Window is minimized" = "Окно свёрнуто";
 "Window is on every Space" = "Окно на всех Spaces";
 "Window is on Space %d" = "Окно на Space %d";
-"Window organization" = "Упорядочивание окон";
 "Window Title" = "Заголовок окна";
 "Window title contains" = "Заголовок окна содержит";
 "You can’t undo this action." = "Это действие нельзя отменить.";
 "You may need to disable some conflicting system gestures" = "Возможно, придётся отключить конфликтующие системные жесты";
+"You'll review it on GitHub before publishing. Diagnostic data is not attached automatically." = "Перед публикацией вы сможете проверить отзыв на GitHub. Диагностические данные не прикрепляются автоматически.";
+"Your draft is preserved. Check that a browser is available and try again." = "Черновик сохранён. Убедитесь, что браузер доступен, и попробуйте снова.";
 "Your feedback will be submitted as a public GitHub issue." = "Ваш отзыв будет отправлен как публичный issue на GitHub.";

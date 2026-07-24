@@ -26,9 +26,6 @@
 "4-finger Vertical Swipe" = "4-finger Vertical Swipe";
 
 /* No comment provided by engineer. */
-"A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "A debug profile (versions, settings, hardware) is attached to help diagnose the issue.";
-
-/* No comment provided by engineer. */
 "About" = "About";
 
 /* Menubar option. %@ is ScryTab */
@@ -128,9 +125,6 @@
 "Arrow keys" = "Arrow keys";
 
 /* No comment provided by engineer. */
-"Arrow keys already assigned to other actions:\n%@" = "Arrow keys already assigned to other actions:\n%@";
-
-/* No comment provided by engineer. */
 "Ask before enabling crash reports" = "Ask before enabling crash reports";
 
 /* No comment provided by engineer. */
@@ -179,22 +173,22 @@
 "Conflicting shortcut" = "Conflicting shortcut";
 
 /* No comment provided by engineer. */
+"Continue on GitHub" = "Continue on GitHub";
+
+/* No comment provided by engineer. */
 "Controls" = "Controls";
 
 /* LetsMove replacement alert */
 "Could not move to Applications folder" = "Could not move to Applications folder";
 
 /* No comment provided by engineer. */
-"Couldn't submit feedback" = "Couldn't submit feedback";
+"Couldn't open GitHub" = "Couldn't open GitHub";
 
 /* No comment provided by engineer. */
 "Crash reports policy" = "Crash reports policy";
 
 /* No comment provided by engineer. */
 "Create a Focus Set to browse the applications you use together." = "Create a Focus Set to browse the applications you use together.";
-
-/* No comment provided by engineer. */
-"Create GitHub issue" = "Create GitHub issue";
 
 /* No comment provided by engineer. */
 "Customize more…" = "Customize more…";
@@ -347,9 +341,6 @@
 "Middle" = "Middle";
 
 /* No comment provided by engineer. */
-"Miscellaneous" = "Miscellaneous";
-
-/* No comment provided by engineer. */
 "Move Down" = "Move Down";
 
 /* LetsMove replacement alert */
@@ -360,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "Move Up" = "Move Up";
-
-/* No comment provided by engineer. */
-"Multiple screens" = "Multiple screens";
 
 /* No comment provided by engineer. */
 "Name" = "Name";
@@ -503,9 +491,6 @@
 "Send feedback…" = "Send feedback…";
 
 /* No comment provided by engineer. */
-"Sending…" = "Sending…";
-
-/* No comment provided by engineer. */
 "Settings imported" = "Settings imported";
 
 /* Menubar option */
@@ -605,9 +590,6 @@
 "The application needs to restart to apply the language change." = "The application needs to restart to apply the language change.";
 
 /* No comment provided by engineer. */
-"The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved.";
-
-/* No comment provided by engineer. */
 "Theme" = "Theme";
 
 /* No comment provided by engineer. */
@@ -677,9 +659,6 @@
 "Window is on Space %d" = "Window is on Space %d";
 
 /* No comment provided by engineer. */
-"Window organization" = "Window organization";
-
-/* No comment provided by engineer. */
 "Window Title" = "Window Title";
 
 /* No comment provided by engineer. */
@@ -690,6 +669,12 @@
 
 /* No comment provided by engineer. */
 "You may need to disable some conflicting system gestures" = "You may need to disable some conflicting system gestures";
+
+/* No comment provided by engineer. */
+"You'll review it on GitHub before publishing. Diagnostic data is not attached automatically." = "You'll review it on GitHub before publishing. Diagnostic data is not attached automatically.";
+
+/* No comment provided by engineer. */
+"Your draft is preserved. Check that a browser is available and try again." = "Your draft is preserved. Check that a browser is available and try again.";
 
 /* No comment provided by engineer. */
 "Your feedback will be submitted as a public GitHub issue." = "Your feedback will be submitted as a public GitHub issue.";
