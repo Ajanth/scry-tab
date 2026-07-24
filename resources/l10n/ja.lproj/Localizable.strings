@@ -7,7 +7,6 @@
 "3-finger Vertical Swipe" = "3本指の縦スワイプ";
 "4-finger Horizontal Swipe" = "4本指の横スワイプ";
 "4-finger Vertical Swipe" = "4本指の縦スワイプ";
-"A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "診断用にデバッグプロファイル（バージョン、設定、ハードウェア）を添付しています。";
 "About" = "情報";
 "About %@" = "%@について";
 "Accessibility" = "アクセシビリティ";
@@ -41,7 +40,6 @@
 "Apply this change to all shortcuts?" = "この変更をすべてのショートカットに適用しますか?";
 "Apply to All Shortcuts" = "すべてのショートカットに適用";
 "Arrow keys" = "矢印キー";
-"Arrow keys already assigned to other actions:\n%@" = "矢印キーはほかの操作に割り当て済みです:\n%@";
 "Ask before enabling crash reports" = "クラッシュレポート有効化の前に確認";
 "Auto-install updates periodically" = "アップデートを定期的に自動インストール";
 "Behavior" = "動作";
@@ -58,12 +56,12 @@
 "Choose the applications whose windows belong to this Focus Set." = "このフォーカスセットに含めるアプリを選んでください。";
 "Close window" = "ウインドウを閉じる";
 "Conflicting shortcut" = "ショートカットの競合";
+"Continue on GitHub" = "GitHubで続ける";
 "Controls" = "コントロール";
 "Could not move to Applications folder" = "アプリケーションフォルダへ移動できませんでした";
-"Couldn't submit feedback" = "フィードバックを送信できませんでした";
+"Couldn't open GitHub" = "GitHubを開けませんでした";
 "Crash reports policy" = "クラッシュレポートの方針";
 "Create a Focus Set to browse the applications you use together." = "よく一緒に使うアプリをまとめて見るには、フォーカスセットを作成してください。";
-"Create GitHub issue" = "GitHub Issueを作成";
 "Customize more…" = "さらにカスタマイズ…";
 "Dark" = "ダーク";
 "Debug tools" = "デバッグツール";
@@ -114,12 +112,10 @@
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOSは⌘⌥⎋、⌘⌥⇧⎋、⌘⌥⇧⌃⎋を強制終了用に予約しており、解除できません。ScryTabでは使えません。\n\n割り当てようとしている操作: %@。";
 "Medium" = "中";
 "Middle" = "中央";
-"Miscellaneous" = "その他";
 "Move Down" = "下へ";
 "Move to Applications Folder" = "アプリケーションフォルダに移動";
 "Move to Applications folder?" = "アプリケーションフォルダに移動しますか?";
 "Move Up" = "上へ";
-"Multiple screens" = "複数ディスプレイ";
 "Name" = "名前";
 "Never" = "しない";
 "Never send crash reports" = "クラッシュレポートを送信しない";
@@ -166,7 +162,6 @@
 "Select previous window" = "前のウインドウを選択";
 "Send feedback" = "フィードバックを送信";
 "Send feedback…" = "フィードバックを送信…";
-"Sending…" = "送信中…";
 "Settings imported" = "設定を読み込みました";
 "Settings…" = "設定…";
 "Shortcut" = "ショートカット";
@@ -200,7 +195,6 @@
 "System Default" = "システム設定に従う";
 "The application needs to restart to apply the imported settings." = "読み込んだ設定を反映するには再起動が必要です。";
 "The application needs to restart to apply the language change." = "言語の変更を反映するには再起動が必要です。";
-"The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "サーバーが送信を受け付けませんでした。接続を確認して再試行してください。下書きは残っています。";
 "Theme" = "テーマ";
 "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "ショートカットを離したあとウインドウにフォーカスするには、この許可が必要です。システム設定 > プライバシーとセキュリティ > アクセシビリティで「%@」をオンにしてください。別ビルドの「ScryTab」がオンでも対象外です。";
 "This will keep your Downloads folder uncluttered." = "ダウンロードフォルダをすっきり保てます。";
@@ -224,9 +218,10 @@
 "Window is minimized" = "最小化されたウインドウ";
 "Window is on every Space" = "すべてのSpaceにあるウインドウ";
 "Window is on Space %d" = "Space %dにあるウインドウ";
-"Window organization" = "ウインドウの配置";
 "Window Title" = "ウインドウタイトル";
 "Window title contains" = "ウインドウタイトルに含まれる";
 "You can’t undo this action." = "この操作は取り消せません。";
 "You may need to disable some conflicting system gestures" = "競合するシステムジェスチャをオフにする必要がある場合があります";
+"You'll review it on GitHub before publishing. Diagnostic data is not attached automatically." = "公開前にGitHubで内容を確認できます。診断データは自動では添付されません。";
+"Your draft is preserved. Check that a browser is available and try again." = "下書きは保持されています。ブラウザが利用できるか確認して、もう一度お試しください。";
 "Your feedback will be submitted as a public GitHub issue." = "フィードバックは公開のGitHub Issueとして投稿されます。";

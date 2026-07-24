@@ -7,7 +7,6 @@
 "3-finger Vertical Swipe" = "Vertikales Streichen mit 3 Fingern";
 "4-finger Horizontal Swipe" = "Horizontales Streichen mit 4 Fingern";
 "4-finger Vertical Swipe" = "Vertikales Streichen mit 4 Fingern";
-"A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "Ein Debug-Profil (Versionen, Einstellungen, Hardware) ist beigefügt, um die Diagnose zu erleichtern.";
 "About" = "Info";
 "About %@" = "Über %@";
 "Accessibility" = "Bedienungshilfen";
@@ -41,7 +40,6 @@
 "Apply this change to all shortcuts?" = "Diese Änderung auf alle Tastenkürzel anwenden?";
 "Apply to All Shortcuts" = "Auf alle Tastenkürzel anwenden";
 "Arrow keys" = "Pfeiltasten";
-"Arrow keys already assigned to other actions:\n%@" = "Die Pfeiltasten sind bereits anderen Aktionen zugeordnet:\n%@";
 "Ask before enabling crash reports" = "Vor dem Einschalten von Absturzberichten nachfragen";
 "Auto-install updates periodically" = "Updates regelmäßig automatisch installieren";
 "Behavior" = "Verhalten";
@@ -58,12 +56,12 @@
 "Choose the applications whose windows belong to this Focus Set." = "Wählen Sie die Apps, deren Fenster zu diesem Fokus-Set gehören.";
 "Close window" = "Fenster schließen";
 "Conflicting shortcut" = "Konflikt mit einem Tastenkürzel";
+"Continue on GitHub" = "Auf GitHub fortfahren";
 "Controls" = "Steuerung";
 "Could not move to Applications folder" = "Verschieben in den Ordner „Programme“ nicht möglich";
-"Couldn't submit feedback" = "Feedback konnte nicht übermittelt werden";
+"Couldn't open GitHub" = "GitHub konnte nicht geöffnet werden";
 "Crash reports policy" = "Richtlinie zu Absturzberichten";
 "Create a Focus Set to browse the applications you use together." = "Legen Sie ein Fokus-Set an, um Apps zu durchsuchen, die Sie zusammen nutzen.";
-"Create GitHub issue" = "GitHub-Issue anlegen";
 "Customize more…" = "Weiter anpassen…";
 "Dark" = "Dunkel";
 "Debug tools" = "Werkzeuge fürs Debugging";
@@ -114,12 +112,10 @@
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserviert ⌘⌥⎋, ⌘⌥⇧⎋ und ⌘⌥⇧⌃⎋ für „Sofort beenden“; diese Kombinationen lassen sich nicht freigeben. ScryTab kann sie nicht nutzen.\n\nIhre Änderung würde eine davon zuweisen an: %@.";
 "Medium" = "Mittel";
 "Middle" = "Mitte";
-"Miscellaneous" = "Verschiedenes";
 "Move Down" = "Nach unten verschieben";
 "Move to Applications Folder" = "In den Ordner „Programme“ verschieben";
 "Move to Applications folder?" = "In den Ordner „Programme“ verschieben?";
 "Move Up" = "Nach oben verschieben";
-"Multiple screens" = "Mehrere Bildschirme";
 "Name" = "Name";
 "Never" = "Niemals";
 "Never send crash reports" = "Keine Absturzberichte senden";
@@ -166,7 +162,6 @@
 "Select previous window" = "Vorheriges Fenster wählen";
 "Send feedback" = "Feedback schicken";
 "Send feedback…" = "Feedback schicken…";
-"Sending…" = "Wird gesendet…";
 "Settings imported" = "Einstellungen wurden importiert";
 "Settings…" = "Einstellungen…";
 "Shortcut" = "Tastenkürzel";
@@ -200,7 +195,6 @@
 "System Default" = "Systemvorgabe";
 "The application needs to restart to apply the imported settings." = "Zum Übernehmen der importierten Einstellungen muss die App neu gestartet werden.";
 "The application needs to restart to apply the language change." = "Zum Übernehmen der Sprachänderung muss die App neu gestartet werden.";
-"The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "Der Server hat die Einsendung abgelehnt. Internetverbindung prüfen und erneut versuchen — Ihr Entwurf bleibt erhalten.";
 "Theme" = "Thema";
 "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Diese Berechtigung wird benötigt, um Fenster nach dem Loslassen des Tastenkürzels zu fokussieren. Aktivieren Sie „%@“ unter Systemeinstellungen > Datenschutz & Sicherheit > Bedienungshilfen. Ein aktivierter „ScryTab“-Eintrag einer anderen Build-Version zählt nicht.";
 "This will keep your Downloads folder uncluttered." = "So bleibt der Downloads-Ordner übersichtlich.";
@@ -224,9 +218,10 @@
 "Window is minimized" = "Fenster ist minimiert";
 "Window is on every Space" = "Fenster liegt auf jedem Space";
 "Window is on Space %d" = "Fenster liegt auf Space %d";
-"Window organization" = "Anordnung der Fenster";
 "Window Title" = "Titel des Fensters";
 "Window title contains" = "Fenstertitel enthält";
 "You can’t undo this action." = "Diese Aktion lässt sich nicht rückgängig machen.";
 "You may need to disable some conflicting system gestures" = "Eventuell müssen kollidierende Systemgesten deaktiviert werden";
+"You'll review it on GitHub before publishing. Diagnostic data is not attached automatically." = "Sie können den Bericht auf GitHub prüfen, bevor er veröffentlicht wird. Diagnosedaten werden nicht automatisch angehängt.";
+"Your draft is preserved. Check that a browser is available and try again." = "Ihr Entwurf bleibt erhalten. Prüfen Sie, ob ein Browser verfügbar ist, und versuchen Sie es erneut.";
 "Your feedback will be submitted as a public GitHub issue." = "Ihr Feedback wird als öffentliches GitHub-Issue eingereicht.";

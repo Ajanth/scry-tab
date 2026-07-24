@@ -54,6 +54,9 @@
 		5EA8E110000000000000F202 /* SchedulingPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA8E110000000000000F201 /* SchedulingPolicy.swift */; };
 		5EA8E110000000000000F203 /* SchedulingPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA8E110000000000000F201 /* SchedulingPolicy.swift */; };
 		5EA8E110000000000000F212 /* SchedulingPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA8E110000000000000F211 /* SchedulingPolicyTests.swift */; };
+		FB0C0A110000000000000011 /* FeedbackGitHubComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0C0A110000000000000001 /* FeedbackGitHubComposer.swift */; };
+		FB0C0A110000000000000012 /* FeedbackGitHubComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0C0A110000000000000001 /* FeedbackGitHubComposer.swift */; };
+		FB0C0A110000000000000013 /* FeedbackGitHubComposerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0C0A110000000000000002 /* FeedbackGitHubComposerTests.swift */; };
 		5F117E40000000000000F002 /* WindowFilterResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F117E40000000000000F001 /* WindowFilterResolver.swift */; };
 		5F117E40000000000000F003 /* WindowFilterResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F117E40000000000000F001 /* WindowFilterResolver.swift */; };
 		5F117E40000000000000F102 /* WindowFilterResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F117E40000000000000F101 /* WindowFilterResolverTests.swift */; };
@@ -365,6 +368,9 @@
 		5EA8E110000000000000F101 /* AxEventRoutingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxEventRoutingTests.swift; sourceTree = "<group>"; };
 		5EA8E110000000000000F201 /* SchedulingPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchedulingPolicy.swift; sourceTree = "<group>"; };
 		5EA8E110000000000000F211 /* SchedulingPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulingPolicyTests.swift; sourceTree = "<group>"; };
+		FB0C0A110000000000000001 /* FeedbackGitHubComposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackGitHubComposer.swift; sourceTree = "<group>"; };
+		FB0C0A110000000000000002 /* FeedbackGitHubComposerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackGitHubComposerTests.swift; sourceTree = "<group>"; };
+		FB0C0A110000000000000003 /* FeedbackGitHubComposerSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FeedbackGitHubComposerSpecs.md; sourceTree = "<group>"; };
 		5F05D0E62F31441A004A95F9 /* AGENTS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AGENTS.md; sourceTree = "<group>"; };
 		5F05D0E72F31441A004A95F9 /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
 		5F084EAF2EF15E6B00CD212A /* TabbedWindowDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedWindowDetection.swift; sourceTree = "<group>"; };
@@ -724,6 +730,9 @@
 			isa = PBXGroup;
 			children = (
 				D04BA26C75F76C277653C932 /* FeedbackWindow.swift */,
+				FB0C0A110000000000000001 /* FeedbackGitHubComposer.swift */,
+				FB0C0A110000000000000002 /* FeedbackGitHubComposerTests.swift */,
+				FB0C0A110000000000000003 /* FeedbackGitHubComposerSpecs.md */,
 				BF0C80F8FAA00FF3D9682F26 /* DebugMenu.swift */,
 				D04BA2F0A1B2C3D4E5F60004 /* DebugWindow.swift */,
 				D04BACABD048E62EBE4576CC /* DebugProfile.swift */,
@@ -1643,6 +1652,8 @@
 				5EA8E110000000000000F102 /* AxEventRoutingTests.swift in Sources */,
 				5EA8E110000000000000F203 /* SchedulingPolicy.swift in Sources */,
 				5EA8E110000000000000F212 /* SchedulingPolicyTests.swift in Sources */,
+				FB0C0A110000000000000012 /* FeedbackGitHubComposer.swift in Sources */,
+				FB0C0A110000000000000013 /* FeedbackGitHubComposerTests.swift in Sources */,
 				MSIB01000000000000000012 /* MenubarStatusIcon.swift in Sources */,
 				MSIB01000000000000000013 /* MenubarStatusIconTests.swift in Sources */,
 				5EA8E110000000000000DA03 /* DragAndDropResolver.swift in Sources */,
@@ -1797,6 +1808,7 @@
 				D04BAD451966B43720120D2E /* Menubar.swift in Sources */,
 				MSIB01000000000000000011 /* MenubarStatusIcon.swift in Sources */,
 				D04BA2E64C59D96F6EB27D9D /* FeedbackWindow.swift in Sources */,
+				FB0C0A110000000000000011 /* FeedbackGitHubComposer.swift in Sources */,
 				D04BA2F0A1B2C3D4E5F60003 /* DebugWindow.swift in Sources */,
 				D04BA76A74267B1346D23687 /* GridView.swift in Sources */,
 				D04BAB4EB890853B5B9B2C61 /* BoldLabel.swift in Sources */,

@@ -14,6 +14,7 @@ class App: ScryTabApplication {
     static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
     static let licence = Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as! String
     static let repository = "https://github.com/Ajanth/scry-tab"
+    static let feedbackRepository = FeedbackGitHubComposer.repositoryURLString
     static let appIconReps = CGImage.allNamed("app.icns")
 
     static func appIcon(for size: NSSize) -> CGImage {

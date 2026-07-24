@@ -7,7 +7,6 @@
 "3-finger Vertical Swipe" = "三指上下轻扫";
 "4-finger Horizontal Swipe" = "四指左右轻扫";
 "4-finger Vertical Swipe" = "四指上下轻扫";
-"A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "已附带调试概况（版本、设置、硬件），便于排查问题。";
 "About" = "关于";
 "About %@" = "关于 %@";
 "Accessibility" = "辅助功能";
@@ -41,7 +40,6 @@
 "Apply this change to all shortcuts?" = "要将此更改套用到全部快捷键吗？";
 "Apply to All Shortcuts" = "套用到全部快捷键";
 "Arrow keys" = "方向键";
-"Arrow keys already assigned to other actions:\n%@" = "方向键已用于其他操作：\n%@";
 "Ask before enabling crash reports" = "启用崩溃报告前先询问";
 "Auto-install updates periodically" = "定期自动安装更新";
 "Behavior" = "行为";
@@ -58,12 +56,12 @@
 "Choose the applications whose windows belong to this Focus Set." = "选择要加入此聚焦组的应用。";
 "Close window" = "关闭窗口";
 "Conflicting shortcut" = "快捷键冲突";
+"Continue on GitHub" = "在 GitHub 上继续";
 "Controls" = "控制";
 "Could not move to Applications folder" = "无法移到“应用程序”文件夹";
-"Couldn't submit feedback" = "反馈提交失败";
+"Couldn't open GitHub" = "无法打开 GitHub";
 "Crash reports policy" = "崩溃报告策略";
 "Create a Focus Set to browse the applications you use together." = "创建聚焦组，便于浏览常一起使用的应用。";
-"Create GitHub issue" = "创建 GitHub Issue";
 "Customize more…" = "进一步自定义…";
 "Dark" = "深色";
 "Debug tools" = "调试工具";
@@ -114,12 +112,10 @@
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS 将 ⌘⌥⎋、⌘⌥⇧⎋ 和 ⌘⌥⇧⌃⎋ 保留给“强制退出”，无法取消绑定，ScryTab 也不能使用。\n\n你的更改会把其中之一分配给：%@。";
 "Medium" = "中";
 "Middle" = "中间";
-"Miscellaneous" = "其他";
 "Move Down" = "下移";
 "Move to Applications Folder" = "移到“应用程序”文件夹";
 "Move to Applications folder?" = "要移到“应用程序”文件夹吗？";
 "Move Up" = "上移";
-"Multiple screens" = "多显示器";
 "Name" = "名称";
 "Never" = "从不";
 "Never send crash reports" = "从不发送崩溃报告";
@@ -166,7 +162,6 @@
 "Select previous window" = "选择上一个窗口";
 "Send feedback" = "发送反馈";
 "Send feedback…" = "发送反馈…";
-"Sending…" = "正在发送…";
 "Settings imported" = "设置已导入";
 "Settings…" = "设置…";
 "Shortcut" = "快捷键";
@@ -200,7 +195,6 @@
 "System Default" = "系统默认";
 "The application needs to restart to apply the imported settings." = "需重新启动应用才能应用导入的设置。";
 "The application needs to restart to apply the language change." = "需重新启动应用才能应用语言更改。";
-"The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "服务器未接受提交。请检查网络连接后重试——草稿已保留。";
 "Theme" = "主题";
 "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "松开快捷键后聚焦窗口需要此权限。请在“系统设置”>“隐私与安全性”>“辅助功能”中启用“%@”。其他构建版本中已启用的“ScryTab”条目无效。";
 "This will keep your Downloads folder uncluttered." = "这样可避免“下载”文件夹过于杂乱。";
@@ -224,9 +218,10 @@
 "Window is minimized" = "窗口已最小化";
 "Window is on every Space" = "窗口位于每个空间";
 "Window is on Space %d" = "窗口位于空间 %d";
-"Window organization" = "窗口编排";
 "Window Title" = "窗口标题";
 "Window title contains" = "窗口标题包含";
 "You can’t undo this action." = "此操作无法撤销。";
 "You may need to disable some conflicting system gestures" = "可能需要关闭部分冲突的系统手势";
+"You'll review it on GitHub before publishing. Diagnostic data is not attached automatically." = "发布前你可以在 GitHub 上预览内容。诊断数据不会自动附加。";
+"Your draft is preserved. Check that a browser is available and try again." = "草稿已保留。请确认浏览器可用后重试。";
 "Your feedback will be submitted as a public GitHub issue." = "你的反馈将作为公开的 GitHub Issue 提交。";

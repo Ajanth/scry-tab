@@ -7,7 +7,6 @@
 "3-finger Vertical Swipe" = "3-finger Vertical Swipe";
 "4-finger Horizontal Swipe" = "4-finger Horizontal Swipe";
 "4-finger Vertical Swipe" = "4-finger Vertical Swipe";
-"A debug profile (versions, settings, hardware) is attached to help diagnose the issue." = "A debug profile (versions, settings, hardware) is attached to help diagnose the issue.";
 "About" = "About";
 "About %@" = "About %@";
 "Accessibility" = "Accessibility";
@@ -41,7 +40,6 @@
 "Apply this change to all shortcuts?" = "Apply this change to all shortcuts?";
 "Apply to All Shortcuts" = "Apply to All Shortcuts";
 "Arrow keys" = "Arrow keys";
-"Arrow keys already assigned to other actions:\n%@" = "Arrow keys already assigned to other actions:\n%@";
 "Ask before enabling crash reports" = "Ask before enabling crash reports";
 "Auto-install updates periodically" = "Auto-install updates periodically";
 "Behavior" = "Behavior";
@@ -58,12 +56,12 @@
 "Choose the applications whose windows belong to this Focus Set." = "Choose the applications whose windows belong to this Focus Set.";
 "Close window" = "Close window";
 "Conflicting shortcut" = "Conflicting shortcut";
+"Continue on GitHub" = "Continue on GitHub";
 "Controls" = "Controls";
 "Could not move to Applications folder" = "Could not move to Applications folder";
-"Couldn't submit feedback" = "Couldn't submit feedback";
+"Couldn't open GitHub" = "Couldn't open GitHub";
 "Crash reports policy" = "Crash reports policy";
 "Create a Focus Set to browse the applications you use together." = "Create a Focus Set to browse the applications you use together.";
-"Create GitHub issue" = "Create GitHub issue";
 "Customize more…" = "Customize more…";
 "Dark" = "Dark";
 "Debug tools" = "Debug tools";
@@ -114,12 +112,10 @@
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@.";
 "Medium" = "Medium";
 "Middle" = "Middle";
-"Miscellaneous" = "Miscellaneous";
 "Move Down" = "Move Down";
 "Move to Applications Folder" = "Move to Applications Folder";
 "Move to Applications folder?" = "Move to Applications folder?";
 "Move Up" = "Move Up";
-"Multiple screens" = "Multiple screens";
 "Name" = "Name";
 "Never" = "Never";
 "Never send crash reports" = "Never send crash reports";
@@ -166,7 +162,6 @@
 "Select previous window" = "Select previous window";
 "Send feedback" = "Send feedback";
 "Send feedback…" = "Send feedback…";
-"Sending…" = "Sending…";
 "Settings imported" = "Settings imported";
 "Settings…" = "Settings…";
 "Shortcut" = "Shortcut";
@@ -200,7 +195,6 @@
 "System Default" = "System Default";
 "The application needs to restart to apply the imported settings." = "The application needs to restart to apply the imported settings.";
 "The application needs to restart to apply the language change." = "The application needs to restart to apply the language change.";
-"The server didn't accept the submission. Check your internet connection and try again — your draft is preserved." = "The server didn't accept the submission. Check your internet connection and try again — your draft is preserved.";
 "Theme" = "Theme";
 "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count.";
 "This will keep your Downloads folder uncluttered." = "This will keep your Downloads folder uncluttered.";
@@ -224,9 +218,10 @@
 "Window is minimized" = "Window is minimized";
 "Window is on every Space" = "Window is on every Space";
 "Window is on Space %d" = "Window is on Space %d";
-"Window organization" = "Window organization";
 "Window Title" = "Window Title";
 "Window title contains" = "Window title contains";
 "You can’t undo this action." = "You can’t undo this action.";
 "You may need to disable some conflicting system gestures" = "You may need to disable some conflicting system gestures";
+"You'll review it on GitHub before publishing. Diagnostic data is not attached automatically." = "You'll review it on GitHub before publishing. Diagnostic data is not attached automatically.";
+"Your draft is preserved. Check that a browser is available and try again." = "Your draft is preserved. Check that a browser is available and try again.";
 "Your feedback will be submitted as a public GitHub issue." = "Your feedback will be submitted as a public GitHub issue.";
