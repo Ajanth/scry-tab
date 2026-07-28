@@ -30,6 +30,8 @@ class App: ScryTabApplication {
     static var sparkleDelegate: SparkleDelegate?
     static var updaterController: SPUStandardUpdaterController?
     private static let switcherUiRefreshThrottler = Throttler(delayInMs: 200)
+    private static var globalKeyboardStateWasConfigured = false
+    private static var shutdownWasPrepared = false
 
     override init() {
         UserDefaults.standard.register(defaults: ["NSApplicationCrashOnExceptions": true])
@@ -84,15 +86,29 @@ class App: ScryTabApplication {
     }
 
     static func restart() {
-        // we use -n to open a new instance, to avoid calling applicationShouldHandleReopen
-        // we use Bundle.main.bundlePath in case of multiple ScryTab versions on the machine
         printStackTrace()
+        prepareForShutdown()
         Process.launchedProcess(launchPath: "/usr/bin/open", arguments: ["-n", Bundle.main.bundlePath])
         App.shared.terminate(nil)
     }
 
+    private static func prepareForShutdown() {
+        guard !shutdownWasPrepared else { return }
+        shutdownWasPrepared = true
+        let ownsAdmission = CliEvents.ownsAdmission
+        let shouldRestoreNativeHotkeys = KeyboardEventsTestable.shouldRestoreNativeSymbolicHotkeys(
+            ownsAdmission: ownsAdmission,
+            keyboardStateWasConfigured: globalKeyboardStateWasConfigured)
+        guard ownsAdmission else { return }
+        KeyboardEvents.removeGlobalShortcutHandlers()
+        KeyboardEvents.removeEventHandlers()
+        if shouldRestoreNativeHotkeys { setNativeCommandTabEnabled(true) }
+        CliEvents.stopObserving()
+    }
+
     static func hideUi() {
         Logger.info { "active:\(SwitcherSession.isActive)" }
+        KeyboardEvents.switcherSessionDidEnd()
         guard SwitcherSession.current != nil else { return } // already hidden
         KeyRepeatTimer.stopCurrentTimer()
         SwitcherSession.current = nil
@@ -274,8 +290,14 @@ class App: ScryTabApplication {
 
     private static func makeSwitcherSession(for decision: FocusSetSessionDecision) -> SwitcherSession? {
         guard decision.action == .showDirectFocusSetGrid else { return nil }
+        return beginSwitcherSession()
+    }
+
+    private static func beginSwitcherSession() -> SwitcherSession {
+        if let session = SwitcherSession.current { return session }
         let session = SwitcherSession()
         SwitcherSession.current = session
+        KeyboardEvents.switcherSessionDidBegin()
         return session
     }
 
@@ -448,11 +470,7 @@ class App: ScryTabApplication {
     static func showUiOrCycleSelection(_ shortcutIndex: Int, _ forceDoNothingOnRelease_: Bool) {
         let source = SwitcherPresentationSource.shortcut(shortcutIndex)
         let replacesFocusSetFlow = SwitcherSession.current.map { $0.focusSetSessionState != .ordinaryGrid } ?? false
-        let session = SwitcherSession.current ?? {
-            let new = SwitcherSession()
-            SwitcherSession.current = new
-            return new
-        }()
+        let session = beginSwitcherSession()
         if replacesFocusSetFlow {
             let decision = FocusSetSessionResolver.resolve(
                 FocusSetSessionInput(state: session.focusSetSessionState, event: .ordinaryShortcutOrGesture))
@@ -520,6 +538,11 @@ class App: ScryTabApplication {
     static func continueAppLaunchAfterPermissionsAreGranted() {
         Logger.info { "System permissions are granted; continuing launch" }
         BackgroundWork.start()
+        guard CliEvents.attachRunLoopSource() else {
+            Logger.error { "Couldn't attach the admitted CLI port to its run loop" }
+            App.shared.terminate(nil)
+            return
+        }
         NSScreen.updatePreferred()
         Appearance.update()
         TilesPanel.updateMaxPossibleAppIconSize()
@@ -539,7 +562,6 @@ class App: ScryTabApplication {
         KeyboardEvents.addEventHandlers()
         CursorEvents.observe()
         TrackpadEvents.observe()
-        CliEvents.observe()
         App.sparkleDelegate = SparkleDelegate()
         App.updaterController = SPUStandardUpdaterController(
             startingUpdater: false,
@@ -549,6 +571,7 @@ class App: ScryTabApplication {
             App.updaterController?.startUpdater()
         }
         PreferencesEvents.initialize()
+        globalKeyboardStateWasConfigured = true
         BenchmarkRunner.startIfNeeded()
         showSettingsWindowOnFirstLaunchIfNeeded()
         if pendingShowSettingsWindow {
@@ -569,9 +592,13 @@ class App: ScryTabApplication {
 
 extension App: NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        App.shared.disableRelaunchOnLogin()
         Logger.initialize()
         Logger.info { "Launching ScryTab \(App.version)" }
+        guard CliEvents.claimAdmission() else {
+            App.shared.terminate(nil)
+            return
+        }
+        App.shared.disableRelaunchOnLogin()
         #if !DEBUG
         MoveToApplicationsFolder.promptIfNeeded()
         #endif
@@ -588,8 +615,7 @@ extension App: NSApplicationDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
-        // symbolic hotkeys state persist after the app is quit; we restore this shortcut before quitting
-        setNativeCommandTabEnabled(true)
+        App.prepareForShutdown()
     }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {

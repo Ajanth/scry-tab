@@ -1,18 +1,52 @@
 class CliEvents {
     static let portName = "\(App.bundleIdentifier).cli"
+    private static var messagePort: CFMessagePort?
+    private static var runLoopSource: CFRunLoopSource?
+    static var ownsAdmission: Bool { messagePort != nil }
 
-    static func observe() {
+    @discardableResult
+    static func claimAdmission() -> Bool {
+        if messagePort != nil { return true }
         var context = CFMessagePortContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
-        if let messagePort = CFMessagePortCreateLocal(nil, portName as CFString, handleEvent, &context, nil),
-           let source = CFMessagePortCreateRunLoopSource(nil, messagePort, 0) {
-            CFRunLoopAddSource(BackgroundWork.cliEventsThread.runLoop, source, .commonModes)
-        } else {
-            Logger.error { "Can't listen on message port. Is another ScryTab already running?" }
-            // TODO: should we quit or restart here?
-            // It's complex since ScryTab can be restarted sometimes,
-            // and the new instance may coexist with the old for some duration
-            // There is also the case of multiple instances at login
+        guard let messagePort = CFMessagePortCreateLocal(nil, portName as CFString, handleEvent, &context, nil) else {
+            Logger.error { "Can't claim the local message port. Is another ScryTab already running?" }
+            return false
         }
+        self.messagePort = messagePort
+        return true
+    }
+
+    @discardableResult
+    static func attachRunLoopSource() -> Bool {
+        if runLoopSource != nil { return true }
+        guard let messagePort else {
+            Logger.error { "Can't attach CLI events without owning admission" }
+            return false
+        }
+        guard let source = CFMessagePortCreateRunLoopSource(nil, messagePort, 0) else {
+            Logger.error { "Can't create the CLI message-port run-loop source" }
+            return false
+        }
+        guard let runLoop = BackgroundWork.cliEventsThread.runLoop else {
+            CFRunLoopSourceInvalidate(source)
+            Logger.error { "The CLI message-port run loop is unavailable" }
+            return false
+        }
+        runLoopSource = source
+        CFRunLoopAddSource(runLoop, source, .commonModes)
+        return true
+    }
+
+    static func stopObserving() {
+        if let runLoopSource {
+            if let runLoop = BackgroundWork.cliEventsThread?.runLoop {
+                CFRunLoopRemoveSource(runLoop, runLoopSource, .commonModes)
+            }
+            CFRunLoopSourceInvalidate(runLoopSource)
+        }
+        if let messagePort { CFMessagePortInvalidate(messagePort) }
+        runLoopSource = nil
+        messagePort = nil
     }
 
     private static let handleEvent: CFMessagePortCallBack = { (_: CFMessagePort?, _: Int32, _ data: CFData?, _: UnsafeMutableRawPointer?) in

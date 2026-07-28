@@ -117,13 +117,94 @@ final class KeyboardEventsUtilsTests: XCTestCase {
         XCTAssertEqual(ControlsTab.shortcutsActionsTriggered, [shortcutId, "searchShortcut", "cancelShortcut"])
     }
 
-    func testHidEscapeIsAbsorbedDuringDirectFocusSetSession() {
-        XCTAssertTrue(KeyboardEventsTestable.shouldAbsorbEscapeAtHidTap(
-            anyShortcutUsesEscape: true,
-            sessionState: .directFocusSetGrid(UUID())))
-        XCTAssertTrue(KeyboardEventsTestable.shouldAbsorbEscapeAtHidTap(
-            anyShortcutUsesEscape: true,
-            sessionState: .ordinaryGrid))
+    func testEscapeTapStaysInactiveOutsideSwitcherSession() {
+        let decision = KeyboardEventsTestable.resolveEscapeTapLifecycle(
+            .inactive,
+            .shortcutConfigurationChanged(anyShortcutUsesEscape: true))
+        XCTAssertEqual(decision.nextState, .inactive)
+        XCTAssertEqual(decision.action, .none)
+    }
+
+    func testEscapeTapDoesNotInstallForSessionWithoutEscapeBinding() {
+        let decision = KeyboardEventsTestable.resolveEscapeTapLifecycle(
+            .inactive,
+            .sessionBegan(anyShortcutUsesEscape: false))
+        XCTAssertEqual(decision.nextState, .activeWithoutTap)
+        XCTAssertEqual(decision.action, .none)
+    }
+
+    func testEscapeTapInstallsForSessionWithEscapeBinding() {
+        let decision = KeyboardEventsTestable.resolveEscapeTapLifecycle(
+            .inactive,
+            .sessionBegan(anyShortcutUsesEscape: true))
+        XCTAssertEqual(decision.nextState, .installed)
+        XCTAssertEqual(decision.action, .install)
+    }
+
+    func testEscapeTapReconfigurationStartsAndStopsTapDuringSession() {
+        let installed = KeyboardEventsTestable.resolveEscapeTapLifecycle(
+            .activeWithoutTap,
+            .shortcutConfigurationChanged(anyShortcutUsesEscape: true))
+        let removed = KeyboardEventsTestable.resolveEscapeTapLifecycle(
+            installed.nextState,
+            .shortcutConfigurationChanged(anyShortcutUsesEscape: false))
+        XCTAssertEqual(installed, .init(nextState: .installed, action: .install))
+        XCTAssertEqual(removed, .init(nextState: .activeWithoutTap, action: .remove))
+    }
+
+    func testDisabledEscapeTapFailsOpenForRemainderOfSession() {
+        let disabled = KeyboardEventsTestable.resolveEscapeTapLifecycle(.installed, .tapDisabled)
+        let reconfigured = KeyboardEventsTestable.resolveEscapeTapLifecycle(
+            disabled.nextState,
+            .shortcutConfigurationChanged(anyShortcutUsesEscape: true))
+        XCTAssertEqual(disabled, .init(nextState: .failedForSession, action: .remove))
+        XCTAssertEqual(reconfigured, .init(nextState: .failedForSession, action: .none))
+    }
+
+    func testEscapeTapSessionEndResetsFailedState() {
+        let decision = KeyboardEventsTestable.resolveEscapeTapLifecycle(.failedForSession, .sessionEnded)
+        XCTAssertEqual(decision.nextState, .inactive)
+        XCTAssertEqual(decision.action, .none)
+    }
+
+    func testEscapeTapRetriesInstallationInNextSession() {
+        let ended = KeyboardEventsTestable.resolveEscapeTapLifecycle(.failedForSession, .sessionEnded)
+        let nextSession = KeyboardEventsTestable.resolveEscapeTapLifecycle(
+            ended.nextState,
+            .sessionBegan(anyShortcutUsesEscape: true))
+        XCTAssertEqual(nextSession.nextState, .installed)
+        XCTAssertEqual(nextSession.action, .install)
+    }
+
+    func testCurrentEscapeTapCallbackTokenIsAccepted() {
+        XCTAssertTrue(KeyboardEventsTestable.escapeTapCallbackIsCurrent(41, currentToken: 41))
+        XCTAssertFalse(KeyboardEventsTestable.escapeTapCallbackIsCurrent(0, currentToken: 0))
+    }
+
+    func testReplacedEscapeTapCallbackTokenIsRejectedWithinSession() {
+        XCTAssertFalse(KeyboardEventsTestable.escapeTapCallbackIsCurrent(41, currentToken: 42))
+    }
+
+    func testPriorSessionEscapeTapCallbackTokenIsRejected() {
+        XCTAssertFalse(KeyboardEventsTestable.escapeTapCallbackIsCurrent(41, currentToken: 73))
+    }
+
+    func testAdmittedUnconfiguredProcessDoesNotRestoreNativeSymbolicHotkeys() {
+        XCTAssertFalse(KeyboardEventsTestable.shouldRestoreNativeSymbolicHotkeys(
+            ownsAdmission: true,
+            keyboardStateWasConfigured: false))
+    }
+
+    func testAdmittedConfiguredProcessRestoresNativeSymbolicHotkeys() {
+        XCTAssertTrue(KeyboardEventsTestable.shouldRestoreNativeSymbolicHotkeys(
+            ownsAdmission: true,
+            keyboardStateWasConfigured: true))
+    }
+
+    func testRejectedDuplicateDoesNotRestoreNativeSymbolicHotkeys() {
+        XCTAssertFalse(KeyboardEventsTestable.shouldRestoreNativeSymbolicHotkeys(
+            ownsAdmission: false,
+            keyboardStateWasConfigured: true))
     }
 
     // alt-down > tab-down > tab-up > alt-up
