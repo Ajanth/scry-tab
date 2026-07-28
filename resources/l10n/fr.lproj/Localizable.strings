@@ -72,12 +72,17 @@
 "Don't hide" = "Ne pas masquer";
 "Done" = "Terminé";
 "Don’t check for updates periodically" = "Ne pas rechercher périodiquement les mises à jour";
+"Drag “%@” into the Accessibility list" = "Faites glisser « %@ » dans la liste Accessibilité";
+"Drag “%@” into the Accessibility list, or turn on its toggle in System Settings." = "Faites glisser « %@ » dans la liste Accessibilité, ou activez son interrupteur dans Réglages Système.";
 "e.g. com.example.app" = "ex. : com.example.app";
 "e.g. Debug" = "ex. : Debug";
 "Edit Focus Set…" = "Modifier l’ensemble de concentration…";
 "Editing “%@”" = "Modification de « %@ »";
 "Enable" = "Activer";
+"Enable Accessibility for “%@”" = "Activer Accessibilité pour « %@ »";
+"Enable Accessibility…" = "Activer Accessibilité…";
 "Enable automatic crash reports?" = "Activer l’envoi automatique des rapports de plantage ?";
+"Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count." = "Activez la ligne « %@ » correspondant à l’icône de cette app. Une ancienne entrée ScryTab d’une autre version ou d’un autre certificat ne suffit pas.";
 "End" = "Fin";
 "Exceptions" = "Exceptions";
 "Export settings…" = "Exporter les réglages…";
@@ -131,7 +136,6 @@
 "Not currently open" = "Pas ouverte actuellement";
 "Not now" = "Pas maintenant";
 "OK" = "OK";
-"Open Accessibility Settings…" = "Ouvrir les réglages d’accessibilité…";
 "Open Appearance Settings" = "Ouvrir les réglages d’apparence";
 "Open Trackpad Settings…" = "Ouvrir les réglages du Trackpad…";
 "Order windows by" = "Trier les fenêtres par";
@@ -140,6 +144,7 @@
 "Past week" = "7 derniers jours";
 "Past year" = "12 derniers mois";
 "Pause preview animation" = "Mettre en pause l’animation d’aperçu";
+"Permission" = "Autorisation";
 "Please drag ScryTab into the Applications folder manually." = "Glissez ScryTab manuellement dans le dossier Applications.";
 "Please fill in the form" = "Veuillez remplir le formulaire";
 "Preview of the selected appearance style" = "Aperçu du style d’apparence choisi";
@@ -155,6 +160,7 @@
 "Screen including mouse" = "Écran contenant le pointeur";
 "Screen showing ScryTab" = "Écran où ScryTab est affiché";
 "ScryTab needs accessibility permission" = "ScryTab requiert l’autorisation Accessibilité";
+"ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTab utilise Accessibilité pour activer les fenêtres après avoir relâché le raccourci.";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab affiche une icône d’état lorsque la fenêtre est réduite ou en plein écran.";
 "Search" = "Recherche";
 "Search applications" = "Rechercher des applications";
@@ -196,7 +202,6 @@
 "The application needs to restart to apply the imported settings." = "L’application doit redémarrer pour appliquer les réglages importés.";
 "The application needs to restart to apply the language change." = "L’application doit redémarrer pour appliquer le changement de langue.";
 "Theme" = "Thème";
-"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Cette autorisation est nécessaire pour activer les fenêtres après le relâchement du raccourci. Activez « %@ » dans Réglages Système > Confidentialité et sécurité > Accessibilité. Une entrée « ScryTab » activée pour une autre build ne suffit pas.";
 "This will keep your Downloads folder uncluttered." = "Cela gardera votre dossier Téléchargements bien rangé.";
 "Title truncation" = "Troncature des titres";
 "Titles" = "Titres";

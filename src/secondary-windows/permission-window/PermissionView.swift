@@ -1,69 +1,57 @@
 import Cocoa
 
-class PermissionView: StackView {
-    var status: NSTextField!
-    var permissionStatus = PermissionStatus.notGranted
+class PermissionView: NSStackView {
+    private var statusLabel: NSTextField!
+    private var permissionStatus = PermissionStatus.notGranted
 
-    convenience init(_ symbol: Symbols, _ title: String, _ justification: String, _ buttonText: String, _ buttonUrl: String) {
-        let iconImage = NSImage.fromSymbol(symbol, pointSize: 28)
+    convenience init(title: String, symbol: Symbols) {
+        self.init(frame: .zero)
+        orientation = .horizontal
+        alignment = .centerY
+        spacing = DesignSystem.Metrics.formOuterPadding
+        edgeInsets = NSEdgeInsets(
+            top: TableGroupView.rowVerticalPadding,
+            left: TableGroupView.rowHorizontalPadding,
+            bottom: TableGroupView.rowVerticalPadding,
+            right: TableGroupView.rowHorizontalPadding)
+        translatesAutoresizingMaskIntoConstraints = false
+        let iconImage = NSImage.fromSymbol(symbol, pointSize: 18)
         let icon = NSImageView(image: iconImage)
-        if #available(macOS 10.14, *) { icon.contentTintColor = .systemBlue }
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.fit(iconImage.size.width * 0.75, iconImage.size.height * 0.75)
-        let title = BoldLabel(title)
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.fit()
-        let titleStack = NSStackView(views: [icon, title])
-        titleStack.translatesAutoresizingMaskIntoConstraints = false
-        titleStack.alignment = .centerY
-        titleStack.spacing = GridView.interPadding
-        titleStack.fit()
-        let justification = NSTextField(wrappingLabelWithString: justification)
-        justification.translatesAutoresizingMaskIntoConstraints = false
-        justification.preferredMaxLayoutWidth = 500
-        justification.addOrUpdateConstraint(justification.widthAnchor, justification.fittingSize.width + 5)
-        let button = Button(buttonText) { _ in NSWorkspace.shared.open(URL(string: buttonUrl)!) }
-        DesignSystemControlStyler.styleButton(button)
-        let status = NSTextField(wrappingLabelWithString: "")
-        status.translatesAutoresizingMaskIntoConstraints = false
-        let buttonStack = NSStackView(views: [button, status])
-        buttonStack.translatesAutoresizingMaskIntoConstraints = false
-        buttonStack.alignment = .centerY
-        let views = [titleStack, justification, buttonStack]
-        self.init(views, .vertical, top: GridView.interPadding, right: GridView.interPadding, bottom: GridView.interPadding, left: GridView.interPadding)
-        self.status = status
-        wantsLayer = true
-        layer?.cornerRadius = DesignSystem.Metrics.sectionRadius
-        layer?.borderWidth = 1
-        setContentHuggingPriority(.required, for: .horizontal)
-        setContentCompressionResistancePriority(.required, for: .horizontal)
-        refreshStyle()
+        if #available(macOS 10.14, *) { icon.contentTintColor = .secondaryLabelColor }
+        icon.fit(iconImage.size.width, iconImage.size.height)
+        let name = NSTextField(labelWithString: title)
+        name.font = NSFont.systemFont(ofSize: 13, weight: .medium)
+        name.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        statusLabel = NSTextField(labelWithString: "")
+        statusLabel.font = NSFont.systemFont(ofSize: 13)
+        statusLabel.setContentHuggingPriority(.required, for: .horizontal)
+        addArrangedSubview(icon)
+        addArrangedSubview(name)
+        addArrangedSubview(statusLabel)
+        setHuggingPriority(.defaultLow, for: .horizontal)
+        DesignSystemControlStyler.styleSurface(self)
+        heightAnchor.constraint(greaterThanOrEqualToConstant: TableGroupView.minimumRowHeight).isActive = true
     }
 
     func updatePermissionStatus(_ permissionStatus: PermissionStatus) {
-        guard status.stringValue.isEmpty || permissionStatus != self.permissionStatus else { return }
+        guard statusLabel.stringValue.isEmpty || permissionStatus != self.permissionStatus else { return }
         self.permissionStatus = permissionStatus
         let label = permissionStatus == .granted ? NSLocalizedString("Allowed", comment: "") : NSLocalizedString("Not allowed", comment: "")
-        status.stringValue = "● " + label
-        refreshStyle()
+        statusLabel.stringValue = "● " + label
+        refreshStatusColor()
     }
 
     @available(macOS 10.14, *)
     override func viewDidChangeEffectiveAppearance() {
         super.viewDidChangeEffectiveAppearance()
-        refreshStyle()
+        DesignSystemControlStyler.refreshSurface(self)
+        refreshStatusColor()
     }
 
-    private func refreshStyle() {
+    private func refreshStatusColor() {
         let role: DesignSystem.ColorRole = permissionStatus == .granted ? .statusSuccess : .statusDestructive
-        let statusColor = DesignSystem.color(role, appearance: effectiveAppearance)
-        status.textColor = statusColor
-        layer?.backgroundColor = DesignSystem.resolvedCGColor(statusColor.withAlphaComponent(statusFillAlpha()), in: self)
-        layer?.borderColor = DesignSystem.semanticCGColor(.borderSubtle, in: self)
-    }
-
-    private func statusFillAlpha() -> CGFloat {
-        return DesignSystem.isDark(effectiveAppearance) ? 0.20 : 0.12
+        statusLabel.textColor = DesignSystem.color(role, appearance: effectiveAppearance)
     }
 }
 

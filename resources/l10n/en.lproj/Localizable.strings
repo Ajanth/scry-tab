@@ -72,12 +72,17 @@
 "Don't hide" = "Don't hide";
 "Done" = "Done";
 "Don’t check for updates periodically" = "Don’t check for updates periodically";
+"Drag “%@” into the Accessibility list" = "Drag “%@” into the Accessibility list";
+"Drag “%@” into the Accessibility list, or turn on its toggle in System Settings." = "Drag “%@” into the Accessibility list, or turn on its toggle in System Settings.";
 "e.g. com.example.app" = "e.g. com.example.app";
 "e.g. Debug" = "e.g. Debug";
 "Edit Focus Set…" = "Edit Focus Set…";
 "Editing “%@”" = "Editing “%@”";
 "Enable" = "Enable";
+"Enable Accessibility for “%@”" = "Enable Accessibility for “%@”";
+"Enable Accessibility…" = "Enable Accessibility…";
 "Enable automatic crash reports?" = "Enable automatic crash reports?";
+"Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count." = "Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count.";
 "End" = "End";
 "Exceptions" = "Exceptions";
 "Export settings…" = "Export settings…";
@@ -131,7 +136,6 @@
 "Not currently open" = "Not currently open";
 "Not now" = "Not now";
 "OK" = "OK";
-"Open Accessibility Settings…" = "Open Accessibility Settings…";
 "Open Appearance Settings" = "Open Appearance Settings";
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
 "Order windows by" = "Order windows by";
@@ -140,6 +144,7 @@
 "Past week" = "Past week";
 "Past year" = "Past year";
 "Pause preview animation" = "Pause preview animation";
+"Permission" = "Permission";
 "Please drag ScryTab into the Applications folder manually." = "Please drag ScryTab into the Applications folder manually.";
 "Please fill in the form" = "Please fill in the form";
 "Preview of the selected appearance style" = "Preview of the selected appearance style";
@@ -155,6 +160,7 @@
 "Screen including mouse" = "Screen including mouse";
 "Screen showing ScryTab" = "Screen showing ScryTab";
 "ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
+"ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTab uses Accessibility to focus windows after you release the shortcut.";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
 "Search" = "Search";
 "Search applications" = "Search applications";
@@ -196,7 +202,6 @@
 "The application needs to restart to apply the imported settings." = "The application needs to restart to apply the imported settings.";
 "The application needs to restart to apply the language change." = "The application needs to restart to apply the language change.";
 "Theme" = "Theme";
-"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count.";
 "This will keep your Downloads folder uncluttered." = "This will keep your Downloads folder uncluttered.";
 "Title truncation" = "Title truncation";
 "Titles" = "Titles";

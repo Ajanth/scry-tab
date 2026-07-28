@@ -221,6 +221,12 @@
 "Don’t check for updates periodically" = "Don’t check for updates periodically";
 
 /* No comment provided by engineer. */
+"Drag “%@” into the Accessibility list" = "Drag “%@” into the Accessibility list";
+
+/* No comment provided by engineer. */
+"Drag “%@” into the Accessibility list, or turn on its toggle in System Settings." = "Drag “%@” into the Accessibility list, or turn on its toggle in System Settings.";
+
+/* No comment provided by engineer. */
 "e.g. com.example.app" = "e.g. com.example.app";
 
 /* No comment provided by engineer. */
@@ -236,7 +242,16 @@
 "Enable" = "Enable";
 
 /* No comment provided by engineer. */
+"Enable Accessibility for “%@”" = "Enable Accessibility for “%@”";
+
+/* No comment provided by engineer. */
+"Enable Accessibility…" = "Enable Accessibility…";
+
+/* No comment provided by engineer. */
 "Enable automatic crash reports?" = "Enable automatic crash reports?";
+
+/* No comment provided by engineer. */
+"Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count." = "Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count.";
 
 /* No comment provided by engineer. */
 "End" = "End";
@@ -398,9 +413,6 @@
 "OK" = "OK";
 
 /* No comment provided by engineer. */
-"Open Accessibility Settings…" = "Open Accessibility Settings…";
-
-/* No comment provided by engineer. */
 "Open Appearance Settings" = "Open Appearance Settings";
 
 /* No comment provided by engineer. */
@@ -423,6 +435,9 @@
 
 /* No comment provided by engineer. */
 "Pause preview animation" = "Pause preview animation";
+
+/* No comment provided by engineer. */
+"Permission" = "Permission";
 
 /* LetsMove replacement alert */
 "Please drag ScryTab into the Applications folder manually." = "Please drag ScryTab into the Applications folder manually.";
@@ -468,6 +483,9 @@
 
 /* No comment provided by engineer. */
 "ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
+
+/* No comment provided by engineer. */
+"ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTab uses Accessibility to focus windows after you release the shortcut.";
 
 /* No comment provided by engineer. */
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
@@ -591,9 +609,6 @@
 
 /* No comment provided by engineer. */
 "Theme" = "Theme";
-
-/* No comment provided by engineer. */
-"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count.";
 
 /* LetsMove replacement alert */
 "This will keep your Downloads folder uncluttered." = "This will keep your Downloads folder uncluttered.";

@@ -72,12 +72,17 @@
 "Don't hide" = "不隐藏";
 "Done" = "完成";
 "Don’t check for updates periodically" = "不要定期检查更新";
+"Drag “%@” into the Accessibility list" = "将“%@”拖到辅助功能列表中";
+"Drag “%@” into the Accessibility list, or turn on its toggle in System Settings." = "将“%@”拖到辅助功能列表中，或在“系统设置”中打开其开关。";
 "e.g. com.example.app" = "例如 com.example.app";
 "e.g. Debug" = "例如 Debug";
 "Edit Focus Set…" = "编辑聚焦组…";
 "Editing “%@”" = "正在编辑“%@”";
 "Enable" = "启用";
+"Enable Accessibility for “%@”" = "为“%@”启用辅助功能";
+"Enable Accessibility…" = "启用辅助功能…";
 "Enable automatic crash reports?" = "要启用自动崩溃报告吗？";
+"Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count." = "请启用与此 App 图标匹配的“%@”条目。其他构建或证书下的旧版 ScryTab 条目无效。";
 "End" = "末尾";
 "Exceptions" = "例外";
 "Export settings…" = "导出设置…";
@@ -131,7 +136,6 @@
 "Not currently open" = "当前未打开";
 "Not now" = "暂时不要";
 "OK" = "好";
-"Open Accessibility Settings…" = "打开辅助功能设置…";
 "Open Appearance Settings" = "打开外观设置";
 "Open Trackpad Settings…" = "打开触控板设置…";
 "Order windows by" = "窗口排序依据";
@@ -140,6 +144,7 @@
 "Past week" = "近一周";
 "Past year" = "近一年";
 "Pause preview animation" = "暂停预览动画";
+"Permission" = "权限";
 "Please drag ScryTab into the Applications folder manually." = "请手动将 ScryTab 拖入“应用程序”文件夹。";
 "Please fill in the form" = "请填写表单";
 "Preview of the selected appearance style" = "所选外观样式预览";
@@ -155,6 +160,7 @@
 "Screen including mouse" = "含指针的屏幕";
 "Screen showing ScryTab" = "显示 ScryTab 的屏幕";
 "ScryTab needs accessibility permission" = "ScryTab 需要辅助功能权限";
+"ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTab 使用辅助功能，以便在你松开快捷键后聚焦窗口。";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "若窗口已最小化或处于全屏，ScryTab 会用状态图标标示。";
 "Search" = "搜索";
 "Search applications" = "搜索应用";
@@ -196,7 +202,6 @@
 "The application needs to restart to apply the imported settings." = "需重新启动应用才能应用导入的设置。";
 "The application needs to restart to apply the language change." = "需重新启动应用才能应用语言更改。";
 "Theme" = "主题";
-"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "松开快捷键后聚焦窗口需要此权限。请在“系统设置”>“隐私与安全性”>“辅助功能”中启用“%@”。其他构建版本中已启用的“ScryTab”条目无效。";
 "This will keep your Downloads folder uncluttered." = "这样可避免“下载”文件夹过于杂乱。";
 "Title truncation" = "标题截断";
 "Titles" = "标题";
