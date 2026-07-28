@@ -22,8 +22,8 @@ EOL
 
 # generate key
 openssl genrsa -out $certificateFile.key 2048
-# generate self-signed certificate
-openssl req -x509 -new -config $certificateFile.conf -nodes -key $certificateFile.key -extensions extensions -sha256 -out $certificateFile.crt
+# generate self-signed certificate (OpenSSL defaults to 30 days without -days)
+openssl req -x509 -new -config $certificateFile.conf -nodes -key $certificateFile.key -extensions extensions -sha256 -days 365 -out $certificateFile.crt
 
 openssl_version=$(openssl version)
 # openssl v3.x requires to pass -legacy
