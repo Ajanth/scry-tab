@@ -1,6 +1,31 @@
 import ShortcutRecorder
 
 class KeyboardEventsTestable {
+    enum EscapeTapLifecycleState: Equatable {
+        case inactive
+        case activeWithoutTap
+        case installed
+        case failedForSession
+    }
+
+    enum EscapeTapLifecycleEvent {
+        case sessionBegan(anyShortcutUsesEscape: Bool)
+        case shortcutConfigurationChanged(anyShortcutUsesEscape: Bool)
+        case tapDisabled
+        case sessionEnded
+    }
+
+    enum EscapeTapLifecycleAction: Equatable {
+        case none
+        case install
+        case remove
+    }
+
+    struct EscapeTapLifecycleDecision: Equatable {
+        let nextState: EscapeTapLifecycleState
+        let action: EscapeTapLifecycleAction
+    }
+
     private static let fixedGlobalShortcutIds: [String: Int] = {
         var ids = [String: Int]()
         (0..<Preferences.maxShortcutCount).forEach { ids[Preferences.indexToName("nextWindowShortcut", $0)] = $0 }
@@ -35,6 +60,47 @@ class KeyboardEventsTestable {
         actionIdentifierByGlobalShortcutId = Dictionary(
             uniqueKeysWithValues: resolvedGlobalShortcutIds.map { ($0.value, $0.key) })
     }
+
+    static func escapeTapCallbackIsCurrent(_ callbackToken: UInt, currentToken: UInt) -> Bool {
+        callbackToken != 0 && callbackToken == currentToken
+    }
+
+    static func shouldRestoreNativeSymbolicHotkeys(ownsAdmission: Bool,
+                                                    keyboardStateWasConfigured: Bool) -> Bool {
+        ownsAdmission && keyboardStateWasConfigured
+    }
+
+    static func resolveEscapeTapLifecycle(_ state: EscapeTapLifecycleState,
+                                          _ event: EscapeTapLifecycleEvent) -> EscapeTapLifecycleDecision {
+        switch event {
+        case let .sessionBegan(anyShortcutUsesEscape):
+            return anyShortcutUsesEscape
+                ? EscapeTapLifecycleDecision(nextState: .installed, action: .install)
+                : EscapeTapLifecycleDecision(nextState: .activeWithoutTap, action: .none)
+        case let .shortcutConfigurationChanged(anyShortcutUsesEscape):
+            switch state {
+            case .inactive, .failedForSession:
+                return EscapeTapLifecycleDecision(nextState: state, action: .none)
+            case .activeWithoutTap:
+                return anyShortcutUsesEscape
+                    ? EscapeTapLifecycleDecision(nextState: .installed, action: .install)
+                    : EscapeTapLifecycleDecision(nextState: state, action: .none)
+            case .installed:
+                return anyShortcutUsesEscape
+                    ? EscapeTapLifecycleDecision(nextState: state, action: .none)
+                    : EscapeTapLifecycleDecision(nextState: .activeWithoutTap, action: .remove)
+            }
+        case .tapDisabled:
+            guard state == .installed else {
+                return EscapeTapLifecycleDecision(nextState: state, action: .none)
+            }
+            return EscapeTapLifecycleDecision(nextState: .failedForSession, action: .remove)
+        case .sessionEnded:
+            return EscapeTapLifecycleDecision(
+                nextState: .inactive,
+                action: state == .installed ? .remove : .none)
+        }
+    }
 }
 
 @discardableResult
@@ -50,13 +116,6 @@ func handleKeyboardEvent(_ globalId: Int?, _ shortcutState: ShortcutState?, _ ke
     logKeyboardEvent(globalId, shortcutState, keyCode, modifiers, isARepeat)
     let someShortcutTriggered = triggerMatchingShortcuts(globalId, shortcutState, keyCode, modifiers, isARepeat)
     return someShortcutTriggered
-}
-
-extension KeyboardEventsTestable {
-    static func shouldAbsorbEscapeAtHidTap(anyShortcutUsesEscape: Bool,
-                                           sessionState: FocusSetSessionState?) -> Bool {
-        anyShortcutUsesEscape && sessionState != nil
-    }
 }
 
 private func logKeyboardEvent(_ globalId: Int?, _ shortcutState: ShortcutState?, _ keyCode: UInt32?, _ modifiers: NSEvent.ModifierFlags?, _ isARepeat: Bool) {

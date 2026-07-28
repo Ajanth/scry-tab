@@ -10,43 +10,57 @@ class KeyboardEvents {
     private static var hotKeyPressedEventHandler: EventHandlerRef?
     private static var hotKeyReleasedEventHandler: EventHandlerRef?
     private static var globalShortcutsAreDisabled = false
-    private static var eventTap: CFMachPort?
+    private static var modifierEventTap: CFMachPort?
+    private static var modifierEventTapSource: CFRunLoopSource?
+    private static var escapeEventTap: CFMachPort?
+    private static var escapeEventTapSource: CFRunLoopSource?
+    private static var currentEscapeTapToken: UInt = 0
+    private static var lastEscapeTapToken: UInt = 0
+    private static var escapeTapLifecycleState = KeyboardEventsTestable.EscapeTapLifecycleState.inactive
+    private static var anyShortcutUsesEscape = false
     private static var localEventMonitor: Any?
 
-    /// Set by `ControlsTab` when the configured shortcuts change. When true and `SwitcherSession.isActive`,
-    /// our `cghidEventTap` absorbs Esc keyDowns and routes them through the matcher. Issue #5585:
-    /// this is the only path that beats macOS 26 Game Overlay's hook on `⌘⎋`.
-    static var anyShortcutUsesEscape = false
-
-    private static let cgEventHandler: CGEventTapCallBack = { _, type, cgEvent, _ in
+    private static let modifierEventHandler: CGEventTapCallBack = { _, type, cgEvent, _ in
         switch type {
         case .flagsChanged:
-            // TODO: it would be great to shortcut matching and trigger on the background thread
-            // it would enable us to set App.shared.isBeingUsed here, and could stop tasks on main when they check the flag
+            let modifiers = NSEvent.ModifierFlags(rawValue: UInt(cgEvent.flags.rawValue))
             DispatchQueue.main.async {
-                let modifiers = NSEvent.ModifierFlags(rawValue: UInt(cgEvent.flags.rawValue))
-                // TODO: ideally, we want to absorb all modifier keys except holdShortcut
-                // it was pressed down before ScryTab was triggered, so we should let the up event through
                 handleKeyboardEvent(nil, nil, nil, modifiers, false)
             }
             return Unmanaged.passUnretained(cgEvent)
+        case .tapDisabledByUserInput, .tapDisabledByTimeout:
+            DispatchQueue.main.async { reEnableModifierTapIfNeeded() }
+            return Unmanaged.passUnretained(cgEvent)
+        default:
+            return Unmanaged.passUnretained(cgEvent)
+        }
+    }
+
+    private static let escapeEventHandler: CGEventTapCallBack = { _, type, cgEvent, userInfo in
+        guard let callbackToken = escapeTapToken(userInfo) else {
+            return Unmanaged.passUnretained(cgEvent)
+        }
+        switch type {
         case .keyDown:
-            // Issue #5585. Esc only — absorb when ScryTab is using it and a shortcut binds it. cghid is
-            // the earliest tap point; absorbing here preempts macOS 26 Game Overlay's hook on `⌘⎋`.
-            if cgEvent.getIntegerValueField(.keyboardEventKeycode) != Int64(kVK_Escape) ||
-                !KeyboardEventsTestable.shouldAbsorbEscapeAtHidTap(
-                    anyShortcutUsesEscape: anyShortcutUsesEscape,
-                    sessionState: SwitcherSession.current?.focusSetSessionState) {
+            guard cgEvent.getIntegerValueField(.keyboardEventKeycode) == Int64(kVK_Escape) else {
                 return Unmanaged.passUnretained(cgEvent)
             }
             let modifiers = NSEvent.ModifierFlags(rawValue: UInt(cgEvent.flags.rawValue))
             let isARepeat = cgEvent.getIntegerValueField(.keyboardEventAutorepeat) != 0
             DispatchQueue.main.async {
+                guard KeyboardEventsTestable.escapeTapCallbackIsCurrent(
+                    callbackToken,
+                    currentToken: currentEscapeTapToken) else { return }
                 handleKeyboardEvent(nil, nil, UInt32(kVK_Escape), modifiers, isARepeat, nil)
             }
             return nil
         case .tapDisabledByUserInput, .tapDisabledByTimeout:
-            CGEvent.tapEnable(tap: eventTap!, enable: true)
+            DispatchQueue.main.async {
+                guard KeyboardEventsTestable.escapeTapCallbackIsCurrent(
+                    callbackToken,
+                    currentToken: currentEscapeTapToken) else { return }
+                handleDisabledEscapeTap()
+            }
             return Unmanaged.passUnretained(cgEvent)
         default:
             return Unmanaged.passUnretained(cgEvent)
@@ -77,14 +91,61 @@ class KeyboardEvents {
     }
 
     static func reEnableTapIfNeeded() {
-        guard let eventTap, !CGEvent.tapIsEnabled(tap: eventTap) else { return }
-        CGEvent.tapEnable(tap: eventTap, enable: true)
+        guard reEnableModifierTapIfNeeded() else { return }
         Logger.warning { "" }
+    }
+
+    @discardableResult
+    private static func reEnableModifierTapIfNeeded() -> Bool {
+        guard let modifierEventTap, !CGEvent.tapIsEnabled(tap: modifierEventTap) else { return false }
+        CGEvent.tapEnable(tap: modifierEventTap, enable: true)
+        return true
     }
 
     static func addEventHandlers() {
         addLocalMonitorForKeyDownAndKeyUp()
-        addCgEventTap()
+        addModifierEventTap()
+    }
+
+    static func removeEventHandlers() {
+        if let localEventMonitor {
+            NSEvent.removeMonitor(localEventMonitor)
+            self.localEventMonitor = nil
+        }
+        removeEscapeEventTap()
+        removeModifierEventTap()
+    }
+
+    static func removeGlobalShortcutHandlers() {
+        for (controlId, reference) in eventHotKeyRefs {
+            guard let reference else { continue }
+            let status = UnregisterEventHotKey(reference)
+            if status != noErr {
+                Logger.error { "UnregisterEventHotKey failed during shutdown for \(controlId) status:\(status)" }
+            }
+        }
+        eventHotKeyRefs.removeAll()
+        removeGlobalEventHandler(hotKeyPressedEventHandler, name: "pressed")
+        removeGlobalEventHandler(hotKeyReleasedEventHandler, name: "released")
+        hotKeyPressedEventHandler = nil
+        hotKeyReleasedEventHandler = nil
+        globalShortcutsAreDisabled = false
+    }
+
+    static func configureEscapeAbsorption(anyShortcutUsesEscape: Bool) {
+        self.anyShortcutUsesEscape = anyShortcutUsesEscape
+        applyEscapeTapLifecycle(.shortcutConfigurationChanged(anyShortcutUsesEscape: anyShortcutUsesEscape))
+    }
+
+    static func switcherSessionDidBegin() {
+        removeEscapeEventTap()
+        escapeTapLifecycleState = .inactive
+        applyEscapeTapLifecycle(.sessionBegan(anyShortcutUsesEscape: anyShortcutUsesEscape))
+    }
+
+    static func switcherSessionDidEnd() {
+        applyEscapeTapLifecycle(.sessionEnded)
+        removeEscapeEventTap()
     }
 
     private static func unregisterHotKeyIfNeeded(_ controlId: String, _ shortcut: Shortcut) {
@@ -100,6 +161,14 @@ class KeyboardEvents {
                 }
                 eventHotKeyRefs[controlId] = nil
             }
+        }
+    }
+
+    private static func removeGlobalEventHandler(_ handler: EventHandlerRef?, name: String) {
+        guard let handler else { return }
+        let status = RemoveEventHandler(handler)
+        if status != noErr {
+            Logger.error { "RemoveEventHandler failed during shutdown for \(name) handler status:\(status)" }
         }
     }
 
@@ -123,6 +192,7 @@ class KeyboardEvents {
 
     // TODO: handle this on a background thread?
     private static func addLocalMonitorForKeyDownAndKeyUp() {
+        guard localEventMonitor == nil else { return }
         localEventMonitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown, .keyUp]) { (event: NSEvent) in
             let keyCode = event.type == .keyDown ? UInt32(event.keyCode) : nil
             let isARepeat = event.type == .keyDown ? event.isARepeat : false
@@ -131,25 +201,123 @@ class KeyboardEvents {
         }
     }
 
-    private static func addCgEventTap() {
-        let eventMask = [CGEventType.flagsChanged, CGEventType.keyDown].reduce(CGEventMask(0), { $0 | (1 << $1.rawValue) })
-        // CGEvent.tapCreate returns null if ensureAccessibilityCheckboxIsChecked() didn't pass.
-        // SecureInput does not block `.flagsChanged` events on either cgSession or cghid event taps;
-        // and `.keyDown` events are filtered out at the system level for both. Issue #5585: we use
-        // `.cghidEventTap` (earliest tap point) + `.defaultTap` (can absorb) so we can swallow Esc
-        // ahead of macOS 26 Game Overlay, which hooks downstream of cgSession.
-        eventTap = CGEvent.tapCreate(
+    private static func addModifierEventTap() {
+        guard modifierEventTap == nil else { return }
+        let eventMask = CGEventMask(1 << CGEventType.flagsChanged.rawValue)
+        guard let tap = CGEvent.tapCreate(
+            tap: .cghidEventTap,
+            place: .headInsertEventTap,
+            options: .listenOnly,
+            eventsOfInterest: eventMask,
+            callback: modifierEventHandler,
+            userInfo: nil) else {
+            SystemPermissions.handleEventTapCreationFailure("Keyboard")
+            return
+        }
+        guard let source = CFMachPortCreateRunLoopSource(nil, tap, 0) else {
+            CFMachPortInvalidate(tap)
+            SystemPermissions.handleEventTapCreationFailure("Keyboard")
+            return
+        }
+        guard let runLoop = BackgroundWork.keyboardAndMouseAndTrackpadEventsThread.runLoop else {
+            CFRunLoopSourceInvalidate(source)
+            CFMachPortInvalidate(tap)
+            SystemPermissions.handleEventTapCreationFailure("Keyboard")
+            return
+        }
+        modifierEventTap = tap
+        modifierEventTapSource = source
+        CFRunLoopAddSource(runLoop, source, .commonModes)
+    }
+
+    private static func removeModifierEventTap() {
+        removeEventTap(
+            &modifierEventTap,
+            source: &modifierEventTapSource,
+            runLoop: BackgroundWork.keyboardAndMouseAndTrackpadEventsThread?.runLoop)
+    }
+
+    private static func addEscapeEventTap() {
+        guard escapeEventTap == nil else { return }
+        let token = nextEscapeTapToken()
+        guard let userInfo = UnsafeMutableRawPointer(bitPattern: token) else {
+            applyEscapeTapLifecycle(.tapDisabled)
+            return
+        }
+        let eventMask = CGEventMask(1 << CGEventType.keyDown.rawValue)
+        guard let tap = CGEvent.tapCreate(
             tap: .cghidEventTap,
             place: .headInsertEventTap,
             options: .defaultTap,
             eventsOfInterest: eventMask,
-            callback: cgEventHandler,
-            userInfo: nil)
-        if let eventTap {
-            let runLoopSource = CFMachPortCreateRunLoopSource(nil, eventTap, 0)
-            CFRunLoopAddSource(BackgroundWork.keyboardAndMouseAndTrackpadEventsThread.runLoop, runLoopSource, .commonModes)
-        } else {
-            SystemPermissions.handleEventTapCreationFailure("Keyboard")
+            callback: escapeEventHandler,
+            userInfo: userInfo) else {
+            applyEscapeTapLifecycle(.tapDisabled)
+            Logger.error { "Keyboard Escape event tap unavailable; continuing without Escape absorption for this switcher session" }
+            return
+        }
+        guard let source = CFMachPortCreateRunLoopSource(nil, tap, 0) else {
+            CFMachPortInvalidate(tap)
+            applyEscapeTapLifecycle(.tapDisabled)
+            Logger.error { "Keyboard Escape run-loop source unavailable; continuing without Escape absorption for this switcher session" }
+            return
+        }
+        guard let runLoop = BackgroundWork.keyboardAndMouseAndTrackpadEventsThread.runLoop else {
+            CFRunLoopSourceInvalidate(source)
+            CFMachPortInvalidate(tap)
+            applyEscapeTapLifecycle(.tapDisabled)
+            Logger.error { "Keyboard Escape run loop unavailable; continuing without Escape absorption for this switcher session" }
+            return
+        }
+        currentEscapeTapToken = token
+        escapeEventTap = tap
+        escapeEventTapSource = source
+        CFRunLoopAddSource(runLoop, source, .commonModes)
+    }
+
+    private static func removeEscapeEventTap() {
+        currentEscapeTapToken = 0
+        removeEventTap(
+            &escapeEventTap,
+            source: &escapeEventTapSource,
+            runLoop: BackgroundWork.keyboardAndMouseAndTrackpadEventsThread?.runLoop)
+    }
+
+    private static func removeEventTap(_ tap: inout CFMachPort?,
+                                       source: inout CFRunLoopSource?,
+                                       runLoop: CFRunLoop?) {
+        if let source {
+            if let runLoop { CFRunLoopRemoveSource(runLoop, source, .commonModes) }
+            CFRunLoopSourceInvalidate(source)
+        }
+        if let tap { CFMachPortInvalidate(tap) }
+        source = nil
+        tap = nil
+    }
+
+    private static func handleDisabledEscapeTap() {
+        applyEscapeTapLifecycle(.tapDisabled)
+    }
+
+    private static func escapeTapToken(_ userInfo: UnsafeMutableRawPointer?) -> UInt? {
+        guard let userInfo else { return nil }
+        let token = UInt(bitPattern: userInfo)
+        return token == 0 ? nil : token
+    }
+
+    private static func nextEscapeTapToken() -> UInt {
+        lastEscapeTapToken &+= 1
+        if lastEscapeTapToken == 0 { lastEscapeTapToken = 1 }
+        return lastEscapeTapToken
+    }
+
+    private static func applyEscapeTapLifecycle(_ event: KeyboardEventsTestable.EscapeTapLifecycleEvent) {
+        let decision = KeyboardEventsTestable.resolveEscapeTapLifecycle(escapeTapLifecycleState, event)
+        escapeTapLifecycleState = decision.nextState
+        switch decision.action {
+        case .install: addEscapeEventTap()
+        case .remove: removeEscapeEventTap()
+        case .none: break
         }
     }
 

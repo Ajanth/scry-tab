@@ -21,8 +21,10 @@ the resulting actions.
 - Release behavior depends on style: `doNothingOnRelease` doesn't focus; the search-on-release path does
   **not** focus the window on release (it enters search instead).
 - Switching directly from one shortcut slot to another is handled.
-- **Escape**: while the switcher is active (e.g. Option held), Escape fires the cancel shortcut; when the
-  switcher is closed, Escape does nothing (ScryTab doesn't swallow it).
+- **Escape**: the permanent HID tap listens only for modifier changes and can never block input. A separate
+  absorbing HID tap exists only for an active switcher session with an Escape binding. If macOS disables
+  that tap or its installation fails, it fails open for the rest of the session and retries only in the next
+  session without changing the app's Accessibility permission state.
 - Dynamic direct Focus Set IDs remain stable while configured and are never reused after deletion,
   so a delayed stale Carbon event cannot target a different set.
 - Direct Focus Set bindings dispatch only on non-modifier key-down. Their shared chord lifecycle
@@ -47,8 +49,31 @@ Mirrors `KeyboardEventsTests.swift` 1:1.
   while a bound modifier remains held, then reports its exact release once.
 - **testDirectFocusSetChordKeepsLocalShortcutsActive** — local Search and Cancel continue to match
   while a direct Focus Set chord’s modifiers are held.
-- **testHidEscapeIsAbsorbedDuringDirectFocusSetSession** — the HID Escape interception remains
-  active while a direct Focus Set session is open.
+- **testEscapeTapStaysInactiveOutsideSwitcherSession** — an Escape binding alone never installs
+  the absorbing tap while the switcher is inactive.
+- **testEscapeTapDoesNotInstallForSessionWithoutEscapeBinding** — starting a session without an
+  Escape binding leaves the absorbing tap uninstalled.
+- **testEscapeTapInstallsForSessionWithEscapeBinding** — starting a session with an Escape binding
+  installs the absorbing tap.
+- **testEscapeTapReconfigurationStartsAndStopsTapDuringSession** — adding or removing the Escape
+  binding during a session installs or removes the tap immediately.
+- **testDisabledEscapeTapFailsOpenForRemainderOfSession** — a timeout or user-input disable removes
+  the tap and configuration changes cannot reinstall it during the same session.
+- **testEscapeTapSessionEndResetsFailedState** — ending the session resets a failed tap lifecycle.
+- **testEscapeTapRetriesInstallationInNextSession** — the session after a failure can install a
+  fresh Escape tap.
+- **testCurrentEscapeTapCallbackTokenIsAccepted** — queued work from the current nonzero tap token
+  is accepted, while the reserved zero token is never accepted.
+- **testReplacedEscapeTapCallbackTokenIsRejectedWithinSession** — queued work from a tap replaced
+  during the same session cannot affect its replacement.
+- **testPriorSessionEscapeTapCallbackTokenIsRejected** — queued work from a prior session cannot
+  affect the current session.
+- **testAdmittedUnconfiguredProcessDoesNotRestoreNativeSymbolicHotkeys** — an admitted process that
+  did not finish keyboard configuration leaves native symbolic hotkeys unchanged at shutdown.
+- **testAdmittedConfiguredProcessRestoresNativeSymbolicHotkeys** — an admitted process restores
+  native symbolic hotkeys after keyboard configuration completes.
+- **testRejectedDuplicateDoesNotRestoreNativeSymbolicHotkeys** — a rejected duplicate never changes
+  native symbolic hotkeys while terminating.
 - **testMostCommonSequence** — the canonical hold-modifier → next-window → release flow.
 - **testSecondMostCommonSequence** — the second-most-common hold-modifier flow resolves correctly.
 - **testSecondMostCommonSequenceVariation** — a variation of that flow resolves correctly.
@@ -62,7 +87,7 @@ Mirrors `KeyboardEventsTests.swift` 1:1.
 - **testEscapeFiresCancelShortcutWhileSwitcherActiveWithOptionHeld** — Escape → cancel while active.
 - **testEscapeDoesNothingWhenSwitcherIsClosed** — Escape is a no-op when the switcher is closed.
 
-## Adjacent: `NSEvent.ModifierFlags.cleaned()` (defined in `ATShortcut.swift`, exercised here)
+### Adjacent: `NSEvent.ModifierFlags.cleaned()` (defined in `ATShortcut.swift`, exercised here)
 
 AppKit's local event monitors occasionally emit modifier flags with extra bits (function-key bit, raw `0x120`-style garbage). `cleaned()` is the intersection that strips them before the matcher sees them. Tested here as the closest existing home until an `ATShortcutTests.swift` lands.
 
