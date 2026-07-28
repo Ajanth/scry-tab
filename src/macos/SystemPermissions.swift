@@ -25,6 +25,14 @@ class SystemPermissions {
         timer.resume()
     }
 
+    /// Kick an immediate trust re-check (e.g. after the user drops the app into Accessibility or clicks Done).
+    static func recheckNow() {
+        guard timer != nil else { return }
+        BackgroundWork.permissionsCheckOnTimerQueue.addOperation {
+            checkPermissionsOnTimer()
+        }
+    }
+
     private static func startListeningForDistributedRevoke() {
         guard distributedObserver == nil else { return }
         distributedObserver = DistributedNotificationCenter.default().addObserver(

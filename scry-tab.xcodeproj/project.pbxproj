@@ -208,6 +208,19 @@
 		D04BA7B8D599E1A7A27FF5AE /* AcknowledgmentsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA788228BA86D9EFBD1ED /* AcknowledgmentsTab.swift */; };
 		D04BA7BE7F3DD24D58ACE942 /* AppearanceTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA64F1F344007EA13BA05 /* AppearanceTab.swift */; };
 		D04BA7E39FA539DD8316447A /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA0726EABD146753B9EF8 /* PermissionView.swift */; };
+		D04BAC01A55E771D0000A002 /* AccessibilitySettingsGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000A001 /* AccessibilitySettingsGuide.swift */; };
+		D04BAC01A55E771D0000C002 /* SystemSettingsWindowLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000C001 /* SystemSettingsWindowLocator.swift */; };
+		D04BAC01A55E771D0000D002 /* AccessibilityGuideOverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000D001 /* AccessibilityGuideOverlayController.swift */; };
+		D04BAC01A55E771D0000E002 /* AppBundleDragSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000E001 /* AppBundleDragSourceView.swift */; };
+		D04BAC01A55E771D0000F011 /* SystemSettingsWindowGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000F001 /* SystemSettingsWindowGeometry.swift */; };
+		D04BAC01A55E771D0000F012 /* SystemSettingsWindowGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000F001 /* SystemSettingsWindowGeometry.swift */; };
+		D04BAC01A55E771D0000F013 /* SystemSettingsWindowGeometryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000F002 /* SystemSettingsWindowGeometryTests.swift */; };
+		D04BAC01A55E771D0000G011 /* AccessibilityGuideOverlayLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000G001 /* AccessibilityGuideOverlayLayout.swift */; };
+		D04BAC01A55E771D0000G012 /* AccessibilityGuideOverlayLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000G001 /* AccessibilityGuideOverlayLayout.swift */; };
+		D04BAC01A55E771D0000G013 /* AccessibilityGuideOverlayLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000G002 /* AccessibilityGuideOverlayLayoutTests.swift */; };
+		D04BAC01A55E771D0000H011 /* AccessibilitySettingsGuideTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000H001 /* AccessibilitySettingsGuideTracking.swift */; };
+		D04BAC01A55E771D0000H012 /* AccessibilitySettingsGuideTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000H001 /* AccessibilitySettingsGuideTracking.swift */; };
+		D04BAC01A55E771D0000H013 /* AccessibilitySettingsGuideTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000H002 /* AccessibilitySettingsGuideTrackingTests.swift */; };
 		D04BA8480A8FF466CA89DA5B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA70746DEEC3D30B43F81 /* main.swift */; };
 		D04BA8757C9F20F25EB50785 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA5BD11C365C19461458C /* TextField.swift */; };
 		D04BA8D6055F6F2E42C976EA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D04BA5DE6536C4A6558FD80C /* InfoPlist.strings */; };
@@ -518,6 +531,19 @@
 		D04BA015A45DE7AFDC9794FE /* Window.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		D04BA03200F5A8FC0CD03607 /* CGWindowID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGWindowID.swift; sourceTree = "<group>"; };
 		D04BA0726EABD146753B9EF8 /* PermissionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000A001 /* AccessibilitySettingsGuide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsGuide.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000C001 /* SystemSettingsWindowLocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemSettingsWindowLocator.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000D001 /* AccessibilityGuideOverlayController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityGuideOverlayController.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000E001 /* AppBundleDragSourceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppBundleDragSourceView.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000F001 /* SystemSettingsWindowGeometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemSettingsWindowGeometry.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000F002 /* SystemSettingsWindowGeometryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSettingsWindowGeometryTests.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000F003 /* SystemSettingsWindowGeometrySpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = SystemSettingsWindowGeometrySpecs.md; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000G001 /* AccessibilityGuideOverlayLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityGuideOverlayLayout.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000G002 /* AccessibilityGuideOverlayLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityGuideOverlayLayoutTests.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000G003 /* AccessibilityGuideOverlayLayoutSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AccessibilityGuideOverlayLayoutSpecs.md; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000H001 /* AccessibilitySettingsGuideTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsGuideTracking.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000H002 /* AccessibilitySettingsGuideTrackingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilitySettingsGuideTrackingTests.swift; sourceTree = "<group>"; };
+		D04BAC01A55E771D0000H003 /* AccessibilitySettingsGuideTrackingSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = AccessibilitySettingsGuideTrackingSpecs.md; sourceTree = "<group>"; };
 		D04BA075E359F36C27CD5BAE /* package-lock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "package-lock.json"; sourceTree = "<group>"; };
 		D04BA099FA155FB4D517D66B /* SettingsWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		D04BA0AAAE82C72855DBBA26 /* update_appcast.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = update_appcast.sh; sourceTree = "<group>"; };
@@ -1091,6 +1117,19 @@
 			children = (
 				D04BA9DF10D0CC4CA0C8F814 /* PermissionsWindow.swift */,
 				D04BA0726EABD146753B9EF8 /* PermissionView.swift */,
+				D04BAC01A55E771D0000A001 /* AccessibilitySettingsGuide.swift */,
+				D04BAC01A55E771D0000H001 /* AccessibilitySettingsGuideTracking.swift */,
+				D04BAC01A55E771D0000H002 /* AccessibilitySettingsGuideTrackingTests.swift */,
+				D04BAC01A55E771D0000H003 /* AccessibilitySettingsGuideTrackingSpecs.md */,
+				D04BAC01A55E771D0000C001 /* SystemSettingsWindowLocator.swift */,
+				D04BAC01A55E771D0000F001 /* SystemSettingsWindowGeometry.swift */,
+				D04BAC01A55E771D0000F002 /* SystemSettingsWindowGeometryTests.swift */,
+				D04BAC01A55E771D0000F003 /* SystemSettingsWindowGeometrySpecs.md */,
+				D04BAC01A55E771D0000D001 /* AccessibilityGuideOverlayController.swift */,
+				D04BAC01A55E771D0000G001 /* AccessibilityGuideOverlayLayout.swift */,
+				D04BAC01A55E771D0000G002 /* AccessibilityGuideOverlayLayoutTests.swift */,
+				D04BAC01A55E771D0000G003 /* AccessibilityGuideOverlayLayoutSpecs.md */,
+				D04BAC01A55E771D0000E001 /* AppBundleDragSourceView.swift */,
 			);
 			path = "permission-window";
 			sourceTree = "<group>";
@@ -1654,6 +1693,12 @@
 				5EA8E110000000000000F212 /* SchedulingPolicyTests.swift in Sources */,
 				FB0C0A110000000000000012 /* FeedbackGitHubComposer.swift in Sources */,
 				FB0C0A110000000000000013 /* FeedbackGitHubComposerTests.swift in Sources */,
+				D04BAC01A55E771D0000F012 /* SystemSettingsWindowGeometry.swift in Sources */,
+				D04BAC01A55E771D0000F013 /* SystemSettingsWindowGeometryTests.swift in Sources */,
+				D04BAC01A55E771D0000G012 /* AccessibilityGuideOverlayLayout.swift in Sources */,
+				D04BAC01A55E771D0000G013 /* AccessibilityGuideOverlayLayoutTests.swift in Sources */,
+				D04BAC01A55E771D0000H012 /* AccessibilitySettingsGuideTracking.swift in Sources */,
+				D04BAC01A55E771D0000H013 /* AccessibilitySettingsGuideTrackingTests.swift in Sources */,
 				MSIB01000000000000000012 /* MenubarStatusIcon.swift in Sources */,
 				MSIB01000000000000000013 /* MenubarStatusIconTests.swift in Sources */,
 				5EA8E110000000000000DA03 /* DragAndDropResolver.swift in Sources */,
@@ -1843,6 +1888,13 @@
 				5FBB24D32F389A0400BF7E14 /* Benchmark.swift in Sources */,
 				D04BAFB90E00AA5D662EAF24 /* PermissionsWindow.swift in Sources */,
 				D04BA7E39FA539DD8316447A /* PermissionView.swift in Sources */,
+				D04BAC01A55E771D0000A002 /* AccessibilitySettingsGuide.swift in Sources */,
+				D04BAC01A55E771D0000H011 /* AccessibilitySettingsGuideTracking.swift in Sources */,
+				D04BAC01A55E771D0000C002 /* SystemSettingsWindowLocator.swift in Sources */,
+				D04BAC01A55E771D0000F011 /* SystemSettingsWindowGeometry.swift in Sources */,
+				D04BAC01A55E771D0000D002 /* AccessibilityGuideOverlayController.swift in Sources */,
+				D04BAC01A55E771D0000G011 /* AccessibilityGuideOverlayLayout.swift in Sources */,
+				D04BAC01A55E771D0000E002 /* AppBundleDragSourceView.swift in Sources */,
 				D04BA446D702C5E252AF2319 /* TitleLabel.swift in Sources */,
 				D04BAFF30A98CF287F85DA1E /* ExceptionsTab.swift in Sources */,
 				D04BAFF70A98CF287F85DA22 /* ExceptionEditorView.swift in Sources */,

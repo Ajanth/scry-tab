@@ -72,12 +72,17 @@
 "Don't hide" = "Не скрывать";
 "Done" = "Готово";
 "Don’t check for updates periodically" = "Не проверять обновления периодически";
+"Drag “%@” into the Accessibility list" = "Перетащите «%@» в список Универсального доступа";
+"Drag “%@” into the Accessibility list, or turn on its toggle in System Settings." = "Перетащите «%@» в список Универсального доступа или включите переключатель в Системных настройках.";
 "e.g. com.example.app" = "например, com.example.app";
 "e.g. Debug" = "например, Debug";
 "Edit Focus Set…" = "Изменить набор фокуса…";
 "Editing “%@”" = "Редактирование «%@»";
 "Enable" = "Включить";
+"Enable Accessibility for “%@”" = "Включить Универсальный доступ для «%@»";
+"Enable Accessibility…" = "Включить Универсальный доступ…";
 "Enable automatic crash reports?" = "Включить автоматическую отправку отчётов о сбоях?";
+"Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count." = "Включите строку «%@» с значком этого приложения. Старая запись ScryTab от другой сборки или сертификата не подходит.";
 "End" = "Конец";
 "Exceptions" = "Исключения";
 "Export settings…" = "Экспортировать настройки…";
@@ -131,7 +136,6 @@
 "Not currently open" = "Сейчас не открыто";
 "Not now" = "Не сейчас";
 "OK" = "OK";
-"Open Accessibility Settings…" = "Открыть настройки Универсального доступа…";
 "Open Appearance Settings" = "Открыть настройки оформления";
 "Open Trackpad Settings…" = "Открыть настройки трекпада…";
 "Order windows by" = "Упорядочивать окна по";
@@ -140,6 +144,7 @@
 "Past week" = "За неделю";
 "Past year" = "За год";
 "Pause preview animation" = "Пауза анимации предпросмотра";
+"Permission" = "Доступ";
 "Please drag ScryTab into the Applications folder manually." = "Перетащите ScryTab в папку «Программы» вручную.";
 "Please fill in the form" = "Заполните форму";
 "Preview of the selected appearance style" = "Предпросмотр выбранного стиля оформления";
@@ -155,6 +160,7 @@
 "Screen including mouse" = "Экран с указателем мыши";
 "Screen showing ScryTab" = "Экран, где показан ScryTab";
 "ScryTab needs accessibility permission" = "ScryTab требуется разрешение Универсального доступа";
+"ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTab использует Универсальный доступ, чтобы активировать окна после отпускания сочетания клавиш.";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab покажет значок состояния, если окно сейчас свёрнуто или открыто в полноэкранном режиме.";
 "Search" = "Поиск";
 "Search applications" = "Поиск приложений";
@@ -196,7 +202,6 @@
 "The application needs to restart to apply the imported settings." = "Чтобы применить импортированные настройки, перезапустите приложение.";
 "The application needs to restart to apply the language change." = "Чтобы применить смену языка, перезапустите приложение.";
 "Theme" = "Тема";
-"This permission is needed to focus windows after you release the shortcut. Enable “%@” in System Settings > Privacy & Security > Accessibility. An enabled “ScryTab” entry for another build does not count." = "Это разрешение нужно, чтобы фокусировать окна после отпускания сочетания клавиш. Включите «%@» в Системные настройки > Конфиденциальность и безопасность > Универсальный доступ. Включённая запись «ScryTab» от другой сборки не подходит.";
 "This will keep your Downloads folder uncluttered." = "Так папка «Загрузки» останется без лишнего.";
 "Title truncation" = "Обрезка заголовков";
 "Titles" = "Заголовки";
