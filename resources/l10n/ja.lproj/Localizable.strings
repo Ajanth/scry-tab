@@ -160,6 +160,7 @@
 "Screen including menu bar" = "メニューバーがあるディスプレイ";
 "Screen including mouse" = "ポインタがあるディスプレイ";
 "Screen showing ScryTab" = "ScryTabを表示中のディスプレイ";
+"ScryTab and its settings will be moved to the Trash, and it will no longer start at login. You can’t undo this action from within the app." = "ScryTab と設定をゴミ箱に移動し、ログイン時に起動しなくなります。この操作をアプリ内で取り消すことはできません。";
 "ScryTab needs accessibility permission" = "ScryTabにはアクセシビリティの許可が必要です";
 "ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTabはショートカットを離したあとにウィンドウへフォーカスを移すため、アクセシビリティを使用します。";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "最小化またはフルスクリーンのウインドウには、ステータスアイコンを表示します。";
@@ -211,6 +212,9 @@
 "Trigger" = "起動方法";
 "Unassign existing shortcut and continue" = "既存の割り当てを解除して続行";
 "Unavailable application" = "利用できないアプリ";
+"Uninstall" = "アンインストール";
+"Uninstall ScryTab?" = "ScryTab をアンインストールしますか？";
+"Uninstall ScryTab…" = "ScryTab をアンインストール…";
 "Updates policy" = "アップデートの方針";
 "Usage" = "利用状況";
 "Version" = "バージョン";

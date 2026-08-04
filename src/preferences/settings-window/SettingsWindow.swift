@@ -578,6 +578,7 @@ class SettingsWindow: NSWindow {
                 NSLocalizedString("Export settings…", comment: ""),
                 NSLocalizedString("Import settings…", comment: ""),
                 NSLocalizedString("Reset settings and restart…", comment: ""),
+                NSLocalizedString("Uninstall ScryTab…", comment: ""),
             ] + LanguagePreference.allCases.map(\.localizedString)
               + UpdatePolicyPreference.allCases.map(\.localizedString)
               + CrashPolicyPreference.allCases.map(\.localizedString)),

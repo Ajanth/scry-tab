@@ -39,7 +39,15 @@ class GeneralTab {
             right: TableGroupView.toolRowHorizontalPadding,
             left: TableGroupView.toolRowHorizontalPadding,
             spacing: TableGroupView.toolRowSpacing)
-        let content = TableGroupSetView(originalViews: [table, tools], padding: 0, bottomPadding: 0)
+        // Uninstall sits on its own row rather than in the tool cluster: it is a different order of
+        // severity from resetting settings, and a fourth button overflows the row once localized.
+        let uninstallButton = DesignSystemControlStyler.makeButton(NSLocalizedString("Uninstall ScryTab…", comment: ""), destructive: true)
+        uninstallButton.onAction = { _ in Uninstaller.promptAndUninstall() }
+        let uninstall = StackView([uninstallButton], .horizontal, true,
+            right: TableGroupView.toolRowHorizontalPadding,
+            left: TableGroupView.toolRowHorizontalPadding,
+            spacing: TableGroupView.toolRowSpacing)
+        let content = TableGroupSetView(originalViews: [table, tools, uninstall], padding: 0, bottomPadding: 0)
         return DesignSystemCenteredDetailPage(content: content, width: SettingsWindow.contentWidth)
     }
 

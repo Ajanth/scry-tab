@@ -485,6 +485,9 @@
 "Screen showing ScryTab" = "Screen showing ScryTab";
 
 /* No comment provided by engineer. */
+"ScryTab and its settings will be moved to the Trash, and it will no longer start at login. You can’t undo this action from within the app." = "ScryTab and its settings will be moved to the Trash, and it will no longer start at login. You can’t undo this action from within the app.";
+
+/* No comment provided by engineer. */
 "ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
 
 /* No comment provided by engineer. */
@@ -636,6 +639,15 @@
 
 /* No comment provided by engineer. */
 "Unavailable application" = "Unavailable application";
+
+/* No comment provided by engineer. */
+"Uninstall" = "Uninstall";
+
+/* No comment provided by engineer. */
+"Uninstall ScryTab?" = "Uninstall ScryTab?";
+
+/* No comment provided by engineer. */
+"Uninstall ScryTab…" = "Uninstall ScryTab…";
 
 /* No comment provided by engineer. */
 "Updates policy" = "Updates policy";
