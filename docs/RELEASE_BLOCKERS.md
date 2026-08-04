@@ -130,14 +130,14 @@ once a domain is decided, and update `public/privacy/index.html` in `scrytab-cms
 
 ---
 
-## 🟡 B8 — Uncommitted work in both repos
+## 🟡 B8 — Uncommitted work in `scrytab-cms`
 
-Not blockers by themselves, but they will be swept into someone's commit if ignored.
+Not a blocker by itself, but it will be swept into someone's commit if ignored.
 
-- `scry-tab`: `src/macos/AXCallScheduler.swift` — a real lock fix around the `unresponsivePids`
-  read, deliberately left unstaged as unrelated to the licensing work.
 - `scrytab-cms`: `src/components/sections/hero.tsx` and the `heroVariants` block in
   `src/content/landing.ts` — an in-progress rotating-hero feature.
+
+The `scry-tab` half is cleared: the `AXCallScheduler` lock fix is committed (see [D9](#done)).
 
 ---
 
@@ -193,6 +193,11 @@ Recorded so it is not re-litigated or accidentally reverted.
 - **D8 — CI secrets.** `SPARKLE_ED_PRIVATE_KEY`, `PUBLIC_REPO_TOKEN`, `WEBSITE_DISPATCH_TOKEN`
   are set. `PUBLIC_REPO_TOKEN` needs `contents: write` on `scrytab-public`;
   `WEBSITE_DISPATCH_TOKEN` needs `contents: write` on `scrytab-cms`.
+- **D9 — `AXCallScheduler` data race.** `queueForPid` read `unresponsivePids` without holding
+  `lock`, while `attemptBlock` inserts/removes it from the AX worker queues and
+  `Applications.removeUnresponsivePid` removes it on app teardown. An unsynchronized `Set` read
+  racing a resize is undefined behavior, not just stale routing. The read is now taken under the
+  lock; no caller holds it, so the non-recursive `NSLock` cannot deadlock.
 
 > **Back up the Sparkle private key.** It lives in the login Keychain and in the
 > `SPARKLE_ED_PRIVATE_KEY` secret. Lose both and you cannot ship updates to anyone who already

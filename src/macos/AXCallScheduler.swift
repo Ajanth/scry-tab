@@ -98,7 +98,11 @@ class AXCallScheduler {
     }
 
     private func queueForPid(_ pid: pid_t?, scan: Bool) -> LabeledOperationQueue {
-        let unresponsive = pid.map { unresponsivePids.contains($0) } ?? false
+        let unresponsive = pid.map { pid in
+            lock.lock()
+            defer { lock.unlock() }
+            return unresponsivePids.contains(pid)
+        } ?? false
         switch AxEventRouting.pool(unresponsive: unresponsive, scan: scan) {
             case .firstTry: return axQueryFirstTryQueue
             case .scan: return axQueryScanQueue
