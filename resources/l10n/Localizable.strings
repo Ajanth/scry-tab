@@ -344,6 +344,9 @@
 "Later" = "Later";
 
 /* No comment provided by engineer. */
+"Licence" = "Licence";
+
+/* No comment provided by engineer. */
 "Light" = "Light";
 
 /* No comment provided by engineer. */
@@ -579,6 +582,9 @@
 
 /* No comment provided by engineer. */
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
+
+/* No comment provided by engineer. */
+"Source code" = "Source code";
 
 /* No comment provided by engineer. */
 "Start" = "Start";

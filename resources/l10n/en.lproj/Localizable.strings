@@ -113,6 +113,7 @@
 "Language Change" = "Language Change";
 "Large" = "Large";
 "Later" = "Later";
+"Licence" = "Licence";
 "Light" = "Light";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@.";
 "Medium" = "Medium";
@@ -192,6 +193,7 @@
 "Size" = "Size";
 "Small" = "Small";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides.";
+"Source code" = "Source code";
 "Start" = "Start";
 "Start at login" = "Start at login";
 "Style" = "Style";

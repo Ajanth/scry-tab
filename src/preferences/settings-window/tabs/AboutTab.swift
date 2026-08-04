@@ -13,13 +13,14 @@ class AboutTab {
         appIcon.translatesAutoresizingMaskIntoConstraints = false
         appIcon.updateContents(.cgImage(App.appIcon(for: appIconSize)), appIconSize)
         appIcon.fit(appIconSize.width, appIconSize.height)
+        let copyright = secondaryLabel(App.licence)
         let metadata = StackView([
             BoldLabel(App.name),
             secondaryLabel(NSLocalizedString("Version", comment: "") + " " + App.version),
-            secondaryLabel(App.licence),
-            HyperlinkLabel(NSLocalizedString("Website", comment: ""), Endpoints.website),
+            copyright,
+            makeLinksRow(),
         ], .vertical, false, spacing: DesignSystem.Metrics.headerFooterGap)
-        metadata.setCustomSpacing(DesignSystem.Metrics.formOuterPadding, after: metadata.views[2])
+        metadata.setCustomSpacing(DesignSystem.Metrics.formOuterPadding, after: copyright)
         let hero = NSStackView(views: [appIcon, metadata])
         hero.translatesAutoresizingMaskIntoConstraints = false
         hero.spacing = DesignSystem.Metrics.sectionGap
@@ -42,6 +43,16 @@ class AboutTab {
 
     static func refreshSettingsUsageStats() {
         settingsUsageView?.refresh(animated: true)
+    }
+
+    /// GPL-3.0 §0 requires the interactive UI to show the user how to view a copy of the licence.
+    /// The source link carries the §6(d) Corresponding Source offer for the running binary.
+    private static func makeLinksRow() -> NSView {
+        StackView([
+            HyperlinkLabel(NSLocalizedString("Website", comment: ""), Endpoints.website),
+            HyperlinkLabel(NSLocalizedString("Licence", comment: ""), Endpoints.licenceUrl),
+            HyperlinkLabel(NSLocalizedString("Source code", comment: ""), Endpoints.sourceUrl),
+        ], .horizontal, false, spacing: DesignSystem.Metrics.sectionGap)
     }
 
     private static func secondaryLabel(_ text: String) -> NSTextField {

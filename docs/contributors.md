@@ -1,4 +1,11 @@
-## [Developed the app](https://github.com/Ajanth/scry-tab/graphs/contributors)
+## Developed ScryTab
+
+[Ajanth](https://github.com/Ajanth)
+
+## Built AltTab
+
+ScryTab is a derivative work of [AltTab](https://github.com/lwouis/alt-tab-macos), released
+under the GPL-3.0. These people developed AltTab, and ScryTab is built on their work:
 
 [adamnemecek](https://github.com/adamnemecek), [AfzalivE](https://github.com/AfzalivE), [akx](https://github.com/akx), [Allsochen](https://github.com/Allsochen), [ayroblu](https://github.com/ayroblu), [britalmeida](https://github.com/britalmeida), [Calinou](https://github.com/Calinou), [damonpam](https://github.com/damonpam), [decodism](https://github.com/decodism), [delaneyb](https://github.com/delaneyb), [gingerr](https://github.com/gingerr), [GrzegorzKazana](https://github.com/GrzegorzKazana), [hughlilly](https://github.com/hughlilly), [karbassi](https://github.com/karbassi), [L1cardo](https://github.com/L1cardo), [lwouis](https://github.com/lwouis), [metacodes](https://github.com/metacodes), [mnin](https://github.com/mnin), [MrPaschenko](https://github.com/MrPaschenko), [nella17](https://github.com/nella17), [notlmn](https://github.com/notlmn), [phungtuanhoang1996](https://github.com/phungtuanhoang1996), [rbnis](https://github.com/rbnis), [Rjevski](https://github.com/Rjevski), [ShlomoCode](https://github.com/ShlomoCode), [skolj](https://github.com/skolj), [stopdesign](https://github.com/stopdesign), [xanathar](https://github.com/xanathar), [zacharee](https://github.com/zacharee)
 

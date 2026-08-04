@@ -22,16 +22,17 @@ github_contributors() {
     awk '{printf "%s%s", sep, $0; sep=", "} END{print ""}'
 }
 
-# Rewrite only the "Developed the app" section of docs/contributors.md, preserving the
-# frozen "Localized the app" section below it.
+# Rewrite only the "Developed ScryTab" section of docs/contributors.md. Everything from
+# "## Built AltTab" down is frozen: it carries the GPL-3.0 attribution for the upstream
+# AltTab authors and translators, which CI must never overwrite.
 update_developer_contributors() {
   local file="docs/contributors.md"
   {
-    echo "## [Developed the app](https://github.com/Ajanth/scry-tab/graphs/contributors)"
+    echo "## Developed ScryTab"
     echo
     github_contributors
     echo
-    sed -n '/## Localized the app/,$p' "$file"
+    sed -n '/## Built AltTab/,$p' "$file"
   } > "$file.tmp" && mv "$file.tmp" "$file"
 }
 
