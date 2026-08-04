@@ -592,6 +592,8 @@ class SettingsWindow: NSWindow {
                 App.version,
                 App.licence,
                 NSLocalizedString("Website", comment: ""),
+                NSLocalizedString("Licence", comment: ""),
+                NSLocalizedString("Source code", comment: ""),
                 NSLocalizedString("Usage", comment: ""),
             ] + AcknowledgmentsTab.searchableStrings),
         ]

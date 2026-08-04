@@ -113,6 +113,7 @@
 "Language Change" = "言語の変更";
 "Large" = "大";
 "Later" = "後で";
+"Licence" = "ライセンス";
 "Light" = "ライト";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOSは⌘⌥⎋、⌘⌥⇧⎋、⌘⌥⇧⌃⎋を強制終了用に予約しており、解除できません。ScryTabでは使えません。\n\n割り当てようとしている操作: %@。";
 "Medium" = "中";
@@ -192,6 +193,7 @@
 "Size" = "サイズ";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "一部のショートカットはこの設定を上書きしています。上書きを外して新しい全体値をすべてに適用するか、上書きを残してください。";
+"Source code" = "ソースコード";
 "Start" = "先頭";
 "Start at login" = "ログイン時に起動";
 "Style" = "スタイル";

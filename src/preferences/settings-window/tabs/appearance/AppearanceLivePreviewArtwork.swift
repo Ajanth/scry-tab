@@ -81,7 +81,7 @@ enum AppearanceLivePreviewArtwork {
     static let illustratedPreviewItems = [
         IllustratedPreviewItem(bundleId: "com.apple.Safari",
                                appName: "Safari",
-                               windowTitle: "AltTab",
+                               windowTitle: "ScryTab",
                                statusSymbol: AppearancePreviewStatusSymbols.fullscreen,
                                spaceNumber: 2),
         IllustratedPreviewItem(bundleId: "com.apple.finder",

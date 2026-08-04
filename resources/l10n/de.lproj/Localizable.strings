@@ -113,6 +113,7 @@
 "Language Change" = "Änderung der Sprache";
 "Large" = "Groß";
 "Later" = "Später";
+"Licence" = "Lizenz";
 "Light" = "Hell";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS reserviert ⌘⌥⎋, ⌘⌥⇧⎋ und ⌘⌥⇧⌃⎋ für „Sofort beenden“; diese Kombinationen lassen sich nicht freigeben. ScryTab kann sie nicht nutzen.\n\nIhre Änderung würde eine davon zuweisen an: %@.";
 "Medium" = "Mittel";
@@ -192,6 +193,7 @@
 "Size" = "Größe";
 "Small" = "Klein";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "Einige Tastenkürzel überschreiben diese Einstellung. Wenden Sie den neuen globalen Wert auf alle Tastenkürzel an (Überschreibungen entfernen), oder behalten Sie die Überschreibungen bei.";
+"Source code" = "Quellcode";
 "Start" = "Anfang";
 "Start at login" = "Bei der Anmeldung starten";
 "Style" = "Stil";

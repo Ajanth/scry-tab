@@ -113,6 +113,7 @@
 "Language Change" = "更改语言";
 "Large" = "大";
 "Later" = "稍后";
+"Licence" = "许可证";
 "Light" = "浅色";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS 将 ⌘⌥⎋、⌘⌥⇧⎋ 和 ⌘⌥⇧⌃⎋ 保留给“强制退出”，无法取消绑定，ScryTab 也不能使用。\n\n你的更改会把其中之一分配给：%@。";
 "Medium" = "中";
@@ -192,6 +193,7 @@
 "Size" = "大小";
 "Small" = "小";
 "Some shortcuts override this setting. Apply the new global value to every shortcut by removing those overrides, or keep the overrides." = "部分快捷键覆盖了此项设置。可移除这些覆盖以将新的全局值套用到全部快捷键，也可保留覆盖。";
+"Source code" = "源代码";
 "Start" = "开头";
 "Start at login" = "登录时启动";
 "Style" = "样式";
