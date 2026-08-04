@@ -1,0 +1,200 @@
+# Release blockers
+
+Tracks what still stands between `develop` and the first public download from
+<https://scrytab.pages.dev>. Distribution is direct-download only; the Mac App Store is
+**permanently foreclosed** by the GPL-3.0 licensing (see [B4](#b4-mac-app-store-is-closed)).
+
+**Update this file when a blocker is cleared.** It is the single source of truth for release
+readiness; do not track release state in commit messages or issues alone.
+
+Legend: 🔴 blocks launch · 🟡 should fix before launch · ✅ done
+
+---
+
+## 🔴 B1 — Developer ID is still AltTab's
+
+`config/release.xcconfig:5` reads:
+
+```
+CODE_SIGN_IDENTITY = Developer ID Application: Louis Pontoise (QXD7GW8FHY)
+```
+
+That identity belongs to AltTab's author. Notarization cannot succeed with a certificate we
+do not hold, so **no distributable build can be produced at all** until this changes.
+
+*Blocked on:* Apple Developer Program approval (pending as of 2026-08-04).
+
+When approved:
+
+1. Set `CODE_SIGN_IDENTITY` in `config/release.xcconfig` to your own Developer ID Application.
+2. Update the stale Team ID reference in `docs/luminare-appkit-ui-migration-plan.md:348`.
+3. Add the four Apple secrets — **none of them currently exist** (verified with
+   `gh secret list --repo Ajanth/scry-tab` and `--env production`):
+
+   ```bash
+   gh secret set APPLE_ID              --repo Ajanth/scry-tab   # Apple ID email
+   gh secret set APPLE_PASSWORD        --repo Ajanth/scry-tab   # app-specific password
+   gh secret set APPLE_TEAM_ID         --repo Ajanth/scry-tab   # 10-char team ID
+   gh secret set APPLE_P12_CERTIFICATE --repo Ajanth/scry-tab   # base64 of the .p12
+   ```
+
+> **This choice is permanent.** Per `AGENTS.md`, Developer ID, Team ID, and bundle ID must stay
+> stable forever: Keychain items are bound to the code signature, so rotating any of them
+> orphans every user's stored licence key and forces mass re-activation. Decide once, now,
+> while there are zero users.
+
+---
+
+## 🔴 B2 — CI cannot run
+
+Two independent reasons.
+
+**Wrong trigger.** `.github/workflows/ci_cd.yml` fires on `push` to `master`. The repo uses
+`main` and `develop`, so the pipeline has never executed. Deliberately left unchanged: editing
+it arms a live release on the next push to that branch. Change it when you intend to release.
+
+**No runner.** GitHub-hosted macOS minutes are unavailable on this private repo. Options, in
+increasing order of effort:
+
+| Option | Notes |
+| --- | --- |
+| Run the pipeline locally | The steps are plain scripts; works today, no infrastructure. Best while releases are rare. |
+| [Tart](https://tart.run) macOS VM + self-hosted runner | Isolates the build from the interactive Mac. Apple's licence permits 2 VMs per host. Prefer `--ephemeral` so the signing keychain never persists between jobs. |
+| Make the development repo public | GitHub-hosted macOS runners become free. Source is published per release anyway under GPL — this is a policy decision, not a technical one. |
+
+Docker cannot help: macOS builds require real macOS, and Docker on Mac runs a Linux VM.
+
+---
+
+## 🔴 B3 — Nothing is pushed
+
+Both repos have local commits only.
+
+```
+scry-tab      chore/gpl-3-compliance   4 commits ahead   (e03a55c 659f5c7 98526a3 3fa450b)
+scrytab-cms   main                     2 commits ahead   (d94c85e 2bc094d)
+```
+
+Pushing `scrytab-cms` triggers a Cloudflare Pages deploy. **Verify immediately afterwards** —
+these paths are currently unreachable and several other blockers depend on them:
+
+```bash
+curl -sI https://scrytab.pages.dev/appcast.xml | head -1     # must be 200 and XML, not the SPA shell
+curl -s  https://scrytab.pages.dev/appcast.xml | head -1     # must start with <?xml
+curl -sI https://scrytab.pages.dev/source      | head -1     # must be 200
+curl -sI https://scrytab.pages.dev/privacy     | head -1     # must be 200
+```
+
+`/appcast.xml` previously returned `index.html` with a 200 status, which silently breaks every
+Sparkle update check. A 200 alone is not proof; check the body.
+
+---
+
+## 🔴 B4 — Mac App Store is closed
+
+GPL-3.0 is incompatible with the App Store's DRM and device limits (the VLC precedent). There
+is no workaround short of relicensing, which needs consent from every AltTab contributor whose
+code survives.
+
+`mac-app-store-publishing.md` in the repo root describes a path that is no longer available.
+Treat it as historical, or delete it.
+
+---
+
+## 🟡 B5 — First-run has never been tested on a clean machine
+
+Depends on B1 and a real notarized DMG. Test on a Mac that has never run ScryTab:
+
+- Gatekeeper accepts the DMG without a right-click → Open workaround
+- `MoveToApplicationsFolder.promptIfNeeded()` (`src/App.swift:603`) handles translocation when
+  the app is launched from `~/Downloads`
+- The accessibility permission flow completes, including the guide window
+- The first-run crash-report consent prompt appears exactly once and defaults to off
+- Uninstall (Settings → General) removes the LaunchAgent and both preference suites
+
+---
+
+## 🟡 B6 — Sparkle runtime verification is unproven
+
+The keypair and signing path are verified (see [D5](#done)), but the runtime path — the app
+fetching a real appcast and validating it against `SUPublicEDKey` — cannot be exercised until a
+release exists. Covered by the dry run below.
+
+---
+
+## 🟡 B7 — Privacy contact is a GitHub issue
+
+`/privacy` routes privacy and erasure requests to the public issue tracker. GDPR expects a
+contact route; a public tracker is a poor one for personal-data requests. Add a real address
+once a domain is decided, and update `public/privacy/index.html` in `scrytab-cms`.
+
+---
+
+## 🟡 B8 — Uncommitted work in both repos
+
+Not blockers by themselves, but they will be swept into someone's commit if ignored.
+
+- `scry-tab`: `src/macos/AXCallScheduler.swift` — a real lock fix around the `unresponsivePids`
+  read, deliberately left unstaged as unrelated to the licensing work.
+- `scrytab-cms`: `src/components/sections/hero.tsx` and the `heroVariants` block in
+  `src/content/landing.ts` — an in-progress rotating-hero feature.
+
+---
+
+## First release: dry run
+
+Cut `v0.0.2` with no announcement. It exercises every unproven path at once, while there are no
+users to break.
+
+1. Push both repos; verify the URLs in [B3](#-b3--nothing-is-pushed).
+2. Run the pipeline (locally or on a runner). It must produce, in `DerivedData/Build/Products/Release`:
+   - `ScryTab-<version>.dmg` — signed, notarized, stapled
+   - `ScryTab-<version>.zip` — what Sparkle downloads
+   - `ScryTab-<version>-source.tar.gz` — GPL Corresponding Source
+3. Confirm all three attach to a release on **`Ajanth/scrytab-public`**, not the private repo.
+4. Confirm `scrytab-cms` received the updated `public/appcast.xml` and redeployed.
+5. Install the DMG on a clean Mac and work through [B5](#-b5--first-run-has-never-been-tested-on-a-clean-machine).
+6. With v0.0.2 installed, cut v0.0.3 and confirm the in-app updater finds, verifies, downloads,
+   and installs it. This is the only real test of [B6](#-b6--sparkle-runtime-verification-is-unproven).
+
+`package_and_notarize_release.sh` self-checks with `spctl --assess` and `stapler validate`, and
+`package_source_tarball.sh` fails if the archive is missing build inputs or contains
+`codesign.p12`, `codesign.key`, `codesign.crt`, or `config/local.xcconfig`. Do not bypass either.
+
+---
+
+## Done
+
+Recorded so it is not re-litigated or accidentally reverted.
+
+- **D1 — GPL-3.0 compliance** (`e03a55c`). ScryTab is an AltTab fork that had been relicensed
+  proprietary, which was not permissible. `LICENCE.md` is verbatim GPL-3.0 again; attribution
+  restored across README, acknowledgments, and contributors; `NSHumanReadableCopyright`
+  localized in 7 languages; the About pane satisfies GPL-3.0 §0 Appropriate Legal Notices.
+  `docs/contributors.md` has a frozen `## Built AltTab` section that
+  `scripts/update_readme_and_website.sh` must never overwrite.
+- **D2 — Releases moved to public URLs** (`659f5c7`). Everything pointed at the private repo and
+  would have 404'd. Releases now publish to `Ajanth/scrytab-public`; the appcast enclosure and
+  release notes follow; `update_website.sh` pushes the signed appcast into `scrytab-cms`.
+- **D3 — Uninstall** (`98526a3`). Deleting the app orphaned
+  `~/Library/LaunchAgents/com.perpro.scry-tab.plist`. `UninstallPlan` resolves the removal set;
+  `Uninstaller` clears both defaults suites before trashing their files.
+- **D4 — Notarized DMG** (`98526a3`). The zip stays for Sparkle; the DMG is what the website links.
+- **D5 — Sparkle signing key** (`3fa450b`). `SUPublicEDKey` was byte-identical to AltTab's — we
+  never held the private key, so every update would have failed verification. Regenerated with
+  Sparkle 2.9.1's `generate_keys`; new public key `WVns7P3X+/bnZRQrE26fiVAMay0mie418X+hHVKlX6w=`.
+  Separately, `update_appcast.sh` used `sign_update -s`, removed in Sparkle 2.9, so appcast
+  signing was broken regardless of key. Verified by round-trip signing plus negative controls
+  (tampered payload and foreign key both rejected).
+- **D6 — Website** (`d94c85e`, `2bc094d`). `/source` GPL offer, `/privacy`, `appcast.xml` as a
+  real static asset, download CTA repointed, source as a peer download button.
+- **D7 — `scrytab-public` metadata.** Description, homepage, README rewritten; GPL-3.0 added and
+  detected by GitHub.
+- **D8 — CI secrets.** `SPARKLE_ED_PRIVATE_KEY`, `PUBLIC_REPO_TOKEN`, `WEBSITE_DISPATCH_TOKEN`
+  are set. `PUBLIC_REPO_TOKEN` needs `contents: write` on `scrytab-public`;
+  `WEBSITE_DISPATCH_TOKEN` needs `contents: write` on `scrytab-cms`.
+
+> **Back up the Sparkle private key.** It lives in the login Keychain and in the
+> `SPARKLE_ED_PRIVATE_KEY` secret. Lose both and you cannot ship updates to anyone who already
+> installed ScryTab — they would each need a manual reinstall. It is the one secret with no
+> recovery path.
