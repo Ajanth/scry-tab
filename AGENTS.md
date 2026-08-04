@@ -1,3 +1,12 @@
+# Release readiness
+- `docs/RELEASE_BLOCKERS.md` is the single source of truth for what stands between `develop` and
+  the first public download. Read it before touching signing, notarization, Sparkle, the appcast,
+  release packaging, licensing, or the website, and update it in the same commit that clears or
+  adds a blocker.
+- ScryTab is a GPL-3.0 derivative of AltTab. Attribution, the `LICENCE.md` text, the About pane's
+  legal notices, and the source-code offer are licence obligations, not decoration — do not
+  remove or weaken them. The Mac App Store is permanently unavailable as a consequence.
+
 # macOS development
 - Don't use xcode directly to develop
 - Use pure swift 5.8 code to make the app. No interface builder. No SwiftUI.
