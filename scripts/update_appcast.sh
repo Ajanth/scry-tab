@@ -13,9 +13,9 @@ echo "
       <title>Version $version</title>
       <pubDate>$date</pubDate>
       <sparkle:minimumSystemVersion>$minimumSystemVersion</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://scrytab.pages.dev/changelog-bare</sparkle:releaseNotesLink>
+      <sparkle:releaseNotesLink>https://github.com/Ajanth/scrytab-public/releases/tag/v$version</sparkle:releaseNotesLink>
       <enclosure
-        url=\"https://github.com/Ajanth/scry-tab/releases/download/v$version/$zipName\"
+        url=\"https://github.com/Ajanth/scrytab-public/releases/download/v$version/$zipName\"
         sparkle:version=\"$version\"
         sparkle:shortVersionString=\"$version\"
         $edSignatureAndLength
