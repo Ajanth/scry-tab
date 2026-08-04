@@ -81,6 +81,10 @@
 		5F7B6AFC2F3BAB98003E25E8 /* StatusIconsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7B6AFB2F3BAB98003E25E8 /* StatusIconsView.swift */; };
 		5F882F382EC3C63400110A9F /* CustomRecorderControlTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0C8DC2A355E29516DD2FAF /* CustomRecorderControlTestable.swift */; };
 		5F906A342F16A18500B99924 /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F906A332F16A18000B99924 /* Screens.swift */; };
+		UNST01000000000000000011 /* Uninstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNST01000000000000000001 /* Uninstaller.swift */; };
+		UNSP01000000000000000011 /* UninstallPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNSP01000000000000000001 /* UninstallPlan.swift */; };
+		UNSP01000000000000000012 /* UninstallPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNSP01000000000000000001 /* UninstallPlan.swift */; };
+		UNSP01000000000000000013 /* UninstallPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNSP01000000000000000002 /* UninstallPlanTests.swift */; };
 		5FA002000000000000000019 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000019 /* LoginItem.swift */; };
 		5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000020 /* ShortcutConfiguration.swift */; };
 		5FA1E0B22F50000100A1A1A1 /* PreferencesEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA1E0B12F50000100A1A1A1 /* PreferencesEvents.swift */; };
@@ -406,6 +410,10 @@
 		5F791E4A2F1C65E100B6419C /* ApplicationDiscriminator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDiscriminator.swift; sourceTree = "<group>"; };
 		5F7B6AFB2F3BAB98003E25E8 /* StatusIconsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconsView.swift; sourceTree = "<group>"; };
 		5F906A332F16A18000B99924 /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
+		UNST01000000000000000001 /* Uninstaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uninstaller.swift; sourceTree = "<group>"; };
+		UNSP01000000000000000001 /* UninstallPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UninstallPlan.swift; sourceTree = "<group>"; };
+		UNSP01000000000000000002 /* UninstallPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UninstallPlanTests.swift; sourceTree = "<group>"; };
+		UNSP01000000000000000003 /* UninstallPlanSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = UninstallPlanSpecs.md; sourceTree = "<group>"; };
 		5FA001000000000000000019 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		5FA001000000000000000020 /* ShortcutConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutConfiguration.swift; sourceTree = "<group>"; };
 		5FA1E0B12F50000100A1A1A1 /* PreferencesEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesEvents.swift; sourceTree = "<group>"; };
@@ -986,6 +994,10 @@
 			children = (
 				D04BA7C6F2519091717F4B4E /* SystemPermissions.swift */,
 				5FA001000000000000000019 /* LoginItem.swift */,
+				UNST01000000000000000001 /* Uninstaller.swift */,
+				UNSP01000000000000000001 /* UninstallPlan.swift */,
+				UNSP01000000000000000002 /* UninstallPlanTests.swift */,
+				UNSP01000000000000000003 /* UninstallPlanSpecs.md */,
 				AA0C8A000000000000000001 /* AXCallScheduler.swift */,
 				AA0C8A0000000000000000B1 /* CGSCallScheduler.swift */,
 				AA0C8A0000000000000000B2 /* ProcessCallScheduler.swift */,
@@ -1701,6 +1713,8 @@
 				D04BAC01A55E771D0000H013 /* AccessibilitySettingsGuideTrackingTests.swift in Sources */,
 				MSIB01000000000000000012 /* MenubarStatusIcon.swift in Sources */,
 				MSIB01000000000000000013 /* MenubarStatusIconTests.swift in Sources */,
+				UNSP01000000000000000012 /* UninstallPlan.swift in Sources */,
+				UNSP01000000000000000013 /* UninstallPlanTests.swift in Sources */,
 				5EA8E110000000000000DA03 /* DragAndDropResolver.swift in Sources */,
 				5EA8E110000000000000DA12 /* DragAndDropResolverTests.swift in Sources */,
 				7A5600000000000000000012 /* TilePresentationResolver.swift in Sources */,
@@ -1870,6 +1884,8 @@
 				5F21C9E42C6E94700091F72F /* CustomizeStyleSheet.swift in Sources */,
 				D04BA1621718FF26F8D5E75D /* CustomRecorderControl.swift in Sources */,
 				5FA002000000000000000019 /* LoginItem.swift in Sources */,
+				UNST01000000000000000011 /* Uninstaller.swift in Sources */,
+				UNSP01000000000000000011 /* UninstallPlan.swift in Sources */,
 				5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */,
 				D04BA1637E125D38546C26E2 /* StackView.swift in Sources */,
 				D04BA7B8D599E1A7A27FF5AE /* AcknowledgmentsTab.swift in Sources */,

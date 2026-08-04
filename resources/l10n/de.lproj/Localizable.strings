@@ -160,6 +160,7 @@
 "Screen including menu bar" = "Bildschirm mit der Menüleiste";
 "Screen including mouse" = "Bildschirm unter dem Mauszeiger";
 "Screen showing ScryTab" = "Bildschirm mit ScryTab";
+"ScryTab and its settings will be moved to the Trash, and it will no longer start at login. You can’t undo this action from within the app." = "ScryTab und seine Einstellungen werden in den Papierkorb verschoben und ScryTab startet nicht mehr bei der Anmeldung. Diese Aktion kann in der App nicht rückgängig gemacht werden.";
 "ScryTab needs accessibility permission" = "ScryTab benötigt Zugriff auf Bedienungshilfen";
 "ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTab nutzt Bedienungshilfen, um Fenster zu fokussieren, nachdem Sie den Kurzbefehl loslassen.";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab kennzeichnet minimierte oder Vollbildfenster mit einem Statussymbol.";
@@ -211,6 +212,9 @@
 "Trigger" = "Auslöser";
 "Unassign existing shortcut and continue" = "Bestehendes Tastenkürzel freigeben und fortfahren";
 "Unavailable application" = "App nicht verfügbar";
+"Uninstall" = "Deinstallieren";
+"Uninstall ScryTab?" = "ScryTab deinstallieren?";
+"Uninstall ScryTab…" = "ScryTab deinstallieren…";
 "Updates policy" = "Richtlinie für Updates";
 "Usage" = "Nutzung";
 "Version" = "Version";

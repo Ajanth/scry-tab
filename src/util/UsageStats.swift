@@ -1,5 +1,7 @@
 struct UsageStats {
-    private static let defaults = UserDefaults(suiteName: "\(App.bundleIdentifier).usage")!
+    /// Suffix owned by `UninstallPlan`, so uninstall clears the same suite this writes to.
+    static let defaultsSuiteName = "\(App.bundleIdentifier).\(UninstallPlan.usageDefaultsSuiteSuffix)"
+    private static let defaults = UserDefaults(suiteName: defaultsSuiteName)!
     private static let writeQueue = DispatchQueue(label: "UsageStats.writeQueue", qos: .utility)
     private static let maxAge: TimeInterval = 365 * 24 * 3600
     private static let allKeys = ["triggers", "searches"]

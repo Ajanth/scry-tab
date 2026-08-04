@@ -160,6 +160,7 @@
 "Screen including menu bar" = "Экран со строкой меню";
 "Screen including mouse" = "Экран с указателем мыши";
 "Screen showing ScryTab" = "Экран, где показан ScryTab";
+"ScryTab and its settings will be moved to the Trash, and it will no longer start at login. You can’t undo this action from within the app." = "ScryTab и его настройки будут перемещены в Корзину, и он больше не будет запускаться при входе. Это действие нельзя отменить из приложения.";
 "ScryTab needs accessibility permission" = "ScryTab требуется разрешение Универсального доступа";
 "ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTab использует Универсальный доступ, чтобы активировать окна после отпускания сочетания клавиш.";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab покажет значок состояния, если окно сейчас свёрнуто или открыто в полноэкранном режиме.";
@@ -211,6 +212,9 @@
 "Trigger" = "Активация";
 "Unassign existing shortcut and continue" = "Снять текущее сочетание и продолжить";
 "Unavailable application" = "Приложение недоступно";
+"Uninstall" = "Удалить";
+"Uninstall ScryTab?" = "Удалить ScryTab?";
+"Uninstall ScryTab…" = "Удалить ScryTab…";
 "Updates policy" = "Политика обновлений";
 "Usage" = "Использование";
 "Version" = "Версия";

@@ -160,6 +160,7 @@
 "Screen including menu bar" = "含菜单栏的屏幕";
 "Screen including mouse" = "含指针的屏幕";
 "Screen showing ScryTab" = "显示 ScryTab 的屏幕";
+"ScryTab and its settings will be moved to the Trash, and it will no longer start at login. You can’t undo this action from within the app." = "ScryTab 及其设置将被移到废纸篓，并且不再在登录时启动。此操作无法在应用内撤销。";
 "ScryTab needs accessibility permission" = "ScryTab 需要辅助功能权限";
 "ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTab 使用辅助功能，以便在你松开快捷键后聚焦窗口。";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "若窗口已最小化或处于全屏，ScryTab 会用状态图标标示。";
@@ -211,6 +212,9 @@
 "Trigger" = "触发方式";
 "Unassign existing shortcut and continue" = "取消现有快捷键并继续";
 "Unavailable application" = "应用不可用";
+"Uninstall" = "卸载";
+"Uninstall ScryTab?" = "卸载 ScryTab？";
+"Uninstall ScryTab…" = "卸载 ScryTab…";
 "Updates policy" = "更新策略";
 "Usage" = "使用统计";
 "Version" = "版本";

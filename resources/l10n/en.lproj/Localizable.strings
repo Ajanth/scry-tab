@@ -160,6 +160,7 @@
 "Screen including menu bar" = "Screen including menu bar";
 "Screen including mouse" = "Screen including mouse";
 "Screen showing ScryTab" = "Screen showing ScryTab";
+"ScryTab and its settings will be moved to the Trash, and it will no longer start at login. You can’t undo this action from within the app." = "ScryTab and its settings will be moved to the Trash, and it will no longer start at login. You can’t undo this action from within the app.";
 "ScryTab needs accessibility permission" = "ScryTab needs accessibility permission";
 "ScryTab uses Accessibility to focus windows after you release the shortcut." = "ScryTab uses Accessibility to focus windows after you release the shortcut.";
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
@@ -211,6 +212,9 @@
 "Trigger" = "Trigger";
 "Unassign existing shortcut and continue" = "Unassign existing shortcut and continue";
 "Unavailable application" = "Unavailable application";
+"Uninstall" = "Uninstall";
+"Uninstall ScryTab?" = "Uninstall ScryTab?";
+"Uninstall ScryTab…" = "Uninstall ScryTab…";
 "Updates policy" = "Updates policy";
 "Usage" = "Usage";
 "Version" = "Version";
