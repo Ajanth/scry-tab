@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -exu
+set -euo pipefail
 
 # Inject CI values via the same xcconfig override mechanism used locally.
 # Xcode substitutes $(VAR) refs into Info.plist at build time.

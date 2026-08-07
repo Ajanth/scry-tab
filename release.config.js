@@ -1,4 +1,5 @@
 module.exports = {
+    branch: 'main',
     plugins: [
         ['@semantic-release/commit-analyzer', {
             'preset': 'angular',

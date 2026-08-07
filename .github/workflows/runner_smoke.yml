@@ -1,0 +1,17 @@
+name: Self-hosted runner smoke test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macOS, ARM64, scry-tab-release]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - run: scripts/print_env.sh
+      - run: test "$(uname -m)" = arm64

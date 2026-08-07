@@ -1,68 +1,75 @@
+name: Release
+
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scry-tab-release
+  cancel-in-progress: false
+
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-  SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-  SENTRY_URL: ${{ secrets.SENTRY_URL }}
-  APPLE_ID: ${{ secrets.APPLE_ID }}
-  APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-  APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-  APPLE_P12_CERTIFICATE: ${{ secrets.APPLE_P12_CERTIFICATE }}
-  SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
-  # `contents: write` on Ajanth/scrytab-public, where releases are published
-  PUBLIC_REPO_TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }}
-  GITHUB_EVENT_BEFORE: ${{ github.event.before }}
-  GITHUB_EVENT_AFTER: ${{ github.event.after }}
+  DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
   BUILD_DIR: ${{ github.workspace }}
   XCODE_BUILD_PATH: DerivedData/Build/Products/Release
   VERSION_FILE: VERSION.txt
   APP_NAME: ScryTab
+
 jobs:
   build:
-    runs-on: macos-15 # all options: https://github.com/actions/runner-images/tree/main
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macOS, ARM64, scry-tab-release]
     environment: production
+    timeout-minutes: 90
     steps:
-#      - env:
-#          GITHUB_CONTEXT: ${{ toJSON(github) }}
-#        run: echo "$GITHUB_CONTEXT"
-      - id: pre-checkout
-        env:
-          COMMITS: ${{ toJson(github.event.commits) }}
-        run: |
-          if [[ "${{ github.event_name }}" == "push" ]]; then
-            COUNT=$(( $(echo "$COMMITS" | jq length) + 30 ))
-          else
-            COUNT=1
-          fi
-          echo "fetch-depth=$COUNT" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v6
         with:
-          fetch-depth: ${{ steps.pre-checkout.outputs.fetch-depth }}
+          fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
           node-version: 18
           cache: 'npm'
-      - run: sudo xcode-select -s /Applications/Xcode_26.0.1.app/Contents/Developer
       - run: scripts/print_env.sh
       - run: npm ci
-      - run: npx commitlint --from "$GITHUB_EVENT_BEFORE" --to "$GITHUB_EVENT_AFTER" --verbose
+      - name: Validate release commits
+        run: |
+          previousTag="$(git describe --tags --abbrev=0 HEAD^)"
+          npx commitlint --from "$previousTag" --to HEAD --verbose
       - run: scripts/ensure_generated_files_are_up_to_date.sh
       - run: scripts/determine_next_version.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: scripts/replace_environment_variables_in_app.sh
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       - run: scripts/codesign/setup_ci_master.sh
+        env:
+          APPLE_P12_CERTIFICATE: ${{ secrets.APPLE_P12_CERTIFICATE }}
       - run: scripts/run_tests.sh
       - run: scripts/build_app.sh
       - run: scripts/package_and_notarize_release.sh
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
       - run: scripts/package_source_tarball.sh
       - run: scripts/upload_symbols_to_sentry.sh
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          SENTRY_URL: ${{ secrets.SENTRY_URL }}
       - run: scripts/update_appcast.sh
+        env:
+          SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
       - run: scripts/update_readme_and_website.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - id: set_release_info
         run: scripts/extract_latest_changelog.sh
       # Releases are published to the public repo: this one is private, so its release assets
@@ -81,3 +88,6 @@ jobs:
       - run: scripts/update_website.sh
         env:
           GH_TOKEN: ${{ secrets.WEBSITE_DISPATCH_TOKEN }}
+      - name: Remove signing material
+        if: always()
+        run: scripts/codesign/cleanup_ci_release.sh

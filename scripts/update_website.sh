@@ -9,7 +9,7 @@
 #
 # $GH_TOKEN needs `contents: write` on the website repo.
 
-set -exu
+set -euo pipefail
 
 repo="Ajanth/scrytab-cms"
 path="public/appcast.xml"

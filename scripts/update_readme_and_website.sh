@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -exu
+set -euo pipefail
 
 github_api_request() {
   local url="$1"

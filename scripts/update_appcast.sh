@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -exu
+set -euo pipefail
 
 version="$(cat "$VERSION_FILE")"
 date="$(date +'%a, %d %b %Y %H:%M:%S %z')"

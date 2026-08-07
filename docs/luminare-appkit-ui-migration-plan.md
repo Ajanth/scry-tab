@@ -345,7 +345,7 @@ The switcher is not part of this slice and remains unchanged.
 - Retain and update material views/layers in place rather than rebuilding view
   trees on appearance changes.
 - Do not touch switcher summon, selection, cycling, allocation, or animation paths.
-- Preserve bundle ID `com.perpro.scry-tab`, Team ID `QXD7GW8FHY`, Developer ID,
+- Preserve bundle ID `com.perpro.scry-tab`, Team ID `8M242ZY4BY`, Developer ID,
   entitlements, and signing behavior.
 - Do not change license/Keychain behavior or introduce `SecKeychain*` or
   `kSecAccessControl`.

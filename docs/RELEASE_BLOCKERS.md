@@ -11,32 +11,21 @@ Legend: 🔴 blocks launch · 🟡 should fix before launch · ✅ done
 
 ---
 
-## 🔴 B1 — Developer ID is still AltTab's
+## ✅ B1 — Developer ID signing is configured
 
-`config/release.xcconfig:5` reads:
+`config/release.xcconfig:5` uses ScryTab's Developer ID Application identity:
 
 ```
-CODE_SIGN_IDENTITY = Developer ID Application: Louis Pontoise (QXD7GW8FHY)
+CODE_SIGN_IDENTITY = Developer ID Application: Ajanth Kathirkamu (8M242ZY4BY)
 ```
 
-That identity belongs to AltTab's author. Notarization cannot succeed with a certificate we
-do not hold, so **no distributable build can be produced at all** until this changes.
-
-*Blocked on:* Apple Developer Program approval (pending as of 2026-08-04).
-
-When approved:
-
-1. Set `CODE_SIGN_IDENTITY` in `config/release.xcconfig` to your own Developer ID Application.
-2. Update the stale Team ID reference in `docs/luminare-appkit-ui-migration-plan.md:348`.
-3. Add the four Apple secrets — **none of them currently exist** (verified with
-   `gh secret list --repo Ajanth/scry-tab` and `--env production`):
-
-   ```bash
-   gh secret set APPLE_ID              --repo Ajanth/scry-tab   # Apple ID email
-   gh secret set APPLE_PASSWORD        --repo Ajanth/scry-tab   # app-specific password
-   gh secret set APPLE_TEAM_ID         --repo Ajanth/scry-tab   # 10-char team ID
-   gh secret set APPLE_P12_CERTIFICATE --repo Ajanth/scry-tab   # base64 of the .p12
-   ```
+The certificate and its private key are installed in the login Keychain, and
+`security find-identity -v -p codesigning` reports the identity as valid. The stale Team ID
+reference in `docs/luminare-appkit-ui-migration-plan.md` is updated. `APPLE_ID`,
+`APPLE_PASSWORD`, `APPLE_TEAM_ID`, and `APPLE_P12_CERTIFICATE` exist in the GitHub `production`
+environment (verified by secret name on 2026-08-07; GitHub does not expose their values). A local
+Release build completed with the Developer ID identity, and `codesign --verify --deep --strict`
+accepted the resulting app with bundle ID `com.perpro.scry-tab` and Team ID `8M242ZY4BY`.
 
 > **This choice is permanent.** Per `AGENTS.md`, Developer ID, Team ID, and bundle ID must stay
 > stable forever: Keychain items are bound to the code signature, so rotating any of them
@@ -45,34 +34,44 @@ When approved:
 
 ---
 
-## 🔴 B2 — CI cannot run
+## 🔴 B2 — Self-hosted runner needs a smoke test
 
-Two independent reasons.
+The repository-scoped `scrytab-local` runner is registered and online with the labels
+`self-hosted`, `macOS`, `ARM64`, and `scry-tab-release`. It runs headlessly as its own per-user
+launchd service with a dedicated installation and work directory, separate from the Convobee
+runners. Self-hosted jobs do not consume GitHub-hosted runner minutes.
 
-**Wrong trigger.** `.github/workflows/ci_cd.yml` fires on `push` to `master`. The repo uses
-`main` and `develop`, so the pipeline has never executed. Deliberately left unchanged: editing
-it arms a live release on the next push to that branch. Change it when you intend to release.
+The release workflow is manual-only, restricted to `main`, and targets the dedicated runner label.
+It uses `DEVELOPER_DIR` instead of changing the Mac's global Xcode selection, exposes secrets only
+to the steps that need them, imports the Developer ID into a per-run keychain, and deletes both the
+temporary keychain and generated secret-bearing files in an `always()` cleanup step.
 
-**No runner.** GitHub-hosted macOS minutes are unavailable on this private repo. Options, in
-increasing order of effort:
+An annotated `v0.0.1` baseline tag points to pre-signing commit `b3454de`, so semantic-release can
+produce the intended `0.0.2` patch release. B2 clears after the no-secret runner smoke workflow is
+committed, pushed, manually dispatched, and observed succeeding on `scrytab-local`.
+
+Alternatives remain available if release frequency grows:
 
 | Option | Notes |
 | --- | --- |
-| Run the pipeline locally | The steps are plain scripts; works today, no infrastructure. Best while releases are rare. |
-| [Tart](https://tart.run) macOS VM + self-hosted runner | Isolates the build from the interactive Mac. Apple's licence permits 2 VMs per host. Prefer `--ephemeral` so the signing keychain never persists between jobs. |
+| [Tart](https://tart.run) macOS VM + ephemeral runner | Stronger host isolation, but the Mac currently has only about 20 GB free; reserve roughly 100–150 GB before adding macOS, Xcode, a VM clone, and build output. |
 | Make the development repo public | GitHub-hosted macOS runners become free. Source is published per release anyway under GPL — this is a policy decision, not a technical one. |
 
-Docker cannot help: macOS builds require real macOS, and Docker on Mac runs a Linux VM.
+OrbStack runs Convobee's Linux service containers, while its GitHub runner listeners are native
+macOS processes. A Linux runner container cannot execute Xcode, codesign, or Apple's notarization
+tools, so ScryTab's release job must run on macOS.
 
 ---
 
-## 🔴 B3 — Nothing is pushed
+## 🔴 B3 — Release changes are not fully pushed
 
-Both repos have local commits only.
+The app repo was synchronized before the signing configuration changed; the signing and release
+checklist updates are now local and uncommitted. The website repo still has two local commits plus
+uncommitted rotating-hero work.
 
 ```
-scry-tab      chore/gpl-3-compliance   4 commits ahead   (e03a55c 659f5c7 98526a3 3fa450b)
-scrytab-cms   main                     2 commits ahead   (d94c85e 2bc094d)
+scry-tab      main   local signing/checklist changes
+scrytab-cms   main   2 commits ahead (d94c85e 2bc094d), plus uncommitted hero changes
 ```
 
 Pushing `scrytab-cms` triggers a Cloudflare Pages deploy. **Verify immediately afterwards** —

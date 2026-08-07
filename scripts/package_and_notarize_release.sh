@@ -9,7 +9,7 @@
 # machine is often offline-hostile (corporate proxies, captive wifi), and a stapled ticket lets
 # Gatekeeper approve without reaching Apple.
 
-set -exu
+set -euo pipefail
 
 version="$(cat "$VERSION_FILE")"
 appFile="$APP_NAME.app"
@@ -28,7 +28,7 @@ notarize() {
     --team-id "$APPLE_TEAM_ID" \
     "$artifact" \
     --wait --timeout 15m 2>&1 |
-    tee /dev/tty |
+    tee /dev/stderr |
     awk -F ': ' '/  status:/ { print $2; }')
   if [[ $requestStatus != "Accepted" ]]; then exit 1; fi
 }
