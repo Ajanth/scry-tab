@@ -1,0 +1,38 @@
+name: Notarization status
+
+on:
+  workflow_dispatch:
+    inputs:
+      submission_id:
+        description: Apple notarization submission UUID
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macOS, ARM64, scry-tab-release]
+    environment: production
+    timeout-minutes: 10
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+    steps:
+      - name: Query Apple notarization status
+        env:
+          NOTARY_SUBMISSION_ID: ${{ inputs.submission_id }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          if [[ ! "$NOTARY_SUBMISSION_ID" =~ ^[0-9a-fA-F-]{36}$ ]]; then
+            echo "Invalid notarization submission ID" >&2
+            exit 1
+          fi
+          xcrun notarytool info "$NOTARY_SUBMISSION_ID" \
+            --apple-id "$APPLE_ID" \
+            --password "$APPLE_PASSWORD" \
+            --team-id "$APPLE_TEAM_ID" \
+            --output-format json

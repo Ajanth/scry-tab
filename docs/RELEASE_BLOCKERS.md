@@ -140,6 +140,22 @@ The `scry-tab` half is cleared: the `AXCallScheduler` lock fix is committed (see
 
 ---
 
+## 🔴 B9 — First notarization exceeded the original CI wait limit
+
+[Release run 31218768138](https://github.com/Ajanth/scry-tab/actions/runs/31218768138) passed tests
+and the signed Release build, then uploaded `ScryTab-0.0.2.zip` to Apple as submission
+`903a9301-1388-45cf-889b-8bca310693d5`. Apple kept the submission `In Progress` for the full
+15-minute wait, so `notarytool` exited 124 before any source archive, tag, public release, or
+appcast was published. The `always()` cleanup succeeded and no CI keychain, temporary `.p12`, or
+generated signing config remained on the host.
+
+The per-artifact wait is now 45 minutes and the release job ceiling is 120 minutes. A manual,
+read-only notarization-status workflow can query the original submission without rebuilding or
+publishing. B9 clears after Apple accepts a complete rerun and both the app and DMG pass stapling
+and Gatekeeper validation.
+
+---
+
 ## First release: dry run
 
 Cut `v0.0.2` with no announcement. It exercises every unproven path at once, while there are no

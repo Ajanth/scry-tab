@@ -22,7 +22,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: [self-hosted, macOS, ARM64, scry-tab-release]
     environment: production
-    timeout-minutes: 90
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v6
         with:

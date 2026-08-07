@@ -27,7 +27,7 @@ notarize() {
     --password "$APPLE_PASSWORD" \
     --team-id "$APPLE_TEAM_ID" \
     "$artifact" \
-    --wait --timeout 15m 2>&1 |
+    --wait --timeout 45m 2>&1 |
     tee /dev/stderr |
     awk -F ': ' '/  status:/ { print $2; }')
   if [[ $requestStatus != "Accepted" ]]; then exit 1; fi
