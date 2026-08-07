@@ -65,24 +65,23 @@ tools, so ScryTab's release job must run on macOS.
 
 ---
 
-## 🔴 B3 — Release changes are not fully pushed
+## ✅ B3 — Release repositories and public URLs are ready
 
 The app repo's signing, release workflow, runner, and baseline-tag changes are pushed to `main`.
-The website repo still has two local commits plus uncommitted rotating-hero work.
+The website's release-link, source-offer, appcast, and privacy commits are also pushed. The local
+rotating-hero work remains uncommitted and was not included in the deployment.
 
 ```
 scry-tab      main   synchronized with origin/main
-scrytab-cms   main   2 commits ahead (d94c85e 2bc094d), plus uncommitted hero changes
+scrytab-cms   main   synchronized with origin/main; unrelated hero changes remain local
 ```
 
-Pushing `scrytab-cms` triggers a Cloudflare Pages deploy. **Verify immediately afterwards** —
-these paths are currently unreachable and several other blockers depend on them:
+The Cloudflare Pages deployment was verified on 2026-08-07:
 
 ```bash
-curl -sI https://scrytab.pages.dev/appcast.xml | head -1     # must be 200 and XML, not the SPA shell
-curl -s  https://scrytab.pages.dev/appcast.xml | head -1     # must start with <?xml
-curl -sI https://scrytab.pages.dev/source      | head -1     # must be 200
-curl -sI https://scrytab.pages.dev/privacy     | head -1     # must be 200
+/appcast.xml   200 application/xml; first line starts with <?xml
+/source        200; first line starts with <!doctype html>
+/privacy       200; first line starts with <!doctype html>
 ```
 
 `/appcast.xml` previously returned `index.html` with a 200 status, which silently breaks every
@@ -90,14 +89,14 @@ Sparkle update check. A 200 alone is not proof; check the body.
 
 ---
 
-## 🔴 B4 — Mac App Store is closed
+## ✅ B4 — Direct-download distribution is confirmed
 
 GPL-3.0 is incompatible with the App Store's DRM and device limits (the VLC precedent). There
 is no workaround short of relicensing, which needs consent from every AltTab contributor whose
-code survives.
+code survives. ScryTab therefore ships exclusively as a notarized direct download.
 
 `mac-app-store-publishing.md` in the repo root describes a path that is no longer available.
-Treat it as historical, or delete it.
+Treat it as historical.
 
 ---
 
@@ -146,7 +145,7 @@ The `scry-tab` half is cleared: the `AXCallScheduler` lock fix is committed (see
 Cut `v0.0.2` with no announcement. It exercises every unproven path at once, while there are no
 users to break.
 
-1. Push both repos; verify the URLs in [B3](#-b3--nothing-is-pushed).
+1. Push both repos; verify the URLs in [B3](#b3--release-repositories-and-public-urls-are-ready).
 2. Run the pipeline (locally or on a runner). It must produce, in `DerivedData/Build/Products/Release`:
    - `ScryTab-<version>.dmg` — signed, notarized, stapled
    - `ScryTab-<version>.zip` — what Sparkle downloads
