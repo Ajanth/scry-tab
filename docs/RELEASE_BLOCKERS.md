@@ -34,7 +34,7 @@ accepted the resulting app with bundle ID `com.perpro.scry-tab` and Team ID `8M2
 
 ---
 
-## 🔴 B2 — Self-hosted runner needs a smoke test
+## ✅ B2 — Self-hosted release runner is operational
 
 The repository-scoped `scrytab-local` runner is registered and online with the labels
 `self-hosted`, `macOS`, `ARM64`, and `scry-tab-release`. It runs headlessly as its own per-user
@@ -47,8 +47,10 @@ to the steps that need them, imports the Developer ID into a per-run keychain, a
 temporary keychain and generated secret-bearing files in an `always()` cleanup step.
 
 An annotated `v0.0.1` baseline tag points to pre-signing commit `b3454de`, so semantic-release can
-produce the intended `0.0.2` patch release. B2 clears after the no-secret runner smoke workflow is
-committed, pushed, manually dispatched, and observed succeeding on `scrytab-local`.
+produce the intended `0.0.2` patch release. The no-secret runner smoke workflow completed on
+`scrytab-local` in 11 seconds on 2026-08-07
+([run 31217226134](https://github.com/Ajanth/scry-tab/actions/runs/31217226134)), including checkout,
+toolchain reporting, and the ARM64 assertion. The runner returned to online and idle afterwards.
 
 Alternatives remain available if release frequency grows:
 
@@ -65,12 +67,11 @@ tools, so ScryTab's release job must run on macOS.
 
 ## 🔴 B3 — Release changes are not fully pushed
 
-The app repo was synchronized before the signing configuration changed; the signing and release
-checklist updates are now local and uncommitted. The website repo still has two local commits plus
-uncommitted rotating-hero work.
+The app repo's signing, release workflow, runner, and baseline-tag changes are pushed to `main`.
+The website repo still has two local commits plus uncommitted rotating-hero work.
 
 ```
-scry-tab      main   local signing/checklist changes
+scry-tab      main   synchronized with origin/main
 scrytab-cms   main   2 commits ahead (d94c85e 2bc094d), plus uncommitted hero changes
 ```
 
