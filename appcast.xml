@@ -3,19 +3,5 @@
   <channel>
     <title>scry-tab</title>
     <language>en</language>
-
-    <item>
-      <title>Version 0.0.2</title>
-      <pubDate>Sat, 08 Aug 2026 07:23:32 +0200</pubDate>
-      <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.2</sparkle:releaseNotesLink>
-      <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.0.2/ScryTab-0.0.2.zip"
-        sparkle:version="0.0.2"
-        sparkle:shortVersionString="0.0.2"
-        sparkle:edSignature="oYgUOUbUtYC/5jdennGRXIBdayA8IMY9E4qNwDirNmdqiF0PbUPoIilk2Fa99oQutzoqODBE1vHiKjgBqxd7Aw==" length="5988250"
-        type="application/octet-stream"/>
-    </item>
-
   </channel>
 </rss>

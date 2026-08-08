@@ -65,33 +65,25 @@ tools, so ScryTab's release job must run on macOS.
 
 ---
 
-## 🔴 B3 — Public download URLs must be withdrawn or republished
+## ✅ B3 — Public download URLs are withdrawn until republished
 
 The public `v0.0.2` release and its public-repository tag were deliberately deleted on 2026-08-08;
-`Ajanth/scrytab-public` currently has no releases. The live website still advertises the withdrawn
-DMG, ZIP, and source archive, so its download and source links return 404. The live Sparkle appcast
-also still encloses the withdrawn ZIP. Remove those references or replace them with a corrected
-release before treating any public URL as ready.
+`Ajanth/scrytab-public` currently has no releases. Website commit `0cd8db3` removed every direct
+`v0.0.2` reference and introduced `/release.json` as the single website release manifest:
 
-The app repo's signing, release workflow, runner, and baseline-tag changes remain pushed to `main`.
-The website's earlier release-link, source-offer, appcast, and privacy commits are also pushed. The
-local landing-page copy and layout refresh remains uncommitted and is not included in the deployment.
+- the manifest has null `version`, `downloadUrl`, and `sourceUrl` values while no release exists;
+- landing-page download controls read the manifest and render disabled instead of linking to 404s;
+- `/source` exposes a direct Corresponding Source link only when the manifest names one; and
+- `/appcast.xml` is a valid empty Sparkle feed with no withdrawn enclosure.
 
-```
-scry-tab      main   synchronized with origin/main
-scrytab-cms   main   synchronized with origin/main; unrelated hero changes remain local
-```
+The release workflow now publishes the signed appcast and the DMG/source manifest after the public
+GitHub assets exist. Deleting a GitHub release does not mutate a static Cloudflare Pages deployment,
+so a future withdrawal must still clear both files; normal publication no longer requires editing
+version strings in three separate website files.
 
-Before the withdrawal, the Cloudflare Pages deployment was verified on 2026-08-07:
-
-```bash
-/appcast.xml   200 application/xml; first line starts with <?xml
-/source        200; first line starts with <!doctype html>
-/privacy       200; first line starts with <!doctype html>
-```
-
-`/appcast.xml` previously returned `index.html` with a 200 status, which silently breaks every
-Sparkle update check. A 200 alone is not proof; check the body.
+The live deployment was verified on 2026-08-08: the manifest contains three null values, the
+appcast parses as XML and has zero items, the source page and built landing script contain no
+`v0.0.2` or withdrawn asset URL, and GitHub reports zero public releases.
 
 ---
 
@@ -120,13 +112,13 @@ DMG on a Mac that has never run ScryTab:
 
 ---
 
-## 🔴 B6 — Live Sparkle appcast advertises a withdrawn release
+## 🟡 B6 — Sparkle runtime update remains unproven
 
-The keypair and signing path remain verified (see [D5](#done)), and the withdrawn `v0.0.2`
-signature previously verified against its ZIP. However, the live appcast still encloses that ZIP,
-whose URL now returns 404. Publish an empty appcast or a corrected release immediately. The runtime
-path — an installed app fetching, validating, downloading, and installing an update — remains
-unproven and must be exercised with two clean future releases.
+The live appcast is now a valid empty feed and no longer advertises the withdrawn ZIP. The keypair
+and signing path remain verified (see [D5](#done)), and future release jobs replace the website feed
+only after the matching public ZIP exists. The runtime path — an installed app fetching, validating,
+downloading, and installing an update — remains unproven and must be exercised with two clean future
+releases.
 
 ---
 
@@ -138,15 +130,12 @@ once a domain is decided, and update `public/privacy/index.html` in `scrytab-cms
 
 ---
 
-## 🟡 B8 — Uncommitted work in `scrytab-cms`
+## ✅ B8 — Website work is committed and deployed
 
-Not a blocker by itself, but it will be swept into someone's commit if ignored.
-
-- `scrytab-cms`: an in-progress landing-page copy and layout refresh, including a direct app
-  download and a public release link for the Corresponding Source. It replaces the earlier
-  rotating-hero experiment.
-
-The `scry-tab` half is cleared: the `AXCallScheduler` lock fix is committed (see [D9](#done)).
+The landing-page copy/layout refresh is committed, and release-state commit `0cd8db3` is pushed to
+`scrytab-cms/main` and deployed by Cloudflare Pages. Both repository worktrees were clean before the
+release-readiness update. The `scry-tab` `AXCallScheduler` lock fix is also committed (see
+[D9](#done)).
 
 ---
 
@@ -207,21 +196,21 @@ text, and xcbeautify notice.
 The `v0.0.2` dry run exercised the pipeline with no announcement and no known users, then was
 withdrawn. Repeat the publication, clean-install, and update steps with corrected future releases.
 
-1. ✅ Push both repos; verify the URLs in
-   [B3](#b3--release-repositories-and-public-urls-are-ready).
+1. ✅ Push both repos; verify the withdrawn state described in
+   [B3](#b3--public-download-urls-are-withdrawn-until-republished).
 2. ✅ Run the pipeline on `scrytab-local`. It produced, in `DerivedData/Build/Products/Release`:
    - `ScryTab-<version>.dmg` — signed, notarized, stapled
    - `ScryTab-<version>.zip` — what Sparkle downloads
    - `ScryTab-<version>-source.tar.gz` — GPL Corresponding Source
 3. ↩️ All three were attached to `Ajanth/scrytab-public`, then the release and public tag were
    withdrawn under [B10](#-b10--problematic-v002-release-is-withdrawn).
-4. 🔴 `scrytab-cms` still serves the signed `v0.0.2` enclosure and direct asset links. Empty or
-   replace them under [B3](#-b3--public-download-urls-must-be-withdrawn-or-republished) and
-   [B6](#-b6--live-sparkle-appcast-advertises-a-withdrawn-release).
+4. ✅ `scrytab-cms` serves an empty release manifest and Sparkle feed; the landing and source page
+   expose no withdrawn asset links. The next release job will replace both after publishing assets.
 5. ⬜ Install the next corrected DMG on a clean Mac and work through
    [B5](#-b5--first-run-has-never-been-tested-on-a-clean-machine).
 6. ⬜ With that release installed, publish its successor and confirm the in-app updater finds,
-   verifies, downloads, and installs it. This is the real runtime test of [B6](#-b6--live-sparkle-appcast-advertises-a-withdrawn-release).
+   verifies, downloads, and installs it. This is the real runtime test of
+   [B6](#b6--sparkle-runtime-update-remains-unproven).
 
 `package_and_notarize_release.sh` self-checks with `spctl --assess` and `stapler validate`, and
 `package_source_tarball.sh` fails if the archive is missing build inputs or contains
@@ -241,7 +230,8 @@ Recorded so it is not re-litigated or accidentally reverted.
   `scripts/update_readme_and_website.sh` must never overwrite.
 - **D2 — Releases moved to public URLs** (`659f5c7`). Everything pointed at the private repo and
   would have 404'd. Releases now publish to `Ajanth/scrytab-public`; the appcast enclosure and
-  release notes follow; `update_website.sh` pushes the signed appcast into `scrytab-cms`.
+  release notes follow; `update_website.sh` pushes both the signed appcast and website release
+  manifest into `scrytab-cms`.
 - **D3 — Uninstall** (`98526a3`). Deleting the app orphaned
   `~/Library/LaunchAgents/com.perpro.scry-tab.plist`. `UninstallPlan` resolves the removal set;
   `Uninstaller` clears both defaults suites before trashing their files.
@@ -252,8 +242,9 @@ Recorded so it is not re-litigated or accidentally reverted.
   Separately, `update_appcast.sh` used `sign_update -s`, removed in Sparkle 2.9, so appcast
   signing was broken regardless of key. Verified by round-trip signing plus negative controls
   (tampered payload and foreign key both rejected).
-- **D6 — Website** (`d94c85e`, `2bc094d`). `/source` GPL offer, `/privacy`, `appcast.xml` as a
-  real static asset, download CTA repointed, source as a peer download button.
+- **D6 — Website** (`d94c85e`, `2bc094d`, `0cd8db3`). `/source` GPL offer, `/privacy`,
+  `appcast.xml` as a real static asset, release-manifest-driven download controls, and source as a
+  peer download button.
 - **D7 — `scrytab-public` metadata.** Description, homepage, README rewritten; GPL-3.0 added and
   detected by GitHub.
 - **D8 — CI secrets.** `SPARKLE_ED_PRIVATE_KEY`, `PUBLIC_REPO_TOKEN`, `WEBSITE_DISPATCH_TOKEN`
