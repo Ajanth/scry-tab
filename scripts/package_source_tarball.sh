@@ -18,6 +18,8 @@ git archive \
   -o "$XCODE_BUILD_PATH/$tarballName" \
   HEAD
 
+archiveListing="$(tar -tzf "$XCODE_BUILD_PATH/$tarballName")"
+
 # fail loudly if the archive is missing anything needed to rebuild the binary
 for required in \
   "$APP_NAME-$version/src/App.swift" \
@@ -26,16 +28,43 @@ for required in \
   "$APP_NAME-$version/vendor/Sparkle" \
   "$APP_NAME-$version/resources/l10n" \
   "$APP_NAME-$version/LICENCE.md"; do
-  tar -tzf "$XCODE_BUILD_PATH/$tarballName" | grep -q "^$required" || {
+  printf '%s\n' "$archiveListing" | grep -Fq "$required" || {
     echo "Corresponding Source is incomplete: missing $required" >&2
     exit 1
   }
 done
 
-# a secret leaking into the published source archive is worse than a failed release
-for forbidden in codesign.p12 codesign.key codesign.crt config/local.xcconfig; do
-  if tar -tzf "$XCODE_BUILD_PATH/$tarballName" | grep -q "/$forbidden$"; then
+# private release operations, local tooling, and Apple software are not Corresponding Source
+for forbidden in \
+  codesign.p12 \
+  codesign.key \
+  codesign.crt \
+  config/local.xcconfig \
+  scripts/notarytool \
+  .agents \
+  .cursor \
+  .vscode \
+  AGENTS.md \
+  CLAUDE.md \
+  docs/RELEASE_BLOCKERS.md \
+  docs/luminare-appkit-ui-migration-plan.md \
+  docs/appcenter-to-sentry-migration-plan.md \
+  docs/pro-gating-restoration.md \
+  mac-app-store-publishing.md \
+  src/preferences/settings-window/tabs/appearance/AppearanceInspectorContext.md; do
+  if printf '%s\n' "$archiveListing" | grep -Fq "/$forbidden"; then
     echo "Refusing to publish source archive containing $forbidden" >&2
     exit 1
   fi
 done
+
+usersRoot="/Users"
+personalPaths="$(tar -xOzf "$XCODE_BUILD_PATH/$tarballName" |
+  LC_ALL=C grep -aEo "$usersRoot/[^/[:space:]]+/" |
+  sort -u |
+  grep -Ev "^$usersRoot/(test|other|runner)/$" || true)"
+if [[ -n $personalPaths ]]; then
+  echo "Refusing to publish source archive containing personal absolute paths:" >&2
+  echo "$personalPaths" >&2
+  exit 1
+fi

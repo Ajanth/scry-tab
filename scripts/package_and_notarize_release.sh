@@ -17,12 +17,10 @@ zipName="$APP_NAME-$version.zip"
 dmgName="$APP_NAME-$version.dmg"
 dmgStaging="dmg-staging"
 signingIdentity="$(awk -F ' = ' '/^CODE_SIGN_IDENTITY/ { print $2; }' < config/release.xcconfig)"
-oldPwd="$PWD"
-
 notarize() {
   local artifact="$1"
   local requestStatus
-  requestStatus=$("$oldPwd"/scripts/notarytool submit \
+  requestStatus=$(xcrun notarytool submit \
     --apple-id "$APPLE_ID" \
     --password "$APPLE_PASSWORD" \
     --team-id "$APPLE_TEAM_ID" \

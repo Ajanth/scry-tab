@@ -466,7 +466,6 @@
 		BF0C810FA0F6BC70E5886E11 /* HelperExtensionsTestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperExtensionsTestable.swift; sourceTree = "<group>"; };
 		BF0C813DE8B55A735B1720B5 /* subset_font.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = subset_font.sh; sourceTree = "<group>"; };
 		BF0C81BB57B297B2432C4824 /* test-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "test-release.xcconfig"; sourceTree = "<group>"; };
-		BF0C81D602ED642A48D50B78 /* notarytool */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = notarytool; sourceTree = "<group>"; };
 		BF0C81DD40D5AAD9B7C09028 /* CursorEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorEvents.swift; sourceTree = "<group>"; };
 		BF0C822D3BEDAB1F1C9F775E /* ScreensEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreensEvents.swift; sourceTree = "<group>"; };
 		BF0C82817AEE4AF34D03CA9D /* TilesPanelBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TilesPanelBackgroundView.swift; sourceTree = "<group>"; };
@@ -1372,7 +1371,6 @@
 				D04BA4D5DF349429527824A2 /* determine_next_version.sh */,
 				D04BAAE6E6823304D66B74F8 /* update_website.sh */,
 				B3C0C00F0000000000000001 /* upload_symbols_to_sentry.sh */,
-				BF0C81D602ED642A48D50B78 /* notarytool */,
 				1C9618B3872558FBDE74D073 /* install_swiftformat.js */,
 				1C961AD30050B3BAC2A8EDD4 /* swiftformat.js */,
 				BF0C8C0FF1B21F5F7CE16B79 /* print_env.sh */,
