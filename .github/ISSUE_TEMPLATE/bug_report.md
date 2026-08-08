@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-> ScryTab is a private proprietary project. Code contributions are not accepted.
+> ScryTab is GPL-3.0 free software. Unsolicited code contributions are not accepted here.
 > Prefer the in-app feedback form when possible. Use this template only for issue tracking on official channels.
 
 **Describe the bug**

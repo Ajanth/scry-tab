@@ -65,18 +65,24 @@ tools, so ScryTab's release job must run on macOS.
 
 ---
 
-## ✅ B3 — Release repositories and public URLs are ready
+## 🔴 B3 — Public download URLs must be withdrawn or republished
 
-The app repo's signing, release workflow, runner, and baseline-tag changes are pushed to `main`.
-The website's release-link, source-offer, appcast, and privacy commits are also pushed. The local
-rotating-hero work remains uncommitted and was not included in the deployment.
+The public `v0.0.2` release and its public-repository tag were deliberately deleted on 2026-08-08;
+`Ajanth/scrytab-public` currently has no releases. The live website still advertises the withdrawn
+DMG, ZIP, and source archive, so its download and source links return 404. The live Sparkle appcast
+also still encloses the withdrawn ZIP. Remove those references or replace them with a corrected
+release before treating any public URL as ready.
+
+The app repo's signing, release workflow, runner, and baseline-tag changes remain pushed to `main`.
+The website's earlier release-link, source-offer, appcast, and privacy commits are also pushed. The
+local landing-page copy and layout refresh remains uncommitted and is not included in the deployment.
 
 ```
 scry-tab      main   synchronized with origin/main
 scrytab-cms   main   synchronized with origin/main; unrelated hero changes remain local
 ```
 
-The Cloudflare Pages deployment was verified on 2026-08-07:
+Before the withdrawal, the Cloudflare Pages deployment was verified on 2026-08-07:
 
 ```bash
 /appcast.xml   200 application/xml; first line starts with <?xml
@@ -102,7 +108,8 @@ Treat it as historical.
 
 ## 🟡 B5 — First-run has never been tested on a clean machine
 
-The real notarized `v0.0.2` DMG now exists. Test it on a Mac that has never run ScryTab:
+There is no longer a public DMG after the `v0.0.2` withdrawal. Test the next corrected notarized
+DMG on a Mac that has never run ScryTab:
 
 - Gatekeeper accepts the DMG without a right-click → Open workaround
 - `MoveToApplicationsFolder.promptIfNeeded()` (`src/App.swift:603`) handles translocation when
@@ -113,13 +120,13 @@ The real notarized `v0.0.2` DMG now exists. Test it on a Mac that has never run 
 
 ---
 
-## 🟡 B6 — Sparkle runtime verification is unproven
+## 🔴 B6 — Live Sparkle appcast advertises a withdrawn release
 
-The keypair and signing path are verified (see [D5](#done)). The live appcast's `v0.0.2`
-signature was also verified directly against the published ZIP with Sparkle's `sign_update`, and
-its enclosure length matches the public asset. The remaining runtime path — the installed app
-fetching the appcast, validating it against `SUPublicEDKey`, and completing an update — requires
-installing `v0.0.2` and then publishing `v0.0.3`. Covered by the dry run below.
+The keypair and signing path remain verified (see [D5](#done)), and the withdrawn `v0.0.2`
+signature previously verified against its ZIP. However, the live appcast still encloses that ZIP,
+whose URL now returns 404. Publish an empty appcast or a corrected release immediately. The runtime
+path — an installed app fetching, validating, downloading, and installing an update — remains
+unproven and must be exercised with two clean future releases.
 
 ---
 
@@ -135,14 +142,15 @@ once a domain is decided, and update `public/privacy/index.html` in `scrytab-cms
 
 Not a blocker by itself, but it will be swept into someone's commit if ignored.
 
-- `scrytab-cms`: `src/components/sections/hero.tsx` and the `heroVariants` block in
-  `src/content/landing.ts` — an in-progress rotating-hero feature.
+- `scrytab-cms`: an in-progress landing-page copy and layout refresh, including a direct app
+  download and a public release link for the Corresponding Source. It replaces the earlier
+  rotating-hero experiment.
 
 The `scry-tab` half is cleared: the `AXCallScheduler` lock fix is committed (see [D9](#done)).
 
 ---
 
-## ✅ B9 — First complete release passed notarization and publication
+## ✅ B9 — First complete pipeline run passed before withdrawal
 
 [Release run 31218768138](https://github.com/Ajanth/scry-tab/actions/runs/31218768138) passed tests
 and the signed Release build, then uploaded `ScryTab-0.0.2.zip` to Apple as submission
@@ -164,16 +172,40 @@ Kathirkamu (8M242ZY4BY)`.
 Independent checks downloaded the public artifacts and confirmed their GitHub SHA-256 digests,
 strict nested code signatures, staple tickets, Gatekeeper acceptance, bundle ID
 `com.perpro.scry-tab`, Team ID `8M242ZY4BY`, GPL source archive, and Sparkle signature. The public
-release contains exactly the DMG, ZIP, and source tarball; the live Cloudflare appcast points to
+release contained exactly the DMG, ZIP, and source tarball; the live Cloudflare appcast pointed to
 the matching ZIP. The temporary CI keychain, `.p12`, and generated `local.xcconfig` were absent
 after cleanup, and the runner returned online and idle.
+
+The public release and its `scrytab-public` tag were later withdrawn on 2026-08-08 because the
+source archive bundled Apple `notarytool`, stale proprietary wording, an incomplete xcbeautify
+notice, and private operational files. This section records pipeline evidence only; it does not
+mean a public download currently exists.
+
+---
+
+## ✅ B10 — Problematic v0.0.2 release is withdrawn
+
+`gh release delete v0.0.2 --repo Ajanth/scrytab-public --cleanup-tag --yes` removed the complete
+release and its public-repository tag on 2026-08-08. GitHub now reports no releases, the tag lookup
+returns 404, and the former DMG, ZIP, and source-archive URLs all return 404. The private source
+repository's `v0.0.2` tag remains as historical pipeline state.
+
+The repository-side fixes are prepared: release notarization resolves the installed tool through
+`xcrun notarytool`, the Apple binary and Xcode file reference are removed, contribution text now
+matches GPL-3.0, the xcbeautify MIT notice is included, and `.gitattributes` excludes non-source
+operational files. `package_source_tarball.sh` rejects those paths and personal absolute paths as a
+regression guard.
+
+Do not restore the old assets. The next release must come from a commit containing these fixes and
+must be downloaded independently to verify its digest, required build inputs, exclusions, GPL
+text, and xcbeautify notice.
 
 ---
 
 ## First release: dry run
 
-Cut `v0.0.2` with no announcement. It exercises every unproven path at once, while there are no
-users to break.
+The `v0.0.2` dry run exercised the pipeline with no announcement and no known users, then was
+withdrawn. Repeat the publication, clean-install, and update steps with corrected future releases.
 
 1. ✅ Push both repos; verify the URLs in
    [B3](#b3--release-repositories-and-public-urls-are-ready).
@@ -181,15 +213,15 @@ users to break.
    - `ScryTab-<version>.dmg` — signed, notarized, stapled
    - `ScryTab-<version>.zip` — what Sparkle downloads
    - `ScryTab-<version>-source.tar.gz` — GPL Corresponding Source
-3. ✅ All three are attached to
-   [`Ajanth/scrytab-public` release `v0.0.2`](https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.2),
-   not the private repo.
-4. ✅ `scrytab-cms` received the updated `public/appcast.xml` in commit `b17ccb7`; the live
-   Cloudflare asset serves the signed `v0.0.2` enclosure.
-5. ⬜ Install the DMG on a clean Mac and work through
+3. ↩️ All three were attached to `Ajanth/scrytab-public`, then the release and public tag were
+   withdrawn under [B10](#-b10--problematic-v002-release-is-withdrawn).
+4. 🔴 `scrytab-cms` still serves the signed `v0.0.2` enclosure and direct asset links. Empty or
+   replace them under [B3](#-b3--public-download-urls-must-be-withdrawn-or-republished) and
+   [B6](#-b6--live-sparkle-appcast-advertises-a-withdrawn-release).
+5. ⬜ Install the next corrected DMG on a clean Mac and work through
    [B5](#-b5--first-run-has-never-been-tested-on-a-clean-machine).
-6. ⬜ With v0.0.2 installed, cut v0.0.3 and confirm the in-app updater finds, verifies, downloads,
-   and installs it. This is the only real test of [B6](#-b6--sparkle-runtime-verification-is-unproven).
+6. ⬜ With that release installed, publish its successor and confirm the in-app updater finds,
+   verifies, downloads, and installs it. This is the real runtime test of [B6](#-b6--live-sparkle-appcast-advertises-a-withdrawn-release).
 
 `package_and_notarize_release.sh` self-checks with `spctl --assess` and `stapler validate`, and
 `package_source_tarball.sh` fails if the archive is missing build inputs or contains

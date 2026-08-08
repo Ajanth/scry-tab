@@ -1,10 +1,13 @@
-# ScryTab — closed source
+# Contributing to ScryTab
 
-ScryTab source code is private and proprietary. Contributions are not accepted.
+ScryTab is free software licensed under the GPL-3.0. Corresponding Source for every published
+binary release is available from https://scrytab.pages.dev/source and may be studied, modified,
+and redistributed under the licence.
 
-You may download the free official binary from https://scrytab.pages.dev/. Feedback is welcome via the in-app feedback form or official channels; do not submit pull requests or patches.
+The development repository is maintained privately and does not accept unsolicited pull requests
+or patches. Feedback is welcome through the in-app feedback form or official channels.
 
-The notes below are internal build and product reference for the copyright holder.
+The notes below document how the project is built and maintained.
 
 ## Technical overview
 
