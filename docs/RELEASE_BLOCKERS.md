@@ -102,7 +102,7 @@ Treat it as historical.
 
 ## 🟡 B5 — First-run has never been tested on a clean machine
 
-Depends on B1 and a real notarized DMG. Test on a Mac that has never run ScryTab:
+The real notarized `v0.0.2` DMG now exists. Test it on a Mac that has never run ScryTab:
 
 - Gatekeeper accepts the DMG without a right-click → Open workaround
 - `MoveToApplicationsFolder.promptIfNeeded()` (`src/App.swift:603`) handles translocation when
@@ -115,9 +115,11 @@ Depends on B1 and a real notarized DMG. Test on a Mac that has never run ScryTab
 
 ## 🟡 B6 — Sparkle runtime verification is unproven
 
-The keypair and signing path are verified (see [D5](#done)), but the runtime path — the app
-fetching a real appcast and validating it against `SUPublicEDKey` — cannot be exercised until a
-release exists. Covered by the dry run below.
+The keypair and signing path are verified (see [D5](#done)). The live appcast's `v0.0.2`
+signature was also verified directly against the published ZIP with Sparkle's `sign_update`, and
+its enclosure length matches the public asset. The remaining runtime path — the installed app
+fetching the appcast, validating it against `SUPublicEDKey`, and completing an update — requires
+installing `v0.0.2` and then publishing `v0.0.3`. Covered by the dry run below.
 
 ---
 
@@ -140,7 +142,7 @@ The `scry-tab` half is cleared: the `AXCallScheduler` lock fix is committed (see
 
 ---
 
-## 🔴 B9 — First notarization exceeded the original CI wait limit
+## ✅ B9 — First complete release passed notarization and publication
 
 [Release run 31218768138](https://github.com/Ajanth/scry-tab/actions/runs/31218768138) passed tests
 and the signed Release build, then uploaded `ScryTab-0.0.2.zip` to Apple as submission
@@ -150,9 +152,21 @@ appcast was published. The `always()` cleanup succeeded and no CI keychain, temp
 generated signing config remained on the host.
 
 The per-artifact wait is now 45 minutes and the release job ceiling is 120 minutes. A manual,
-read-only notarization-status workflow can query the original submission without rebuilding or
-publishing. B9 clears after Apple accepts a complete rerun and both the app and DMG pass stapling
-and Gatekeeper validation.
+read-only notarization-status workflow can query a submission without rebuilding or publishing.
+
+[Release run 31241479026](https://github.com/Ajanth/scry-tab/actions/runs/31241479026) then completed
+on the dedicated `scrytab-local` runner on 2026-08-08. Apple accepted both the ZIP submission
+`cf06298f-bcb2-41b1-8188-be1dbe8d5cb8` and DMG submission
+`4960e871-523c-4170-9976-2d2b1911f06d`. The workflow stapled and validated the app and DMG, and
+Gatekeeper reported `source=Notarized Developer ID` for `Developer ID Application: Ajanth
+Kathirkamu (8M242ZY4BY)`.
+
+Independent checks downloaded the public artifacts and confirmed their GitHub SHA-256 digests,
+strict nested code signatures, staple tickets, Gatekeeper acceptance, bundle ID
+`com.perpro.scry-tab`, Team ID `8M242ZY4BY`, GPL source archive, and Sparkle signature. The public
+release contains exactly the DMG, ZIP, and source tarball; the live Cloudflare appcast points to
+the matching ZIP. The temporary CI keychain, `.p12`, and generated `local.xcconfig` were absent
+after cleanup, and the runner returned online and idle.
 
 ---
 
@@ -161,15 +175,20 @@ and Gatekeeper validation.
 Cut `v0.0.2` with no announcement. It exercises every unproven path at once, while there are no
 users to break.
 
-1. Push both repos; verify the URLs in [B3](#b3--release-repositories-and-public-urls-are-ready).
-2. Run the pipeline (locally or on a runner). It must produce, in `DerivedData/Build/Products/Release`:
+1. ✅ Push both repos; verify the URLs in
+   [B3](#b3--release-repositories-and-public-urls-are-ready).
+2. ✅ Run the pipeline on `scrytab-local`. It produced, in `DerivedData/Build/Products/Release`:
    - `ScryTab-<version>.dmg` — signed, notarized, stapled
    - `ScryTab-<version>.zip` — what Sparkle downloads
    - `ScryTab-<version>-source.tar.gz` — GPL Corresponding Source
-3. Confirm all three attach to a release on **`Ajanth/scrytab-public`**, not the private repo.
-4. Confirm `scrytab-cms` received the updated `public/appcast.xml` and redeployed.
-5. Install the DMG on a clean Mac and work through [B5](#-b5--first-run-has-never-been-tested-on-a-clean-machine).
-6. With v0.0.2 installed, cut v0.0.3 and confirm the in-app updater finds, verifies, downloads,
+3. ✅ All three are attached to
+   [`Ajanth/scrytab-public` release `v0.0.2`](https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.2),
+   not the private repo.
+4. ✅ `scrytab-cms` received the updated `public/appcast.xml` in commit `b17ccb7`; the live
+   Cloudflare asset serves the signed `v0.0.2` enclosure.
+5. ⬜ Install the DMG on a clean Mac and work through
+   [B5](#-b5--first-run-has-never-been-tested-on-a-clean-machine).
+6. ⬜ With v0.0.2 installed, cut v0.0.3 and confirm the in-app updater finds, verifies, downloads,
    and installs it. This is the only real test of [B6](#-b6--sparkle-runtime-verification-is-unproven).
 
 `package_and_notarize_release.sh` self-checks with `spctl --assess` and `stapler validate`, and
