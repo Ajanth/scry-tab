@@ -106,7 +106,7 @@ private extension SettingsRoute {
 
 enum SettingsAboutSearch {
     static let acknowledgmentKeywords = ["Acknowledgments", "ShortcutRecorder", "Sparkle", "Sentry Cocoa",
-                                         "Licence", "GPL", "GPL-3.0", "Source code", "AltTab"]
+                                         "xcbeautify", "Licence", "GPL", "GPL-3.0", "Source code", "AltTab"]
 }
 
 struct SettingsSearchDescriptor {

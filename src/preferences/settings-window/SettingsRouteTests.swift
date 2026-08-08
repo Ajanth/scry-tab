@@ -83,6 +83,8 @@ final class SettingsRouteTests: XCTestCase {
                                                   keywords: SettingsAboutSearch.acknowledgmentKeywords)
         let matches = SettingsSearchDescriptorMatcher.matches(query: "Sentry", descriptors: [descriptor])
         XCTAssertEqual(matches.map(\.descriptor.route), [.about])
+        let toolMatches = SettingsSearchDescriptorMatcher.matches(query: "xcbeautify", descriptors: [descriptor])
+        XCTAssertEqual(toolMatches.map(\.descriptor.route), [.about])
     }
 
     func testDescriptorMatcherReturnsSortedMatches() {
