@@ -65,25 +65,25 @@ tools, so ScryTab's release job must run on macOS.
 
 ---
 
-## ✅ B3 — Public download URLs are withdrawn until republished
+## ✅ B3 — Public download URLs follow the release manifest
 
 The public `v0.0.2` release and its public-repository tag were deliberately deleted on 2026-08-08;
-`Ajanth/scrytab-public` currently has no releases. Website commit `0cd8db3` removed every direct
-`v0.0.2` reference and introduced `/release.json` as the single website release manifest:
+website commit `0cd8db3` then removed every direct `v0.0.2` reference and introduced
+`/release.json` as the single website release manifest:
 
-- the manifest has null `version`, `downloadUrl`, and `sourceUrl` values while no release exists;
+- the manifest used null `version`, `downloadUrl`, and `sourceUrl` values while no release existed;
 - landing-page download controls read the manifest and render disabled instead of linking to 404s;
 - `/source` exposes a direct Corresponding Source link only when the manifest names one; and
-- `/appcast.xml` is a valid empty Sparkle feed with no withdrawn enclosure.
+- `/appcast.xml` was a valid empty Sparkle feed with no withdrawn enclosure.
 
 The release workflow now publishes the signed appcast and the DMG/source manifest after the public
 GitHub assets exist. Deleting a GitHub release does not mutate a static Cloudflare Pages deployment,
 so a future withdrawal must still clear both files; normal publication no longer requires editing
 version strings in three separate website files.
 
-The live deployment was verified on 2026-08-08: the manifest contains three null values, the
-appcast parses as XML and has zero items, the source page and built landing script contain no
-`v0.0.2` or withdrawn asset URL, and GitHub reports zero public releases.
+Corrected release `v0.0.3` is now public with its DMG, Sparkle ZIP, and Corresponding Source. The
+live manifest names its DMG and source archive, the appcast encloses the matching ZIP, both direct
+website asset URLs return 200, and the landing page enables its download controls.
 
 ---
 
@@ -100,8 +100,9 @@ Treat it as historical.
 
 ## 🟡 B5 — First-run has never been tested on a clean machine
 
-There is no longer a public DMG after the `v0.0.2` withdrawal. Test the next corrected notarized
-DMG on a Mac that has never run ScryTab:
+The corrected notarized `v0.0.3` DMG is public and independently passes its GitHub digest, staple,
+Gatekeeper, Developer ID, Team ID, and bundle-ID checks. It still needs a first-run test on a Mac
+that has never run ScryTab:
 
 - Gatekeeper accepts the DMG without a right-click → Open workaround
 - `MoveToApplicationsFolder.promptIfNeeded()` (`src/App.swift:603`) handles translocation when
@@ -114,11 +115,11 @@ DMG on a Mac that has never run ScryTab:
 
 ## 🟡 B6 — Sparkle runtime update remains unproven
 
-The live appcast is now a valid empty feed and no longer advertises the withdrawn ZIP. The keypair
-and signing path remain verified (see [D5](#done)), and future release jobs replace the website feed
-only after the matching public ZIP exists. The runtime path — an installed app fetching, validating,
-downloading, and installing an update — remains unproven and must be exercised with two clean future
-releases.
+The live appcast now advertises `v0.0.3`; its enclosure length and EdDSA signature independently
+verify against the public ZIP. The keypair and signing path remain verified (see [D5](#done)), and
+future release jobs replace the website feed only after the matching public ZIP exists. The runtime
+path — an installed app fetching, validating, downloading, and installing an update — remains
+unproven and must be exercised when `v0.0.3` has a successor.
 
 ---
 
@@ -139,7 +140,7 @@ release-readiness update. The `scry-tab` `AXCallScheduler` lock fix is also comm
 
 ---
 
-## ✅ B9 — First complete pipeline run passed before withdrawal
+## ✅ B9 — Corrected v0.0.3 pipeline completed
 
 [Release run 31218768138](https://github.com/Ajanth/scry-tab/actions/runs/31218768138) passed tests
 and the signed Release build, then uploaded `ScryTab-0.0.2.zip` to Apple as submission
@@ -167,8 +168,16 @@ after cleanup, and the runner returned online and idle.
 
 The public release and its `scrytab-public` tag were later withdrawn on 2026-08-08 because the
 source archive bundled Apple `notarytool`, stale proprietary wording, an incomplete xcbeautify
-notice, and private operational files. This section records pipeline evidence only; it does not
-mean a public download currently exists.
+notice, and private operational files. That run remains useful historical pipeline evidence.
+
+[Release run 31261703775](https://github.com/Ajanth/scry-tab/actions/runs/31261703775) then published
+corrected `v0.0.3` from commit `0f3d7a2` in 4 minutes 27 seconds. Tests, Developer ID build, Apple
+notarization and stapling, source packaging, Sentry upload, appcast signing, semantic-release,
+public asset upload, website manifest publication, and signing-material cleanup all passed. The
+public DMG, ZIP, and source archive match their GitHub SHA-256 digests. Independent checks accepted
+the DMG and app through Gatekeeper, verified strict nested signatures, Team ID `8M242ZY4BY`, bundle
+ID `com.perpro.scry-tab`, the Sparkle signature and length, source exclusions, GPL wording,
+xcbeautify notice, and local `xcrun notarytool` use.
 
 ---
 
@@ -185,9 +194,9 @@ matches GPL-3.0, the xcbeautify MIT notice is included, and `.gitattributes` exc
 operational files. `package_source_tarball.sh` rejects those paths and personal absolute paths as a
 regression guard.
 
-Do not restore the old assets. The next release must come from a commit containing these fixes and
-must be downloaded independently to verify its digest, required build inputs, exclusions, GPL
-text, and xcbeautify notice.
+Do not restore the old assets. Corrected `v0.0.3` came from a commit containing these fixes and was
+downloaded independently to verify its digest, required build inputs, exclusions, GPL text, and
+xcbeautify notice.
 
 ---
 
@@ -196,19 +205,19 @@ text, and xcbeautify notice.
 The `v0.0.2` dry run exercised the pipeline with no announcement and no known users, then was
 withdrawn. Repeat the publication, clean-install, and update steps with corrected future releases.
 
-1. ✅ Push both repos; verify the withdrawn state described in
-   [B3](#b3--public-download-urls-are-withdrawn-until-republished).
+1. ✅ Push both repos; verify the live release state described in
+   [B3](#b3--public-download-urls-follow-the-release-manifest).
 2. ✅ Run the pipeline on `scrytab-local`. It produced, in `DerivedData/Build/Products/Release`:
    - `ScryTab-<version>.dmg` — signed, notarized, stapled
    - `ScryTab-<version>.zip` — what Sparkle downloads
    - `ScryTab-<version>-source.tar.gz` — GPL Corresponding Source
-3. ↩️ All three were attached to `Ajanth/scrytab-public`, then the release and public tag were
-   withdrawn under [B10](#-b10--problematic-v002-release-is-withdrawn).
-4. ✅ `scrytab-cms` serves an empty release manifest and Sparkle feed; the landing and source page
-   expose no withdrawn asset links. The next release job will replace both after publishing assets.
-5. ⬜ Install the next corrected DMG on a clean Mac and work through
+3. ✅ Corrected `v0.0.3` has all three assets attached to `Ajanth/scrytab-public`; the withdrawn
+   `v0.0.2` assets remain absent under [B10](#-b10--problematic-v002-release-is-withdrawn).
+4. ✅ `scrytab-cms` serves the `v0.0.3` release manifest and matching Sparkle feed; landing and
+   source-page links resolve to public assets.
+5. ⬜ Install the corrected DMG on a clean Mac and work through
    [B5](#-b5--first-run-has-never-been-tested-on-a-clean-machine).
-6. ⬜ With that release installed, publish its successor and confirm the in-app updater finds,
+6. ⬜ With `v0.0.3` installed, publish its successor and confirm the in-app updater finds,
    verifies, downloads, and installs it. This is the real runtime test of
    [B6](#b6--sparkle-runtime-update-remains-unproven).
 
