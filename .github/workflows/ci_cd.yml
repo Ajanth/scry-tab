@@ -54,7 +54,6 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-      - run: scripts/package_source_tarball.sh
       - run: scripts/upload_symbols_to_sentry.sh
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -70,6 +69,7 @@ jobs:
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: scripts/package_source_tarball.sh
       - id: set_release_info
         run: scripts/extract_latest_changelog.sh
       # Releases are published to the public repo: this one is private, so its release assets

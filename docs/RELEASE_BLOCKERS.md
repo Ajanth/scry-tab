@@ -174,19 +174,21 @@ notice, and private operational files. That run remains useful historical pipeli
 corrected `v0.0.3` from commit `0f3d7a2` in 4 minutes 27 seconds. Tests, Developer ID build, Apple
 notarization and stapling, source packaging, Sentry upload, appcast signing, semantic-release,
 public asset upload, website manifest publication, and signing-material cleanup all passed. The
-public DMG, ZIP, and source archive match their GitHub SHA-256 digests. Independent checks accepted
-the DMG and app through Gatekeeper, verified strict nested signatures, Team ID `8M242ZY4BY`, bundle
-ID `com.perpro.scry-tab`, the Sparkle signature and length, source exclusions, GPL wording,
-xcbeautify notice, and local `xcrun notarytool` use.
+public DMG and ZIP match their GitHub SHA-256 digests. Independent checks accepted the DMG and app
+through Gatekeeper, verified strict nested signatures, Team ID `8M242ZY4BY`, bundle ID
+`com.perpro.scry-tab`, the Sparkle signature and length, source exclusions, GPL wording,
+xcbeautify notice, and local `xcrun notarytool` use. The source archive from that run was later
+replaced under [D10](#done) because it archived pre-release `HEAD` instead of the tagged release
+tree.
 
 ---
 
 ## ✅ B10 — Problematic v0.0.2 release is withdrawn
 
 `gh release delete v0.0.2 --repo Ajanth/scrytab-public --cleanup-tag --yes` removed the complete
-release and its public-repository tag on 2026-08-08. GitHub now reports no releases, the tag lookup
-returns 404, and the former DMG, ZIP, and source-archive URLs all return 404. The private source
-repository's `v0.0.2` tag remains as historical pipeline state.
+release and its public-repository tag on 2026-08-08. GitHub reported no releases immediately after
+withdrawal; the tag lookup and former DMG, ZIP, and source-archive URLs still return 404. The
+private source repository's `v0.0.2` tag remains as historical pipeline state.
 
 The repository-side fixes are prepared: release notarization resolves the installed tool through
 `xcrun notarytool`, the Apple binary and Xcode file reference are removed, contribution text now
@@ -202,8 +204,8 @@ xcbeautify notice.
 
 ## First release: dry run
 
-The `v0.0.2` dry run exercised the pipeline with no announcement and no known users, then was
-withdrawn. Repeat the publication, clean-install, and update steps with corrected future releases.
+The `v0.0.2` dry run exercised the pipeline with no announcement and no users, then was withdrawn.
+Repeat the publication, clean-install, and update steps with corrected future releases.
 
 1. ✅ Push both repos; verify the live release state described in
    [B3](#b3--public-download-urls-follow-the-release-manifest).
@@ -264,7 +266,22 @@ Recorded so it is not re-litigated or accidentally reverted.
   `Applications.removeUnresponsivePid` removes it on app teardown. An unsynchronized `Set` read
   racing a resize is undefined behavior, not just stale routing. The read is now taken under the
   lock; no caller holds it, so the non-recursive `NSLock` cannot deadlock.
-
+- **D10 — Corresponding Source uses tagged release state.** The original public
+  `ScryTab-0.0.3-source.tar.gz` read the working-tree `0.0.3` for its filename while
+  `git archive HEAD` exported `VERSION.txt` as `0.0.1` and a changelog ending at `0.0.2`. The asset
+  was replaced in place on 2026-08-09 with SHA-256
+  `42c6de76f131866668043c82f8cac187f168f57222c20eb68255fecb731031da`; its version, changelog,
+  appcast, application-source blob, GPL text, build inputs, and exclusions were reverified after a
+  fresh public download. Future releases commit `VERSION.txt`, package only after semantic-release
+  creates `v<version>`, and fail if the tag or archived version differs from the requested version.
+- **D11 — Published local-signing passwords are retired.** The corrected `v0.0.3` archive omits
+  the three scripts that contained the old credentials. Current scripts stopped embedding
+  `password` and `local-dev-password`; local setup creates a random per-user password at
+  `~/Library/Application Support/ScryTab/local-signing-password` with mode `0600`, and credential
+  handling no longer uses shell tracing. Source packaging rejects either fixed-password literal
+  if it is reintroduced. The existing self-signed Debug certificate and `scry-tab.keychain` were
+  regenerated on 2026-08-09. The old password was rejected after locking the new keychain, while
+  the login-Keychain Developer ID identity remained unchanged.
 > **Back up the Sparkle private key.** It lives in the login Keychain and in the
 > `SPARKLE_ED_PRIVATE_KEY` secret. Lose both and you cannot ship updates to anyone who already
 > installed ScryTab — they would each need a manual reinstall. It is the one secret with no

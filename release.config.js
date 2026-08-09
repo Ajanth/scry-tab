@@ -20,6 +20,7 @@ module.exports = {
         }],
         ['@semantic-release/git', {
             'assets': [
+                'VERSION.txt',
                 'changelog.md',
                 'appcast.xml',
                 'README.md',

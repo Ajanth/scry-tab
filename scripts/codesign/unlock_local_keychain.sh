@@ -8,10 +8,12 @@
 set -u
 
 keychain="scry-tab.keychain"
-keychainPassword="password"
 keychainPath="$HOME/Library/Keychains/${keychain}-db"
+passwordFile="$HOME/Library/Application Support/ScryTab/local-signing-password"
 
-[[ -f "$keychainPath" ]] || exit 0
+[[ -f "$keychainPath" && -r "$passwordFile" ]] || exit 0
+keychainPassword="$(<"$passwordFile")"
+[[ -n $keychainPassword ]] || exit 0
 
 security unlock-keychain -p "$keychainPassword" "$keychain" 2>/dev/null || exit 0
 # no idle timeout, no lock-on-sleep

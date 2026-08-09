@@ -1,24 +1,43 @@
 #!/usr/bin/env bash
 
 # Builds the Corresponding Source archive that GPL-3.0 §6(d) requires us to publish alongside
-# every binary release. `git archive` exports the tracked tree at HEAD without any commit
+# every binary release. `git archive` exports the tagged release tree without any commit
 # history, and untracked/ignored paths (codesign.p12, codesign.key, config/local.xcconfig,
 # DerivedData, node_modules) are excluded by construction — never add them back.
 #
 # The archive must stay downloadable for as long as the matching binary is downloadable.
 
-set -exu
+set -euo pipefail
 
 version="$(cat "$VERSION_FILE")"
 tarballName="$APP_NAME-$version-source.tar.gz"
+releaseRef="v$version"
+releaseCommit="$(git rev-parse --verify "$releaseRef^{commit}")" || {
+  echo "Corresponding Source release tag does not exist: $releaseRef" >&2
+  exit 1
+}
+releaseVersion="$(git show "$releaseCommit:$VERSION_FILE")"
+if [[ $releaseVersion != "$version" ]]; then
+  echo "Corresponding Source version mismatch: $releaseRef contains $releaseVersion, expected $version" >&2
+  exit 1
+fi
+if git grep -Eq 'keychainPassword="password"|local-dev-password' "$releaseCommit" -- scripts/codesign; then
+  echo "Refusing to publish source archive containing a fixed local-signing password" >&2
+  exit 1
+fi
 
 git archive \
   --format=tar.gz \
   --prefix="$APP_NAME-$version/" \
   -o "$XCODE_BUILD_PATH/$tarballName" \
-  HEAD
+  "$releaseCommit"
 
 archiveListing="$(tar -tzf "$XCODE_BUILD_PATH/$tarballName")"
+archiveVersion="$(tar -xOzf "$XCODE_BUILD_PATH/$tarballName" "$APP_NAME-$version/$VERSION_FILE")"
+if [[ $archiveVersion != "$version" ]]; then
+  echo "Corresponding Source archive version mismatch: found $archiveVersion, expected $version" >&2
+  exit 1
+fi
 
 # fail loudly if the archive is missing anything needed to rebuild the binary
 for required in \
@@ -28,7 +47,7 @@ for required in \
   "$APP_NAME-$version/vendor/Sparkle" \
   "$APP_NAME-$version/resources/l10n" \
   "$APP_NAME-$version/LICENCE.md"; do
-  printf '%s\n' "$archiveListing" | grep -Fq "$required" || {
+  grep -Fq "$required" <<< "$archiveListing" || {
     echo "Corresponding Source is incomplete: missing $required" >&2
     exit 1
   }
@@ -52,7 +71,7 @@ for forbidden in \
   docs/pro-gating-restoration.md \
   mac-app-store-publishing.md \
   src/preferences/settings-window/tabs/appearance/AppearanceInspectorContext.md; do
-  if printf '%s\n' "$archiveListing" | grep -Fq "/$forbidden"; then
+  if grep -Fq "/$forbidden" <<< "$archiveListing"; then
     echo "Refusing to publish source archive containing $forbidden" >&2
     exit 1
   fi

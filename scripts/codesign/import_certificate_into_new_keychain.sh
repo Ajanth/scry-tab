@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-set -exu
+set -euo pipefail
 
 certificateFile="$1"
 certificatePassword="$2"
+keychainPassword="$3"
 
 keychain="scry-tab.keychain"
-keychainPassword="password"
 keychainPath="$HOME/Library/Keychains/${keychain}-db"
 loginKeychain="$HOME/Library/Keychains/login.keychain-db"
 identityName="Scry Tab Local Self-Signed"
