@@ -1,3 +1,10 @@
+## [0.0.4](https://github.com/Ajanth/scry-tab/compare/v0.0.3...v0.0.4) (2026-08-10)
+
+
+### Bug Fixes
+
+* **licence:** ship complete legal notices ([2c1e1df](https://github.com/Ajanth/scry-tab/commit/2c1e1df))
+
 ## [0.0.3](https://github.com/Ajanth/scry-tab/compare/v0.0.2...v0.0.3) (2026-08-08)
 
 
