@@ -114,6 +114,7 @@
 "Large" = "Grand";
 "Later" = "Plus tard";
 "Licence" = "Licence";
+"Licensed under GNU GPL v3.0. No warranty, to the extent permitted by law. You may redistribute it under the GPL v3.0." = "Sous licence GNU GPL v3.0. Aucune garantie, dans la mesure permise par la loi. Vous pouvez le redistribuer selon la GPL v3.0.";
 "Light" = "Clair";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS réserve ⌘⌥⎋, ⌘⌥⇧⎋ et ⌘⌥⇧⌃⎋ pour Forcer à quitter ; ces raccourcis ne peuvent pas être libérés. ScryTab ne peut pas les utiliser.\n\nVotre modification en attribuerait un à : %@.";
 "Medium" = "Moyen";

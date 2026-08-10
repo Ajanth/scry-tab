@@ -46,12 +46,24 @@ for required in \
   "$APP_NAME-$version/scry-tab.xcodeproj/project.pbxproj" \
   "$APP_NAME-$version/vendor/Sparkle" \
   "$APP_NAME-$version/resources/l10n" \
+  "$APP_NAME-$version/docs/third-party-notices.md" \
   "$APP_NAME-$version/LICENCE.md"; do
   grep -Fq "$required" <<< "$archiveListing" || {
     echo "Corresponding Source is incomplete: missing $required" >&2
     exit 1
   }
 done
+
+licenseText="$(tar -xOzf "$XCODE_BUILD_PATH/$tarballName" "$APP_NAME-$version/LICENCE.md")"
+noticesText="$(tar -xOzf "$XCODE_BUILD_PATH/$tarballName" "$APP_NAME-$version/docs/third-party-notices.md")"
+readmeText="$(tar -xOzf "$XCODE_BUILD_PATH/$tarballName" "$APP_NAME-$version/README.md")"
+grep -Fq "GNU GENERAL PUBLIC LICENSE" <<< "$licenseText"
+grep -Fq "ShortcutRecorder is licensed under the Creative Commons Attribution 4.0" <<< "$noticesText"
+grep -Fq "Copyright (c) 2006-2013 Andy Matuschak." <<< "$noticesText"
+grep -Fq "Copyright (c) 2015 Sentry" <<< "$noticesText"
+grep -Fq "Copyright (c) 2025 Charles Pisciotta and other contributors" <<< "$noticesText"
+grep -Fq "ScryTab is a modified version" <<< "$readmeText"
+grep -Fq "modifications by Ajanth Kathirkamu began in 2026" <<< "$readmeText"
 
 # private release operations, local tooling, and Apple software are not Corresponding Source
 for forbidden in \

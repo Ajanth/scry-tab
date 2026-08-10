@@ -33,6 +33,19 @@ notarize() {
 
 cd "$XCODE_BUILD_PATH"
 
+legalResources="$appFile/Contents/Resources"
+for required in "$legalResources/LICENCE.md" "$legalResources/acknowledgments.md" "$legalResources/third-party-notices.md"; do
+  if [[ ! -f $required ]]; then
+    echo "Refusing to package an app without legal resource: $required" >&2
+    exit 1
+  fi
+done
+grep -Fq "GNU GENERAL PUBLIC LICENSE" "$legalResources/LICENCE.md"
+grep -Fq "ShortcutRecorder is licensed under the Creative Commons Attribution 4.0" "$legalResources/third-party-notices.md"
+grep -Fq "Copyright (c) 2006-2013 Andy Matuschak." "$legalResources/third-party-notices.md"
+grep -Fq "Copyright (c) 2015 Sentry" "$legalResources/third-party-notices.md"
+grep -Fq "Copyright (c) 2025 Charles Pisciotta and other contributors" "$legalResources/third-party-notices.md"
+
 # notarize the app itself, via a zip as the transport, then staple the ticket into the bundle
 ditto -c -k --keepParent "$appFile" "$zipName"
 notarize "$zipName"

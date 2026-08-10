@@ -114,6 +114,7 @@
 "Large" = "大";
 "Later" = "後で";
 "Licence" = "ライセンス";
+"Licensed under GNU GPL v3.0. No warranty, to the extent permitted by law. You may redistribute it under the GPL v3.0." = "GNU GPL v3.0 の下でライセンスされています。法律で認められる範囲で無保証です。GPL v3.0 の下で再配布できます。";
 "Light" = "ライト";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOSは⌘⌥⎋、⌘⌥⇧⎋、⌘⌥⇧⌃⎋を強制終了用に予約しており、解除できません。ScryTabでは使えません。\n\n割り当てようとしている操作: %@。";
 "Medium" = "中";

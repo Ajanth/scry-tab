@@ -3,7 +3,7 @@
   "name": "scry-tab",
   "version": "0.0.1",
   "author": "",
-  "license": "UNLICENSED",
+  "license": "GPL-3.0-only",
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",

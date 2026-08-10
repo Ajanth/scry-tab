@@ -13,14 +13,16 @@ class AboutTab {
         appIcon.translatesAutoresizingMaskIntoConstraints = false
         appIcon.updateContents(.cgImage(App.appIcon(for: appIconSize)), appIconSize)
         appIcon.fit(appIconSize.width, appIconSize.height)
-        let copyright = secondaryLabel(App.licence)
+        let copyright = secondaryLabel(App.copyrightNotice)
+        let legalNotice = secondaryLabel(NSLocalizedString("Licensed under GNU GPL v3.0. No warranty, to the extent permitted by law. You may redistribute it under the GPL v3.0.", comment: "GPL legal notice in About"))
         let metadata = StackView([
             BoldLabel(App.name),
             secondaryLabel(NSLocalizedString("Version", comment: "") + " " + App.version),
             copyright,
+            legalNotice,
             makeLinksRow(),
         ], .vertical, false, spacing: DesignSystem.Metrics.headerFooterGap)
-        metadata.setCustomSpacing(DesignSystem.Metrics.formOuterPadding, after: copyright)
+        metadata.setCustomSpacing(DesignSystem.Metrics.formOuterPadding, after: legalNotice)
         let hero = NSStackView(views: [appIcon, metadata])
         hero.translatesAutoresizingMaskIntoConstraints = false
         hero.spacing = DesignSystem.Metrics.sectionGap
@@ -37,7 +39,7 @@ class AboutTab {
         settingsUsageView = usageView
         table.addRow(leftViews: [makeContentView(false, false, false)], isAddSeparator: false)
         table.addRow(leftViews: [usageView])
-        table.addRow(leftViews: [AcknowledgmentsTab.makeContentView(columnWidth: contentWidth)])
+        table.addRow(leftViews: [AcknowledgmentsTab.makeContentView(columnWidth: contentWidth, verticallyStacked: true)])
         return TableGroupSetView(originalViews: [table], padding: 0, bottomPadding: 0)
     }
 

@@ -235,8 +235,9 @@ Recorded so it is not re-litigated or accidentally reverted.
 
 - **D1 — GPL-3.0 compliance** (`e03a55c`). ScryTab is an AltTab fork that had been relicensed
   proprietary, which was not permissible. `LICENCE.md` is verbatim GPL-3.0 again; attribution
-  restored across README, acknowledgments, and contributors; `NSHumanReadableCopyright`
-  localized in 7 languages; the About pane satisfies GPL-3.0 §0 Appropriate Legal Notices.
+  restored across README, acknowledgments, and contributors; and `NSHumanReadableCopyright`
+  localized in 7 languages. The later binary-bundling and legal-owner audit is recorded under
+  D12 below.
   `docs/contributors.md` has a frozen `## Built AltTab` section that
   `scripts/update_readme_and_website.sh` must never overwrite.
 - **D2 — Releases moved to public URLs** (`659f5c7`). Everything pointed at the private repo and
@@ -282,6 +283,16 @@ Recorded so it is not re-litigated or accidentally reverted.
   if it is reintroduced. The existing self-signed Debug certificate and `scry-tab.keychain` were
   regenerated on 2026-08-09. The old password was rejected after locking the new keychain, while
   the login-Keychain Developer ID identity remained unchanged.
+- **D12 — Licence ownership and shipped notices are corrected.** A follow-up audit found that
+  `Rogue Works` was neither ScryTab's legal rights holder nor an available Australian business
+  name, the standalone About window omitted parts of GPL-3.0 §0's Appropriate Legal Notices, and
+  the app bundle omitted the GPL text and full Sparkle/Sentry binary notices. Copyright ownership
+  now distinguishes Ajanth Kathirkamu's ScryTab changes from the AltTab contributors' portions;
+  the About surface displays the no-warranty and redistribution notice in every entry point;
+  `LICENCE.md` and `third-party-notices.md` are app resources included in both the Sparkle ZIP and
+  DMG; packaging fails if those resources or their required notices are absent; and the source
+  archive records ScryTab's modifications and relevant 2026 date. The website separates its own
+  copyright from the GPL-covered software and no longer claims rights for `Rogue Works`.
 > **Back up the Sparkle private key.** It lives in the login Keychain and in the
 > `SPARKLE_ED_PRIVATE_KEY` secret. Lose both and you cannot ship updates to anyone who already
 > installed ScryTab — they would each need a manual reinstall. It is the one secret with no
