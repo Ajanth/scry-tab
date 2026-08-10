@@ -81,9 +81,10 @@ GitHub assets exist. Deleting a GitHub release does not mutate a static Cloudfla
 so a future withdrawal must still clear both files; normal publication no longer requires editing
 version strings in three separate website files.
 
-Corrected release `v0.0.3` is now public with its DMG, Sparkle ZIP, and Corresponding Source. The
-live manifest names its DMG and source archive, the appcast encloses the matching ZIP, both direct
-website asset URLs return 200, and the landing page enables its download controls.
+Release `v0.0.4` is now current with its DMG, Sparkle ZIP, and Corresponding Source. The live
+manifest names its DMG and source archive, the appcast encloses the matching ZIP, all three direct
+asset URLs return 200, and the landing page enables its download controls. Corrected `v0.0.3`
+remains available as the updater baseline.
 
 ---
 
@@ -100,7 +101,7 @@ Treat it as historical.
 
 ## 🟡 B5 — First-run has never been tested on a clean machine
 
-The corrected notarized `v0.0.3` DMG is public and independently passes its GitHub digest, staple,
+The corrected notarized `v0.0.4` DMG is public and independently passes its GitHub digest, staple,
 Gatekeeper, Developer ID, Team ID, and bundle-ID checks. It still needs a first-run test on a Mac
 that has never run ScryTab:
 
@@ -115,11 +116,11 @@ that has never run ScryTab:
 
 ## 🟡 B6 — Sparkle runtime update remains unproven
 
-The live appcast now advertises `v0.0.3`; its enclosure length and EdDSA signature independently
+The live appcast now advertises `v0.0.4`; its enclosure length and EdDSA signature independently
 verify against the public ZIP. The keypair and signing path remain verified (see [D5](#done)), and
-future release jobs replace the website feed only after the matching public ZIP exists. The runtime
-path — an installed app fetching, validating, downloading, and installing an update — remains
-unproven and must be exercised when `v0.0.3` has a successor.
+future release jobs replace the website feed only after the matching public ZIP exists. `v0.0.4`
+is the first available successor to `v0.0.3`, so the runtime path — an installed app fetching,
+validating, downloading, and installing the update — can now be exercised on an existing Mac.
 
 ---
 
@@ -133,14 +134,14 @@ once a domain is decided, and update `public/privacy/index.html` in `scrytab-cms
 
 ## ✅ B8 — Website work is committed and deployed
 
-The landing-page copy/layout refresh is committed, and release-state commit `0cd8db3` is pushed to
-`scrytab-cms/main` and deployed by Cloudflare Pages. Both repository worktrees were clean before the
-release-readiness update. The `scry-tab` `AXCallScheduler` lock fix is also committed (see
+The landing-page copy/layout refresh and corrected legal ownership notices are committed and
+deployed by Cloudflare Pages. Automated commits `efe0671` and `4f4c06c` publish the `v0.0.4`
+appcast and release manifest. The `scry-tab` `AXCallScheduler` lock fix is also committed (see
 [D9](#done)).
 
 ---
 
-## ✅ B9 — Corrected v0.0.3 pipeline completed
+## ✅ B9 — Release pipeline is operational
 
 [Release run 31218768138](https://github.com/Ajanth/scry-tab/actions/runs/31218768138) passed tests
 and the signed Release build, then uploaded `ScryTab-0.0.2.zip` to Apple as submission
@@ -165,6 +166,17 @@ strict nested code signatures, staple tickets, Gatekeeper acceptance, bundle ID
 release contained exactly the DMG, ZIP, and source tarball; the live Cloudflare appcast pointed to
 the matching ZIP. The temporary CI keychain, `.p12`, and generated `local.xcconfig` were absent
 after cleanup, and the runner returned online and idle.
+
+[Release run 31350812858](https://github.com/Ajanth/scry-tab/actions/runs/31350812858)
+published `v0.0.4` from commit `2c1e1df` in 5 minutes 9 seconds on 2026-08-10. Apple accepted the
+ZIP submission `8fc70170-f85a-44de-8dbd-a19912bc3b3e` and DMG submission
+`b000c0cb-f94d-48c3-afb4-93117c44ec12`; the workflow stapled both artifacts and Gatekeeper
+reported `source=Notarized Developer ID`. Independent public downloads matched GitHub's SHA-256
+digests, strict nested signatures, Team ID `8M242ZY4BY`, bundle ID `com.perpro.scry-tab`, Sparkle
+signature and enclosure length, full GPL and dependency notices in both install formats, and the
+tagged Corresponding Source with no private or release-only paths. The live Cloudflare manifest,
+appcast, source page, privacy page, and landing bundle all matched `v0.0.4` and the corrected legal
+copy; all three public asset URLs returned 200.
 
 The public release and its `scrytab-public` tag were later withdrawn on 2026-08-08 because the
 source archive bundled Apple `notarytool`, stale proprietary wording, an incomplete xcbeautify
@@ -213,14 +225,14 @@ Repeat the publication, clean-install, and update steps with corrected future re
    - `ScryTab-<version>.dmg` — signed, notarized, stapled
    - `ScryTab-<version>.zip` — what Sparkle downloads
    - `ScryTab-<version>-source.tar.gz` — GPL Corresponding Source
-3. ✅ Corrected `v0.0.3` has all three assets attached to `Ajanth/scrytab-public`; the withdrawn
+3. ✅ Current `v0.0.4` has all three assets attached to `Ajanth/scrytab-public`; the withdrawn
    `v0.0.2` assets remain absent under [B10](#-b10--problematic-v002-release-is-withdrawn).
-4. ✅ `scrytab-cms` serves the `v0.0.3` release manifest and matching Sparkle feed; landing and
+4. ✅ `scrytab-cms` serves the `v0.0.4` release manifest and matching Sparkle feed; landing and
    source-page links resolve to public assets.
 5. ⬜ Install the corrected DMG on a clean Mac and work through
    [B5](#-b5--first-run-has-never-been-tested-on-a-clean-machine).
-6. ⬜ With `v0.0.3` installed, publish its successor and confirm the in-app updater finds,
-   verifies, downloads, and installs it. This is the real runtime test of
+6. ⬜ With `v0.0.3` installed, confirm the in-app updater finds, verifies, downloads, and installs
+   its now-published `v0.0.4` successor. This is the real runtime test of
    [B6](#b6--sparkle-runtime-update-remains-unproven).
 
 `package_and_notarize_release.sh` self-checks with `spctl --assess` and `stapler validate`, and
