@@ -145,7 +145,12 @@ class App: ScryTabApplication {
     }
 
     @objc static func checkForUpdatesNow(_ sender: NSMenuItem) {
-        GeneralTab.checkForUpdatesNow(sender)
+        // Let status-item menu tracking finish before activating, or Sparkle's window can be
+        // ordered behind the application that was frontmost when the menu opened.
+        DispatchQueue.main.async {
+            App.shared.activate(ignoringOtherApps: true)
+            GeneralTab.checkForUpdatesNow(sender)
+        }
     }
 
     @objc static func checkPermissions(_ sender: NSMenuItem) {
