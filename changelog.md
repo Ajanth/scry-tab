@@ -1,3 +1,10 @@
+## [0.0.5](https://github.com/Ajanth/scry-tab/compare/v0.0.4...v0.0.5) (2026-08-11)
+
+
+### Bug Fixes
+
+* **settings:** show contributor credits in About ([1bb8e9f](https://github.com/Ajanth/scry-tab/commit/1bb8e9f))
+
 ## [0.0.4](https://github.com/Ajanth/scry-tab/compare/v0.0.3...v0.0.4) (2026-08-10)
 
 
