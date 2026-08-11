@@ -19,6 +19,8 @@ class UserDefaultsEvents: NSObject {
     private func handleEvent(_ keyPath: String?) {
         Logger.debug { "\(keyPath ?? "keyPath:nil") updatePolicy:\(Preferences.updatePolicy) policyLock:\(GeneralTab.policyLock)" }
         guard !GeneralTab.policyLock else { return }
+        let consent = UpdatePolicyConsentState(defaults: .standard, domainName: App.bundleIdentifier)
+        guard consent.hasSparklePermissionResponse else { return }
         let id = buttonIdToUpdate()
         if id == 2 {
             // Sparkle UI "Automatically download and install updates in the future" doesn't activate periodical checks; we do it manually

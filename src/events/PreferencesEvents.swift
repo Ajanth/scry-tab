@@ -68,6 +68,8 @@ class PreferencesEvents {
     }
 
     private static func applyUpdatePolicyPreference() {
+        let consent = UpdatePolicyConsentState(defaults: .standard, domainName: App.bundleIdentifier)
+        guard consent.hasStoredPreference else { return }
         GeneralTab.policyLock = true
         let policy = Preferences.updatePolicy
         App.updaterController?.updater.automaticallyDownloadsUpdates = policy == .autoInstall

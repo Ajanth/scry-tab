@@ -27,16 +27,6 @@ class SparkleDelegate: NSObject, SPUUpdaterDelegate {
         return Endpoints.appcastUrl
     }
 
-    func feedParameters(for updater: SPUUpdater, sendingSystemProfile sendingProfile: Bool) -> [[String: String]] {
-        let v = ProcessInfo.processInfo.operatingSystemVersion
-        return [
-            ["key": "version", "value": App.version],
-            ["key": "macos", "value": "\(v.majorVersion).\(v.minorVersion).\(v.patchVersion)"],
-            ["key": "arch", "value": Sysctl.run("hw.machine")],
-            ["key": "lang", "value": Locale.preferredLanguages.first ?? "unknown"],
-        ]
-    }
-
     func updater(_ updater: SPUUpdater, didFindValidUpdate item: SUAppcastItem) {
         store(.updateAvailable(item))
     }

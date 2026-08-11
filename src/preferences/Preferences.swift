@@ -30,7 +30,7 @@ class Preferences {
             "startAtLogin": "true",
             "language": LanguagePreference.systemDefault.indexAsString,
             "exceptions": defaultExceptions(),
-            "updatePolicy": UpdatePolicyPreference.autoCheck.indexAsString,
+            "updatePolicy": UpdatePolicyPreference.manual.indexAsString,
             "crashPolicy": CrashPolicyPreference.ask.indexAsString,
             "hideSpaceNumberLabels": "false",
             "hideStatusIcons": "false",

@@ -47,10 +47,8 @@
 		<!-- ===== Sparkle (auto-update framework — reads these directly from the bundle) ===== -->
 	<key>SUPublicEDKey</key>
 	<string>WVns7P3X+/bnZRQrE26fiVAMay0mie418X+hHVKlX6w=</string>
-	<key>SUEnableAutomaticChecks</key>
-	<string>true</string>
 	<key>SUScheduledCheckInterval</key>
-	<string>604800</string>
+	<integer>604800</integer>
 
 	<!-- ===== Build-time secrets (substituted from xcconfig; override per-dev via config/local.xcconfig) ===== -->
 	<key>SentryDSN</key>

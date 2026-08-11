@@ -88,6 +88,9 @@
 		5FA002000000000000000019 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000019 /* LoginItem.swift */; };
 		5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000020 /* ShortcutConfiguration.swift */; };
 		5FA1E0B22F50000100A1A1A1 /* PreferencesEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA1E0B12F50000100A1A1A1 /* PreferencesEvents.swift */; };
+		6B1100000000000000000011 /* UpdatePolicyConsentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1100000000000000000001 /* UpdatePolicyConsentState.swift */; };
+		6B1100000000000000000012 /* UpdatePolicyConsentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1100000000000000000001 /* UpdatePolicyConsentState.swift */; };
+		6B1100000000000000000013 /* UpdatePolicyConsentStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1100000000000000000002 /* UpdatePolicyConsentStateTests.swift */; };
 		5FBB24D32F389A0400BF7E14 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBB24D22F389A0400BF7E14 /* Benchmark.swift */; };
 		5FC5980000000000000A0002 /* NativeHotkeyResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC5980000000000000A0001 /* NativeHotkeyResolver.swift */; };
 		5FC5980000000000000A0003 /* NativeHotkeyResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC5980000000000000A0001 /* NativeHotkeyResolver.swift */; };
@@ -418,6 +421,9 @@
 		5FA001000000000000000019 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		5FA001000000000000000020 /* ShortcutConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutConfiguration.swift; sourceTree = "<group>"; };
 		5FA1E0B12F50000100A1A1A1 /* PreferencesEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesEvents.swift; sourceTree = "<group>"; };
+		6B1100000000000000000001 /* UpdatePolicyConsentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePolicyConsentState.swift; sourceTree = "<group>"; };
+		6B1100000000000000000002 /* UpdatePolicyConsentStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePolicyConsentStateTests.swift; sourceTree = "<group>"; };
+		6B1100000000000000000003 /* UpdatePolicyConsentStateSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = UpdatePolicyConsentStateSpecs.md; sourceTree = "<group>"; };
 		5FAE000A2F13B49800FE6246 /* update_readme_and_website.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = update_readme_and_website.sh; sourceTree = "<group>"; };
 		5FB41C082F9D1EF900ECF3CF /* local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = local.xcconfig; sourceTree = "<group>"; };
 		5FB41C092F9D1F4700ECF3CF /* icon_32x32@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_32x32@2x.png"; sourceTree = "<group>"; };
@@ -807,6 +813,9 @@
 				BF0C822D3BEDAB1F1C9F775E /* ScreensEvents.swift */,
 				5FA1E0B12F50000100A1A1A1 /* PreferencesEvents.swift */,
 				D04BA5D9B4EBEB9E4333AE39 /* UserDefaultsEvents.swift */,
+				6B1100000000000000000001 /* UpdatePolicyConsentState.swift */,
+				6B1100000000000000000002 /* UpdatePolicyConsentStateTests.swift */,
+				6B1100000000000000000003 /* UpdatePolicyConsentStateSpecs.md */,
 				D04BB102A1B2C3D4E5F60011 /* InputSourceEvents.swift */,
 			);
 			path = events;
@@ -1793,6 +1802,8 @@
 				BF0C87B5EDCFC573CE220137 /* Helpers.swift in Sources */,
 				5FCEFA110000000000000001 /* PreferencesMigrations.swift in Sources */,
 				5FCEFA110000000000000021 /* PreferencesMigrationsTests.swift in Sources */,
+				6B1100000000000000000012 /* UpdatePolicyConsentState.swift in Sources */,
+				6B1100000000000000000013 /* UpdatePolicyConsentStateTests.swift in Sources */,
 				AECF000000000000000000A3 /* Endpoints.swift in Sources */,
 				B3C0C00C0000000000000001 /* SentryCrashReporter.swift in Sources */,
 				B3C0C00D0000000000000001 /* SentryCrashReporterTests.swift in Sources */,
@@ -1900,6 +1911,7 @@
 				D04BA0AE9865276FF8EF5DEB /* UserDefaultsEvents.swift in Sources */,
 				D04BB101A1B2C3D4E5F60011 /* InputSourceEvents.swift in Sources */,
 				5FA1E0B22F50000100A1A1A1 /* PreferencesEvents.swift in Sources */,
+				6B1100000000000000000011 /* UpdatePolicyConsentState.swift in Sources */,
 				D04BA4A11F821548EE3C5E95 /* Bash.swift in Sources */,
 				5FBB24D32F389A0400BF7E14 /* Benchmark.swift in Sources */,
 				D04BAFB90E00AA5D662EAF24 /* PermissionsWindow.swift in Sources */,

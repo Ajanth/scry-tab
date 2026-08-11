@@ -110,6 +110,9 @@ that has never run ScryTab:
   the app is launched from `~/Downloads`
 - The accessibility permission flow completes, including the guide window
 - The first-run crash-report consent prompt appears exactly once and defaults to off
+- No scheduled update request occurs before consent; Sparkle asks once on its second updater
+  launch, declining leaves periodic checks off, accepting is reflected in Settings, and automatic
+  installation defaults to off
 - Uninstall (Settings → General) removes the LaunchAgent and both preference suites
 
 ---
@@ -121,7 +124,9 @@ verify against the public ZIP. The keypair and signing path remain verified (see
 future release jobs replace the website feed only after the matching public ZIP exists. `v0.0.5`
 is available to installed `v0.0.3` and `v0.0.4` copies, so the runtime path — an installed app
 fetching, validating, downloading, and installing the update — can now be exercised on an existing
-Mac.
+Mac. Fresh installations now use Sparkle's built-in permission request instead of enabling periodic
+checks by default; existing persisted update choices remain intact. The clean-install consent path
+is tracked under B5, while this blocker still covers a complete signed runtime update.
 
 ---
 
