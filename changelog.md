@@ -1,3 +1,11 @@
+# [0.1.0](https://github.com/Ajanth/scry-tab/compare/v0.0.5...v0.1.0) (2026-08-11)
+
+
+### Features
+
+* automate appcast release notes generation ([44fe477](https://github.com/Ajanth/scry-tab/commit/44fe477))
+* implement update policy consent state handling ([dc3ae7d](https://github.com/Ajanth/scry-tab/commit/dc3ae7d))
+
 ## [0.0.5](https://github.com/Ajanth/scry-tab/compare/v0.0.4...v0.0.5) (2026-08-11)
 
 
