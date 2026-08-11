@@ -326,8 +326,8 @@ Recorded so it is not re-litigated or accidentally reverted.
   `Rogue Works` was neither ScryTab's legal rights holder nor an available Australian business
   name, the standalone About window omitted parts of GPL-3.0 §0's Appropriate Legal Notices, and
   the app bundle omitted the GPL text and full Sparkle/Sentry binary notices. Copyright ownership
-  now distinguishes ScryTab changes from the AltTab contributors' portions without publishing the
-  maintainer's legal name in the human-readable notice;
+  the human-readable notice now names the ScryTab contributors and credits AltTab, its creator
+  lwouis, and the AltTab contributors without publishing the maintainer's legal name;
   the About surface displays the no-warranty and redistribution notice in every entry point;
   AltTab attribution and the full contributor record remain in the bundled acknowledgments and
   Contributors documents without rendering the developer and translator rolls in About;

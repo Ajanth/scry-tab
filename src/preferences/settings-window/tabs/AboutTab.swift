@@ -14,7 +14,7 @@ class AboutTab {
         appIcon.updateContents(.cgImage(App.appIcon(for: appIconSize)), appIconSize)
         appIcon.fit(appIconSize.width, appIconSize.height)
         let copyright = secondaryLabel(App.copyrightNotice)
-        let legalNotice = secondaryLabel(NSLocalizedString("Licensed under GNU GPL v3.0. No warranty, to the extent permitted by law. You may redistribute it under the GPL v3.0.", comment: "GPL legal notice in About"))
+        let legalNotice = secondaryLabel(NSLocalizedString("Licensed under the GNU GPL v3.0. No warranty. You may modify and redistribute it under the same licence.", comment: "GPL legal notice in About"))
         let metadata = StackView([
             BoldLabel(App.name),
             secondaryLabel(NSLocalizedString("Version", comment: "") + " " + App.version),

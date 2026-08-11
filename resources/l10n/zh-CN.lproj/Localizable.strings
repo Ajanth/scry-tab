@@ -114,7 +114,7 @@
 "Large" = "大";
 "Later" = "稍后";
 "Licence" = "许可证";
-"Licensed under GNU GPL v3.0. No warranty, to the extent permitted by law. You may redistribute it under the GPL v3.0." = "基于 GNU GPL v3.0 许可。在法律允许的范围内不提供任何担保。您可以依据 GPL v3.0 重新分发。";
+"Licensed under the GNU GPL v3.0. No warranty. You may modify and redistribute it under the same licence." = "基于 GNU GPL v3.0 许可。不提供任何担保。您可以在同一许可下修改和重新分发。";
 "Light" = "浅色";
 "macOS reserves ⌘⌥⎋, ⌘⌥⇧⎋, and ⌘⌥⇧⌃⎋ for Force Quit and they cannot be unbound. ScryTab cannot use them.\n\nYour change would assign one of these to: %@." = "macOS 将 ⌘⌥⎋、⌘⌥⇧⎋ 和 ⌘⌥⇧⌃⎋ 保留给“强制退出”，无法取消绑定，ScryTab 也不能使用。\n\n你的更改会把其中之一分配给：%@。";
 "Medium" = "中";

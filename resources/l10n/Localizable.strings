@@ -347,7 +347,7 @@
 "Licence" = "Licence";
 
 /* GPL legal notice in About */
-"Licensed under GNU GPL v3.0. No warranty, to the extent permitted by law. You may redistribute it under the GPL v3.0." = "Licensed under GNU GPL v3.0. No warranty, to the extent permitted by law. You may redistribute it under the GPL v3.0.";
+"Licensed under the GNU GPL v3.0. No warranty. You may modify and redistribute it under the same licence." = "Licensed under the GNU GPL v3.0. No warranty. You may modify and redistribute it under the same licence.";
 
 /* No comment provided by engineer. */
 "Light" = "Light";
