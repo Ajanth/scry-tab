@@ -8,7 +8,12 @@
       <title>Version 0.0.5</title>
       <pubDate>Tue, 11 Aug 2026 07:09:39 +0200</pubDate>
       <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.5</sparkle:releaseNotesLink>
+      <description><![CDATA[
+        <ul>
+          <li>Show contributor credits in About.</li>
+        </ul>
+        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.5">Full release notes</a></p>
+      ]]></description>
       <enclosure
         url="https://github.com/Ajanth/scrytab-public/releases/download/v0.0.5/ScryTab-0.0.5.zip"
         sparkle:version="0.0.5"
@@ -22,7 +27,12 @@
       <title>Version 0.0.4</title>
       <pubDate>Mon, 10 Aug 2026 04:51:21 +0200</pubDate>
       <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.4</sparkle:releaseNotesLink>
+      <description><![CDATA[
+        <ul>
+          <li>Ship complete legal notices.</li>
+        </ul>
+        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.4">Full release notes</a></p>
+      ]]></description>
       <enclosure
         url="https://github.com/Ajanth/scrytab-public/releases/download/v0.0.4/ScryTab-0.0.4.zip"
         sparkle:version="0.0.4"
@@ -36,7 +46,13 @@
       <title>Version 0.0.3</title>
       <pubDate>Sat, 08 Aug 2026 16:24:34 +0200</pubDate>
       <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-      <sparkle:releaseNotesLink>https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.3</sparkle:releaseNotesLink>
+      <description><![CDATA[
+        <ul>
+          <li>Synchronize website release state.</li>
+          <li>Add xcbeautify to About search terms.</li>
+        </ul>
+        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.3">Full release notes</a></p>
+      ]]></description>
       <enclosure
         url="https://github.com/Ajanth/scrytab-public/releases/download/v0.0.3/ScryTab-0.0.3.zip"
         sparkle:version="0.0.3"
