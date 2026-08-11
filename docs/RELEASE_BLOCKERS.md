@@ -81,10 +81,10 @@ GitHub assets exist. Deleting a GitHub release does not mutate a static Cloudfla
 so a future withdrawal must still clear both files; normal publication no longer requires editing
 version strings in three separate website files.
 
-Release `v0.0.5` is now current with its DMG, Sparkle ZIP, and Corresponding Source. The live
+Release `v0.1.0` is now current with its DMG, Sparkle ZIP, and Corresponding Source. The live
 manifest names its DMG and source archive, the appcast encloses the matching ZIP, all three direct
 asset URLs return 200, and the landing page enables its download controls. Releases `v0.0.3` and
-`v0.0.4` remain available as updater baselines.
+later remain available as updater baselines.
 
 ---
 
@@ -101,9 +101,9 @@ Treat it as historical.
 
 ## 🟡 B5 — First-run has never been tested on a clean machine
 
-The corrected notarized `v0.0.5` DMG is public and independently passes its GitHub digest, staple,
-Gatekeeper, Developer ID, Team ID, and bundle-ID checks. It still needs a first-run test on a Mac
-that has never run ScryTab:
+The notarized `v0.1.0` DMG is public and its downloaded bytes match GitHub's SHA-256 digest. The
+release workflow passed staple validation, Gatekeeper, Developer ID, Team ID, and bundle-ID checks.
+It still needs a first-run test on a Mac that has never run ScryTab:
 
 - Gatekeeper accepts the DMG without a right-click → Open workaround
 - `MoveToApplicationsFolder.promptIfNeeded()` (`src/App.swift:603`) handles translocation when
@@ -119,10 +119,10 @@ that has never run ScryTab:
 
 ## 🟡 B6 — Sparkle runtime update remains unproven
 
-The live appcast now advertises `v0.0.5`; its enclosure length and EdDSA signature independently
-verify against the public ZIP. The keypair and signing path remain verified (see [D5](#done)), and
-future release jobs replace the website feed only after the matching public ZIP exists. `v0.0.5`
-is available to installed `v0.0.3` and `v0.0.4` copies, so the runtime path — an installed app
+The live appcast now advertises `v0.1.0`; its enclosure length matches the public ZIP, and the
+release job generated its EdDSA signature through the verified keypair and signing path (see
+[D5](#done)). Future release jobs replace the website feed only after the matching public ZIP
+exists. `v0.1.0` is available to installed `v0.0.5` copies, so the runtime path — an installed app
 fetching, validating, downloading, and installing the update — can now be exercised on an existing
 Mac. Fresh installations now use Sparkle's built-in permission request instead of enabling periodic
 checks by default; existing persisted update choices remain intact. The clean-install consent path
@@ -140,10 +140,10 @@ once a domain is decided, and update `public/privacy/index.html` in `scrytab-cms
 
 ## ✅ B8 — Website work is committed and deployed
 
-The landing-page copy/layout refresh and corrected legal ownership notices are committed and
-deployed by Cloudflare Pages. Automated commits `33db7c9` and `273d967` publish the `v0.0.5`
-appcast and release manifest. The `scry-tab` `AXCallScheduler` lock fix is also committed (see
-[D9](#done)).
+The landing-page copy/layout refresh, corrected legal ownership notices, and update-check privacy
+disclosure are committed and deployed by Cloudflare Pages. Automated commits `8c33f2f` and
+`cb1ad64` publish the `v0.1.0` appcast and release manifest. The `scry-tab` `AXCallScheduler` lock
+fix is also committed (see [D9](#done)).
 
 ---
 
@@ -195,6 +195,16 @@ acknowledgments and visible Contributors source document, and the source archive
 `v0.0.5` tag while satisfying the repository's required-input and private-path checks. The live
 manifest, appcast, landing page, source page, and privacy page all return 200 and publish `v0.0.5`.
 
+[Release run 31469414396](https://github.com/Ajanth/scry-tab/actions/runs/31469414396)
+published `v0.1.0` from commit `dc3ae7d` in 4 minutes 50 seconds on 2026-08-11. Apple accepted the
+ZIP submission `b9432933-4e33-48f5-afd8-a225ecfb8392` and DMG submission
+`32b66aff-cdee-46e4-8456-ea95197079e6`; stapling, validation, Gatekeeper assessment, public asset
+upload, website publication, and signing-material cleanup all passed. Fresh public downloads of
+the DMG, Sparkle ZIP, and Corresponding Source matched GitHub's SHA-256 digests, while the live
+appcast enclosure length matched the ZIP. Cloudflare deployed website commit `cb1ad64`; the
+production manifest and appcast now publish `v0.1.0`, and the privacy page documents opt-in
+periodic checks and the update endpoint's IP processing.
+
 The public release and its `scrytab-public` tag were later withdrawn on 2026-08-08 because the
 source archive bundled Apple `notarytool`, stale proprietary wording, an incomplete xcbeautify
 notice, and private operational files. That run remains useful historical pipeline evidence.
@@ -242,14 +252,14 @@ Repeat the publication, clean-install, and update steps with corrected future re
    - `ScryTab-<version>.dmg` — signed, notarized, stapled
    - `ScryTab-<version>.zip` — what Sparkle downloads
    - `ScryTab-<version>-source.tar.gz` — GPL Corresponding Source
-3. ✅ Current `v0.0.5` has all three assets attached to `Ajanth/scrytab-public`; the withdrawn
+3. ✅ Current `v0.1.0` has all three assets attached to `Ajanth/scrytab-public`; the withdrawn
    `v0.0.2` assets remain absent under [B10](#-b10--problematic-v002-release-is-withdrawn).
-4. ✅ `scrytab-cms` serves the `v0.0.5` release manifest and matching Sparkle feed; landing and
+4. ✅ `scrytab-cms` serves the `v0.1.0` release manifest and matching Sparkle feed; landing and
    source-page links resolve to public assets.
 5. ⬜ Install the corrected DMG on a clean Mac and work through
    [B5](#-b5--first-run-has-never-been-tested-on-a-clean-machine).
-6. ⬜ With `v0.0.4` installed, confirm the in-app updater finds, verifies, downloads, and installs
-   its now-published `v0.0.5` successor. This is the real runtime test of
+6. ⬜ With `v0.0.5` installed, confirm the in-app updater finds, verifies, downloads, and installs
+   its now-published `v0.1.0` successor. This is the real runtime test of
    [B6](#b6--sparkle-runtime-update-remains-unproven).
 
 `package_and_notarize_release.sh` self-checks with `spctl --assess` and `stapler validate`, and
