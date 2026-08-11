@@ -5,6 +5,25 @@
     <language>en</language>
 
     <item>
+      <title>Version 0.1.2</title>
+      <pubDate>Tue, 11 Aug 2026 12:41:43 +0200</pubDate>
+      <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[
+        <ul>
+          <li>Focus menu-triggered update window.</li>
+        </ul>
+        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.1.2">Full release notes</a></p>
+      ]]></description>
+      <enclosure
+        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.1.2/ScryTab-0.1.2.zip"
+        sparkle:version="0.1.2"
+        sparkle:shortVersionString="0.1.2"
+        sparkle:edSignature="JV9B5Ll7mW2iR8+KcGX4JRSbpUXZ2pp13Roho2Lou1D7Qnb8++zuZoagkoRem37G1YdAYlu7T37UEMDSLQNhCQ==" length="5993182"
+        type="application/octet-stream"/>
+    </item>
+
+
+    <item>
       <title>Version 0.1.1</title>
       <pubDate>Tue, 11 Aug 2026 11:44:56 +0200</pubDate>
       <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>

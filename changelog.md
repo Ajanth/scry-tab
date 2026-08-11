@@ -1,3 +1,10 @@
+## [0.1.2](https://github.com/Ajanth/scry-tab/compare/v0.1.1...v0.1.2) (2026-08-11)
+
+
+### Bug Fixes
+
+* **updater:** focus menu-triggered update window ([896e0d6](https://github.com/Ajanth/scry-tab/commit/896e0d6))
+
 ## [0.1.1](https://github.com/Ajanth/scry-tab/compare/v0.1.0...v0.1.1) (2026-08-11)
 
 # [0.1.0](https://github.com/Ajanth/scry-tab/compare/v0.0.5...v0.1.0) (2026-08-11)
