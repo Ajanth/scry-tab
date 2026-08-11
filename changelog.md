@@ -1,3 +1,5 @@
+## [0.1.1](https://github.com/Ajanth/scry-tab/compare/v0.1.0...v0.1.1) (2026-08-11)
+
 # [0.1.0](https://github.com/Ajanth/scry-tab/compare/v0.0.5...v0.1.0) (2026-08-11)
 
 
