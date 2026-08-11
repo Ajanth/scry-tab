@@ -76,13 +76,20 @@ xcrun stapler validate "$dmgApp"
 hdiutil detach "$mountDir" -quiet
 mounted=false
 
-manifest="$(curl -fsSL "https://scrytab.pages.dev/release.json?release=$version")"
-[[ $(plutil -extract version raw -o - - <<< "$manifest") == "$version" ]] || fail "live manifest version mismatch"
+manifest=""
+liveVersion=""
+for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+  manifest="$(curl -fsSL -H 'Cache-Control: no-cache' "https://scrytab.pages.dev/release.json?release=$version-$attempt")"
+  liveVersion="$(plutil -extract version raw -o - - <<< "$manifest" 2>/dev/null || true)"
+  if [[ $liveVersion == "$version" ]]; then break; fi
+  if [[ $attempt -lt 12 ]]; then sleep 5; fi
+done
+[[ $liveVersion == "$version" ]] || fail "live manifest version mismatch"
 releaseRoot="https://github.com/$releaseRepo/releases/download/$tag"
 [[ $(plutil -extract downloadUrl raw -o - - <<< "$manifest") == "$releaseRoot/$dmgName" ]] || fail "live DMG URL mismatch"
 [[ $(plutil -extract sourceUrl raw -o - - <<< "$manifest") == "$releaseRoot/$sourceName" ]] || fail "live source URL mismatch"
 
-appcast="$(curl -fsSL "https://scrytab.pages.dev/appcast.xml?release=$version")"
+appcast="$(curl -fsSL -H 'Cache-Control: no-cache' "https://scrytab.pages.dev/appcast.xml?release=$version")"
 itemXPath="//*[local-name()='item'][.//*[local-name()='enclosure' and @*[local-name()='version' and .='$version']]]/*[local-name()='enclosure']"
 appcastURL="$(xmllint --xpath "string($itemXPath/@url)" - <<< "$appcast")"
 appcastLength="$(xmllint --xpath "string($itemXPath/@length)" - <<< "$appcast")"
