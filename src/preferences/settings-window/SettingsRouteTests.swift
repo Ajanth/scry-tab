@@ -81,10 +81,10 @@ final class SettingsRouteTests: XCTestCase {
                                                   sectionID: "about",
                                                   title: "About",
                                                   keywords: SettingsAboutSearch.acknowledgmentKeywords)
-        let matches = SettingsSearchDescriptorMatcher.matches(query: "Sentry", descriptors: [descriptor])
-        XCTAssertEqual(matches.map(\.descriptor.route), [.about])
-        let toolMatches = SettingsSearchDescriptorMatcher.matches(query: "xcbeautify", descriptors: [descriptor])
-        XCTAssertEqual(toolMatches.map(\.descriptor.route), [.about])
+        for query in ["Sentry", "xcbeautify", "Contributors", "Translators"] {
+            let matches = SettingsSearchDescriptorMatcher.matches(query: query, descriptors: [descriptor])
+            XCTAssertEqual(matches.map(\.descriptor.route), [.about], "Expected \(query) to find About")
+        }
     }
 
     func testDescriptorMatcherReturnsSortedMatches() {

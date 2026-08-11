@@ -6,7 +6,7 @@ by Ajanth Kathirkamu began in 2026. ScryTab would not exist without AltTab and i
 [Website](https://github.com/lwouis/alt-tab-macos) - [GPL-3.0](https://github.com/lwouis/alt-tab-macos/blob/master/LICENCE.md)
 
 The people who built AltTab, and the translators whose work ScryTab still carries, are
-listed in the Contributors document that ships with this app.
+listed in the Contributors section below.
 
 ## Acknowledgments
 

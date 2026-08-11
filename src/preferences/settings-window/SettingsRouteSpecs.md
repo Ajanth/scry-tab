@@ -41,6 +41,6 @@ Mirrors `SettingsRouteTests.swift` 1:1.
 - **testExistingShortcutRouteKeepsPane** — a valid shortcut deep link keeps its stable ID and requested pane.
 - **testDisabledGestureDestinationFallsBackToControlsRoot** — a gesture deep link falls back to Controls while disabled and remains available when re-enabled.
 - **testDescriptorSearchableStringsIncludeDynamicValues** — descriptor searchable strings include title, subtitle, keywords, and current provider values.
-- **testAcknowledgmentKeywordsMatchAboutRoute** — acknowledgment library names route Settings search to About.
+- **testAcknowledgmentKeywordsMatchAboutRoute** — acknowledgment library names and contributor terms route Settings search to About.
 - **testDescriptorMatcherReturnsSortedMatches** — descriptor matching filters non-matches and sorts matches by score.
 - **testDescriptorMatcherGroupsMatchesByPageOrder** — grouped descriptor matching emits page buckets in caller-provided page order.
