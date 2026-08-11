@@ -1,12 +1,11 @@
 ## Based on AltTab
 
-ScryTab is a modified version of **AltTab**, a macOS window switcher created by Louis
-Pontoise and the AltTab contributors, and released under the GPL-3.0. ScryTab modifications
-by Ajanth Kathirkamu began in 2026. ScryTab would not exist without AltTab and its contributors.
+ScryTab is a modified version of **AltTab**, a macOS window switcher released under the GPL-3.0.
+ScryTab modifications began in 2026. ScryTab would not exist without AltTab and its contributors.
 [Website](https://github.com/lwouis/alt-tab-macos) - [GPL-3.0](https://github.com/lwouis/alt-tab-macos/blob/master/LICENCE.md)
 
 The people who built AltTab, and the translators whose work ScryTab still carries, are
-listed in the Contributors section below.
+listed in the Contributors document that ships with this app.
 
 ## Acknowledgments
 

@@ -211,7 +211,6 @@
 		D04BA737008AA2CD4E230A21 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA10777505D8A67ABD186 /* Application.swift */; };
 		D04BA73E90EFEF8247A5105D /* CGWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC34CFD42A7F6F1F01C0 /* CGWindow.swift */; };
 		D04BA76A74267B1346D23687 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA6D57A1456C07318B8EA /* GridView.swift */; };
-		D04BA7B8D599E1A7A27FF5AE /* AcknowledgmentsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA788228BA86D9EFBD1ED /* AcknowledgmentsTab.swift */; };
 		D04BA7BE7F3DD24D58ACE942 /* AppearanceTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA64F1F344007EA13BA05 /* AppearanceTab.swift */; };
 		D04BA7E39FA539DD8316447A /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BA0726EABD146753B9EF8 /* PermissionView.swift */; };
 		D04BAC01A55E771D0000A002 /* AccessibilitySettingsGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04BAC01A55E771D0000A001 /* AccessibilitySettingsGuide.swift */; };
@@ -598,7 +597,6 @@
 		D04BA6F823BC0EDA9AA4B80A /* AXUIElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AXUIElement.swift; sourceTree = "<group>"; };
 		D04BA70746DEEC3D30B43F81 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D04BA76AEE37D6656EB80126 /* RunningApplicationsEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningApplicationsEvents.swift; sourceTree = "<group>"; };
-		D04BA788228BA86D9EFBD1ED /* AcknowledgmentsTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgmentsTab.swift; sourceTree = "<group>"; };
 		D04BA7957E5E02FB09BCE10C /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = InfoPlist.strings; sourceTree = "<group>"; };
 		D04BA7C25BD7B68BCEEE38B5 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		D04BA7C6F2519091717F4B4E /* SystemPermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemPermissions.swift; sourceTree = "<group>"; };
@@ -1249,7 +1247,6 @@
 				F05E76000000000000000010 /* focus-sets */,
 				D04BA4A26987F67DD94C827F /* AboutTab.swift */,
 				D04BACE22DC907F03D193075 /* GeneralTab.swift */,
-				D04BA788228BA86D9EFBD1ED /* AcknowledgmentsTab.swift */,
 				D04BA27695D9A5824720BD7B /* ExceptionsTab.swift */,
 				D04BAFF60A98CF287F85DA21 /* ExceptionEditorView.swift */,
 			);
@@ -1892,7 +1889,6 @@
 				UNSP01000000000000000011 /* UninstallPlan.swift in Sources */,
 				5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */,
 				D04BA1637E125D38546C26E2 /* StackView.swift in Sources */,
-				D04BA7B8D599E1A7A27FF5AE /* AcknowledgmentsTab.swift in Sources */,
 				D04BA8757C9F20F25EB50785 /* TextField.swift in Sources */,
 				5F21C9E02C6E94240091F72F /* ShortcutsWhenActiveSheet.swift in Sources */,
 				D04BAE8B16A06A10E2FA94DE /* AccessibilityEvents.swift in Sources */,

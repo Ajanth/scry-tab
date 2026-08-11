@@ -596,7 +596,7 @@ class SettingsWindow: NSWindow {
                 NSLocalizedString("Licence", comment: ""),
                 NSLocalizedString("Source code", comment: ""),
                 NSLocalizedString("Usage", comment: ""),
-            ] + AcknowledgmentsTab.searchableStrings),
+            ]),
         ]
         if FeatureFlags.gestures {
             descriptors.append(SettingsSearchDescriptor(id: "controls-gesture", route: .controls(.gesture), sectionID: "controls", title: NSLocalizedString("Gesture", comment: ""), keywords: [

@@ -20,7 +20,7 @@
 	<key>CFBundleIconFile</key>
 	<string>app.icns</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>ScryTab changes Copyright © 2026 Ajanth Kathirkamu. AltTab portions Copyright © their respective contributors.</string>
+	<string>ScryTab changes © 2026 ScryTab contributors. AltTab portions © AltTab contributors.</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 

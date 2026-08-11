@@ -22,7 +22,6 @@ Models Settings navigation independently from AppKit view construction.
 - A controls deep link to an existing shortcut preserves its requested pane.
 - A controls deep link to a disabled feature normalizes to the Controls root route.
 - Search descriptors include dynamic provider values in their searchable strings.
-- The About descriptor indexes the acknowledgments it presents in Settings.
 - Descriptor matching returns only matching descriptors, ordered by strongest score.
 - Descriptor matching can be grouped by page in caller-provided page order while preserving
   per-page score ordering.
@@ -41,6 +40,5 @@ Mirrors `SettingsRouteTests.swift` 1:1.
 - **testExistingShortcutRouteKeepsPane** — a valid shortcut deep link keeps its stable ID and requested pane.
 - **testDisabledGestureDestinationFallsBackToControlsRoot** — a gesture deep link falls back to Controls while disabled and remains available when re-enabled.
 - **testDescriptorSearchableStringsIncludeDynamicValues** — descriptor searchable strings include title, subtitle, keywords, and current provider values.
-- **testAcknowledgmentKeywordsMatchAboutRoute** — acknowledgment library names and contributor terms route Settings search to About.
 - **testDescriptorMatcherReturnsSortedMatches** — descriptor matching filters non-matches and sorts matches by score.
 - **testDescriptorMatcherGroupsMatchesByPageOrder** — grouped descriptor matching emits page buckets in caller-provided page order.

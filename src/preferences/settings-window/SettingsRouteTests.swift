@@ -75,18 +75,6 @@ final class SettingsRouteTests: XCTestCase {
         XCTAssertEqual(descriptor.searchableStrings, ["Shortcut", "Trigger", "Hold", "Shortcut 2"])
     }
 
-    func testAcknowledgmentKeywordsMatchAboutRoute() {
-        let descriptor = SettingsSearchDescriptor(id: "about",
-                                                  route: .about,
-                                                  sectionID: "about",
-                                                  title: "About",
-                                                  keywords: SettingsAboutSearch.acknowledgmentKeywords)
-        for query in ["Sentry", "xcbeautify", "Contributors", "Translators"] {
-            let matches = SettingsSearchDescriptorMatcher.matches(query: query, descriptors: [descriptor])
-            XCTAssertEqual(matches.map(\.descriptor.route), [.about], "Expected \(query) to find About")
-        }
-    }
-
     func testDescriptorMatcherReturnsSortedMatches() {
         let direct = SettingsSearchDescriptor(id: "theme",
                                               route: .appearance,

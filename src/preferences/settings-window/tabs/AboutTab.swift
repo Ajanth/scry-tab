@@ -39,7 +39,6 @@ class AboutTab {
         settingsUsageView = usageView
         table.addRow(leftViews: [makeContentView(false, false, false)], isAddSeparator: false)
         table.addRow(leftViews: [usageView])
-        table.addRow(leftViews: [AcknowledgmentsTab.makeContentView(columnWidth: contentWidth, verticallyStacked: true)])
         return TableGroupSetView(originalViews: [table], padding: 0, bottomPadding: 0)
     }
 
