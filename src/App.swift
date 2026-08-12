@@ -24,7 +24,8 @@ class App: ScryTabApplication {
     }
     override class var shared: App { super.shared as! App }
     private static var isVeryFirstSummon = true
-    private static var pendingShowSettingsWindow = false
+    private static var pendingSettingsRoute: SettingsRoute?
+    private static var isInitialTourInProgress = false
     private static let sentryCrashReporter = SentryCrashReporter.shared
     // periphery:ignore
     static var sparkleDelegate: SparkleDelegate?
@@ -135,6 +136,7 @@ class App: ScryTabApplication {
         PermissionsWindow.canBecomeKey_ = canBecomeKey_
         FeedbackWindow.canBecomeKey_ = canBecomeKey_
         DebugWindow.canBecomeKey_ = canBecomeKey_
+        OnboardingTourWindow.canBecomeKey_ = canBecomeKey_
     }
 
     static func focusTarget() {
@@ -175,8 +177,8 @@ class App: ScryTabApplication {
     }
 
     static func showSettingsWindow(route: SettingsRoute) {
-        guard Menubar.statusItem != nil else {
-            pendingShowSettingsWindow = true
+        guard Menubar.statusItem != nil, !isInitialTourInProgress else {
+            pendingSettingsRoute = route
             return
         }
         initializeSettingsWindowIfNeeded(route: route)
@@ -230,24 +232,53 @@ class App: ScryTabApplication {
         if PermissionsWindow.shared == nil { _ = PermissionsWindow() }
     }
 
+    @objc static func showOnboardingTour() {
+        presentOnboardingTour { completion in
+            switch completion {
+            case .skip: return
+            case .exploreFocusSets: showSettingsWindow(route: .focusSets)
+            }
+        }
+    }
+
     @discardableResult
-    private static func showSettingsWindowOnFirstLaunchIfNeeded() -> Bool {
-        guard !Preferences.settingsWindowShownOnFirstLaunch else { return false }
-        showAndCenterSettingsWindowOnFirstLaunch()
+    private static func showInitialTourIfNeeded() -> Bool {
+        guard OnboardingTourResolver.shouldPresentAutomatically(initialExperienceShown: Preferences.initialExperienceShown) else { return false }
+        isInitialTourInProgress = true
+        presentOnboardingTour(onCompletion: completeInitialTour)
         return true
     }
 
-    /// `showSettingsWindow()` relies on a saved autosave frame to position the window. On first
-    /// launch there's no saved frame, and `showSecondaryWindow`'s fallback centering doesn't always
-    /// stick (the window has been observed at the lower-left corner). Force a center pass after
-    /// showing so the user sees the window in the middle of the screen.
-    private static func showAndCenterSettingsWindowOnFirstLaunch() {
-        showSettingsWindow()
-        if let window = SettingsWindow.shared {
-            NSScreen.preferred.repositionPanel(window)
-            window.center()
+    private static func presentOnboardingTour(onCompletion: @escaping (OnboardingTourCompletion) -> Void) {
+        OnboardingTourWindow.present(primaryShortcutText: primaryShortcutDisplayText(), onCompletion: onCompletion)
+    }
+
+    private static func primaryShortcutDisplayText() -> String {
+        guard let next = Preferences.shortcut(Preferences.indexToName("nextWindowShortcut", 0)) else { return "" }
+        guard let hold = Preferences.shortcut(Preferences.indexToName("holdShortcut", 0)) else { return next.keyEquivalent }
+        return Shortcut(code: next.keyCode,
+                        modifierFlags: [hold.modifierFlags, next.modifierFlags],
+                        characters: next.characters,
+                        charactersIgnoringModifiers: next.charactersIgnoringModifiers).keyEquivalent
+    }
+
+    private static func completeInitialTour(_ completion: OnboardingTourCompletion) {
+        isInitialTourInProgress = false
+        Preferences.markInitialExperienceShown()
+        switch completion {
+        case .exploreFocusSets:
+            pendingSettingsRoute = nil
+            showSettingsWindow(route: .focusSets)
+        case .skip:
+            showPendingSettingsWindowIfNeeded()
         }
-        Preferences.markSettingsWindowShownOnFirstLaunch()
+        DispatchQueue.main.async { presentCrashReportConsentIfNeeded() }
+    }
+
+    private static func showPendingSettingsWindowIfNeeded() {
+        guard let route = pendingSettingsRoute else { return }
+        pendingSettingsRoute = nil
+        showSettingsWindow(route: route)
     }
 
     static func showPermissionsWindow() {
@@ -578,11 +609,8 @@ class App: ScryTabApplication {
         PreferencesEvents.initialize()
         globalKeyboardStateWasConfigured = true
         BenchmarkRunner.startIfNeeded()
-        showSettingsWindowOnFirstLaunchIfNeeded()
-        if pendingShowSettingsWindow {
-            pendingShowSettingsWindow = false
-            showSettingsWindow()
-        }
+        let isShowingInitialTour = showInitialTourIfNeeded()
+        if !isShowingInitialTour { showPendingSettingsWindowIfNeeded() }
         #if DEBUG
         QAMenu.shared = QAMenu()
         QAMenu.shared?.orderFront(nil)
@@ -590,7 +618,7 @@ class App: ScryTabApplication {
         if QAMenu.graphEnabled { DebugMenu.setEnabled(true) }
         #endif
         UsageStats.prune()
-        DispatchQueue.main.async { presentCrashReportConsentIfNeeded() }
+        if !isShowingInitialTour { DispatchQueue.main.async { presentCrashReportConsentIfNeeded() } }
         Logger.info { "Finished launching ScryTab" }
     }
 }

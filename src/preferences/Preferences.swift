@@ -91,7 +91,7 @@ class Preferences {
     // periphery:ignore
     static var startAtLogin: Bool { CachedUserDefaults.bool("startAtLogin") }
     static var exceptions: [ExceptionEntry] { CachedUserDefaults.json("exceptions", [ExceptionEntry].self) }
-    static var settingsWindowShownOnFirstLaunch: Bool { CachedUserDefaults.bool("settingsWindowShownOnFirstLaunch") }
+    static var initialExperienceShown: Bool { CachedUserDefaults.bool("settingsWindowShownOnFirstLaunch") }
 
     // macro values
     static var appearanceStyle: AppearanceStylePreference { CachedUserDefaults.macroPref("appearanceStyle", AppearanceStylePreference.allCases) }
@@ -144,7 +144,7 @@ class Preferences {
         UserDefaults.standard.register(defaults: defaultValues)
     }
 
-    static func markSettingsWindowShownOnFirstLaunch() {
+    static func markInitialExperienceShown() {
         set("settingsWindowShownOnFirstLaunch", "true", false)
     }
 
