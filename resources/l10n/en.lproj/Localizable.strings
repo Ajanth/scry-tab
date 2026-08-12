@@ -56,13 +56,13 @@
 "Check for updates…" = "Check for updates…";
 "Check permissions…" = "Check permissions…";
 "Choose a Focus Set to review its shortcut and included applications." = "Choose a Focus Set to review its shortcut and included applications.";
+"Choose any shortcut" = "Choose any shortcut";
 "Choose how the switcher looks" = "Choose how the switcher looks";
 "Choose the applications whose windows belong to this Focus Set." = "Choose the applications whose windows belong to this Focus Set.";
 "Chrome" = "Chrome";
 "Close window" = "Close window";
 "Conflicting shortcut" = "Conflicting shortcut";
 "Continue on GitHub" = "Continue on GitHub";
-"Control demonstration preview. Cursor starts selected; pressing the shortcut again advances to Safari, and releasing focuses Safari." = "Control demonstration preview. Cursor starts selected; pressing the shortcut again advances to Safari, and releasing focuses Safari.";
 "Controls" = "Controls";
 "Could not move to Applications folder" = "Could not move to Applications folder";
 "Couldn't open GitHub" = "Couldn't open GitHub";
@@ -72,6 +72,7 @@
 "Customize more…" = "Customize more…";
 "Dark" = "Dark";
 "Debug tools" = "Debug tools";
+"Default search shortcut: S" = "Default search shortcut: S";
 "Details" = "Details";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Direct Focus Set shortcuts use the standard appearance and window organization.";
 "Disabled" = "Disabled";
@@ -92,6 +93,7 @@
 "Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count." = "Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count.";
 "End" = "End";
 "Entertainment" = "Entertainment";
+"Example shortcut: Option–1. Choose any shortcut." = "Example shortcut: Option–1. Choose any shortcut.";
 "Exceptions" = "Exceptions";
 "Explore Focus Sets" = "Explore Focus Sets";
 "Export settings…" = "Export settings…";
@@ -108,6 +110,7 @@
 "General" = "General";
 "Gesture" = "Gesture";
 "Gestures" = "Gestures";
+"Group apps. Pick any shortcut." = "Group apps. Pick any shortcut.";
 "Help improve ScryTab" = "Help improve ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings.";
 "Hide" = "Hide";
@@ -115,15 +118,11 @@
 "Hide status icons" = "Hide status icons";
 "Hide windows" = "Hide windows";
 "Hold" = "Hold";
-"Hold %@ to show the switcher, press again to advance, then release to focus the selected window." = "Hold %@ to show the switcher, press again to advance, then release to focus the selected window.";
-"Hold to show  •  Press again to advance  •  Release to focus" = "Hold to show  •  Press again to advance  •  Release to focus";
-"Hold, advance, then release" = "Hold, advance, then release";
 "I can move myself to the Applications folder if you'd like." = "I can move myself to the Applications folder if you'd like.";
 "I think the app could be improved with…" = "I think the app could be improved with…";
 "Ignore shortcuts" = "Ignore shortcuts";
 "Import settings…" = "Import settings…";
 "Included Applications" = "Included Applications";
-"Keep related apps together, then open a Focus Set directly with Option and its number." = "Keep related apps together, then open a Focus Set directly with Option and its number.";
 "Language" = "Language";
 "Language Change" = "Language Change";
 "Large" = "Large";
@@ -158,6 +157,7 @@
 "OK" = "OK";
 "Open Appearance Settings" = "Open Appearance Settings";
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
+"Option–Tab shows this app’s windows. S searches—even with typos. All shortcuts are customizable." = "Option–Tab shows this app’s windows. S searches—even with typos. All shortcuts are customizable.";
 "Order windows by" = "Order windows by";
 "Ordering" = "Ordering";
 "Past month" = "Past month";
@@ -170,8 +170,6 @@
 "Plex" = "Plex";
 "Preview App Icons or Titles here. In Settings, you can also choose the switcher size and follow System, Light, or Dark appearance." = "Preview App Icons or Titles here. In Settings, you can also choose the switcher size and follow System, Light, or Dark appearance.";
 "Preview of the selected appearance style" = "Preview of the selected appearance style";
-"Primary shortcut" = "Primary shortcut";
-"Primary shortcut: %@" = "Primary shortcut: %@";
 "Quit %@" = "Quit %@";
 "Recently Created First" = "Recently Created First";
 "Recently Focused First" = "Recently Focused First";
@@ -182,6 +180,8 @@
 "Restart Now" = "Restart Now";
 "Resume preview animation" = "Resume preview animation";
 "Safari" = "Safari";
+"safri" = "safri";
+"Same-app windows  •  Typo-tolerant search" = "Same-app windows  •  Typo-tolerant search";
 "Screen including menu bar" = "Screen including menu bar";
 "Screen including mouse" = "Screen including mouse";
 "Screen showing ScryTab" = "Screen showing ScryTab";
@@ -192,6 +192,8 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
 "Search" = "Search";
 "Search applications" = "Search applications";
+"Search field shown with Cursor, Safari, and VS Code." = "Search field shown with Cursor, Safari, and VS Code.";
+"Search preview. The misspelled query “safri” filters the switcher to Safari." = "Search preview. The misspelled query “safri” filters the switcher to Safari.";
 "Select next window" = "Select next window";
 "Select previous window" = "Select previous window";
 "Send feedback" = "Send feedback";
@@ -231,7 +233,9 @@
 "Suggest a change" = "Suggest a change";
 "Summary" = "Summary";
 "Switch contexts with Focus Sets" = "Switch contexts with Focus Sets";
+"Switch within one app. Search every window." = "Switch within one app. Search every window.";
 "Switcher appearance" = "Switcher appearance";
+"Switcher preview with Cursor, Safari, and VS Code. Safari is selected." = "Switcher preview with Cursor, Safari, and VS Code. Safari is selected.";
 "System" = "System";
 "System Default" = "System Default";
 "Take ScryTab Tour…" = "Take ScryTab Tour…";

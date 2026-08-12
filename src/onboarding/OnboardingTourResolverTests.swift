@@ -62,4 +62,11 @@ final class OnboardingTourResolverTests: XCTestCase {
         XCTAssertNil(OnboardingTourResolver.nextAutoplayIndex(after: 0, count: 0))
         XCTAssertNil(OnboardingTourResolver.nextAutoplayIndex(after: 3, count: 3))
     }
+
+    /// Skip opens no Settings destination, Done opens Appearance, and Explore Focus Sets opens Focus Sets.
+    func testTourCompletionsResolveSettingsDestinations() {
+        XCTAssertNil(OnboardingTourResolver.settingsRoute(for: .skip))
+        XCTAssertEqual(OnboardingTourResolver.settingsRoute(for: .openAppearance), .appearance)
+        XCTAssertEqual(OnboardingTourResolver.settingsRoute(for: .exploreFocusSets), .focusSets)
+    }
 }

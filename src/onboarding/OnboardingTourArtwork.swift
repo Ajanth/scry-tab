@@ -104,6 +104,7 @@ final class OnboardingSwitcherPreviewView: NSView {
     private enum Metrics {
         static let size = NSSize(width: 640, height: 210)
         static let iconPanelSize = NSSize(width: 536, height: 160)
+        static let searchPanelSize = NSSize(width: 536, height: 200)
         static let iconTileSize = NSSize(width: 136, height: 130)
         static let iconGap = DesignSystem.Metrics.sectionGap
         static let listPanelSize = NSSize(width: 536, height: 190)
@@ -114,10 +115,12 @@ final class OnboardingSwitcherPreviewView: NSView {
     }
 
     private let panel = NSView()
+    private let searchField = NSSearchField()
     private let tiles = (0..<3).map { _ in OnboardingSwitcherTileView() }
     private var apps = [OnboardingTourDemoApp]()
     private var previewLayout = OnboardingSwitcherPreviewLayout.iconGrid
     private var selectedIndex = 0
+    private var isSearchVisible = false
     private var accessibilityObserver: NSObjectProtocol?
 
     override var intrinsicContentSize: NSSize { Metrics.size }
@@ -157,19 +160,60 @@ final class OnboardingSwitcherPreviewView: NSView {
     override func isAccessibilityElement() -> Bool { true }
 
     func apply(apps: [OnboardingTourDemoApp], layout: OnboardingSwitcherPreviewLayout, selectedIndex: Int, summary: String, animated: Bool) {
+        applyState(apps: apps, layout: layout, selectedIndex: selectedIndex, searchQuery: nil, summary: summary, animated: animated)
+    }
+
+    func applySearch(apps: [OnboardingTourDemoApp], selectedIndex: Int, query: String, summary: String, animated: Bool) {
+        applyState(apps: apps, layout: .iconGrid, selectedIndex: selectedIndex, searchQuery: query, summary: summary, animated: animated)
+    }
+
+    func updateSearchQuery(_ query: String) {
+        guard isSearchVisible else { return }
+        searchField.stringValue = query
+    }
+
+    func animateSearchFiltering(matchingIndex: Int, duration: CFTimeInterval) {
+        guard isSearchVisible, apps.indices.contains(matchingIndex), hasUsableBounds else { return }
+        for (index, tile) in tiles.prefix(apps.count).enumerated() {
+            guard let layer = tile.layer else { continue }
+            let opacity = CABasicAnimation(keyPath: "opacity")
+            opacity.fromValue = 1
+            opacity.toValue = index == matchingIndex ? 1 : 0
+            let scale = CAKeyframeAnimation(keyPath: "transform.scale")
+            scale.values = index == matchingIndex ? [1, 0.96, 1] : [1, 0.98, 0.94]
+            scale.keyTimes = [0, 0.58, 1]
+            let translation = CABasicAnimation(keyPath: "transform.translation.x")
+            translation.fromValue = 0
+            translation.toValue = index == matchingIndex ? 0 : (index < matchingIndex ? -18 : 18)
+            let group = CAAnimationGroup()
+            group.animations = [opacity, scale, translation]
+            group.duration = duration
+            group.fillMode = .forwards
+            group.isRemovedOnCompletion = false
+            group.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            layer.add(group, forKey: "onboarding.search.filter")
+        }
+    }
+
+    private func applyState(apps: [OnboardingTourDemoApp], layout: OnboardingSwitcherPreviewLayout, selectedIndex: Int, searchQuery: String?, summary: String, animated: Bool) {
         let previousLayout = previewLayout
+        let wasSearchVisible = isSearchVisible
         let previousPanelFrame = panel.layer?.presentation()?.frame ?? panel.frame
         let previousFrames = tilePresentationFrames()
-        let shouldAnimateGeometry = animated && previousLayout != layout && self.apps.count == min(apps.count, tiles.count)
+        let contentCountUnchanged = self.apps.count == min(apps.count, tiles.count)
+        let shouldAnimateGeometry = animated && contentCountUnchanged && (previousLayout != layout || wasSearchVisible != (searchQuery != nil))
         removeAllAnimations()
         self.apps = Array(apps.prefix(tiles.count))
         previewLayout = layout
         self.selectedIndex = max(0, min(selectedIndex, max(self.apps.count - 1, 0)))
+        isSearchVisible = searchQuery != nil
+        searchField.stringValue = searchQuery ?? ""
         setAccessibilityLabel(summary)
         applyContent()
         applyFrames()
         guard animated, hasUsableBounds else { return }
         shouldAnimateGeometry ? animateLayoutTransition(from: previousPanelFrame, tileFrames: previousFrames) : animateEntry()
+        if isSearchVisible && !wasSearchVisible { animateSearchFieldEntry() }
     }
 
     func animateSelectionTransition(from previousSelectedIndex: Int, duration: CFTimeInterval, changeKeyTime: Double) {
@@ -197,6 +241,14 @@ final class OnboardingSwitcherPreviewView: NSView {
         panel.translatesAutoresizingMaskIntoConstraints = true
         DesignSystemControlStyler.styleSurface(panel)
         addSubview(panel)
+        searchField.placeholderString = NSLocalizedString("Search", comment: "Onboarding search preview placeholder")
+        searchField.isEditable = false
+        searchField.isSelectable = false
+        searchField.wantsLayer = true
+        searchField.isHidden = true
+        searchField.setAccessibilityElement(false)
+        DesignSystemControlStyler.styleMainSearchField(searchField)
+        panel.addSubview(searchField)
         tiles.forEach {
             $0.isHidden = true
             panel.addSubview($0)
@@ -204,6 +256,7 @@ final class OnboardingSwitcherPreviewView: NSView {
     }
 
     private func applyContent() {
+        searchField.isHidden = !isSearchVisible
         for (index, tile) in tiles.enumerated() {
             let isVisible = apps.indices.contains(index)
             tile.isHidden = !isVisible
@@ -213,7 +266,9 @@ final class OnboardingSwitcherPreviewView: NSView {
     }
 
     private func applyFrames() {
-        panel.frame = centeredFrame(size: previewLayout == .iconGrid ? Metrics.iconPanelSize : Metrics.listPanelSize, in: bounds)
+        let panelSize = isSearchVisible ? Metrics.searchPanelSize : (previewLayout == .iconGrid ? Metrics.iconPanelSize : Metrics.listPanelSize)
+        panel.frame = centeredFrame(size: panelSize, in: bounds)
+        applySearchFieldFrame()
         let visibleTiles = Array(tiles.prefix(apps.count))
         switch previewLayout {
         case .iconGrid: applyIconFrames(visibleTiles)
@@ -223,10 +278,22 @@ final class OnboardingSwitcherPreviewView: NSView {
 
     private func applyIconFrames(_ visibleTiles: [OnboardingSwitcherTileView]) {
         let contentWidth = CGFloat(visibleTiles.count) * Metrics.iconTileSize.width + CGFloat(max(visibleTiles.count - 1, 0)) * Metrics.iconGap
-        let origin = NSPoint(x: (panel.bounds.width - contentWidth) / 2, y: (panel.bounds.height - Metrics.iconTileSize.height) / 2)
+        let centeredY = (panel.bounds.height - Metrics.iconTileSize.height) / 2
+        let searchY = max(searchField.frame.minY - DesignSystem.Metrics.sectionGap - Metrics.iconTileSize.height, 0)
+        let origin = NSPoint(x: (panel.bounds.width - contentWidth) / 2, y: isSearchVisible ? searchY : centeredY)
         for (index, tile) in visibleTiles.enumerated() {
             tile.frame = NSRect(x: origin.x + CGFloat(index) * (Metrics.iconTileSize.width + Metrics.iconGap), y: origin.y, width: Metrics.iconTileSize.width, height: Metrics.iconTileSize.height)
         }
+    }
+
+    private func applySearchFieldFrame() {
+        guard isSearchVisible else { return }
+        let horizontalInset = DesignSystem.Metrics.sectionGap
+        let height = max(DesignSystem.Metrics.standardControlMinHeight, ceil(searchField.fittingSize.height))
+        searchField.frame = NSRect(x: horizontalInset,
+                                   y: panel.bounds.height - DesignSystem.Metrics.formOuterPadding - height,
+                                   width: panel.bounds.width - 2 * horizontalInset,
+                                   height: height)
     }
 
     private func applyListFrames(_ visibleTiles: [OnboardingSwitcherTileView]) {
@@ -279,6 +346,22 @@ final class OnboardingSwitcherPreviewView: NSView {
             guard tileFrames.indices.contains(index) else { continue }
             animateFrame(of: tile.layer, from: tileFrames[index], duration: Metrics.animationDuration + 0.08, key: "onboarding.tile.layout")
         }
+    }
+
+    private func animateSearchFieldEntry() {
+        guard let layer = searchField.layer else { return }
+        let position = CABasicAnimation(keyPath: "position")
+        position.fromValue = NSPoint(x: layer.position.x, y: layer.position.y - DesignSystem.Metrics.headerFooterGap)
+        position.toValue = layer.position
+        let opacity = CABasicAnimation(keyPath: "opacity")
+        opacity.fromValue = 0
+        opacity.toValue = 1
+        let group = CAAnimationGroup()
+        group.animations = [position, opacity]
+        group.duration = Metrics.animationDuration
+        group.fillMode = .backwards
+        group.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        layer.add(group, forKey: "onboarding.search.entry")
     }
 
     private func animateFrame(of layer: CALayer?, from oldFrame: NSRect, duration: CFTimeInterval, key: String) {

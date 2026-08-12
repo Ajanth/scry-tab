@@ -172,6 +172,9 @@
 /* No comment provided by engineer. */
 "Choose a Focus Set to review its shortcut and included applications." = "Choose a Focus Set to review its shortcut and included applications.";
 
+/* Onboarding Focus Set shortcut configurability hint */
+"Choose any shortcut" = "Choose any shortcut";
+
 /* Onboarding Appearance page heading */
 "Choose how the switcher looks" = "Choose how the switcher looks";
 
@@ -189,9 +192,6 @@
 
 /* No comment provided by engineer. */
 "Continue on GitHub" = "Continue on GitHub";
-
-/* Onboarding Controls preview accessibility summary */
-"Control demonstration preview. Cursor starts selected; pressing the shortcut again advances to Safari, and releasing focuses Safari." = "Control demonstration preview. Cursor starts selected; pressing the shortcut again advances to Safari, and releasing focuses Safari.";
 
 /* No comment provided by engineer. */
 "Controls" = "Controls";
@@ -220,6 +220,9 @@
 /* Menubar option */
 "Debug tools" = "Debug tools";
 
+/* Onboarding Search shortcut accessibility label */
+"Default search shortcut: S" = "Default search shortcut: S";
+
 /* No comment provided by engineer. */
 "Details" = "Details";
 
@@ -235,7 +238,7 @@
 /* No comment provided by engineer. */
 "Don't hide" = "Don't hide";
 
-/* No comment provided by engineer. */
+/* Onboarding tour finish into Appearance button */
 "Done" = "Done";
 
 /* No comment provided by engineer. */
@@ -279,6 +282,9 @@
 
 /* Onboarding demo Focus Set name */
 "Entertainment" = "Entertainment";
+
+/* Onboarding Focus Set shortcut example accessibility label */
+"Example shortcut: Option–1. Choose any shortcut." = "Example shortcut: Option–1. Choose any shortcut.";
 
 /* No comment provided by engineer. */
 "Exceptions" = "Exceptions";
@@ -328,6 +334,9 @@
 /* No comment provided by engineer. */
 "Gestures" = "Gestures";
 
+/* Onboarding Focus Sets page description */
+"Group apps. Pick any shortcut." = "Group apps. Pick any shortcut.";
+
 /* No comment provided by engineer. */
 "Help improve ScryTab" = "Help improve ScryTab";
 
@@ -349,15 +358,6 @@
 /* No comment provided by engineer. */
 "Hold" = "Hold";
 
-/* Onboarding Controls page description with primary shortcut */
-"Hold %@ to show the switcher, press again to advance, then release to focus the selected window." = "Hold %@ to show the switcher, press again to advance, then release to focus the selected window.";
-
-/* Onboarding Controls demonstration sequence */
-"Hold to show  •  Press again to advance  •  Release to focus" = "Hold to show  •  Press again to advance  •  Release to focus";
-
-/* Onboarding Controls page heading */
-"Hold, advance, then release" = "Hold, advance, then release";
-
 /* LetsMove replacement alert */
 "I can move myself to the Applications folder if you'd like." = "I can move myself to the Applications folder if you'd like.";
 
@@ -372,9 +372,6 @@
 
 /* No comment provided by engineer. */
 "Included Applications" = "Included Applications";
-
-/* Onboarding Focus Sets page description */
-"Keep related apps together, then open a Focus Set directly with Option and its number." = "Keep related apps together, then open a Focus Set directly with Option and its number.";
 
 /* No comment provided by engineer. */
 "Language" = "Language";
@@ -478,6 +475,9 @@
 /* No comment provided by engineer. */
 "Open Trackpad Settings…" = "Open Trackpad Settings…";
 
+/* Onboarding Search page description */
+"Option–Tab shows this app’s windows. S searches—even with typos. All shortcuts are customizable." = "Option–Tab shows this app’s windows. S searches—even with typos. All shortcuts are customizable.";
+
 /* No comment provided by engineer. */
 "Order windows by" = "Order windows by";
 
@@ -514,12 +514,6 @@
 /* No comment provided by engineer. */
 "Preview of the selected appearance style" = "Preview of the selected appearance style";
 
-/* Onboarding empty primary shortcut fallback */
-"Primary shortcut" = "Primary shortcut";
-
-/* Onboarding primary shortcut accessibility label */
-"Primary shortcut: %@" = "Primary shortcut: %@";
-
 /* %@ is ScryTab */
 "Quit %@" = "Quit %@";
 
@@ -550,6 +544,12 @@
 /* Onboarding demo app */
 "Safari" = "Safari";
 
+/* Onboarding intentionally misspelled Safari search query */
+"safri" = "safri";
+
+/* Onboarding Search demonstration features */
+"Same-app windows  •  Typo-tolerant search" = "Same-app windows  •  Typo-tolerant search";
+
 /* No comment provided by engineer. */
 "Screen including menu bar" = "Screen including menu bar";
 
@@ -574,11 +574,17 @@
 /* No comment provided by engineer. */
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab will show if the window is currently minimized or fullscreen with a status icon.";
 
-/* No comment provided by engineer. */
+/* Onboarding search preview placeholder */
 "Search" = "Search";
 
 /* No comment provided by engineer. */
 "Search applications" = "Search applications";
+
+/* Onboarding Search editing preview accessibility summary */
+"Search field shown with Cursor, Safari, and VS Code." = "Search field shown with Cursor, Safari, and VS Code.";
+
+/* Onboarding Search result accessibility summary */
+"Search preview. The misspelled query “safri” filters the switcher to Safari." = "Search preview. The misspelled query “safri” filters the switcher to Safari.";
 
 /* No comment provided by engineer. */
 "Select next window" = "Select next window";
@@ -697,8 +703,14 @@
 /* Onboarding Focus Sets page heading */
 "Switch contexts with Focus Sets" = "Switch contexts with Focus Sets";
 
+/* Onboarding Search page heading */
+"Switch within one app. Search every window." = "Switch within one app. Search every window.";
+
 /* Onboarding Appearance selector accessibility label */
 "Switcher appearance" = "Switcher appearance";
+
+/* Onboarding Search initial preview accessibility summary */
+"Switcher preview with Cursor, Safari, and VS Code. Safari is selected." = "Switcher preview with Cursor, Safari, and VS Code. Safari is selected.";
 
 /* No comment provided by engineer. */
 "System" = "System";

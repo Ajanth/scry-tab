@@ -7,7 +7,9 @@ final class OnboardingTourFocusSetsPage: NSObject, OnboardingTourScene {
     }
 
     private static let titleText = NSLocalizedString("Switch contexts with Focus Sets", comment: "Onboarding Focus Sets page heading")
-    private static let bodyText = NSLocalizedString("Keep related apps together, then open a Focus Set directly with Option and its number.", comment: "Onboarding Focus Sets page description")
+    private static let bodyText = NSLocalizedString("Group apps. Pick any shortcut.", comment: "Onboarding Focus Sets page description")
+    private static let exampleText = NSLocalizedString("Choose any shortcut", comment: "Onboarding Focus Set shortcut configurability hint")
+    private static let shortcutExampleAccessibilityLabel = NSLocalizedString("Example shortcut: Option–1. Choose any shortcut.", comment: "Onboarding Focus Set shortcut example accessibility label")
     private static let selectorAccessibilityLabel = NSLocalizedString("Focus Set", comment: "Onboarding Focus Set selector accessibility label")
     private static let replayTitle = NSLocalizedString("Replay Animation", comment: "Onboarding animation replay button")
     private static let summaryFormat = NSLocalizedString("%@: %@. Selected: %@", comment: "Onboarding preview summary: Focus Set name, app names, then selected app")
@@ -123,11 +125,27 @@ final class OnboardingTourFocusSetsPage: NSObject, OnboardingTourScene {
     }
 
     private func makeShortcutRow() -> NSStackView {
+        let hint = NSTextField(labelWithString: Self.exampleText)
+        hint.font = NSFont.systemFont(ofSize: 12, weight: .medium)
+        hint.textColor = DesignSystem.color(.textSecondary)
+        hint.setAccessibilityElement(false)
+        let row = NSStackView(views: [hint, makeExampleShortcut()])
+        row.translatesAutoresizingMaskIntoConstraints = false
+        row.orientation = .horizontal
+        row.alignment = .centerY
+        row.spacing = DesignSystem.Metrics.rowHorizontalPadding
+        row.setAccessibilityElement(true)
+        row.setAccessibilityRole(.group)
+        row.setAccessibilityLabel(Self.shortcutExampleAccessibilityLabel)
+        return row
+    }
+
+    private func makeExampleShortcut() -> NSStackView {
         let plus = NSTextField(labelWithString: "+")
         plus.font = NSFont.systemFont(ofSize: 13, weight: .medium)
         plus.textColor = DesignSystem.color(.textSecondary)
         plus.setAccessibilityElement(false)
-        let row = NSStackView(views: [OnboardingTourKeycapView("⌥"), plus, OnboardingTourKeycapView("1"), OnboardingTourKeycapView("2"), OnboardingTourKeycapView("3")])
+        let row = NSStackView(views: [OnboardingTourKeycapView("⌥"), plus, OnboardingTourKeycapView("1")])
         row.translatesAutoresizingMaskIntoConstraints = false
         row.orientation = .horizontal
         row.alignment = .centerY

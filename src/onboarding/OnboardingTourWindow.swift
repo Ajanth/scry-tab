@@ -18,16 +18,17 @@ final class OnboardingTourWindow: NSWindow {
     private static let skipTitle = NSLocalizedString("Skip Tour", comment: "Onboarding tour skip button")
     private static let backTitle = NSLocalizedString("Back", comment: "Onboarding tour back button")
     private static let nextTitle = NSLocalizedString("Next", comment: "Onboarding tour next button")
+    private static let doneTitle = NSLocalizedString("Done", comment: "Onboarding tour finish into Appearance button")
     private static let exploreTitle = NSLocalizedString("Explore Focus Sets", comment: "Onboarding tour final button")
 
     static var canBecomeKey_ = true
     override var canBecomeKey: Bool { Self.canBecomeKey_ }
     private(set) static var shared: OnboardingTourWindow?
-    private let primaryShortcutText: String
     private let pageHost = NSView()
     private let progressLabel = NSTextField(labelWithString: "")
     private let skipButton: NSButton
     private let backButton: NSButton
+    private let doneButton: NSButton
     private let nextButton: NSButton
     private var currentPage = OnboardingTourPage.focusSets
     private var currentScene: OnboardingTourScene?
@@ -35,25 +36,25 @@ final class OnboardingTourWindow: NSWindow {
     private var completion: ((OnboardingTourCompletion) -> Void)?
     private var pendingCompletion = OnboardingTourCompletion.skip
 
-    static func present(primaryShortcutText: String, onCompletion: @escaping (OnboardingTourCompletion) -> Void) {
+    static func present(onCompletion: @escaping (OnboardingTourCompletion) -> Void) {
         if let existing = shared {
             NSApp.activate(ignoringOtherApps: true)
             existing.makeKeyAndOrderFront(nil)
             return
         }
-        let window = OnboardingTourWindow(primaryShortcutText: primaryShortcutText, onCompletion: onCompletion)
+        let window = OnboardingTourWindow(onCompletion: onCompletion)
         shared = window
         window.center()
         NSApp.activate(ignoringOtherApps: true)
         window.makeKeyAndOrderFront(nil)
     }
 
-    private init(primaryShortcutText: String, onCompletion: @escaping (OnboardingTourCompletion) -> Void) {
-        self.primaryShortcutText = primaryShortcutText
+    private init(onCompletion: @escaping (OnboardingTourCompletion) -> Void) {
         completion = onCompletion
         skipButton = DesignSystemControlStyler.makeButton(Self.skipTitle)
         backButton = DesignSystemControlStyler.makeButton(Self.backTitle)
-        nextButton = DesignSystemControlStyler.makeButton(Self.nextTitle)
+        doneButton = DesignSystemControlStyler.makeButton(Self.doneTitle)
+        nextButton = DesignSystemControlStyler.makePrimaryButton(Self.nextTitle)
         super.init(contentRect: .zero, styleMask: [.titled, .closable, .fullSizeContentView], backing: .buffered, defer: false)
         setupWindow()
         setupContent()
@@ -112,26 +113,32 @@ final class OnboardingTourWindow: NSWindow {
         skipButton.keyEquivalent = "\u{1b}"
         backButton.target = self
         backButton.action = #selector(back(_:))
+        doneButton.target = self
+        doneButton.action = #selector(done(_:))
         nextButton.target = self
         nextButton.action = #selector(next(_:))
-        nextButton.keyEquivalent = "\r"
         skipButton.setAccessibilityLabel(Self.skipTitle)
         backButton.setAccessibilityLabel(Self.backTitle)
+        doneButton.setAccessibilityLabel(Self.doneTitle)
         nextButton.setAccessibilityLabel(Self.nextTitle)
     }
 
     private func makeFooter() -> NSView {
-        let trailingActions = NSStackView(views: [backButton, nextButton])
+        let trailingActions = NSStackView(views: [backButton, doneButton, nextButton])
         trailingActions.translatesAutoresizingMaskIntoConstraints = false
         trailingActions.orientation = .horizontal
         trailingActions.alignment = .centerY
         trailingActions.spacing = TableGroupView.toolRowSpacing
-        let footer = NSStackView()
+        let spacer = NSView()
+        spacer.translatesAutoresizingMaskIntoConstraints = false
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        spacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        spacer.widthAnchor.constraint(greaterThanOrEqualToConstant: TableGroupView.toolRowSpacing).isActive = true
+        let footer = NSStackView(views: [skipButton, spacer, trailingActions])
         footer.translatesAutoresizingMaskIntoConstraints = false
         footer.orientation = .horizontal
         footer.alignment = .centerY
-        footer.addView(skipButton, in: .leading)
-        footer.addView(trailingActions, in: .trailing)
+        footer.spacing = 0
         return footer
     }
 
@@ -147,6 +154,10 @@ final class OnboardingTourWindow: NSWindow {
 
     @objc private func back(_ sender: Any?) {
         show(OnboardingTourResolver.back(from: currentPage), activate: true)
+    }
+
+    @objc private func done(_ sender: Any?) {
+        complete(.openAppearance)
     }
 
     @objc private func next(_ sender: Any?) {
@@ -177,7 +188,7 @@ final class OnboardingTourWindow: NSWindow {
         switch page {
         case .focusSets: return OnboardingTourFocusSetsPage()
         case .appearance: return OnboardingTourAppearancePage()
-        case .controls: return OnboardingTourControlsPage(primaryShortcutText: primaryShortcutText)
+        case .controls: return OnboardingTourControlsPage()
         }
     }
 
@@ -217,13 +228,14 @@ final class OnboardingTourWindow: NSWindow {
     private func updateNavigation() {
         progressLabel.stringValue = String(format: Self.progressFormat, currentPage.rawValue + 1, OnboardingTourPage.allCases.count)
         backButton.isEnabled = currentPage != .focusSets
+        doneButton.isHidden = currentPage != .controls
         nextButton.title = currentPage == .controls ? Self.exploreTitle : Self.nextTitle
         nextButton.setAccessibilityLabel(nextButton.title)
     }
 
     private func updateKeyViewLoop() {
         let pageControls = focusableControls(in: currentScene?.view)
-        let controls = pageControls + [skipButton, backButton, nextButton].filter { $0.isEnabled }
+        let controls = pageControls + [skipButton, backButton, doneButton, nextButton].filter { $0.isEnabled && !$0.isHidden }
         guard !controls.isEmpty else { return }
         recalculateKeyViewLoop()
         for (index, control) in controls.enumerated() { control.nextKeyView = controls[(index + 1) % controls.count] }

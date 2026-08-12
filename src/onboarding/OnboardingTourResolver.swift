@@ -40,6 +40,14 @@ enum OnboardingTourResolver {
         guard count > 0, currentIndex >= 0, currentIndex < count - 1 else { return nil }
         return currentIndex + 1
     }
+
+    static func settingsRoute(for completion: OnboardingTourCompletion) -> SettingsRoute? {
+        switch completion {
+        case .skip: return nil
+        case .openAppearance: return .appearance
+        case .exploreFocusSets: return .focusSets
+        }
+    }
 }
 
 protocol OnboardingTourScene: AnyObject {
@@ -50,5 +58,6 @@ protocol OnboardingTourScene: AnyObject {
 
 enum OnboardingTourCompletion {
     case skip
+    case openAppearance
     case exploreFocusSets
 }

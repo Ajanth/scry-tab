@@ -234,10 +234,8 @@ class App: ScryTabApplication {
 
     @objc static func showOnboardingTour() {
         presentOnboardingTour { completion in
-            switch completion {
-            case .skip: return
-            case .exploreFocusSets: showSettingsWindow(route: .focusSets)
-            }
+            guard let route = OnboardingTourResolver.settingsRoute(for: completion) else { return }
+            showSettingsWindow(route: route)
         }
     }
 
@@ -250,26 +248,16 @@ class App: ScryTabApplication {
     }
 
     private static func presentOnboardingTour(onCompletion: @escaping (OnboardingTourCompletion) -> Void) {
-        OnboardingTourWindow.present(primaryShortcutText: primaryShortcutDisplayText(), onCompletion: onCompletion)
-    }
-
-    private static func primaryShortcutDisplayText() -> String {
-        guard let next = Preferences.shortcut(Preferences.indexToName("nextWindowShortcut", 0)) else { return "" }
-        guard let hold = Preferences.shortcut(Preferences.indexToName("holdShortcut", 0)) else { return next.keyEquivalent }
-        return Shortcut(code: next.keyCode,
-                        modifierFlags: [hold.modifierFlags, next.modifierFlags],
-                        characters: next.characters,
-                        charactersIgnoringModifiers: next.charactersIgnoringModifiers).keyEquivalent
+        OnboardingTourWindow.present(onCompletion: onCompletion)
     }
 
     private static func completeInitialTour(_ completion: OnboardingTourCompletion) {
         isInitialTourInProgress = false
         Preferences.markInitialExperienceShown()
-        switch completion {
-        case .exploreFocusSets:
+        if let route = OnboardingTourResolver.settingsRoute(for: completion) {
             pendingSettingsRoute = nil
-            showSettingsWindow(route: .focusSets)
-        case .skip:
+            showSettingsWindow(route: route)
+        } else {
             showPendingSettingsWindowIfNeeded()
         }
         DispatchQueue.main.async { presentCrashReportConsentIfNeeded() }

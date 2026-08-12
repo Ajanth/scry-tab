@@ -56,13 +56,13 @@
 "Check for updates…" = "アップデートを確認…";
 "Check permissions…" = "権限を確認…";
 "Choose a Focus Set to review its shortcut and included applications." = "フォーカスセットを選ぶと、ショートカットと含まれるアプリを確認できます。";
+"Choose any shortcut" = "好きなショートカットを選択";
 "Choose how the switcher looks" = "スイッチャーの外観を選択";
 "Choose the applications whose windows belong to this Focus Set." = "このフォーカスセットに含めるアプリを選んでください。";
 "Chrome" = "Chrome";
 "Close window" = "ウインドウを閉じる";
 "Conflicting shortcut" = "ショートカットの競合";
 "Continue on GitHub" = "GitHubで続ける";
-"Control demonstration preview. Cursor starts selected; pressing the shortcut again advances to Safari, and releasing focuses Safari." = "コントロールのデモプレビュー。最初はCursorが選択され、ショートカットをもう一度押すとSafariに移動し、離すとSafariにフォーカスします。";
 "Controls" = "コントロール";
 "Could not move to Applications folder" = "アプリケーションフォルダへ移動できませんでした";
 "Couldn't open GitHub" = "GitHubを開けませんでした";
@@ -72,6 +72,7 @@
 "Customize more…" = "さらにカスタマイズ…";
 "Dark" = "ダーク";
 "Debug tools" = "デバッグツール";
+"Default search shortcut: S" = "デフォルトの検索ショートカット：S";
 "Details" = "詳細";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "直接起動のフォーカスセットショートカットでは、標準の外観とウインドウ整理が使われます。";
 "Disabled" = "無効";
@@ -92,6 +93,7 @@
 "Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count." = "このアプリのアイコンと一致する「%@」の行をオンにしてください。別ビルドや別の証明書の古いScryTabエントリでは不十分です。";
 "End" = "末尾";
 "Entertainment" = "エンターテインメント";
+"Example shortcut: Option–1. Choose any shortcut." = "ショートカット例：Option–1。好きなショートカットを選べます。";
 "Exceptions" = "例外";
 "Explore Focus Sets" = "フォーカスセットを見る";
 "Export settings…" = "設定を書き出す…";
@@ -108,6 +110,7 @@
 "General" = "一般";
 "Gesture" = "ジェスチャ";
 "Gestures" = "ジェスチャ";
+"Group apps. Pick any shortcut." = "アプリをまとめ、好きなショートカットを設定できます。";
 "Help improve ScryTab" = "ScryTabの改善に協力";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "クラッシュレポートを自動送信してScryTabの改善にご協力ください。あとから設定で変更できます。";
 "Hide" = "非表示";
@@ -115,15 +118,11 @@
 "Hide status icons" = "ステータスアイコンを隠す";
 "Hide windows" = "ウインドウを非表示";
 "Hold" = "押し続ける";
-"Hold %@ to show the switcher, press again to advance, then release to focus the selected window." = "%@を押したままスイッチャーを表示し、もう一度押して次へ進み、離して選択したウインドウにフォーカスします。";
-"Hold to show  •  Press again to advance  •  Release to focus" = "押したまま表示  •  もう一度押して進む  •  離してフォーカス";
-"Hold, advance, then release" = "押したまま、進んで、離す";
 "I can move myself to the Applications folder if you'd like." = "ご希望なら、アプリケーションフォルダへ移動できます。";
 "I think the app could be improved with…" = "改善できそうな点…";
 "Ignore shortcuts" = "ショートカットを無視";
 "Import settings…" = "設定を読み込む…";
 "Included Applications" = "含まれるアプリ";
-"Keep related apps together, then open a Focus Set directly with Option and its number." = "関連するアプリをまとめ、Optionキーと番号でフォーカスセットを直接開けます。";
 "Language" = "言語";
 "Language Change" = "言語の変更";
 "Large" = "大";
@@ -158,6 +157,7 @@
 "OK" = "OK";
 "Open Appearance Settings" = "外観設定を開く";
 "Open Trackpad Settings…" = "トラックパッド設定を開く…";
+"Option–Tab shows this app’s windows. S searches—even with typos. All shortcuts are customizable." = "Option–Tabでこのアプリのウインドウを表示。Sで検索でき、入力ミスにも対応します。すべてのショートカットを変更できます。";
 "Order windows by" = "ウインドウの並び順";
 "Ordering" = "並べ替え";
 "Past month" = "過去1か月";
@@ -170,8 +170,6 @@
 "Plex" = "Plex";
 "Preview App Icons or Titles here. In Settings, you can also choose the switcher size and follow System, Light, or Dark appearance." = "ここではアプリアイコンまたはタイトルをプレビューできます。設定では、スイッチャーのサイズや、システム、ライト、ダークの外観も選択できます。";
 "Preview of the selected appearance style" = "選択中の外観スタイルのプレビュー";
-"Primary shortcut" = "主ショートカット";
-"Primary shortcut: %@" = "主ショートカット：%@";
 "Quit %@" = "%@を終了";
 "Recently Created First" = "作成が新しい順";
 "Recently Focused First" = "フォーカスが新しい順";
@@ -182,6 +180,8 @@
 "Restart Now" = "今すぐ再起動";
 "Resume preview animation" = "プレビューアニメーションを再開";
 "Safari" = "Safari";
+"safri" = "safri";
+"Same-app windows  •  Typo-tolerant search" = "同じアプリのウインドウ  •  入力ミスに強い検索";
 "Screen including menu bar" = "メニューバーがあるディスプレイ";
 "Screen including mouse" = "ポインタがあるディスプレイ";
 "Screen showing ScryTab" = "ScryTabを表示中のディスプレイ";
@@ -192,6 +192,8 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "最小化またはフルスクリーンのウインドウには、ステータスアイコンを表示します。";
 "Search" = "検索";
 "Search applications" = "アプリを検索";
+"Search field shown with Cursor, Safari, and VS Code." = "検索フィールドを表示。Cursor、Safari、VS Codeがあります。";
+"Search preview. The misspelled query “safri” filters the switcher to Safari." = "検索プレビュー。入力ミスを含むクエリ「safri」でスイッチャーがSafariのみに絞り込まれています。";
 "Select next window" = "次のウインドウを選択";
 "Select previous window" = "前のウインドウを選択";
 "Send feedback" = "フィードバックを送信";
@@ -231,7 +233,9 @@
 "Suggest a change" = "改善を提案";
 "Summary" = "概要";
 "Switch contexts with Focus Sets" = "フォーカスセットでコンテキストを切り替える";
+"Switch within one app. Search every window." = "1つのアプリ内で切り替え。すべてのウインドウを検索。";
 "Switcher appearance" = "スイッチャーの外観";
+"Switcher preview with Cursor, Safari, and VS Code. Safari is selected." = "Cursor、Safari、VS Codeを含むスイッチャーのプレビュー。Safariが選択されています。";
 "System" = "システム";
 "System Default" = "システム設定に従う";
 "Take ScryTab Tour…" = "ScryTabツアーを見る…";

@@ -56,13 +56,13 @@
 "Check for updates…" = "Buscar actualizaciones…";
 "Check permissions…" = "Revisar permisos…";
 "Choose a Focus Set to review its shortcut and included applications." = "Elige un conjunto de enfoque para revisar su atajo y las apps incluidas.";
+"Choose any shortcut" = "Elige cualquier atajo";
 "Choose how the switcher looks" = "Elige el aspecto del selector";
 "Choose the applications whose windows belong to this Focus Set." = "Elige las apps cuyas ventanas forman parte de este conjunto de enfoque.";
 "Chrome" = "Chrome";
 "Close window" = "Cerrar ventana";
 "Conflicting shortcut" = "Atajo en conflicto";
 "Continue on GitHub" = "Continuar en GitHub";
-"Control demonstration preview. Cursor starts selected; pressing the shortcut again advances to Safari, and releasing focuses Safari." = "Vista previa de controles. Cursor está seleccionado al principio; al volver a pulsar el atajo se avanza a Safari y, al soltarlo, se enfoca Safari.";
 "Controls" = "Controles";
 "Could not move to Applications folder" = "No se pudo mover a la carpeta Aplicaciones";
 "Couldn't open GitHub" = "No se pudo abrir GitHub";
@@ -72,6 +72,7 @@
 "Customize more…" = "Personalizar más…";
 "Dark" = "Oscuro";
 "Debug tools" = "Herramientas de depuración";
+"Default search shortcut: S" = "Atajo de búsqueda predeterminado: S";
 "Details" = "Detalles";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Los atajos directos de conjuntos de enfoque usan la apariencia y la organización de ventanas estándar.";
 "Disabled" = "Desactivado";
@@ -92,6 +93,7 @@
 "Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count." = "Activa la fila “%@” que coincida con el icono de esta app. Una entrada antigua de ScryTab de otra compilación o certificado no cuenta.";
 "End" = "Fin";
 "Entertainment" = "Entretenimiento";
+"Example shortcut: Option–1. Choose any shortcut." = "Atajo de ejemplo: Option–1. Elige cualquier atajo.";
 "Exceptions" = "Excepciones";
 "Explore Focus Sets" = "Explorar conjuntos de enfoque";
 "Export settings…" = "Exportar ajustes…";
@@ -108,6 +110,7 @@
 "General" = "General";
 "Gesture" = "Gesto";
 "Gestures" = "Gestos";
+"Group apps. Pick any shortcut." = "Agrupa apps. Elige cualquier atajo.";
 "Help improve ScryTab" = "Ayuda a mejorar ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Ayuda a mejorar ScryTab enviando informes de fallos de forma automática. Puedes cambiar esto después en Ajustes.";
 "Hide" = "Ocultar";
@@ -115,15 +118,11 @@
 "Hide status icons" = "Ocultar íconos de estado";
 "Hide windows" = "Ocultar ventanas";
 "Hold" = "Mantener pulsado";
-"Hold %@ to show the switcher, press again to advance, then release to focus the selected window." = "Mantén pulsado %@ para mostrar el selector, vuelve a pulsarlo para avanzar y suéltalo para enfocar la ventana seleccionada.";
-"Hold to show  •  Press again to advance  •  Release to focus" = "Mantener pulsado para mostrar  •  Pulsar de nuevo para avanzar  •  Soltar para enfocar";
-"Hold, advance, then release" = "Mantén pulsado, avanza y suelta";
 "I can move myself to the Applications folder if you'd like." = "Puedo moverme a la carpeta Aplicaciones si quieres.";
 "I think the app could be improved with…" = "Creo que la app mejoraría con…";
 "Ignore shortcuts" = "Ignorar atajos";
 "Import settings…" = "Importar ajustes…";
 "Included Applications" = "Apps incluidas";
-"Keep related apps together, then open a Focus Set directly with Option and its number." = "Agrupa las apps relacionadas y abre un conjunto de enfoque directamente con Option y su número.";
 "Language" = "Idioma";
 "Language Change" = "Cambio de idioma";
 "Large" = "Grande";
@@ -158,6 +157,7 @@
 "OK" = "OK";
 "Open Appearance Settings" = "Abrir Ajustes de Apariencia";
 "Open Trackpad Settings…" = "Abrir Ajustes de Trackpad…";
+"Option–Tab shows this app’s windows. S searches—even with typos. All shortcuts are customizable." = "Option–Tab muestra las ventanas de esta app. S busca incluso con errores. Todos los atajos son personalizables.";
 "Order windows by" = "Ordenar ventanas por";
 "Ordering" = "Ordenación";
 "Past month" = "Últimos 30 días";
@@ -170,8 +170,6 @@
 "Plex" = "Plex";
 "Preview App Icons or Titles here. In Settings, you can also choose the switcher size and follow System, Light, or Dark appearance." = "Previsualiza aquí los iconos o títulos de las apps. En Ajustes también puedes elegir el tamaño del selector y usar “Sistema”, “Claro” u “Oscuro” como apariencia.";
 "Preview of the selected appearance style" = "Vista previa del estilo de apariencia elegido";
-"Primary shortcut" = "Atajo principal";
-"Primary shortcut: %@" = "Atajo principal: %@";
 "Quit %@" = "Salir de %@";
 "Recently Created First" = "Creadas más recientemente primero";
 "Recently Focused First" = "Activadas más recientemente primero";
@@ -182,6 +180,8 @@
 "Restart Now" = "Reiniciar ahora";
 "Resume preview animation" = "Reanudar animación de vista previa";
 "Safari" = "Safari";
+"safri" = "safri";
+"Same-app windows  •  Typo-tolerant search" = "Ventanas de la misma app  •  Búsqueda tolerante a errores";
 "Screen including menu bar" = "Pantalla con la barra de menús";
 "Screen including mouse" = "Pantalla con el cursor";
 "Screen showing ScryTab" = "Pantalla donde se muestra ScryTab";
@@ -192,6 +192,8 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab muestra un ícono de estado si la ventana está minimizada o en pantalla completa.";
 "Search" = "Buscar";
 "Search applications" = "Buscar apps";
+"Search field shown with Cursor, Safari, and VS Code." = "Campo de búsqueda mostrado con Cursor, Safari y VS Code.";
+"Search preview. The misspelled query “safri” filters the switcher to Safari." = "Previsualización de la búsqueda. La consulta “safri”, escrita con un error, filtra el selector para mostrar solo Safari.";
 "Select next window" = "Seleccionar ventana siguiente";
 "Select previous window" = "Seleccionar ventana anterior";
 "Send feedback" = "Enviar opinión";
@@ -231,7 +233,9 @@
 "Suggest a change" = "Sugerir un cambio";
 "Summary" = "Resumen";
 "Switch contexts with Focus Sets" = "Cambia de contexto con conjuntos de enfoque";
+"Switch within one app. Search every window." = "Cambia dentro de una app. Busca en todas las ventanas.";
 "Switcher appearance" = "Aspecto del selector";
+"Switcher preview with Cursor, Safari, and VS Code. Safari is selected." = "Vista previa del selector con Cursor, Safari y VS Code. Safari está seleccionado.";
 "System" = "Sistema";
 "System Default" = "Predeterminado del sistema";
 "Take ScryTab Tour…" = "Recorrer ScryTab…";

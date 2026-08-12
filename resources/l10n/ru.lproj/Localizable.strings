@@ -56,13 +56,13 @@
 "Check for updates…" = "Проверить обновления…";
 "Check permissions…" = "Проверить разрешения…";
 "Choose a Focus Set to review its shortcut and included applications." = "Выберите набор фокуса, чтобы посмотреть сочетание клавиш и приложения в наборе.";
+"Choose any shortcut" = "Любое сочетание клавиш";
 "Choose how the switcher looks" = "Выберите оформление переключателя";
 "Choose the applications whose windows belong to this Focus Set." = "Выберите приложения, окна которых входят в этот набор фокуса.";
 "Chrome" = "Chrome";
 "Close window" = "Закрыть окно";
 "Conflicting shortcut" = "Конфликт сочетания клавиш";
 "Continue on GitHub" = "Продолжить на GitHub";
-"Control demonstration preview. Cursor starts selected; pressing the shortcut again advances to Safari, and releasing focuses Safari." = "Демонстрация управления. Сначала выбран Cursor; повторное нажатие сочетания клавиш выбирает Safari, а отпускание переводит фокус на Safari.";
 "Controls" = "Элементы управления";
 "Could not move to Applications folder" = "Не удалось переместить в папку «Программы»";
 "Couldn't open GitHub" = "Не удалось открыть GitHub";
@@ -72,6 +72,7 @@
 "Customize more…" = "Ещё настройки…";
 "Dark" = "Тёмная";
 "Debug tools" = "Средства отладки";
+"Default search shortcut: S" = "Сочетание клавиш поиска по умолчанию: S";
 "Details" = "Подробности";
 "Direct Focus Set shortcuts use the standard appearance and window organization." = "Прямые сочетания наборов фокуса используют стандартное оформление и упорядочивание окон.";
 "Disabled" = "Отключено";
@@ -92,6 +93,7 @@
 "Enable the “%@” row that matches this app’s icon. An older ScryTab entry from another build or certificate does not count." = "Включите строку «%@» с значком этого приложения. Старая запись ScryTab от другой сборки или сертификата не подходит.";
 "End" = "Конец";
 "Entertainment" = "Развлечения";
+"Example shortcut: Option–1. Choose any shortcut." = "Пример сочетания: Option–1. Выберите любое сочетание клавиш.";
 "Exceptions" = "Исключения";
 "Explore Focus Sets" = "Перейти к наборам фокуса";
 "Export settings…" = "Экспортировать настройки…";
@@ -108,6 +110,7 @@
 "General" = "Основные";
 "Gesture" = "Жест";
 "Gestures" = "Жесты";
+"Group apps. Pick any shortcut." = "Группируйте приложения. Выберите любое сочетание.";
 "Help improve ScryTab" = "Помогите улучшить ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Помогите улучшить ScryTab, разрешив автоматическую отправку отчётов о сбоях. Позже это можно изменить в настройках.";
 "Hide" = "Скрыть";
@@ -115,15 +118,11 @@
 "Hide status icons" = "Скрывать значки состояния";
 "Hide windows" = "Скрывать окна";
 "Hold" = "Удерживать";
-"Hold %@ to show the switcher, press again to advance, then release to focus the selected window." = "Удерживайте %@, чтобы показать переключатель, нажмите ещё раз для перехода, затем отпустите, чтобы сфокусироваться на выбранном окне.";
-"Hold to show  •  Press again to advance  •  Release to focus" = "Удерживать для показа  •  Нажать ещё раз для перехода  •  Отпустить для фокусировки";
-"Hold, advance, then release" = "Удерживать, перейти, отпустить";
 "I can move myself to the Applications folder if you'd like." = "При желании я могу сам переместиться в папку «Программы».";
 "I think the app could be improved with…" = "Думаю, приложение стало бы лучше, если…";
 "Ignore shortcuts" = "Игнорировать сочетания";
 "Import settings…" = "Импортировать настройки…";
 "Included Applications" = "Приложения в наборе";
-"Keep related apps together, then open a Focus Set directly with Option and its number." = "Объединяйте связанные приложения и открывайте набор фокуса напрямую с помощью Option и его номера.";
 "Language" = "Язык";
 "Language Change" = "Смена языка";
 "Large" = "Крупный";
@@ -158,6 +157,7 @@
 "OK" = "OK";
 "Open Appearance Settings" = "Открыть настройки оформления";
 "Open Trackpad Settings…" = "Открыть настройки трекпада…";
+"Option–Tab shows this app’s windows. S searches—even with typos. All shortcuts are customizable." = "Option–Tab показывает окна этого приложения. S ищет даже с опечатками. Все сочетания настраиваются.";
 "Order windows by" = "Упорядочивать окна по";
 "Ordering" = "Порядок";
 "Past month" = "За месяц";
@@ -170,8 +170,6 @@
 "Plex" = "Plex";
 "Preview App Icons or Titles here. In Settings, you can also choose the switcher size and follow System, Light, or Dark appearance." = "Здесь можно просмотреть значки приложений или заголовки. В Настройках также можно выбрать размер переключателя и оформление: Система, Светлая или Тёмная.";
 "Preview of the selected appearance style" = "Предпросмотр выбранного стиля оформления";
-"Primary shortcut" = "Основное сочетание клавиш";
-"Primary shortcut: %@" = "Основное сочетание клавиш: %@";
 "Quit %@" = "Завершить %@";
 "Recently Created First" = "Сначала недавно созданные";
 "Recently Focused First" = "Сначала недавно в фокусе";
@@ -182,6 +180,8 @@
 "Restart Now" = "Перезапустить сейчас";
 "Resume preview animation" = "Продолжить анимацию предпросмотра";
 "Safari" = "Safari";
+"safri" = "safri";
+"Same-app windows  •  Typo-tolerant search" = "Окна одного приложения  •  Поиск с учётом опечаток";
 "Screen including menu bar" = "Экран со строкой меню";
 "Screen including mouse" = "Экран с указателем мыши";
 "Screen showing ScryTab" = "Экран, где показан ScryTab";
@@ -192,6 +192,8 @@
 "ScryTab will show if the window is currently minimized or fullscreen with a status icon." = "ScryTab покажет значок состояния, если окно сейчас свёрнуто или открыто в полноэкранном режиме.";
 "Search" = "Поиск";
 "Search applications" = "Поиск приложений";
+"Search field shown with Cursor, Safari, and VS Code." = "Показано поле поиска с Cursor, Safari и VS Code.";
+"Search preview. The misspelled query “safri” filters the switcher to Safari." = "Предпросмотр поиска. Запрос «safri» с опечаткой оставляет в переключателе только Safari.";
 "Select next window" = "Выбрать следующее окно";
 "Select previous window" = "Выбрать предыдущее окно";
 "Send feedback" = "Отправить отзыв";
@@ -231,7 +233,9 @@
 "Suggest a change" = "Предложить улучшение";
 "Summary" = "Краткое описание";
 "Switch contexts with Focus Sets" = "Переключайтесь между контекстами с наборами фокуса";
+"Switch within one app. Search every window." = "Переключение внутри приложения. Поиск по всем окнам.";
 "Switcher appearance" = "Оформление переключателя";
+"Switcher preview with Cursor, Safari, and VS Code. Safari is selected." = "Предпросмотр переключателя с Cursor, Safari и VS Code. Выбран Safari.";
 "System" = "Система";
 "System Default" = "Как в системе";
 "Take ScryTab Tour…" = "Пройти обзор ScryTab…";

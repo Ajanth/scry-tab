@@ -11,7 +11,7 @@ last tab without wrapping.
 
 The resolver does not construct UI, persist completion, or schedule animations. The
 `OnboardingTourScene` protocol is the page/window boundary, while `OnboardingTourCompletion`
-identifies the two dismissal outcomes handled by later integration work.
+maps Skip to no destination, Done to Appearance, and Explore Focus Sets to Focus Sets.
 
 ## Test scenarios
 
@@ -35,3 +35,6 @@ identifies the two dismissal outcomes handled by later integration work.
 ### Focus Set autoplay
 - **testFocusSetAutoplayAdvancesWithoutWrapping** - Focus Set autoplay advances to each remaining tab, then stops on the last one.
 - **testFocusSetAutoplayRejectsInvalidIndexes** - Empty and invalid sequences stop without selecting an out-of-range tab.
+
+### Completion destinations
+- **testTourCompletionsResolveSettingsDestinations** - Skip opens no Settings destination, Done opens Appearance, and Explore Focus Sets opens Focus Sets.

@@ -2,51 +2,72 @@ import AppKit
 import QuartzCore
 
 final class OnboardingTourControlsPage: NSObject, OnboardingTourScene {
-    private enum Motion {
-        static let duration = CFTimeInterval(1.8)
-        static let keyTimes: [NSNumber] = [0, 0.16, 0.38, 0.54, 0.78, 1]
+    private enum Playback {
+        static let initialPause = TimeInterval(0.42)
+        static let revealDelay = TimeInterval(0.14)
+        static let typingStartDelay = TimeInterval(0.34)
+        static let characterDelay = TimeInterval(0.13)
+        static let filterDelay = TimeInterval(0.28)
+        static let filterDuration = CFTimeInterval(0.46)
+        static let timerTolerance = TimeInterval(0.02)
     }
 
-    private static let titleText = NSLocalizedString("Hold, advance, then release", comment: "Onboarding Controls page heading")
-    private static let bodyFormat = NSLocalizedString("Hold %@ to show the switcher, press again to advance, then release to focus the selected window.", comment: "Onboarding Controls page description with primary shortcut")
-    private static let sequenceText = NSLocalizedString("Hold to show  •  Press again to advance  •  Release to focus", comment: "Onboarding Controls demonstration sequence")
+    private enum PlaybackStep {
+        case pressSearch, revealSearch, typeQuery, filterResults, finish
+    }
+
+    private static let titleText = NSLocalizedString("Switch within one app. Search every window.", comment: "Onboarding Search page heading")
+    private static let bodyText = NSLocalizedString("Option–Tab shows this app’s windows. S searches—even with typos. All shortcuts are customizable.", comment: "Onboarding Search page description")
+    private static let sequenceText = NSLocalizedString("Same-app windows  •  Typo-tolerant search", comment: "Onboarding Search demonstration features")
     private static let replayTitle = NSLocalizedString("Replay Animation", comment: "Onboarding animation replay button")
-    private static let shortcutLabelFormat = NSLocalizedString("Primary shortcut: %@", comment: "Onboarding primary shortcut accessibility label")
-    private static let previewSummary = NSLocalizedString("Control demonstration preview. Cursor starts selected; pressing the shortcut again advances to Safari, and releasing focuses Safari.", comment: "Onboarding Controls preview accessibility summary")
+    private static let shortcutLabel = NSLocalizedString("Default search shortcut: S", comment: "Onboarding Search shortcut accessibility label")
+    private static let initialPreviewSummary = NSLocalizedString("Switcher preview with Cursor, Safari, and VS Code. Safari is selected.", comment: "Onboarding Search initial preview accessibility summary")
+    private static let searchEditingPreviewSummary = NSLocalizedString("Search field shown with Cursor, Safari, and VS Code.", comment: "Onboarding Search editing preview accessibility summary")
+    private static let searchPreviewSummary = NSLocalizedString("Search preview. The misspelled query “safri” filters the switcher to Safari.", comment: "Onboarding Search result accessibility summary")
+    private static let searchQuery = NSLocalizedString("safri", comment: "Onboarding intentionally misspelled Safari search query")
 
     let view: NSView
-    private let primaryShortcutText: String
     private let preview = OnboardingSwitcherPreviewView()
     private let focusSet = OnboardingTourDemoContent.focusSets[1]
-    private var shortcutKeycaps = [OnboardingTourKeycapView]()
+    private let searchKeycap = OnboardingTourKeycapView("S")
+    private var playbackTimer: Timer?
+    private var typedCharacterCount = 0
     private var hasDemonstrated = false
 
-    init(primaryShortcutText: String) {
-        self.primaryShortcutText = primaryShortcutText.trimmingCharacters(in: .whitespacesAndNewlines)
+    override init() {
         let stack = NSStackView()
         view = stack
         super.init()
         setup(stack)
-        snapToFinalState()
+        snapToInitialState()
+    }
+
+    deinit {
+        playbackTimer?.invalidate()
     }
 
     func activate(animated: Bool) {
-        snapToFinalState()
         let shouldDemonstrate = animated && !hasDemonstrated
         hasDemonstrated = true
-        guard shouldDemonstrate else { return }
-        animateDemonstration()
+        guard shouldDemonstrate else {
+            snapToFinalState()
+            return
+        }
+        startDemonstration()
     }
 
     func deactivate() {
+        stopPlayback()
         removeAnimations(from: view)
         snapToFinalState()
     }
 
     @objc private func replay(_ sender: NSButton) {
-        snapToFinalState()
-        guard shouldAnimate() else { return }
-        animateDemonstration()
+        guard shouldAnimate() else {
+            snapToFinalState()
+            return
+        }
+        startDemonstration()
     }
 
     private func setup(_ stack: NSStackView) {
@@ -55,7 +76,7 @@ final class OnboardingTourControlsPage: NSObject, OnboardingTourScene {
         stack.alignment = .centerX
         stack.spacing = DesignSystem.Metrics.sectionGap
         let heading = makeLabel(Self.titleText, font: NSFont.systemFont(ofSize: 17, weight: .medium), color: .textPrimary)
-        let body = makeLabel(String(format: Self.bodyFormat, displayShortcutText), font: NSFont.systemFont(ofSize: 13), color: .textSecondary)
+        let body = makeLabel(Self.bodyText, font: NSFont.systemFont(ofSize: 13), color: .textSecondary)
         let header = NSStackView(views: [heading, body])
         header.translatesAutoresizingMaskIntoConstraints = false
         header.orientation = .vertical
@@ -82,15 +103,14 @@ final class OnboardingTourControlsPage: NSObject, OnboardingTourScene {
     }
 
     private func makeShortcutRow() -> NSStackView {
-        shortcutKeycaps = shortcutParts.map { OnboardingTourKeycapView($0) }
-        let row = NSStackView(views: shortcutKeycaps)
+        let row = NSStackView(views: [searchKeycap])
         row.translatesAutoresizingMaskIntoConstraints = false
         row.orientation = .horizontal
         row.alignment = .centerY
         row.spacing = DesignSystem.Metrics.headerFooterGap
         row.setAccessibilityElement(true)
         row.setAccessibilityRole(.group)
-        row.setAccessibilityLabel(String(format: Self.shortcutLabelFormat, displayShortcutText))
+        row.setAccessibilityLabel(Self.shortcutLabel)
         return row
     }
 
@@ -104,75 +124,92 @@ final class OnboardingTourControlsPage: NSObject, OnboardingTourScene {
         return row
     }
 
-    private var displayShortcutText: String {
-        primaryShortcutText.isEmpty ? NSLocalizedString("Primary shortcut", comment: "Onboarding empty primary shortcut fallback") : primaryShortcutText
+    private var searchResultApps: [OnboardingTourDemoApp] {
+        guard focusSet.apps.indices.contains(focusSet.selectedIndex) else { return [] }
+        return [focusSet.apps[focusSet.selectedIndex]]
     }
 
-    private var shortcutParts: [String] {
-        guard !primaryShortcutText.isEmpty else { return [displayShortcutText] }
-        let modifiers = Set(["⌃", "⌥", "⇧", "⌘"])
-        var parts = [String]()
-        var remainder = primaryShortcutText[...]
-        while let modifier = remainder.first, modifiers.contains(String(modifier)) {
-            parts.append(String(modifier))
-            remainder.removeFirst()
-        }
-        let key = remainder.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !key.isEmpty { parts.append(key) }
-        return parts.isEmpty ? [displayShortcutText] : parts
+    private func snapToInitialState() {
+        removeAnimations(from: view)
+        preview.apply(apps: focusSet.apps, layout: .iconGrid, selectedIndex: focusSet.selectedIndex, summary: Self.initialPreviewSummary, animated: false)
+        resetKeycap()
     }
 
     private func snapToFinalState() {
         removeAnimations(from: view)
-        preview.apply(apps: focusSet.apps, layout: .iconGrid, selectedIndex: focusSet.selectedIndex, summary: Self.previewSummary, animated: false)
+        preview.applySearch(apps: searchResultApps, selectedIndex: 0, query: Self.searchQuery, summary: Self.searchPreviewSummary, animated: false)
+        resetKeycap()
+    }
+
+    private func resetKeycap() {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
-        shortcutKeycaps.forEach {
-            $0.layer?.transform = CATransform3DIdentity
-            $0.layer?.opacity = 1
-        }
-        preview.layer?.transform = CATransform3DIdentity
-        preview.layer?.opacity = 1
+        searchKeycap.layer?.transform = CATransform3DIdentity
+        searchKeycap.layer?.opacity = 1
         CATransaction.commit()
     }
 
-    private func animateDemonstration() {
-        if shortcutKeycaps.count == 1 {
-            shortcutKeycaps.forEach { addKeycapAnimation(to: $0, values: [1, 0.9, 0.9, 0.82, 0.9, 1]) }
-        } else {
-            shortcutKeycaps.dropLast().forEach { addKeycapAnimation(to: $0, values: [1, 0.9, 0.9, 0.82, 0.9, 1]) }
-            if let advancingKey = shortcutKeycaps.last { addKeycapAnimation(to: advancingKey, values: [1, 0.88, 1, 0.82, 1, 1]) }
-        }
-        preview.animateSelectionTransition(from: 0, duration: Motion.duration, changeKeyTime: 0.54)
-        let advance = CAKeyframeAnimation(keyPath: "transform.translation.x")
-        advance.values = [0, 0, 0, 8, 0, 0]
-        advance.keyTimes = Motion.keyTimes
-        let focus = CAKeyframeAnimation(keyPath: "opacity")
-        focus.values = [1, 1, 1, 1, 0.82, 1]
-        focus.keyTimes = Motion.keyTimes
-        advance.duration = Motion.duration
-        focus.duration = Motion.duration
-        let group = CAAnimationGroup()
-        group.animations = [advance, focus]
-        group.duration = Motion.duration
-        group.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        preview.layer?.add(group, forKey: "onboarding.controls.preview")
+    private func startDemonstration() {
+        stopPlayback()
+        typedCharacterCount = 0
+        snapToInitialState()
+        schedule(.pressSearch, after: Playback.initialPause)
     }
 
-    private func addKeycapAnimation(to keycap: OnboardingTourKeycapView, values: [CGFloat]) {
+    private func perform(_ step: PlaybackStep) {
+        playbackTimer = nil
+        switch step {
+        case .pressSearch:
+            animateSearchKeycap()
+            schedule(.revealSearch, after: Playback.revealDelay)
+        case .revealSearch:
+            preview.applySearch(apps: focusSet.apps, selectedIndex: focusSet.selectedIndex, query: "", summary: Self.searchEditingPreviewSummary, animated: true)
+            schedule(.typeQuery, after: Playback.typingStartDelay)
+        case .typeQuery:
+            typeNextCharacter()
+        case .filterResults:
+            preview.animateSearchFiltering(matchingIndex: focusSet.selectedIndex, duration: Playback.filterDuration)
+            schedule(.finish, after: Playback.filterDuration)
+        case .finish:
+            snapToFinalState()
+        }
+    }
+
+    private func typeNextCharacter() {
+        typedCharacterCount += 1
+        preview.updateSearchQuery(String(Self.searchQuery.prefix(typedCharacterCount)))
+        guard typedCharacterCount < Self.searchQuery.count else {
+            schedule(.filterResults, after: Playback.filterDelay)
+            return
+        }
+        schedule(.typeQuery, after: Playback.characterDelay)
+    }
+
+    private func schedule(_ step: PlaybackStep, after delay: TimeInterval) {
+        let timer = Timer(timeInterval: delay, repeats: false) { [weak self] _ in self?.perform(step) }
+        timer.tolerance = Playback.timerTolerance
+        RunLoop.main.add(timer, forMode: .common)
+        playbackTimer = timer
+    }
+
+    private func stopPlayback() {
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+    }
+
+    private func animateSearchKeycap() {
+        let keyTimes: [NSNumber] = [0, 0.28, 0.62, 1]
         let scale = CAKeyframeAnimation(keyPath: "transform.scale")
-        scale.values = values
-        scale.keyTimes = Motion.keyTimes
+        scale.values = [1, 0.9, 0.82, 1]
+        scale.keyTimes = keyTimes
         let travel = CAKeyframeAnimation(keyPath: "transform.translation.y")
-        travel.values = [0, -1, 0, -2, 0, 0]
-        travel.keyTimes = Motion.keyTimes
-        scale.duration = Motion.duration
-        travel.duration = Motion.duration
+        travel.values = [0, -1, -2, 0]
+        travel.keyTimes = keyTimes
         let group = CAAnimationGroup()
         group.animations = [scale, travel]
-        group.duration = Motion.duration
+        group.duration = 0.42
         group.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        keycap.layer?.add(group, forKey: "onboarding.controls.keycap")
+        searchKeycap.layer?.add(group, forKey: "onboarding.search.keycap")
     }
 
     private func removeAnimations(from view: NSView) {
