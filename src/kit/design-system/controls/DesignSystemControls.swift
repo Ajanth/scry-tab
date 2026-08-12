@@ -152,6 +152,12 @@ private final class DesignSystemSelectedControlIndicator {
 
 final class DesignSystemFlatButton: NSButton {
     var drawsAppOwnedSurface: Bool { true }
+    var usesPrimaryAccent = false {
+        didSet {
+            refreshTitle()
+            needsDisplay = true
+        }
+    }
     var isChoiceSelected = false {
         didSet {
             refreshTitle()
@@ -335,6 +341,13 @@ final class DesignSystemFlatButton: NSButton {
     }
 
     private func surfaceFillColor() -> NSColor {
+        if usesPrimaryAccent {
+            let accent = DesignSystem.color(.accentPrimary, appearance: effectiveAppearance)
+            guard isEnabled else { return accent.withAlphaComponent(0.5) }
+            if pressed { return accent.shadow(withLevel: 0.12) ?? accent }
+            if hovered { return accent.highlight(withLevel: 0.08) ?? accent }
+            return accent
+        }
         let base: NSColor
         if !isEnabled {
             base = DesignSystem.color(.surfaceFlat, appearance: effectiveAppearance).withAlphaComponent(0.5)
@@ -355,6 +368,9 @@ final class DesignSystemFlatButton: NSButton {
     }
 
     private func borderColor() -> NSColor {
+        if usesPrimaryAccent {
+            return DesignSystem.color(showsOwnFocusAccent ? .textOnAccent : .accentPrimary, appearance: effectiveAppearance)
+        }
         if usesDestructiveAccent {
             let alpha = isEnabled ? 0.32 : 0.18
             return DesignSystem.color(.statusDestructive, appearance: effectiveAppearance).withAlphaComponent(alpha)
@@ -370,6 +386,7 @@ final class DesignSystemFlatButton: NSButton {
 
     private func titleColor() -> NSColor {
         guard isEnabled else { return DesignSystem.color(.textDisabled, appearance: effectiveAppearance) }
+        if usesPrimaryAccent { return DesignSystem.color(.textOnAccent, appearance: effectiveAppearance) }
         return usesDestructiveAccent ? DesignSystem.color(.statusDestructive, appearance: effectiveAppearance) : DesignSystem.color(.textPrimary, appearance: effectiveAppearance)
     }
 
@@ -1168,6 +1185,14 @@ enum DesignSystemControlStyler {
     static func makeButton(_ title: String, destructive: Bool = false, target: Any? = nil, action: Selector? = nil) -> DesignSystemFlatButton {
         let button = DesignSystemFlatButton(title: title, target: target, action: action)
         styleButton(button, destructive: destructive)
+        return button
+    }
+
+    static func makePrimaryButton(_ title: String, target: Any? = nil, action: Selector? = nil) -> DesignSystemFlatButton {
+        let button = DesignSystemFlatButton(title: title, target: target, action: action)
+        styleButton(button)
+        button.usesPrimaryAccent = true
+        button.keyEquivalent = "\r"
         return button
     }
 

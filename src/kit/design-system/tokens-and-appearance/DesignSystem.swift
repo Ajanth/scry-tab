@@ -37,7 +37,7 @@ enum DesignSystem {
 
     enum ColorRole {
         case windowAccentTint, surfacePlateau, surfaceFlat, surfaceHover, surfacePressed, surfaceSelected
-        case borderSubtle, borderSelected, focusAccent, progressAccent, textPrimary, textSecondary, textDisabled
+        case borderSubtle, borderSelected, focusAccent, progressAccent, textPrimary, textSecondary, textDisabled, textOnAccent
         case statusSuccess, statusWarning, statusDestructive, searchMatch, accentPrimary, accentSecondary
     }
 
@@ -88,6 +88,7 @@ enum DesignSystem {
         case .textPrimary: return .labelColor
         case .textSecondary: return .secondaryLabelColor
         case .textDisabled: return .disabledControlTextColor
+        case .textOnAccent: return .alternateSelectedControlTextColor
         case .statusSuccess: return .systemGreen
         case .statusWarning: return .systemOrange
         case .statusDestructive: return .systemRed

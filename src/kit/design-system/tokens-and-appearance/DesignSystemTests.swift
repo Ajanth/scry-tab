@@ -84,6 +84,15 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(button.intrinsicContentSize.height, DesignSystem.Metrics.standardControlMinHeight)
     }
 
+    func testPrimaryButtonUsesSharedDefaultActionTreatment() {
+        let button = DesignSystemControlStyler.makePrimaryButton("Continue")
+        XCTAssertTrue(button.drawsAppOwnedSurface)
+        XCTAssertTrue(button.usesPrimaryAccent)
+        XCTAssertFalse(button.isBordered)
+        XCTAssertEqual(button.intrinsicContentSize.height, DesignSystemControlStyler.makeButton("Cancel").intrinsicContentSize.height)
+        XCTAssertEqual(button.keyEquivalent, "\r")
+    }
+
     func testDisclosureSectionTogglesItsContentAndTitle() {
         let content = NSView()
         content.translatesAutoresizingMaskIntoConstraints = false
