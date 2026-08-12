@@ -21,3 +21,4 @@ codesign.p12
 /scripts/l10n/missing-translations.json
 /ai/output/
 /graphify-out/
+/.sdd-ledger
