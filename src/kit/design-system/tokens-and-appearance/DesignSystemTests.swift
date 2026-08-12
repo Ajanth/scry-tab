@@ -36,6 +36,8 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertEqual(DesignSystem.Metrics.selectionIndicatorBorderWidth, 1)
         XCTAssertEqual(DesignSystem.Metrics.focusIndicatorBorderWidth, 3)
         XCTAssertEqual(DesignSystem.Metrics.controlTextInset, 10)
+        XCTAssertEqual(DesignSystem.Metrics.controlProgressHeight, 3)
+        XCTAssertEqual(DesignSystem.Metrics.controlProgressBottomInset, 4)
         XCTAssertEqual(DesignSystem.Metrics.buttonHorizontalPadding, 14)
         XCTAssertEqual(DesignSystem.Metrics.buttonVerticalPadding, 7)
         XCTAssertEqual(DesignSystem.Metrics.disclosureCaretWidth, 10)
@@ -226,6 +228,39 @@ final class DesignSystemTests: XCTestCase {
         let control = DesignSystemSegmentedControl(labels: [""], trackingMode: .momentary, target: nil, action: nil)
         XCTAssertEqual(control.imageTintColor(enabled: true), DesignSystem.color(.textPrimary, appearance: control.effectiveAppearance))
         XCTAssertEqual(control.imageTintColor(enabled: false), DesignSystem.color(.textDisabled, appearance: control.effectiveAppearance))
+    }
+
+    func testSegmentedControlFitsLocalizedImageTitlesWithoutClipping() {
+        let control = DesignSystemSegmentedControl(labels: ["Entertainment", "Work", "Proyectos personales"], trackingMode: .selectOne, target: nil, action: nil)
+        let badge = NSImage(size: NSSize(width: 20, height: 20))
+        for index in 0..<control.segmentCount { control.setImage(badge, forSegment: index) }
+        control.segmentImageDimension = 20
+        control.segmentImageTitleSpacing = DesignSystem.Metrics.rowHorizontalPadding
+        control.segmentHorizontalContentInset = DesignSystem.Metrics.controlTextInset
+        let totalWidth = control.equalizeSegmentWidths(minimumTotalWidth: DesignSystem.Metrics.centeredSettingsContentMaxWidth, maximumTotalWidth: 640)
+        XCTAssertGreaterThanOrEqual(totalWidth, DesignSystem.Metrics.centeredSettingsContentMaxWidth)
+        for index in 0..<control.segmentCount {
+            XCTAssertEqual(control.width(forSegment: index), totalWidth / CGFloat(control.segmentCount), accuracy: 0.0001)
+            XCTAssertGreaterThanOrEqual(control.width(forSegment: index), control.preferredWidth(forSegment: index))
+        }
+    }
+
+    func testSegmentedControlUsesSharedTimedProgressBands() throws {
+        let control = DesignSystemSegmentedControl(labels: ["One", "Two"], trackingMode: .selectOne, target: nil, action: nil)
+        control.frame = NSRect(x: 0, y: 0, width: 240, height: 40)
+        control.setWidth(120, forSegment: 0)
+        control.setWidth(120, forSegment: 1)
+        control.setProgress(1, forSegment: 0, animationDuration: 2.8)
+        let progressLayer = try XCTUnwrap(control.segmentProgressLayers.first)
+        XCTAssertEqual(control.segmentProgressLayers.count, 2)
+        XCTAssertEqual(progressLayer.bounds.height, DesignSystem.Metrics.controlProgressHeight)
+        XCTAssertEqual(progressLayer.backgroundColor, DesignSystem.semanticCGColor(.progressAccent, in: control))
+        XCTAssertEqual(progressLayer.opacity, 1)
+        if !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion {
+            XCTAssertNotNil(progressLayer.animation(forKey: "segmentedControl.progress"))
+        }
+        control.clearProgress()
+        XCTAssertTrue(control.segmentProgressLayers.allSatisfy { $0.opacity == 0 })
     }
 
     func testChipSelectUsesAppOwnedChoiceButtons() {

@@ -19,6 +19,8 @@ enum DesignSystem {
         static let focusIndicatorBorderWidth = CGFloat(3)
         static let controlTextInset = CGFloat(10)
         static let controlTextVerticalInset = CGFloat(8)
+        static let controlProgressHeight = CGFloat(3)
+        static let controlProgressBottomInset = CGFloat(4)
         static let searchGlyphInset = CGFloat(8)
         static let searchTextInset = CGFloat(4)
         static let buttonHorizontalPadding = CGFloat(14)
@@ -35,7 +37,7 @@ enum DesignSystem {
 
     enum ColorRole {
         case windowAccentTint, surfacePlateau, surfaceFlat, surfaceHover, surfacePressed, surfaceSelected
-        case borderSubtle, borderSelected, focusAccent, textPrimary, textSecondary, textDisabled
+        case borderSubtle, borderSelected, focusAccent, progressAccent, textPrimary, textSecondary, textDisabled
         case statusSuccess, statusWarning, statusDestructive, searchMatch, accentPrimary, accentSecondary
     }
 
@@ -82,6 +84,7 @@ enum DesignSystem {
                 : NSColor(white: 0.0, alpha: 0.13)
         case .borderSelected: return NSColor(white: dark ? 0.82 : 0.0, alpha: dark ? 0.34 : 0.18)
         case .focusAccent: return .systemAccentColor.withAlphaComponent(dark ? 0.58 : 0.46)
+        case .progressAccent: return .systemBlue
         case .textPrimary: return .labelColor
         case .textSecondary: return .secondaryLabelColor
         case .textDisabled: return .disabledControlTextColor

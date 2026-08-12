@@ -738,11 +738,16 @@ final class DesignSystemCenteredDetailPage: NSView {
 final class DesignSystemSegmentedControl: NSSegmentedControl {
     var drawsAppOwnedSurface: Bool { true }
     var usesAnimatedSelectionIndicator: Bool { trackingMode == .selectOne }
+    var segmentImageDimension = CGFloat(14) { didSet { needsDisplay = true } }
+    var segmentImageTitleSpacing = DesignSystem.Metrics.headerFooterGap { didSet { needsDisplay = true } }
+    var segmentHorizontalContentInset = DesignSystem.Metrics.rowHorizontalPadding { didSet { needsDisplay = true } }
+    private(set) var segmentProgressLayers = [CALayer]()
     private var hoveredSegment = -1
     private var pressedSegment = -1
     private var isTrackingNativeSelection = false
     private var trackingArea: NSTrackingArea?
     private let selectionIndicator = DesignSystemSelectedControlIndicator()
+    private var segmentProgressValues = [CGFloat]()
     private var windowObservers = [NSObjectProtocol]()
 
     override init(frame frameRect: NSRect) {
@@ -768,6 +773,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     override var isEnabled: Bool {
         didSet {
             updateSelectionIndicator(animated: false)
+            updateProgressVisibility()
             needsDisplay = true
         }
     }
@@ -789,12 +795,14 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
             self?.needsDisplay = true
         })
         updateSelectionIndicator(animated: false)
+        refreshProgressColors()
     }
 
     @available(macOS 10.14, *)
     override func viewDidChangeEffectiveAppearance() {
         super.viewDidChangeEffectiveAppearance()
         updateSelectionIndicator(animated: false)
+        refreshProgressColors()
         needsDisplay = true
     }
 
@@ -819,6 +827,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     override func layout() {
         super.layout()
         updateSelectionIndicator(animated: false)
+        layoutProgressLayers()
     }
 
     override func updateTrackingAreas() {
@@ -864,6 +873,66 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     override func draw(_ dirtyRect: NSRect) {
         drawPlateau()
         drawSegments()
+    }
+
+    @discardableResult
+    func equalizeSegmentWidths(minimumTotalWidth: CGFloat, maximumTotalWidth: CGFloat) -> CGFloat {
+        guard segmentCount > 0 else { return 0 }
+        let count = CGFloat(segmentCount)
+        let minimumWidth = max(minimumTotalWidth, 0) / count
+        let maximumWidth = max(max(maximumTotalWidth, minimumTotalWidth), 0) / count
+        let preferredWidth = (0..<segmentCount).map(preferredWidth(forSegment:)).max() ?? 0
+        let width = min(max(preferredWidth, minimumWidth), maximumWidth)
+        for index in 0..<segmentCount { setWidth(width, forSegment: index) }
+        invalidateIntrinsicContentSize()
+        return width * count
+    }
+
+    func preferredWidth(forSegment index: Int) -> CGFloat {
+        guard index >= 0, index < segmentCount else { return 0 }
+        let title = label(forSegment: index) ?? ""
+        let titleWidth = ceil((title as NSString).size(withAttributes: titleAttributes(enabled: true)).width)
+        let hasImage = image(forSegment: index) != nil
+        let imageWidth = hasImage ? segmentImageDimension : 0
+        let spacing = hasImage && !title.isEmpty ? segmentImageTitleSpacing : 0
+        return 2 * segmentHorizontalContentInset + imageWidth + spacing + titleWidth
+    }
+
+    func setProgress(_ fraction: CGFloat, forSegment index: Int, animationDuration: TimeInterval? = nil) {
+        guard index >= 0, index < segmentCount else { return }
+        synchronizeProgressLayers()
+        layoutProgressLayers()
+        let progress = min(max(fraction, 0), 1)
+        let previous = segmentProgressValues[index]
+        segmentProgressValues[index] = progress
+        let layer = segmentProgressLayers[index]
+        layer.removeAnimation(forKey: "segmentedControl.progress")
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        layer.opacity = isEnabled && progress > 0 ? 1 : 0
+        layer.transform = CATransform3DMakeScale(progress, 1, 1)
+        CATransaction.commit()
+        guard let animationDuration, animationDuration > 0, previous != progress,
+              !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else { return }
+        let animation = CABasicAnimation(keyPath: "transform.scale.x")
+        animation.fromValue = previous
+        animation.toValue = progress
+        animation.duration = animationDuration
+        animation.timingFunction = CAMediaTimingFunction(name: .linear)
+        layer.add(animation, forKey: "segmentedControl.progress")
+    }
+
+    func clearProgress() {
+        guard !segmentProgressLayers.isEmpty else { return }
+        segmentProgressValues = Array(repeating: 0, count: segmentProgressLayers.count)
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        for layer in segmentProgressLayers {
+            layer.removeAllAnimations()
+            layer.opacity = 0
+            layer.transform = CATransform3DMakeScale(0, 1, 1)
+        }
+        CATransaction.commit()
     }
 
     private func setup() {
@@ -914,7 +983,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
             fill.setFill()
             path.fill()
         }
-        drawSegmentContent(index, rect.insetBy(dx: 8, dy: 4), enabled: state != .disabled)
+        drawSegmentContent(index, rect.insetBy(dx: segmentHorizontalContentInset, dy: DesignSystem.Metrics.rowVerticalPadding), enabled: state != .disabled)
     }
 
     private func drawSeparator(after index: Int, _ rect: CGRect) {
@@ -928,7 +997,7 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
         let image = self.image(forSegment: index)
         let title = label(forSegment: index) ?? ""
         if title.isEmpty, let image {
-            drawImage(image, centeredIn: rect, enabled: enabled)
+            drawImage(image, centeredIn: rect, maximumDimension: 16, enabled: enabled)
             return
         }
         drawTitle(title, image: image, in: rect, enabled: enabled)
@@ -937,8 +1006,8 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     // `NSSegmentedControl` is flipped (top-left origin). Plain `NSImage.draw(in:from:operation:fraction:)`
     // doesn't account for that — it renders asymmetric glyphs (e.g. the search magnifying glass) upside
     // down. `respectFlipped: true` tells AppKit to orient the image for the current context's flippedness.
-    private func drawImage(_ image: NSImage, centeredIn rect: CGRect, enabled: Bool) {
-        let imageRect = fittedImageRect(image.size, centeredIn: rect, maximumDimension: 16)
+    private func drawImage(_ image: NSImage, centeredIn rect: CGRect, maximumDimension: CGFloat, enabled: Bool) {
+        let imageRect = fittedImageRect(image.size, centeredIn: rect, maximumDimension: maximumDimension)
         let drawableImage = image.isTemplate ? image.tinted(imageTintColor(enabled: enabled)) : image
         drawableImage.draw(in: imageRect, from: .zero, operation: .sourceOver,
             fraction: image.isTemplate || enabled ? 1 : 0.45, respectFlipped: true, hints: nil)
@@ -947,13 +1016,13 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
     private func drawTitle(_ title: String, image: NSImage?, in rect: CGRect, enabled: Bool) {
         let attrs = titleAttributes(enabled: enabled)
         let textSize = (title as NSString).size(withAttributes: attrs)
-        let imageSide = image == nil ? CGFloat(0) : CGFloat(14)
-        let gap = image == nil ? CGFloat(0) : CGFloat(4)
+        let imageSide = image == nil ? CGFloat(0) : segmentImageDimension
+        let gap = image == nil ? CGFloat(0) : segmentImageTitleSpacing
         let totalWidth = imageSide + gap + textSize.width
         var x = rect.midX - totalWidth / 2
         if let image {
             let imageRect = CGRect(x: x, y: rect.midY - imageSide / 2, width: imageSide, height: imageSide)
-            drawImage(image, centeredIn: imageRect, enabled: enabled)
+            drawImage(image, centeredIn: imageRect, maximumDimension: segmentImageDimension, enabled: enabled)
             x += imageSide + gap
         }
         let textRect = CGRect(x: x, y: rect.midY - textSize.height / 2, width: min(textSize.width, max(rect.maxX - x, 0)), height: textSize.height)
@@ -1017,6 +1086,63 @@ final class DesignSystemSegmentedControl: NSSegmentedControl {
         }
         let rect = segmentRects()[selectedSegment].insetBy(dx: DesignSystemSelectedControlIndicator.inset, dy: DesignSystemSelectedControlIndicator.inset)
         selectionIndicator.show(in: rect, on: self, animated: animated)
+    }
+
+    private func synchronizeProgressLayers() {
+        while segmentProgressLayers.count > segmentCount {
+            segmentProgressLayers.removeLast().removeFromSuperlayer()
+            segmentProgressValues.removeLast()
+        }
+        while segmentProgressLayers.count < segmentCount {
+            let progressLayer = CALayer()
+            progressLayer.anchorPoint = CGPoint(x: 0, y: 0.5)
+            progressLayer.cornerRadius = DesignSystem.Metrics.controlProgressHeight / 2
+            progressLayer.opacity = 0
+            progressLayer.zPosition = 0.5
+            layer?.addSublayer(progressLayer)
+            segmentProgressLayers.append(progressLayer)
+            segmentProgressValues.append(0)
+        }
+        refreshProgressColors()
+    }
+
+    private func layoutProgressLayers() {
+        guard !segmentProgressLayers.isEmpty else { return }
+        synchronizeProgressLayers()
+        let rects = segmentRects()
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        for (index, progressLayer) in segmentProgressLayers.enumerated() where rects.indices.contains(index) {
+            let segmentRect = rects[index]
+            let width = max(segmentRect.width - 2 * DesignSystem.Metrics.controlTextInset, 0)
+            let y = segmentRect.maxY - DesignSystem.Metrics.controlProgressBottomInset - DesignSystem.Metrics.controlProgressHeight
+            progressLayer.bounds = CGRect(x: 0, y: 0, width: width, height: DesignSystem.Metrics.controlProgressHeight)
+            progressLayer.position = CGPoint(x: segmentRect.minX + DesignSystem.Metrics.controlTextInset,
+                                             y: y + DesignSystem.Metrics.controlProgressHeight / 2)
+        }
+        CATransaction.commit()
+    }
+
+    private func refreshProgressColors() {
+        let color = DesignSystem.semanticCGColor(.progressAccent, in: self)
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        for (index, progressLayer) in segmentProgressLayers.enumerated() {
+            let progress = segmentProgressValues.indices.contains(index) ? segmentProgressValues[index] : 0
+            progressLayer.backgroundColor = color
+            progressLayer.opacity = isEnabled && progress > 0 ? 1 : 0
+        }
+        CATransaction.commit()
+    }
+
+    private func updateProgressVisibility() {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        for (index, progressLayer) in segmentProgressLayers.enumerated() {
+            let progress = segmentProgressValues.indices.contains(index) ? segmentProgressValues[index] : 0
+            progressLayer.opacity = isEnabled && progress > 0 ? 1 : 0
+        }
+        CATransaction.commit()
     }
 
     private func segmentRects() -> [CGRect] {

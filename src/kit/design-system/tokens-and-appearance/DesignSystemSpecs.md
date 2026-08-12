@@ -20,7 +20,7 @@ Owns shared AppKit visual tokens used by production surfaces.
 - Shared Settings chip selects compose app-owned flat choice buttons, clamp selection to valid choices, keep peer chip widths stable across selection changes, and use the same quiet selected-value indicator as segmented controls.
 - Dark-mode Settings surfaces use opaque matte grays instead of translucent white overlays so cards and controls stay dense against the window background.
 - Selection and focus emphasize different states: selection uses neutral fill and border while focus uses the stronger system-accent treatment only for the active responder.
-- Shared segmented controls place their quiet selected outline immediately for initial and programmatic state changes. Native mouse and keyboard choices move it between segments with a no-bounce position spring, without animating its size; it uses the neutral 1-point selected border and respects Reduce Motion.
+- Shared segmented controls place their quiet selected outline immediately for initial and programmatic state changes. Native mouse and keyboard choices move it between segments with a no-bounce position spring, without animating its size; it uses the neutral 1-point selected border and respects Reduce Motion. Opt-in image-and-title rails can equalize localization-safe widths and show compositor-driven blue progress bands without owning playback timers.
 - Preview-choice cards use the same quiet selected fill and border as other shared controls; their blue focus ring appears only while the card is the active responder.
 - Template images in segmented controls use semantic text colors and retain their source aspect ratio.
 
@@ -31,7 +31,7 @@ Mirrors `DesignSystemTests.swift` 1:1.
 - **testMaterialTintAlphaUsesLightAndDarkValues** — material tint alpha is 0.025 in Aqua and 0.10 in Dark Aqua.
 - **testSettingsPageIconDescriptorsFollowPageIdentity** — each Settings page maps to its expected SF Symbol system name.
 - **testStandardGeometryTokensMatchMigrationPlan** — shared geometry tokens match the migration slice values.
-- **testControlGeometryTokensMatchMigrationPlan** — shared controls use the standard height, compact flat-control radius, quiet selection-indicator width, switcher-standard focus-indicator width, and one disclosure-caret geometry and title gap.
+- **testControlGeometryTokensMatchMigrationPlan** — shared controls use the standard height, compact flat-control radius, quiet selection and progress geometry, switcher-standard focus-indicator width, and one disclosure-caret geometry and title gap.
 - **testCenteredDetailPageBoundsAndCentersContent** — centered Settings detail pages cap wide content at the shared maximum, preserve narrow content widths, and center the content with the shared top inset.
 - **testFlatButtonUsesAppOwnedSurfaceAndDestructiveAccent** — Settings action buttons use the app-owned flat control surface and preserve destructive semantics through the shared primitive.
 - **testFlatButtonIntrinsicContentIncludesHorizontalPadding** — Settings action buttons reserve app-owned horizontal padding so long titles do not sit against the border.
@@ -46,6 +46,8 @@ Mirrors `DesignSystemTests.swift` 1:1.
 - **testSegmentedControlDoesNotAnimateProgrammaticSelection** — initial and programmatic segment changes immediately place the selection outline instead of animating it from a stale frame.
 - **testSegmentedControlImageContentPreservesAspectRatio** — narrow symbols such as minus remain narrow instead of stretching into a square.
 - **testSegmentedControlImageContentUsesSemanticTint** — enabled and disabled template images use the matching semantic text role.
+- **testSegmentedControlFitsLocalizedImageTitlesWithoutClipping** — equal-width image-and-title rails grow to their widest localized content within the caller's available width.
+- **testSegmentedControlUsesSharedTimedProgressBands** — opt-in segment progress uses the shared blue role and compositor layer geometry, then clears without leaving visible progress.
 - **testChipSelectUsesAppOwnedChoiceButtons** — chip choices are composed from app-owned flat buttons and expose stable selected choice state.
 - **testChipSelectUsesQuietCompositorSelectionIndicator** — chip choices share the segmented control's layer-backed neutral selection outline so selected values move without resizing or control-specific chrome.
 - **testChipSelectClampsSelectionToAvailableChoices** — invalid selected indexes clamp into the available chip range.
