@@ -6,6 +6,16 @@ enum FeatureFlags {
     static let gestures = false
 }
 
+private extension ShortcutDefaultAppScope {
+    var preference: AppsToShowPreference {
+        switch self {
+        case .all: return .all
+        case .active: return .active
+        case .nonActive: return .nonActive
+        }
+    }
+}
+
 class Preferences {
     static var defaultValues: [String: Any] = {
         var values: [String: Any] = [
@@ -39,12 +49,13 @@ class Preferences {
             "appearanceOverrideResetRemovesOverrides": "false",
         ]
         (0..<maxShortcutCount).forEach { index in
+            let configuration = ShortcutDefaultsResolver.resolve(at: index)
             values[indexToName("shortcutIdentifier", index)] = ""
-            values[indexToName("holdShortcut", index)] = defaultShortcut("⌥")
-            values[indexToName("nextWindowShortcut", index)] = defaultShortcut(index == 0 ? "⇥" : (index == 1 ? keyAboveTabDependingOnInputSource() : ""))
+            values[indexToName("holdShortcut", index)] = defaultShortcut(configuration.holdKeyEquivalent)
+            values[indexToName("nextWindowShortcut", index)] = defaultShortcut(configuration.nextWindowKeyEquivalent)
         }
         (0...maxShortcutCount).forEach { index in
-            values[indexToName("appsToShow", index)] = index == 1 ? AppsToShowPreference.active.indexAsString : (index == 2 ? AppsToShowPreference.nonActive.indexAsString : AppsToShowPreference.all.indexAsString)
+            values[indexToName("appsToShow", index)] = ShortcutDefaultsResolver.resolve(at: index).appScope.preference.indexAsString
             values[indexToName("spacesToShow", index)] = SpacesToShowPreference.all.indexAsString
             values[indexToName("screensToShow", index)] = ScreensToShowPreference.all.indexAsString
             values[indexToName("showMinimizedWindows", index)] = ShowHowPreference.show.indexAsString
@@ -328,11 +339,6 @@ class Preferences {
     static func effectiveShortcutStyle(_ index: Int) -> ShortcutStylePreference {
         guard hasOverride("shortcutStyleOverride", index) else { return shortcutStyle }
         return CachedUserDefaults.macroPref(indexToName("shortcutStyleOverride", index), ShortcutStylePreference.allCases)
-    }
-
-    /// key-above-tab is ` on US keyboard, but can be different on other keyboards
-    static func keyAboveTabDependingOnInputSource() -> String {
-        return LiteralKeyCodeTransformer.shared.transformedValue(NSNumber(value: kVK_ANSI_Grave)) ?? "`"
     }
 
     static func returnKeyEquivalent() -> String {

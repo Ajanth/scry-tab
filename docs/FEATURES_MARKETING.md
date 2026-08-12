@@ -44,7 +44,7 @@ ScryTab presents a floating panel of your open windows the moment you trigger it
 
 Users can create up to **9 independent keyboard shortcut profiles**. Each profile is a complete, independent configuration:
 
-- **Its own trigger** — any key combination you choose (default: Option-Tab and the key above Tab).
+- **Its own trigger** — any key combination you choose (defaults: Command-Tab for all windows and Option-Tab for the current app).
 - **Its own filter rules** — which apps, Spaces, screens, and window states to show.
 - **Its own appearance** — icon grid or title list, small/medium/large size, light/dark/system theme.
 - **Its own ordering** — most recently focused, most recently created, or alphabetical.

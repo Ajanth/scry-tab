@@ -96,6 +96,9 @@
 		UNSP01000000000000000013 /* UninstallPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNSP01000000000000000002 /* UninstallPlanTests.swift */; };
 		5FA002000000000000000019 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000019 /* LoginItem.swift */; };
 		5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000020 /* ShortcutConfiguration.swift */; };
+		A81200000000000000000101 /* ShortcutDefaultsResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81200000000000000000001 /* ShortcutDefaultsResolver.swift */; };
+		A81200000000000000000102 /* ShortcutDefaultsResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81200000000000000000001 /* ShortcutDefaultsResolver.swift */; };
+		A81200000000000000000103 /* ShortcutDefaultsResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81200000000000000000002 /* ShortcutDefaultsResolverTests.swift */; };
 		5FA1E0B22F50000100A1A1A1 /* PreferencesEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA1E0B12F50000100A1A1A1 /* PreferencesEvents.swift */; };
 		6B1100000000000000000011 /* UpdatePolicyConsentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1100000000000000000001 /* UpdatePolicyConsentState.swift */; };
 		6B1100000000000000000012 /* UpdatePolicyConsentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1100000000000000000001 /* UpdatePolicyConsentState.swift */; };
@@ -465,6 +468,9 @@
 		5FC5980000000000000A0101 /* NativeHotkeyResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeHotkeyResolverTests.swift; sourceTree = "<group>"; };
 		5FC5980000000000000C0001 /* CGSSymbolicHotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSSymbolicHotKey.swift; sourceTree = "<group>"; };
 		5FCEFA110000000000000020 /* PreferencesMigrationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesMigrationsTests.swift; sourceTree = "<group>"; };
+		A81200000000000000000001 /* ShortcutDefaultsResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutDefaultsResolver.swift; sourceTree = "<group>"; };
+		A81200000000000000000002 /* ShortcutDefaultsResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutDefaultsResolverTests.swift; sourceTree = "<group>"; };
+		A81200000000000000000003 /* ShortcutDefaultsResolverSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ShortcutDefaultsResolverSpecs.md; sourceTree = "<group>"; };
 		5FE2AF752EAE849F004A4AC5 /* xcbeautify */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = xcbeautify; sourceTree = "<group>"; };
 		6A7000000000000000000001 /* GlobalAppearanceChangeResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAppearanceChangeResolver.swift; sourceTree = "<group>"; };
 		6A7000000000000000000002 /* GlobalAppearanceChangeResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAppearanceChangeResolverTests.swift; sourceTree = "<group>"; };
@@ -1131,6 +1137,9 @@
 				BF0C8F58B38F29B2662E6C2D /* PreferencesMigrations.swift */,
 				5FCEFA110000000000000020 /* PreferencesMigrationsTests.swift */,
 				5FA001000000000000000020 /* ShortcutConfiguration.swift */,
+				A81200000000000000000001 /* ShortcutDefaultsResolver.swift */,
+				A81200000000000000000002 /* ShortcutDefaultsResolverTests.swift */,
+				A81200000000000000000003 /* ShortcutDefaultsResolverSpecs.md */,
 				D04BABCD12CA72B06290C248 /* settings-window */,
 			);
 			path = preferences;
@@ -1880,6 +1889,8 @@
 				BF0C87B5EDCFC573CE220137 /* Helpers.swift in Sources */,
 				5FCEFA110000000000000001 /* PreferencesMigrations.swift in Sources */,
 				5FCEFA110000000000000021 /* PreferencesMigrationsTests.swift in Sources */,
+				A81200000000000000000102 /* ShortcutDefaultsResolver.swift in Sources */,
+				A81200000000000000000103 /* ShortcutDefaultsResolverTests.swift in Sources */,
 				6B1100000000000000000012 /* UpdatePolicyConsentState.swift in Sources */,
 				6B1100000000000000000013 /* UpdatePolicyConsentStateTests.swift in Sources */,
 				AECF000000000000000000A3 /* Endpoints.swift in Sources */,
@@ -1983,6 +1994,7 @@
 				UNST01000000000000000011 /* Uninstaller.swift in Sources */,
 				UNSP01000000000000000011 /* UninstallPlan.swift in Sources */,
 				5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */,
+				A81200000000000000000101 /* ShortcutDefaultsResolver.swift in Sources */,
 				D04BA1637E125D38546C26E2 /* StackView.swift in Sources */,
 				D04BA8757C9F20F25EB50785 /* TextField.swift in Sources */,
 				5F21C9E02C6E94240091F72F /* ShortcutsWhenActiveSheet.swift in Sources */,

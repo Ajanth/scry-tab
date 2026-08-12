@@ -5,7 +5,7 @@ import Carbon.HIToolbox.Events
 /// issue #5653 (intermittent native ⌘⇥ override on launch).
 ///
 /// Groups: A repro case (⌘⇥ + ⌘⇧⇥ with hold ⌘ + ⌘⇧) · B single ⌘⇥ pairing ·
-/// C ⌘\` only · D default option · E empty.
+/// C ⌘\` only · D Option-Tab isolation · E empty.
 final class NativeHotkeyResolverTests: XCTestCase {
     private func snap(_ mods: Int, _ key: Int) -> ShortcutSnapshot {
         ShortcutSnapshot(modifiers: UInt32(mods), keyCode: UInt32(key))
@@ -63,11 +63,11 @@ final class NativeHotkeyResolverTests: XCTestCase {
         XCTAssertEqual(result.enable, [.commandTab, .commandShiftTab])
     }
 
-    // MARK: - D. Default option config — no native switcher overlap
+    // MARK: - D. Option-Tab — no native switcher overlap
 
-    /// ScryTab's default trigger (⌥⇥ / hold ⌥) doesn't overlap any native command-tab hotkey, so
-    /// every native hotkey stays enabled — ScryTab coexists with the system's native switcher.
-    func testOptionTabDoesNotOverrideNativeSwitchers() {
+    /// An ⌥⇥ trigger doesn't overlap any native command-tab hotkey, so every native hotkey stays
+    /// enabled alongside ScryTab's same-app shortcut.
+    func testOptionTabLeavesNativeSwitchersEnabled() {
         let result = NativeHotkeyResolver.resolve(
             shortcuts: [snap(optionKey, kVK_Tab)],
             holdShortcutModifiers: [UInt32(optionKey)])

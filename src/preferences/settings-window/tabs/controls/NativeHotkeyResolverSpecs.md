@@ -50,9 +50,9 @@ Mirrors `NativeHotkeyResolverTests.swift` 1:1.
 - **testCommandKeyAboveTabAloneDisablesOnlyThatHotkey** — no cross-talk between Tab and grave-key
   predicates; only `.commandKeyAboveTab` is disabled.
 
-### D. Default option config — no native switcher overlap
-- **testOptionTabDoesNotOverrideNativeSwitchers** — ScryTab's default ⌥⇥ / hold ⌥ doesn't overlap
-  any native command-tab hotkey, so every native hotkey stays enabled.
+### D. Option-Tab — no native switcher overlap
+- **testOptionTabLeavesNativeSwitchersEnabled** — the ⌥⇥ same-app shortcut doesn't overlap any
+  native command-tab hotkey, so every native hotkey stays enabled.
 
 ### E. Empty config — nothing to override
 - **testEmptyConfigReleasesAllNativeHotkeys** — defensive: no shortcuts ⇒ no native hotkey disabled.
