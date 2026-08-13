@@ -1,3 +1,23 @@
+# [0.2.0](https://github.com/Ajanth/scry-tab/compare/v0.1.2...v0.2.0) (2026-08-13)
+
+
+### Bug Fixes
+
+* **licence:** clarify AltTab-derived portions ([6dba091](https://github.com/Ajanth/scry-tab/commit/6dba091))
+* **release:** publish only the latest appcast item ([fb73306](https://github.com/Ajanth/scry-tab/commit/fb73306))
+
+
+### Features
+
+* **design-system:** add primary button styling and accent color ([2e0e58f](https://github.com/Ajanth/scry-tab/commit/2e0e58f))
+* **onboarding:** refactor tour to use search and appearance pages ([218203b](https://github.com/Ajanth/scry-tab/commit/218203b))
+* **ui:** refine tour progress and About notice ([11682ce](https://github.com/Ajanth/scry-tab/commit/11682ce))
+* add animated onboarding tour plan and gitignore update ([2f1e74d](https://github.com/Ajanth/scry-tab/commit/2f1e74d))
+* implement onboarding tour and localization updates ([6e615f2](https://github.com/Ajanth/scry-tab/commit/6e615f2))
+* implement onboarding tour pages and resolver ([16c1fcd](https://github.com/Ajanth/scry-tab/commit/16c1fcd))
+* introduce shortcutdefaultsresolver and update preferences ([d8485a3](https://github.com/Ajanth/scry-tab/commit/d8485a3))
+* **design-system:** add segmented control progress bands and ([59a60c5](https://github.com/Ajanth/scry-tab/commit/59a60c5))
+
 ## [0.1.2](https://github.com/Ajanth/scry-tab/compare/v0.1.1...v0.1.2) (2026-08-11)
 
 

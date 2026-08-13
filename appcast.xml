@@ -5,119 +5,43 @@
     <language>en</language>
 
     <item>
-      <title>Version 0.1.2</title>
-      <pubDate>Tue, 11 Aug 2026 12:41:43 +0200</pubDate>
+      <title>Version 0.2.0</title>
+      <pubDate>Thu, 13 Aug 2026 05:28:49 +0200</pubDate>
       <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
       <description><![CDATA[
         <ul>
-          <li>Focus menu-triggered update window.</li>
+          <li>Add segmented control progress bands and.</li>
+          <li>Implement onboarding tour pages and resolver.</li>
+          <li>Implement onboarding tour and localization updates.</li>
+          <li>Add animated onboarding tour plan and gitignore update.</li>
+          <li>Introduce shortcutdefaultsresolver and update preferences.</li>
+          <li>Add primary button styling and accent color.</li>
+          <li>Refactor tour to use search and appearance pages.</li>
+          <li>Clarify AltTab-derived portions.</li>
+          <li>Refine tour progress and About notice.</li>
+          <li>Publish only the latest appcast item.</li>
         </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.1.2">Full release notes</a></p>
+        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.2.0">Full release notes</a></p>
       ]]></description>
       <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.1.2/ScryTab-0.1.2.zip"
-        sparkle:version="0.1.2"
-        sparkle:shortVersionString="0.1.2"
-        sparkle:edSignature="JV9B5Ll7mW2iR8+KcGX4JRSbpUXZ2pp13Roho2Lou1D7Qnb8++zuZoagkoRem37G1YdAYlu7T37UEMDSLQNhCQ==" length="5993182"
+        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.2.0/ScryTab-0.2.0.zip"
+        sparkle:version="0.2.0"
+        sparkle:shortVersionString="0.2.0"
+        sparkle:edSignature="36ZCbW8BUvwtBtrb3a5jspypr2oIoCsZlJ9JoQefKg6YrWOGPwCnmmF+gVxGxEwXlL5qjjPHOubgwEdtgf7iBg==" length="6128260"
         type="application/octet-stream"/>
     </item>
 
 
-    <item>
-      <title>Version 0.1.1</title>
-      <pubDate>Tue, 11 Aug 2026 11:44:56 +0200</pubDate>
-      <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[
-        <ul>
-          <li>Maintenance and reliability improvements.</li>
-        </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.1.1">Full release notes</a></p>
-      ]]></description>
-      <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.1.1/ScryTab-0.1.1.zip"
-        sparkle:version="0.1.1"
-        sparkle:shortVersionString="0.1.1"
-        sparkle:edSignature="b1JTQ1OFdDODuJgZUSZL93TBhN5R/9EJUmiIMf5F9v+wgV7O0DBWgTRb9sy02sd5slOp3aD3dCMRQKNVic0SDQ==" length="5992438"
-        type="application/octet-stream"/>
-    </item>
 
 
-    <item>
-      <title>Version 0.1.0</title>
-      <pubDate>Tue, 11 Aug 2026 09:37:34 +0200</pubDate>
-      <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[
-        <ul>
-          <li>Automate appcast release notes generation.</li>
-          <li>Implement update policy consent state handling.</li>
-        </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.1.0">Full release notes</a></p>
-      ]]></description>
-      <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.1.0/ScryTab-0.1.0.zip"
-        sparkle:version="0.1.0"
-        sparkle:shortVersionString="0.1.0"
-        sparkle:edSignature="jDr6xxfTElnaJ2H1KmZauC0pFWFDijhEg4IY7/yzP2G1P0KP3540cq0eP6RlbbVV4HVdxj6NCSNMyO3EHkJGAg==" length="5992496"
-        type="application/octet-stream"/>
-    </item>
 
 
-    <item>
-      <title>Version 0.0.5</title>
-      <pubDate>Tue, 11 Aug 2026 07:09:39 +0200</pubDate>
-      <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[
-        <ul>
-          <li>Show contributor credits in About.</li>
-        </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.5">Full release notes</a></p>
-      ]]></description>
-      <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.0.5/ScryTab-0.0.5.zip"
-        sparkle:version="0.0.5"
-        sparkle:shortVersionString="0.0.5"
-        sparkle:edSignature="3BwzhCnL8rNtw1uuKajw5bZju2lqXtWfoxV5AouV9NMRqsiCshMpIA3B9faHD5N251YN9LSesoyeJxo0G2/pAA==" length="6005528"
-        type="application/octet-stream"/>
-    </item>
 
 
-    <item>
-      <title>Version 0.0.4</title>
-      <pubDate>Mon, 10 Aug 2026 04:51:21 +0200</pubDate>
-      <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[
-        <ul>
-          <li>Ship complete legal notices.</li>
-        </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.4">Full release notes</a></p>
-      ]]></description>
-      <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.0.4/ScryTab-0.0.4.zip"
-        sparkle:version="0.0.4"
-        sparkle:shortVersionString="0.0.4"
-        sparkle:edSignature="YdueBUDgvg6sWq05ElQavTHuAzDHxab31LbpffC2TpjygD2sgNxvcvTeVxiWPdfW/+H4UHwnhErGrIi0iBHVAw==" length="6005984"
-        type="application/octet-stream"/>
-    </item>
 
 
-    <item>
-      <title>Version 0.0.3</title>
-      <pubDate>Sat, 08 Aug 2026 16:24:34 +0200</pubDate>
-      <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[
-        <ul>
-          <li>Synchronize website release state.</li>
-          <li>Add xcbeautify to About search terms.</li>
-        </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.0.3">Full release notes</a></p>
-      ]]></description>
-      <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.0.3/ScryTab-0.0.3.zip"
-        sparkle:version="0.0.3"
-        sparkle:shortVersionString="0.0.3"
-        sparkle:edSignature="DrQ1+iRG0ODemEwyW8vsC5Q0tuj/jzN9r87YI7y01kij+N5zAE5mfQtyBfrojj8+Zt7OAAO3JdoQVJQ8OZ+rBw==" length="5989014"
-        type="application/octet-stream"/>
-    </item>
+
+
 
   </channel>
 </rss>
