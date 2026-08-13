@@ -34,6 +34,10 @@ zipName="$APP_NAME-$version.zip"
 edSignatureAndLength=$(printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | vendor/Sparkle/bin/sign_update --ed-key-file - "$XCODE_BUILD_PATH/$zipName")
 releaseNotes="$(release_notes_html)"
 
+# Only the current release remains public. Drop stale feed items before inserting the newly
+# signed enclosure so Sparkle and the website never advertise withdrawn downloads.
+sed -i '' -e '/<item>/,/<\/item>/d' appcast.xml
+
 echo "
     <item>
       <title>Version $version</title>
@@ -55,3 +59,5 @@ $releaseNotes
 " > ITEM.txt
 
 sed -i '' -e "/<\/language>/r ITEM.txt" appcast.xml
+xmllint --noout appcast.xml
+[[ $(xmllint --xpath 'count(//*[local-name()="item"])' appcast.xml) == "1" ]]
