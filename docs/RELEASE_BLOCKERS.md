@@ -228,6 +228,17 @@ Gatekeeper, and staple validation for both install formats. Cloudflare deployed 
 length and EdDSA signature. B5 and B6 remain open because this does not replace their manual
 clean-machine and installed-updater checks.
 
+[Release run 31663851941](https://github.com/Ajanth/scry-tab/actions/runs/31663851941)
+created the private `v0.2.0` tag and semantic-release commit after tests, Developer ID build,
+notarization, stapling, Gatekeeper, Sentry upload, and single-item appcast generation all passed.
+Corresponding Source packaging then stopped before public asset upload or website publication
+because its README guard still required two retired attribution sentences. The live website and
+public repository remained on `v0.1.2`, signing-material cleanup passed, and the runner returned
+online and idle. The guard now validates the canonical AltTab-derived-portions wording and ScryTab
+development date, with explicit diagnostics if either notice is lost. Local reproduction then
+reached the archive privacy check and found a personal absolute path in the committed onboarding
+plan; the plan now uses the repository-relative build-script path.
+
 The public release and its `scrytab-public` tag were later withdrawn on 2026-08-08 because the
 source archive bundled Apple `notarytool`, stale proprietary wording, an incomplete xcbeautify
 notice, and private operational files. That run remains useful historical pipeline evidence.

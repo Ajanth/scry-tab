@@ -117,7 +117,7 @@ Modify:
 - **Step 3:** Compose the Focus Sets page with concise localized copy, one accessible 536-point segmented story rail using shared control styling, 20-point colored badges, shared blue per-segment progress bands, the centered app-icon switcher, one explicitly labeled `⌥1` example chord, and Replay Animation. Selection updates the visible membership and accessible summary without persistence.
 - **Step 4:** On first activation, schedule one-shot 2.8-second transitions through all three Focus Set tabs, keeping past progress full and stopping on Side Projects. Manual selection cancels playback; Replay resets to Entertainment. On deactivation, invalidate the one-shot timer, remove animations, and snap to the selected final state. Exclude decorative icons from VoiceOver; expose selector names and one stable scene summary.
 - **Step 5:** Run the copied build sequence from `ai/build.sh`:
-  `/Users/ajanth/development/perpro/scry-tab/scripts/codesign/unlock_local_keychain.sh`
+  `scripts/codesign/unlock_local_keychain.sh`
   `xcodebuild -project scry-tab.xcodeproj -scheme Debug -configuration Debug -derivedDataPath DerivedData`
   Expected: exit 0 and `** BUILD SUCCEEDED **`.
 

@@ -62,8 +62,14 @@ grep -Fq "ShortcutRecorder is licensed under the Creative Commons Attribution 4.
 grep -Fq "Copyright (c) 2006-2013 Andy Matuschak." <<< "$noticesText"
 grep -Fq "Copyright (c) 2015 Sentry" <<< "$noticesText"
 grep -Fq "Copyright (c) 2025 Charles Pisciotta and other contributors" <<< "$noticesText"
-grep -Fq "ScryTab is a modified version" <<< "$readmeText"
-grep -Fq "ScryTab modifications began in 2026" <<< "$readmeText"
+grep -Fq "It retains portions derived from" <<< "$readmeText" || {
+  echo "Corresponding Source README is missing the AltTab-derived portions notice" >&2
+  exit 1
+}
+grep -Fq "Development of ScryTab began in 2026" <<< "$readmeText" || {
+  echo "Corresponding Source README is missing the ScryTab development date" >&2
+  exit 1
+}
 
 # private release operations, local tooling, and Apple software are not Corresponding Source
 for forbidden in \
