@@ -5,31 +5,24 @@
     <language>en</language>
 
     <item>
-      <title>Version 0.2.0</title>
-      <pubDate>Thu, 13 Aug 2026 05:28:49 +0200</pubDate>
+      <title>Version 0.2.1</title>
+      <pubDate>Thu, 13 Aug 2026 05:36:14 +0200</pubDate>
       <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
       <description><![CDATA[
         <ul>
-          <li>Add segmented control progress bands and.</li>
-          <li>Implement onboarding tour pages and resolver.</li>
-          <li>Implement onboarding tour and localization updates.</li>
-          <li>Add animated onboarding tour plan and gitignore update.</li>
-          <li>Introduce shortcutdefaultsresolver and update preferences.</li>
-          <li>Add primary button styling and accent color.</li>
-          <li>Refactor tour to use search and appearance pages.</li>
-          <li>Clarify AltTab-derived portions.</li>
-          <li>Refine tour progress and About notice.</li>
-          <li>Publish only the latest appcast item.</li>
+          <li>Unblock corresponding source packaging.</li>
         </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.2.0">Full release notes</a></p>
+        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.2.1">Full release notes</a></p>
       ]]></description>
       <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.2.0/ScryTab-0.2.0.zip"
-        sparkle:version="0.2.0"
-        sparkle:shortVersionString="0.2.0"
-        sparkle:edSignature="36ZCbW8BUvwtBtrb3a5jspypr2oIoCsZlJ9JoQefKg6YrWOGPwCnmmF+gVxGxEwXlL5qjjPHOubgwEdtgf7iBg==" length="6128260"
+        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.2.1/ScryTab-0.2.1.zip"
+        sparkle:version="0.2.1"
+        sparkle:shortVersionString="0.2.1"
+        sparkle:edSignature="xAhscPBwoDSsB42OSsLI/HcNsZu+Z1He96ag3ANle+o3e9JxFkj62WFMAKaJXlb4l/QjgFFyUpw+lFvbqHNHAQ==" length="6128272"
         type="application/octet-stream"/>
     </item>
+
+
 
 
 

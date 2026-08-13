@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/Ajanth/scry-tab/compare/v0.2.0...v0.2.1) (2026-08-13)
+
+
+### Bug Fixes
+
+* **release:** unblock corresponding source packaging ([585905d](https://github.com/Ajanth/scry-tab/commit/585905d))
+
 # [0.2.0](https://github.com/Ajanth/scry-tab/compare/v0.1.2...v0.2.0) (2026-08-13)
 
 
