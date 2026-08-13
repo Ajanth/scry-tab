@@ -591,7 +591,6 @@ class SettingsWindow: NSWindow {
             SettingsSearchDescriptor(id: "about", route: .about, sectionID: "about", title: NSLocalizedString("About", comment: ""), keywords: [
                 App.name,
                 App.version,
-                App.copyrightNotice,
                 NSLocalizedString("Website", comment: ""),
                 NSLocalizedString("Licence", comment: ""),
                 NSLocalizedString("Source code", comment: ""),

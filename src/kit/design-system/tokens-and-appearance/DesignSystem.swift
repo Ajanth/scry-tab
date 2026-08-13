@@ -21,6 +21,8 @@ enum DesignSystem {
         static let controlTextVerticalInset = CGFloat(8)
         static let controlProgressHeight = CGFloat(3)
         static let controlProgressBottomInset = CGFloat(4)
+        static let pageIndicatorDotDiameter = CGFloat(7)
+        static let pageIndicatorDotSpacing = CGFloat(8)
         static let searchGlyphInset = CGFloat(8)
         static let searchTextInset = CGFloat(4)
         static let buttonHorizontalPadding = CGFloat(14)

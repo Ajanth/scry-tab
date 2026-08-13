@@ -688,7 +688,7 @@
 /* No comment provided by engineer. */
 "Start at login" = "Start at login";
 
-/* Onboarding tour progress */
+/* Onboarding tour progress accessibility label */
 "Step %d of %d" = "Step %1$d of %2$d";
 
 /* No comment provided by engineer. */

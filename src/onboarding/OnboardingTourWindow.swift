@@ -14,7 +14,7 @@ final class OnboardingTourWindow: NSWindow {
     }
 
     private static let windowTitle = NSLocalizedString("ScryTab Tour", comment: "Onboarding tour window title")
-    private static let progressFormat = NSLocalizedString("Step %d of %d", comment: "Onboarding tour progress")
+    private static let progressFormat = NSLocalizedString("Step %d of %d", comment: "Onboarding tour progress accessibility label")
     private static let skipTitle = NSLocalizedString("Skip Tour", comment: "Onboarding tour skip button")
     private static let backTitle = NSLocalizedString("Back", comment: "Onboarding tour back button")
     private static let nextTitle = NSLocalizedString("Next", comment: "Onboarding tour next button")
@@ -25,7 +25,7 @@ final class OnboardingTourWindow: NSWindow {
     override var canBecomeKey: Bool { Self.canBecomeKey_ }
     private(set) static var shared: OnboardingTourWindow?
     private let pageHost = NSView()
-    private let progressLabel = NSTextField(labelWithString: "")
+    private let pageIndicator = DesignSystemPageIndicator(pageCount: OnboardingTourPage.allCases.count)
     private let skipButton: NSButton
     private let backButton: NSButton
     private let doneButton: NSButton
@@ -64,6 +64,7 @@ final class OnboardingTourWindow: NSWindow {
 
     func dismissAnimations() {
         currentScene?.deactivate()
+        pageIndicator.stopAnimating()
     }
 
     override func cancelOperation(_ sender: Any?) {
@@ -82,25 +83,21 @@ final class OnboardingTourWindow: NSWindow {
     private func setupContent() {
         pageHost.translatesAutoresizingMaskIntoConstraints = false
         pageHost.setAccessibilityElement(false)
-        progressLabel.translatesAutoresizingMaskIntoConstraints = false
-        progressLabel.font = NSFont.systemFont(ofSize: 12, weight: .medium)
-        progressLabel.textColor = DesignSystem.color(.textSecondary)
-        progressLabel.alignment = .center
         configureButtons()
         let divider = DesignSystemDividerView()
         divider.translatesAutoresizingMaskIntoConstraints = false
         divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
         divider.setAccessibilityElement(false)
         let footer = makeFooter()
-        let root = NSStackView(views: [pageHost, progressLabel, divider, footer])
+        let root = NSStackView(views: [pageHost, pageIndicator, divider, footer])
         root.translatesAutoresizingMaskIntoConstraints = false
         root.orientation = .vertical
         root.alignment = .centerX
         root.spacing = DesignSystem.Metrics.sectionGap
         root.edgeInsets = NSEdgeInsets(top: Metrics.edgeInset, left: Metrics.edgeInset, bottom: Metrics.edgeInset, right: Metrics.edgeInset)
-        root.setCustomSpacing(DesignSystem.Metrics.headerFooterGap, after: progressLabel)
+        root.setCustomSpacing(DesignSystem.Metrics.headerFooterGap, after: pageIndicator)
         root.setCustomSpacing(DesignSystem.Metrics.formOuterPadding, after: divider)
-        [pageHost, progressLabel, divider, footer].forEach { $0.widthAnchor.constraint(equalToConstant: Metrics.contentWidth).isActive = true }
+        [pageHost, divider, footer].forEach { $0.widthAnchor.constraint(equalToConstant: Metrics.contentWidth).isActive = true }
         pageHost.heightAnchor.constraint(equalToConstant: Metrics.pageHeight).isActive = true
         let container = DesignSystemWindowContentView(content: root, topPadding: DesignSystem.Metrics.formOuterPadding)
         contentView = container
@@ -170,16 +167,16 @@ final class OnboardingTourWindow: NSWindow {
     private func show(_ page: OnboardingTourPage, activate: Bool) {
         guard page != currentPage || currentScene == nil else { return }
         let previousPage = currentPage
+        let animated = activate && shouldAnimate
         currentScene?.deactivate()
         currentScene?.view.removeFromSuperview()
         let scene = makeScene(for: page)
         currentPage = page
         currentScene = scene
         attach(scene.view)
-        updateNavigation()
+        updateNavigation(animated: animated)
         updateKeyViewLoop()
         guard activate else { return }
-        let animated = shouldAnimate
         scene.activate(animated: animated)
         if animated { animateSceneEntry(scene.view, movingForward: page.rawValue > previousPage.rawValue) }
     }
@@ -225,8 +222,9 @@ final class OnboardingTourWindow: NSWindow {
         layer.add(group, forKey: "onboarding.pageEntry")
     }
 
-    private func updateNavigation() {
-        progressLabel.stringValue = String(format: Self.progressFormat, currentPage.rawValue + 1, OnboardingTourPage.allCases.count)
+    private func updateNavigation(animated: Bool) {
+        pageIndicator.selectPage(currentPage.rawValue, animated: animated)
+        pageIndicator.setAccessibilityLabel(String(format: Self.progressFormat, currentPage.rawValue + 1, OnboardingTourPage.allCases.count))
         backButton.isEnabled = currentPage != .focusSets
         doneButton.isHidden = currentPage != .controls
         nextButton.title = currentPage == .controls ? Self.exploreTitle : Self.nextTitle

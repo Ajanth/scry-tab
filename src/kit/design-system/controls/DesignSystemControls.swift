@@ -150,6 +150,121 @@ private final class DesignSystemSelectedControlIndicator {
     }
 }
 
+final class DesignSystemPageIndicator: NSView {
+    private enum Motion {
+        static let duration = CFTimeInterval(0.24)
+    }
+
+    private let pageCount: Int
+    private let selectedLayer = CALayer()
+    private var dotLayers = [CALayer]()
+    private var selectedIndex = 0
+    private var accessibilityObserver: NSObjectProtocol?
+
+    init(pageCount: Int) {
+        self.pageCount = max(pageCount, 0)
+        super.init(frame: .zero)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Class only supports programmatic initialization")
+    }
+
+    deinit {
+        if let accessibilityObserver { NotificationCenter.default.removeObserver(accessibilityObserver) }
+    }
+
+    override var intrinsicContentSize: NSSize {
+        guard pageCount > 0 else { return .zero }
+        let dotWidth = CGFloat(pageCount) * DesignSystem.Metrics.pageIndicatorDotDiameter
+        let spacingWidth = CGFloat(pageCount - 1) * DesignSystem.Metrics.pageIndicatorDotSpacing
+        return NSSize(width: dotWidth + spacingWidth, height: DesignSystem.Metrics.pageIndicatorDotDiameter)
+    }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if let accessibilityObserver { NotificationCenter.default.removeObserver(accessibilityObserver) }
+        accessibilityObserver = NotificationCenter.default.addObserver(forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.stopAnimating()
+            self?.refreshColors()
+        }
+        refreshColors()
+    }
+
+    @available(macOS 10.14, *)
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refreshColors()
+    }
+
+    override func layout() {
+        super.layout()
+        let diameter = DesignSystem.Metrics.pageIndicatorDotDiameter
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        for (index, dotLayer) in dotLayers.enumerated() {
+            dotLayer.bounds = NSRect(x: 0, y: 0, width: diameter, height: diameter)
+            dotLayer.position = position(for: index)
+            dotLayer.cornerRadius = diameter / 2
+        }
+        selectedLayer.bounds = NSRect(x: 0, y: 0, width: diameter, height: diameter)
+        selectedLayer.position = position(for: selectedIndex)
+        selectedLayer.cornerRadius = diameter / 2
+        CATransaction.commit()
+    }
+
+    func selectPage(_ index: Int, animated: Bool) {
+        guard dotLayers.indices.contains(index) else { return }
+        let previousPosition = selectedLayer.presentation()?.position ?? selectedLayer.position
+        selectedIndex = index
+        needsLayout = true
+        layoutSubtreeIfNeeded()
+        guard animated, previousPosition != selectedLayer.position,
+              !NSWorkspace.shared.accessibilityDisplayShouldReduceMotion else {
+            stopAnimating()
+            return
+        }
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.fromValue = previousPosition
+        animation.toValue = selectedLayer.position
+        animation.duration = Motion.duration
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        selectedLayer.add(animation, forKey: "pageIndicator.position")
+    }
+
+    func stopAnimating() {
+        selectedLayer.removeAnimation(forKey: "pageIndicator.position")
+    }
+
+    private func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        wantsLayer = true
+        setAccessibilityElement(true)
+        setAccessibilityRole(.group)
+        for _ in 0..<pageCount {
+            let dotLayer = CALayer()
+            layer?.addSublayer(dotLayer)
+            dotLayers.append(dotLayer)
+        }
+        selectedLayer.zPosition = 1
+        layer?.addSublayer(selectedLayer)
+        refreshColors()
+    }
+
+    private func position(for index: Int) -> NSPoint {
+        let diameter = DesignSystem.Metrics.pageIndicatorDotDiameter
+        let step = diameter + DesignSystem.Metrics.pageIndicatorDotSpacing
+        return NSPoint(x: diameter / 2 + CGFloat(index) * step, y: bounds.midY)
+    }
+
+    private func refreshColors() {
+        let inactiveColor = DesignSystem.semanticCGColor(.textDisabled, in: self)
+        dotLayers.forEach { $0.backgroundColor = inactiveColor }
+        selectedLayer.backgroundColor = DesignSystem.semanticCGColor(.progressAccent, in: self)
+    }
+}
+
 final class DesignSystemFlatButton: NSButton {
     var drawsAppOwnedSurface: Bool { true }
     var usesPrimaryAccent = false {
