@@ -21,7 +21,7 @@
 	<string>app.icns</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2026 ScryTab contributors.
-Based on AltTab by lwouis and the AltTab contributors.</string>
+AltTab-derived portions © AltTab contributors.</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 

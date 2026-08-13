@@ -10,11 +10,11 @@ A macOS window switcher.
 
 ScryTab is free software, released under the [GNU General Public License v3.0](LICENCE.md).
 
-ScryTab is a modified version of [AltTab](https://github.com/lwouis/alt-tab-macos), also licensed
-under the GPL-3.0.
-ScryTab modifications began in 2026; release dates and changes are recorded in
+ScryTab has been substantially rewritten. It retains portions derived from
+[AltTab](https://github.com/lwouis/alt-tab-macos), also licensed under the GPL-3.0.
+Development of ScryTab began in 2026; release dates and changes are recorded in
 [changelog.md](changelog.md). See
-[docs/contributors.md](docs/contributors.md) for the people whose work ScryTab is built on,
+[docs/contributors.md](docs/contributors.md) for the complete contributor record,
 and [docs/acknowledgments.md](docs/acknowledgments.md) for third-party components.
 
 ScryTab comes with ABSOLUTELY NO WARRANTY. You are welcome to redistribute it under the

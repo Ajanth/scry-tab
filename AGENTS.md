@@ -3,9 +3,10 @@
   the first public download. Read it before touching signing, notarization, Sparkle, the appcast,
   release packaging, licensing, or the website, and update it in the same commit that clears or
   adds a blocker.
-- ScryTab is a GPL-3.0 derivative of AltTab. Attribution, the `LICENCE.md` text, the About pane's
-  legal notices, and the source-code offer are licence obligations, not decoration — do not
-  remove or weaken them. The Mac App Store is permanently unavailable as a consequence.
+- ScryTab retains GPL-3.0-covered portions derived from AltTab. The `LICENCE.md` text, accurate
+  copyright notices for ScryTab and the AltTab-derived portions, the About pane's GPL notices,
+  and the source-code offer are licence obligations, not decoration — do not remove or weaken
+  them. The Mac App Store is permanently unavailable as a consequence.
 
 # macOS development
 - Don't use xcode directly to develop

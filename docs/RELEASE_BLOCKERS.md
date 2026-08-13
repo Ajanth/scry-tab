@@ -348,12 +348,13 @@ Recorded so it is not re-litigated or accidentally reverted.
 - **D12 — Licence ownership and shipped notices are corrected.** A follow-up audit found that
   `Rogue Works` was neither ScryTab's legal rights holder nor an available Australian business
   name, the standalone About window omitted parts of GPL-3.0 §0's Appropriate Legal Notices, and
-  the app bundle omitted the GPL text and full Sparkle/Sentry binary notices. Copyright ownership
-  the human-readable notice now names the ScryTab contributors and credits AltTab, its creator
-  lwouis, and the AltTab contributors without publishing the maintainer's legal name;
+  the app bundle omitted the GPL text and full Sparkle/Sentry binary notices. The human-readable
+  notice now distinguishes ScryTab's copyright from the copyright in retained
+  AltTab-derived portions without promotional lineage wording or singling out one contributor;
   the About surface displays the no-warranty and redistribution notice in every entry point;
-  AltTab attribution and the full contributor record remain in the bundled acknowledgments and
-  Contributors documents without rendering the developer and translator rolls in About;
+  AltTab-derived copyright attribution and the full contributor record remain in the bundled
+  acknowledgments and Contributors documents without rendering the developer and translator rolls
+  in About;
   `LICENCE.md` and `third-party-notices.md` are app resources included in both the Sparkle ZIP and
   DMG; packaging fails if those resources or their required notices are absent; and the source
   archive records ScryTab's modifications and relevant 2026 date. The website separates its own
