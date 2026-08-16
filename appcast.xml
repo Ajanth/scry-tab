@@ -5,22 +5,25 @@
     <language>en</language>
 
     <item>
-      <title>Version 0.2.1</title>
-      <pubDate>Thu, 13 Aug 2026 05:36:14 +0200</pubDate>
+      <title>Version 0.3.0</title>
+      <pubDate>Sun, 16 Aug 2026 08:38:04 +0200</pubDate>
       <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
       <description><![CDATA[
         <ul>
-          <li>Unblock corresponding source packaging.</li>
+          <li>Add mergedapplicationoptions to.</li>
+          <li>Improve application fetching and display in focus sets.</li>
         </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.2.1">Full release notes</a></p>
+        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.3.0">Full release notes</a></p>
       ]]></description>
       <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.2.1/ScryTab-0.2.1.zip"
-        sparkle:version="0.2.1"
-        sparkle:shortVersionString="0.2.1"
-        sparkle:edSignature="xAhscPBwoDSsB42OSsLI/HcNsZu+Z1He96ag3ANle+o3e9JxFkj62WFMAKaJXlb4l/QjgFFyUpw+lFvbqHNHAQ==" length="6128272"
+        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.3.0/ScryTab-0.3.0.zip"
+        sparkle:version="0.3.0"
+        sparkle:shortVersionString="0.3.0"
+        sparkle:edSignature="VPSnnKo98rjihnnTTxh9CckdGvvQlN5p4xSfpefWxU6gOGVJR44dlMn5GkbIaCtA5EnUOyTGu4TpycEm29YGDA==" length="6145772"
         type="application/octet-stream"/>
     </item>
+
+
 
 
 

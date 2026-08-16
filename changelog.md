@@ -1,3 +1,11 @@
+# [0.3.0](https://github.com/Ajanth/scry-tab/compare/v0.2.1...v0.3.0) (2026-08-16)
+
+
+### Features
+
+* improve application fetching and display in focus sets ([a7087d2](https://github.com/Ajanth/scry-tab/commit/a7087d2))
+* **focus-sets:** add mergedapplicationoptions to ([d2869cb](https://github.com/Ajanth/scry-tab/commit/d2869cb))
+
 ## [0.2.1](https://github.com/Ajanth/scry-tab/compare/v0.2.0...v0.2.1) (2026-08-13)
 
 
