@@ -134,6 +134,10 @@ enum FocusSetSettingsResolver {
         return (selectedRows + availableRows).sorted { isOrderedBefore($0, $1) }
     }
 
+    static func mergedApplicationOptions(_ applicationGroups: [[FocusSetApplicationOption]]) -> [FocusSetApplicationOption] {
+        uniqueApplications(applicationGroups.flatMap { $0 })
+    }
+
     static func filteredApplicationPickerRows(applications: [FocusSetApplicationOption],
                                               rules: [FocusSetRule],
                                               matching query: String) -> [FocusSetApplicationPickerRow] {

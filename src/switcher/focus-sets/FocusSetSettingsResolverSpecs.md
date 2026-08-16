@@ -2,8 +2,8 @@
 
 ## Summary
 
-`FocusSetSettingsResolver` is a Foundation-only adapter between the live selectable-application
-inventory and persisted `FocusSetRule` values. It exposes an opaque stable identity for selection
+`FocusSetSettingsResolver` is a Foundation-only adapter between the available selectable-application
+catalog and persisted `FocusSetRule` values. It exposes an opaque stable identity for selection
 state while picker rows carry only presentation names, selection, and availability for settings UI.
 It also resolves Focus Set deletion, reordering, and selection after model changes.
 
@@ -40,6 +40,7 @@ It also resolves Focus Set deletion, reordering, and selection after model chang
 - **testPickerRowsPlaceSelectedAppsBeforeOtherAvailableApps** — selected applications precede other available applications while both groups remain alphabetical.
 - **testPickerRowsKeepUnavailableSavedApplicationsSelected** — a selected saved application remains editable when it is no longer available live.
 - **testPickerRowsDeduplicateIdentitiesAndIgnoreBlankIdentifiers** — duplicate identities retain the first live name while blank live and saved identities disappear.
+- **testMergedApplicationOptionsKeepFirstCatalogEntryPerIdentity** — merging running and installed catalogs keeps the first presentation for a bundle and retains unique installed apps.
 - **testPickerRowsOmitFallbackBundleIdentifierAsPresentationName** — a cached fallback that is only the stable identity cannot become a picker label.
 - **testPickerRowsUseDeterministicLocalizedStandardOrder** — localized-standard names and stable identities make the picker order reproducible.
 - **testPickerRowsFilterNamesCaseAndDiacriticInsensitively** — picker search trims its query and matches presentation names regardless of case or diacritics.

@@ -64,6 +64,22 @@ final class FocusSetSettingsResolverTests: XCTestCase {
         XCTAssertEqual(convertedRules.map(\.applicationBundleIdentifier), ["com.example.terminal"])
     }
 
+    /// Merging running and installed catalogs keeps the first presentation for a bundle and retains unique installed apps.
+    func testMergedApplicationOptionsKeepFirstCatalogEntryPerIdentity() {
+        let runningApplications = [application("com.example.antigravity", "Antigravity")]
+        let installedApplications = [
+            application("com.example.antigravity", "Antigravity Installed"),
+            application("com.example.terminal", "Terminal"),
+        ]
+
+        let merged = FocusSetSettingsResolver.mergedApplicationOptions([
+            runningApplications,
+            installedApplications,
+        ])
+
+        XCTAssertEqual(merged.map(\.presentationName), ["Antigravity", "Terminal"])
+    }
+
     /// A legacy cached fallback that equals its stable identity remains unavailable without becoming a picker name.
     func testPickerRowsOmitFallbackBundleIdentifierAsPresentationName() {
         let rows = FocusSetSettingsResolver.applicationPickerRows(
