@@ -477,20 +477,44 @@ final class FocusSetSettingsView: NSView {
         return String(format: NSLocalizedString("%d included applications", comment: ""), count)
     }
 
-    private func liveApplications() -> [FocusSetApplication] {
-        var identifiers = Set<String>()
-        var applications = [FocusSetApplication]()
-        for application in Applications.list {
-            guard let bundleIdentifier = application.bundleIdentifier?.trimmingCharacters(in: .whitespacesAndNewlines),
-                  !bundleIdentifier.isEmpty,
-                  identifiers.insert(bundleIdentifier).inserted,
-                  let name = application.localizedName?.trimmingCharacters(in: .whitespacesAndNewlines),
-                  !name.isEmpty else { continue }
-            applications.append(FocusSetApplication(bundleIdentifier: bundleIdentifier,
-                                                    name: name,
-                                                    icon: application.runningApplication.icon ?? AppDisplayInfo.genericIcon))
+    private func runningApplications() -> [FocusSetApplication] {
+        var applicationsByIdentifier = [String: FocusSetApplication]()
+        Applications.list.compactMap { FocusSetApplication(application: $0) }.forEach {
+            addApplication($0, to: &applicationsByIdentifier)
         }
-        return applications
+        NSWorkspace.shared.runningApplications
+            .filter { $0.activationPolicy == .regular }
+            .compactMap { FocusSetApplication(runningApplication: $0) }
+            .forEach { addApplication($0, to: &applicationsByIdentifier) }
+        return applicationsByIdentifier.values.sorted(by: isOrderedBefore)
+    }
+
+    private func addApplication(_ application: FocusSetApplication,
+                                to applicationsByIdentifier: inout [String: FocusSetApplication]) {
+        guard applicationsByIdentifier[application.bundleIdentifier] == nil else { return }
+        applicationsByIdentifier[application.bundleIdentifier] = application
+    }
+
+    private func loadInstalledApplications(into sheet: FocusSetEditorSheet) {
+        DispatchQueue.global(qos: .userInitiated).async { [weak sheet] in
+            guard sheet != nil else { return }
+            let applications = AppDisplayInfo.installedApplicationInfos().map {
+                FocusSetApplication(bundleIdentifier: $0.bundleIdentifier,
+                                    name: $0.name,
+                                    icon: $0.icon)
+            }
+            guard !applications.isEmpty else { return }
+            DispatchQueue.main.async { [weak sheet] in
+                sheet?.addApplications(applications)
+            }
+        }
+    }
+
+    private func isOrderedBefore(_ lhs: FocusSetApplication,
+                                 _ rhs: FocusSetApplication) -> Bool {
+        let nameOrder = lhs.name.localizedStandardCompare(rhs.name)
+        guard nameOrder == .orderedSame else { return nameOrder == .orderedAscending }
+        return lhs.bundleIdentifier.localizedStandardCompare(rhs.bundleIdentifier) == .orderedAscending
     }
 
     private func persist(_ sets: [FocusSet]) {
@@ -537,12 +561,13 @@ final class FocusSetSettingsView: NSView {
     private func showFocusSetEditor(_ focusSet: FocusSet) {
         let sheet = FocusSetEditorSheet(
             focusSet: focusSet,
-            applications: liveApplications(),
+            applications: runningApplications(),
             onApply: { [weak self] focusSet, conflictingShortcutIdentifier in
                 self?.saveFocusSet(focusSet, unassigningShortcut: conflictingShortcutIdentifier)
             }
         )
         SettingsWindow.shared.beginSheetWithSearchHighlight(sheet)
+        loadInstalledApplications(into: sheet)
     }
 
     private func saveFocusSet(_ focusSet: FocusSet, unassigningShortcut actionIdentifier: String?) {
@@ -655,6 +680,32 @@ private struct FocusSetApplication {
     let bundleIdentifier: String
     let name: String
     let icon: NSImage
+
+    init(bundleIdentifier: String, name: String, icon: NSImage) {
+        self.bundleIdentifier = bundleIdentifier
+        self.name = name
+        self.icon = icon
+    }
+
+    init?(application: Application) {
+        guard let bundleIdentifier = application.bundleIdentifier?.trimmingCharacters(in: .whitespacesAndNewlines),
+              let name = application.localizedName?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !bundleIdentifier.isEmpty,
+              !name.isEmpty else { return nil }
+        self.init(bundleIdentifier: bundleIdentifier,
+                  name: name,
+                  icon: application.runningApplication.icon ?? AppDisplayInfo.genericIcon)
+    }
+
+    init?(runningApplication: NSRunningApplication) {
+        guard let bundleIdentifier = runningApplication.bundleIdentifier?.trimmingCharacters(in: .whitespacesAndNewlines),
+              let name = runningApplication.localizedName?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !bundleIdentifier.isEmpty,
+              !name.isEmpty else { return nil }
+        self.init(bundleIdentifier: bundleIdentifier,
+                  name: name,
+                  icon: runningApplication.icon ?? AppDisplayInfo.genericIcon)
+    }
 }
 
 private struct FocusSetApplicationEntry {
@@ -908,15 +959,33 @@ private final class FocusSetEditorSheet: SheetWindow {
     }
 
     private func configureApplications(_ applications: [FocusSetApplication]) {
-        applicationOptions = applications.map {
-            FocusSetApplicationOption(bundleIdentifier: $0.bundleIdentifier, presentationName: $0.name)
-        }
+        applicationOptions.removeAll(keepingCapacity: true)
         applicationsByIdentity.removeAll(keepingCapacity: true)
-        for (application, option) in zip(applications, applicationOptions) {
+        mergeApplications(applications)
+    }
+
+    func addApplications(_ applications: [FocusSetApplication]) {
+        let existingCount = applicationOptions.count
+        mergeApplications(applications)
+        guard applicationOptions.count != existingCount else { return }
+        rebuildRows()
+    }
+
+    private func mergeApplications(_ applications: [FocusSetApplication]) {
+        let options = applications.map {
+            FocusSetApplicationOption(
+                bundleIdentifier: $0.bundleIdentifier,
+                presentationName: $0.name)
+        }
+        for application in applications {
+            let option = FocusSetApplicationOption(
+                bundleIdentifier: application.bundleIdentifier,
+                presentationName: application.name)
             if applicationsByIdentity[option.identity] == nil {
                 applicationsByIdentity[option.identity] = application
             }
         }
+        applicationOptions = FocusSetSettingsResolver.mergedApplicationOptions([applicationOptions, options])
     }
 
     private func updateTitle() {

@@ -463,6 +463,17 @@ struct AppDisplayInfo {
         return AppDisplayInfo(name: bundleId, icon: genericIcon)
     }
 
+    static func installedApplicationInfos() -> [(bundleIdentifier: String, name: String, icon: NSImage)] {
+        installedApps.compactMap { application in
+            let displayInfo = fromBundle(at: application.url, fallbackName: application.bundleId)
+            let name = displayInfo.name.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !application.bundleId.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+            return (bundleIdentifier: application.bundleId,
+                    name: name.isEmpty ? application.bundleId : name,
+                    icon: displayInfo.icon)
+        }
+    }
+
     private static func fromBundle(at url: URL, fallbackName: String) -> AppDisplayInfo {
         let icon = NSWorkspace.shared.icon(forFile: url.path)
         let bundle = Bundle(url: url)
