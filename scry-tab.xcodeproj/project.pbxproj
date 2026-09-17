@@ -94,6 +94,12 @@
 		UNSP01000000000000000011 /* UninstallPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNSP01000000000000000001 /* UninstallPlan.swift */; };
 		UNSP01000000000000000012 /* UninstallPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNSP01000000000000000001 /* UninstallPlan.swift */; };
 		UNSP01000000000000000013 /* UninstallPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNSP01000000000000000002 /* UninstallPlanTests.swift */; };
+		LNCH01000000000000000011 /* LaunchIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = LNCH01000000000000000001 /* LaunchIntent.swift */; };
+		LNCH01000000000000000012 /* LaunchIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = LNCH01000000000000000001 /* LaunchIntent.swift */; };
+		LNCH01000000000000000013 /* LaunchIntentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = LNCH01000000000000000002 /* LaunchIntentTests.swift */; };
+		MBVP01000000000000000011 /* MenubarVisibilityPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = MBVP01000000000000000001 /* MenubarVisibilityPreference.swift */; };
+		MBVP01000000000000000012 /* MenubarVisibilityPreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = MBVP01000000000000000001 /* MenubarVisibilityPreference.swift */; };
+		MBVP01000000000000000013 /* MenubarVisibilityPreferenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = MBVP01000000000000000002 /* MenubarVisibilityPreferenceTests.swift */; };
 		5FA002000000000000000019 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000019 /* LoginItem.swift */; };
 		5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA001000000000000000020 /* ShortcutConfiguration.swift */; };
 		A81200000000000000000101 /* ShortcutDefaultsResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81200000000000000000001 /* ShortcutDefaultsResolver.swift */; };
@@ -447,6 +453,12 @@
 		UNSP01000000000000000001 /* UninstallPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UninstallPlan.swift; sourceTree = "<group>"; };
 		UNSP01000000000000000002 /* UninstallPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UninstallPlanTests.swift; sourceTree = "<group>"; };
 		UNSP01000000000000000003 /* UninstallPlanSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = UninstallPlanSpecs.md; sourceTree = "<group>"; };
+		LNCH01000000000000000001 /* LaunchIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchIntent.swift; sourceTree = "<group>"; };
+		LNCH01000000000000000002 /* LaunchIntentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchIntentTests.swift; sourceTree = "<group>"; };
+		LNCH01000000000000000003 /* LaunchIntentSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LaunchIntentSpecs.md; sourceTree = "<group>"; };
+		MBVP01000000000000000001 /* MenubarVisibilityPreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenubarVisibilityPreference.swift; sourceTree = "<group>"; };
+		MBVP01000000000000000002 /* MenubarVisibilityPreferenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenubarVisibilityPreferenceTests.swift; sourceTree = "<group>"; };
+		MBVP01000000000000000003 /* MenubarVisibilityPreferenceSpecs.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MenubarVisibilityPreferenceSpecs.md; sourceTree = "<group>"; };
 		5FA001000000000000000019 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		5FA001000000000000000020 /* ShortcutConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutConfiguration.swift; sourceTree = "<group>"; };
 		5FA1E0B12F50000100A1A1A1 /* PreferencesEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesEvents.swift; sourceTree = "<group>"; };
@@ -1078,6 +1090,9 @@
 				UNSP01000000000000000001 /* UninstallPlan.swift */,
 				UNSP01000000000000000002 /* UninstallPlanTests.swift */,
 				UNSP01000000000000000003 /* UninstallPlanSpecs.md */,
+				LNCH01000000000000000001 /* LaunchIntent.swift */,
+				LNCH01000000000000000002 /* LaunchIntentTests.swift */,
+				LNCH01000000000000000003 /* LaunchIntentSpecs.md */,
 				AA0C8A000000000000000001 /* AXCallScheduler.swift */,
 				AA0C8A0000000000000000B1 /* CGSCallScheduler.swift */,
 				AA0C8A0000000000000000B2 /* ProcessCallScheduler.swift */,
@@ -1140,6 +1155,9 @@
 				A81200000000000000000001 /* ShortcutDefaultsResolver.swift */,
 				A81200000000000000000002 /* ShortcutDefaultsResolverTests.swift */,
 				A81200000000000000000003 /* ShortcutDefaultsResolverSpecs.md */,
+				MBVP01000000000000000001 /* MenubarVisibilityPreference.swift */,
+				MBVP01000000000000000002 /* MenubarVisibilityPreferenceTests.swift */,
+				MBVP01000000000000000003 /* MenubarVisibilityPreferenceSpecs.md */,
 				D04BABCD12CA72B06290C248 /* settings-window */,
 			);
 			path = preferences;
@@ -1810,6 +1828,10 @@
 				MSIB01000000000000000013 /* MenubarStatusIconTests.swift in Sources */,
 				UNSP01000000000000000012 /* UninstallPlan.swift in Sources */,
 				UNSP01000000000000000013 /* UninstallPlanTests.swift in Sources */,
+				LNCH01000000000000000012 /* LaunchIntent.swift in Sources */,
+				LNCH01000000000000000013 /* LaunchIntentTests.swift in Sources */,
+				MBVP01000000000000000012 /* MenubarVisibilityPreference.swift in Sources */,
+				MBVP01000000000000000013 /* MenubarVisibilityPreferenceTests.swift in Sources */,
 				5EA8E110000000000000DA03 /* DragAndDropResolver.swift in Sources */,
 				5EA8E110000000000000DA12 /* DragAndDropResolverTests.swift in Sources */,
 				7A5600000000000000000012 /* TilePresentationResolver.swift in Sources */,
@@ -1993,6 +2015,8 @@
 				5FA002000000000000000019 /* LoginItem.swift in Sources */,
 				UNST01000000000000000011 /* Uninstaller.swift in Sources */,
 				UNSP01000000000000000011 /* UninstallPlan.swift in Sources */,
+				LNCH01000000000000000011 /* LaunchIntent.swift in Sources */,
+				MBVP01000000000000000011 /* MenubarVisibilityPreference.swift in Sources */,
 				5FA002000000000000000020 /* ShortcutConfiguration.swift in Sources */,
 				A81200000000000000000101 /* ShortcutDefaultsResolver.swift in Sources */,
 				D04BA1637E125D38546C26E2 /* StackView.swift in Sources */,

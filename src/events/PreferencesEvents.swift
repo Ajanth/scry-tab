@@ -60,6 +60,7 @@ class PreferencesEvents {
         case "nextWindowGesture":
             if FeatureFlags.gestures { TrackpadEvents.toggle(Preferences.nextWindowGesture != .disabled) }
         case "startAtLogin": LoginItem.applyCurrentPreference()
+        case MenubarVisibilityPreference.key: Menubar.applyVisibilityPreference()
         case "updatePolicy": applyUpdatePolicyPreference()
         case let k where preferencesRequiringUiReset.contains(k) && TilesPanel.shared != nil: App.resetPreferencesDependentComponents()
         case let k where (isOverrideKey(k) || isPerShortcutOrderingKey(k)) && TilesPanel.shared != nil: App.resetPreferencesDependentComponents()

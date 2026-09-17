@@ -9,7 +9,9 @@ import Cocoa
 enum LoginItem {
     private static let launchAgentPlist: NSDictionary = [
         "Label": App.bundleIdentifier,
-        "Program": Bundle.main.executablePath ?? "/Applications/\(App.name).app/Contents/MacOS/\(App.name)",
+        // `ProgramArguments` rather than `Program` so login startup carries the silent-launch
+        // argument; without it, a hidden menu bar icon would open Settings at every login.
+        "ProgramArguments": [Bundle.main.executablePath ?? "/Applications/\(App.name).app/Contents/MacOS/\(App.name)", LaunchIntent.silentArgument],
         "RunAtLoad": true,
         "LimitLoadToSessionType": "Aqua",
         // starting from macOS 13, AssociatedBundleIdentifiers is required, otherwise the UI in

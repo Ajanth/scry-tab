@@ -25,6 +25,7 @@ class App: ScryTabApplication {
     private static var isVeryFirstSummon = true
     private static var pendingSettingsRoute: SettingsRoute?
     private static var isInitialTourInProgress = false
+    private static var launchIntent: LaunchIntent = .userInitiated
     private static let sentryCrashReporter = SentryCrashReporter.shared
     // periphery:ignore
     static var sparkleDelegate: SparkleDelegate?
@@ -88,7 +89,7 @@ class App: ScryTabApplication {
     static func restart() {
         printStackTrace()
         prepareForShutdown()
-        Process.launchedProcess(launchPath: "/usr/bin/open", arguments: ["-n", Bundle.main.bundlePath])
+        Process.launchedProcess(launchPath: "/usr/bin/open", arguments: ["-n", Bundle.main.bundlePath, "--args", LaunchIntent.silentArgument])
         App.shared.terminate(nil)
     }
 
@@ -266,6 +267,24 @@ class App: ScryTabApplication {
         guard let route = pendingSettingsRoute else { return }
         pendingSettingsRoute = nil
         showSettingsWindow(route: route)
+    }
+
+    /// A hidden menu bar icon needs a reachable Settings window, and a user opening the app is the
+    /// only launch that may surface one: login, internal restart, and Sparkle relaunches are silent.
+    private static func showSettingsAfterUserLaunchIfNeeded() {
+        guard launchIntent == .userInitiated, !Preferences.showMenubarIcon else { return }
+        showSettingsWindow(route: .general)
+    }
+
+    /// Sparkle's relaunch cannot carry launch arguments, so it records a one-shot marker instead.
+    private static func consumePendingSilentLaunch() -> Bool {
+        let defaults = UserDefaults.standard
+        guard defaults.bool(forKey: LaunchIntent.pendingSilentLaunchKey) else { return false }
+        defaults.removeObject(forKey: LaunchIntent.pendingSilentLaunchKey)
+        if !defaults.synchronize() {
+            Logger.error { "Couldn't flush the consumed Sparkle silent-launch marker" }
+        }
+        return true
     }
 
     static func showPermissionsWindow() {
@@ -596,8 +615,12 @@ class App: ScryTabApplication {
         PreferencesEvents.initialize()
         globalKeyboardStateWasConfigured = true
         BenchmarkRunner.startIfNeeded()
+        let hadPendingSettingsRoute = pendingSettingsRoute != nil
         let isShowingInitialTour = showInitialTourIfNeeded()
-        if !isShowingInitialTour { showPendingSettingsWindowIfNeeded() }
+        if !isShowingInitialTour {
+            showPendingSettingsWindowIfNeeded()
+            if !hadPendingSettingsRoute { showSettingsAfterUserLaunchIfNeeded() }
+        }
         #if DEBUG
         QAMenu.shared = QAMenu()
         QAMenu.shared?.orderFront(nil)
@@ -624,6 +647,7 @@ extension App: NSApplicationDelegate {
         #endif
         AXUIElement.setGlobalTimeout()
         Preferences.initialize()
+        App.launchIntent = LaunchIntent.resolve(arguments: CommandLine.arguments, pendingSilentLaunch: App.consumePendingSilentLaunch())
         App.sentryCrashReporter.startIfAllowed(policy: App.crashReportPolicy, dsn: Secrets.sentryDsn)
         BackgroundWork.preStart()
         SystemPermissions.ensurePermissionsAreGranted()

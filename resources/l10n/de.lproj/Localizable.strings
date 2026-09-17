@@ -114,6 +114,7 @@
 "Help improve ScryTab" = "Helfen Sie mit, ScryTab zu verbessern";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Helfen Sie mit, ScryTab zu verbessern, indem Absturzberichte automatisch gesendet werden. Sie können dies später in den Einstellungen ändern.";
 "Hide" = "Ausblenden";
+"Hide menu bar icon" = "Menüleistensymbol ausblenden";
 "Hide Space number labels" = "Space-Nummern ausblenden";
 "Hide status icons" = "Statussymbole ausblenden";
 "Hide windows" = "Fenster ausblenden";
@@ -212,6 +213,7 @@
 "Show Fewer Options" = "Weniger Optionen";
 "Show fullscreen windows" = "Vollbildfenster zeigen";
 "Show hidden windows" = "Ausgeblendete Fenster zeigen";
+"Show menu bar icon" = "Menüleisten-Symbol anzeigen";
 "Show minimized windows" = "Minimierte Fenster zeigen";
 "Show More Options" = "Mehr Optionen";
 "Show on" = "Anzeigen auf";
@@ -264,6 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Was haben Sie erwartet? Was ist passiert? Schritte zum Reproduzieren…";
 "When fullscreen" = "Im Vollbild";
 "When no open window" = "Ohne geöffnetes Fenster";
+"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "Ist es ausgeblendet, öffnen Sie die Einstellungen durch erneutes Starten von ScryTab; ist ScryTab aktiv, genügt auch ⌘,.";
 "Window is fullscreen" = "Fenster ist im Vollbild";
 "Window is minimized" = "Fenster ist minimiert";
 "Window is on every Space" = "Fenster liegt auf jedem Space";
