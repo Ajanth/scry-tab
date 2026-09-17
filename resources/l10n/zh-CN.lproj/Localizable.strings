@@ -266,7 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "你期望怎样？实际如何？复现步骤…";
 "When fullscreen" = "全屏时";
 "When no open window" = "无打开窗口时";
-"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "隐藏后，再次启动 ScryTab，或在 ScryTab 处于活跃状态时按下 ⌘, 键，即可打开设置。";
+"While it is hidden, launch ScryTab again to open Settings." = "隐藏后，再次启动 ScryTab 即可打开设置。";
 "Window is fullscreen" = "窗口处于全屏";
 "Window is minimized" = "窗口已最小化";
 "Window is on every Space" = "窗口位于每个空间";

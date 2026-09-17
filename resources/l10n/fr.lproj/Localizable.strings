@@ -266,7 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Que pensiez-vous obtenir ? Que s’est-il passé ? Étapes pour reproduire…";
 "When fullscreen" = "En plein écran";
 "When no open window" = "Sans fenêtre ouverte";
-"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "Lorsqu’elle est masquée, relancez ScryTab ou, si ScryTab est actif, appuyez sur ⌘, pour ouvrir les Réglages.";
+"While it is hidden, launch ScryTab again to open Settings." = "Lorsqu’elle est masquée, relancez ScryTab pour ouvrir les Réglages.";
 "Window is fullscreen" = "La fenêtre est en plein écran";
 "Window is minimized" = "La fenêtre est réduite";
 "Window is on every Space" = "La fenêtre est sur tous les Spaces";

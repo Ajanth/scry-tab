@@ -266,7 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "What did you expect? What happened? Steps to reproduce…";
 "When fullscreen" = "When fullscreen";
 "When no open window" = "When no open window";
-"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings.";
+"While it is hidden, launch ScryTab again to open Settings." = "While it is hidden, launch ScryTab again to open Settings.";
 "Window is fullscreen" = "Window is fullscreen";
 "Window is minimized" = "Window is minimized";
 "Window is on every Space" = "Window is on every Space";

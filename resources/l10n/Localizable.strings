@@ -803,7 +803,7 @@
 "When no open window" = "When no open window";
 
 /* General tab note explaining how to reach Settings without the menu bar icon */
-"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings.";
+"While it is hidden, launch ScryTab again to open Settings." = "While it is hidden, launch ScryTab again to open Settings.";
 
 /* No comment provided by engineer. */
 "Window is fullscreen" = "Window is fullscreen";
