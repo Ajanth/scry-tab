@@ -63,7 +63,7 @@ class MainMenu {
 
     private static func appMenuItem() -> NSMenuItem {
         let menu = NSMenu(title: "ScryTab")
-        menu.addItem(item("Preferences…", "orderFrontPreferencesPanel:", ","))
+        menu.addItem(item("Preferences…", #selector(App.showSettingsWindow as () -> Void), ",", target: App.self))
         menu.addItem(.separator())
         let servicesItem = NSMenuItem(title: "Services", action: nil, keyEquivalent: "")
         let servicesMenu = NSMenu(title: "Services")
@@ -277,7 +277,11 @@ class MainMenu {
     }
 
     private static func item(_ title: String, _ action: String, _ key: String = "", _ modifiers: NSEvent.ModifierFlags = .command, target: AnyObject? = nil) -> NSMenuItem {
-        let item = NSMenuItem(title: title, action: Selector(action), keyEquivalent: key)
+        return item(title, Selector(action), key, modifiers, target: target)
+    }
+
+    private static func item(_ title: String, _ action: Selector, _ key: String = "", _ modifiers: NSEvent.ModifierFlags = .command, target: AnyObject? = nil) -> NSMenuItem {
+        let item = NSMenuItem(title: title, action: action, keyEquivalent: key)
         item.keyEquivalentModifierMask = key.isEmpty ? [] : modifiers
         item.target = target
         return item

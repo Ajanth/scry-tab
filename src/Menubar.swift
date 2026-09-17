@@ -3,6 +3,7 @@ import Cocoa
 class Menubar {
     static var statusItem: NSStatusItem!
     static var menu: NSMenu!
+    private static var isVisibleObserver: NSKeyValueObservation?
 
     @discardableResult
     static func addMenuItem(_ title: String, _ action: Selector, _ keyEquivalent: String, _ symbolName: String?, _ color: NSColor? = nil, _ target: AnyObject? = nil) -> NSMenuItem {
@@ -33,6 +34,9 @@ class Menubar {
         menu.addItem(NSMenuItem.separator())
         addMenuItem(String(format: NSLocalizedString("Quit %@", comment: "%@ is ScryTab"), App.name), #selector(NSApplication.terminate(_:)), "q", nil) // "xmark.rectangle" is not necessary; macos automatically recognizes Quit
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        // Must precede any `isVisible` write, so the user can Command-drag the icon away and
+        // `observeVisibility` can persist that removal.
+        statusItem.behavior = .removalAllowed
         statusItem.button!.target = self
         statusItem.button!.action = #selector(statusItemOnClick)
         statusItem.button!.sendAction(on: [.leftMouseDown, .rightMouseDown])
@@ -41,6 +45,8 @@ class Menubar {
         // the menubar out at its imageless default size, then invalidates NSStatusBarContentView
         // mid-FBS-scene-update — `_NSDetectedLayoutRecursion`.
         loadAppIcon()
+        applyVisibilityPreference()
+        observeVisibility()
         #if DEBUG
         installQAMenuMiddleClickMonitor()
         #endif
@@ -72,11 +78,31 @@ class Menubar {
         }
     }
 
+    /// The app icon is loaded eagerly in `initialize`; whether it is *shown* is the preference's
+    /// decision, applied by `applyVisibilityPreference`.
     static private func loadAppIcon() {
         guard let button = statusItem.button else { return }
         let image = MenubarStatusIcon.makeImage(from: App.appIcon(for: MenubarStatusIcon.pointSize))
         button.image = image
         button.imageScaling = .scaleProportionallyUpOrDown
-        statusItem.isVisible = true
+    }
+
+    /// Show or hide the live status item without recreating it or its menu, so a hidden icon stays
+    /// usable by Settings and `applicationShouldHandleReopen`.
+    static func applyVisibilityPreference() {
+        guard statusItem != nil else { return }
+        statusItem.isVisible = Preferences.showMenubarIcon
+    }
+
+    /// Native Command-drag removal hides the item outside ScryTab's control; persist it once and
+    /// let the Settings switch follow, without firing the switch's own action.
+    private static func observeVisibility() {
+        isVisibleObserver?.invalidate()
+        isVisibleObserver = statusItem.observe(\.isVisible, options: [.old, .new]) { _, change in
+            guard change.oldValue == true, change.newValue == false else { return }
+            GeneralTab.menuIconShownToggle?.setSilently(.off)
+            guard Preferences.showMenubarIcon else { return }
+            Preferences.set(MenubarVisibilityPreference.key, "false")
+        }
     }
 }

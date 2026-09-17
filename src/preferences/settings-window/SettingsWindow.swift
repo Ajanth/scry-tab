@@ -571,6 +571,10 @@ class SettingsWindow: NSWindow {
             SettingsSearchDescriptor(id: "focus-sets", route: .focusSets, sectionID: "focusSets", title: NSLocalizedString("Focus Sets", comment: ""), keywords: FocusSetSettingsView.searchableStrings),
             SettingsSearchDescriptor(id: "general", route: .general, sectionID: "general", title: NSLocalizedString("General", comment: ""), keywords: [
                 NSLocalizedString("Start at login", comment: ""),
+                NSLocalizedString("Show menu bar icon", comment: "General tab switch title"),
+                // A user who lost the icon searches for "hide icon"; every query token must match
+                // within one keyword string, so the hide form is listed as its own phrase.
+                NSLocalizedString("Hide menu bar icon", comment: "General tab switch title"),
                 NSLocalizedString("Language", comment: ""),
                 NSLocalizedString("Updates policy", comment: ""),
                 NSLocalizedString("Check for updates now…", comment: ""),

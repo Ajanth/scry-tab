@@ -35,6 +35,17 @@ class SparkleDelegate: NSObject, SPUUpdaterDelegate {
         store(.upToDate)
     }
 
+    /// Sparkle relaunches the app without a chance to pass launch arguments, so the next launch is
+    /// marked silent through a one-shot default instead. Suppressing Settings for a manual
+    /// "Install and Relaunch" too is intentional: neither relaunch should surface a window.
+    func updaterWillRelaunchApplication(_ updater: SPUUpdater) {
+        let defaults = UserDefaults.standard
+        defaults.set(true, forKey: LaunchIntent.pendingSilentLaunchKey)
+        if !defaults.synchronize() {
+            Logger.error { "Couldn't flush the Sparkle silent-launch marker; the relaunch may open Settings" }
+        }
+    }
+
     private func store(_ result: UpdateCheckResult) {
         cachedResult = result
         let cb = onNextCheckCompletion

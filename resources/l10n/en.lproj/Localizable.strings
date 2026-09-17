@@ -114,6 +114,7 @@
 "Help improve ScryTab" = "Help improve ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings.";
 "Hide" = "Hide";
+"Hide menu bar icon" = "Hide menu bar icon";
 "Hide Space number labels" = "Hide Space number labels";
 "Hide status icons" = "Hide status icons";
 "Hide windows" = "Hide windows";
@@ -212,6 +213,7 @@
 "Show Fewer Options" = "Show Fewer Options";
 "Show fullscreen windows" = "Show fullscreen windows";
 "Show hidden windows" = "Show hidden windows";
+"Show menu bar icon" = "Show menu bar icon";
 "Show minimized windows" = "Show minimized windows";
 "Show More Options" = "Show More Options";
 "Show on" = "Show on";
@@ -264,6 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "What did you expect? What happened? Steps to reproduce…";
 "When fullscreen" = "When fullscreen";
 "When no open window" = "When no open window";
+"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings.";
 "Window is fullscreen" = "Window is fullscreen";
 "Window is minimized" = "Window is minimized";
 "Window is on every Space" = "Window is on every Space";

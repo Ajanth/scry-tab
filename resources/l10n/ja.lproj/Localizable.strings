@@ -114,6 +114,7 @@
 "Help improve ScryTab" = "ScryTabの改善に協力";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "クラッシュレポートを自動送信してScryTabの改善にご協力ください。あとから設定で変更できます。";
 "Hide" = "非表示";
+"Hide menu bar icon" = "メニューバーのアイコンを隠す";
 "Hide Space number labels" = "Spacesの番号を非表示";
 "Hide status icons" = "ステータスアイコンを隠す";
 "Hide windows" = "ウインドウを非表示";
@@ -212,6 +213,7 @@
 "Show Fewer Options" = "オプションを減らす";
 "Show fullscreen windows" = "フルスクリーンのウインドウを表示";
 "Show hidden windows" = "非表示のウインドウを表示";
+"Show menu bar icon" = "メニューバーのアイコンを表示";
 "Show minimized windows" = "最小化されたウインドウを表示";
 "Show More Options" = "オプションを増やす";
 "Show on" = "表示するディスプレイ";
@@ -264,6 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "期待したこと、実際に起きたこと、再現手順…";
 "When fullscreen" = "フルスクリーン時";
 "When no open window" = "開いているウインドウがないとき";
+"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "非表示のときは、ScryTab をもう一度起動するか、ScryTab がアクティブな状態で ⌘, を押すと設定が開きます。";
 "Window is fullscreen" = "フルスクリーンのウインドウ";
 "Window is minimized" = "最小化されたウインドウ";
 "Window is on every Space" = "すべてのSpaceにあるウインドウ";

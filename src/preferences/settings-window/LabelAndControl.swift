@@ -128,9 +128,15 @@ class LabelAndControl: NSObject {
         return views
     }
 
-    static func makeSwitch(_ rawName: String, extraAction: ActionClosure? = nil) -> Switch {
+    static func makeSwitch(_ rawName: String, accessibilityLabel: String? = nil, extraAction: ActionClosure? = nil) -> Switch {
         let button = Switch(CachedUserDefaults.bool(rawName))
         button.heightAnchor.constraint(greaterThanOrEqualToConstant: DesignSystem.Metrics.standardControlMinHeight).isActive = true
+        // The row title is a sibling label, so the toggle needs its own accessible name. On
+        // macOS 10.15+ the embedded NSSwitch is what takes focus, not the outer control.
+        if let accessibilityLabel {
+            button.setAccessibilityLabel(accessibilityLabel)
+            button.switchButton?.setAccessibilityLabel(accessibilityLabel)
+        }
         _ = setupControl(button, rawName, extraAction: extraAction)
         return button
     }

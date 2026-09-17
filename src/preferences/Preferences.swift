@@ -38,6 +38,7 @@ class Preferences {
             "titleTruncation": TitleTruncationPreference.end.indexAsString,
             "showTitles": ShowTitlesPreference.windowTitle.indexAsString,
             "startAtLogin": "true",
+            MenubarVisibilityPreference.key: MenubarVisibilityPreference.defaultValue,
             "language": LanguagePreference.systemDefault.indexAsString,
             "exceptions": defaultExceptions(),
             "updatePolicy": UpdatePolicyPreference.manual.indexAsString,
@@ -99,6 +100,7 @@ class Preferences {
     static var hideColoredCircles: Bool { CachedUserDefaults.bool("hideColoredCircles") }
     static var hideSpaceNumberLabels: Bool { CachedUserDefaults.bool("hideSpaceNumberLabels") }
     static var hideStatusIcons: Bool { CachedUserDefaults.bool("hideStatusIcons") }
+    static var showMenubarIcon: Bool { CachedUserDefaults.bool(MenubarVisibilityPreference.key) }
     // periphery:ignore
     static var startAtLogin: Bool { CachedUserDefaults.bool("startAtLogin") }
     static var exceptions: [ExceptionEntry] { CachedUserDefaults.json("exceptions", [ExceptionEntry].self) }

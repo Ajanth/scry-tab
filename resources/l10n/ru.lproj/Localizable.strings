@@ -114,6 +114,7 @@
 "Help improve ScryTab" = "Помогите улучшить ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "Помогите улучшить ScryTab, разрешив автоматическую отправку отчётов о сбоях. Позже это можно изменить в настройках.";
 "Hide" = "Скрыть";
+"Hide menu bar icon" = "Скрыть значок в строке меню";
 "Hide Space number labels" = "Скрывать номера Spaces";
 "Hide status icons" = "Скрывать значки состояния";
 "Hide windows" = "Скрывать окна";
@@ -212,6 +213,7 @@
 "Show Fewer Options" = "Меньше параметров";
 "Show fullscreen windows" = "Показывать полноэкранные окна";
 "Show hidden windows" = "Показывать скрытые окна";
+"Show menu bar icon" = "Показывать значок в строке меню";
 "Show minimized windows" = "Показывать свёрнутые окна";
 "Show More Options" = "Больше параметров";
 "Show on" = "Показывать на";
@@ -264,6 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Что ожидали? Что произошло? Шаги для воспроизведения…";
 "When fullscreen" = "В полноэкранном режиме";
 "When no open window" = "Если нет открытых окон";
+"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "Если он скрыт, повторный запуск ScryTab или нажатие ⌘, при активном ScryTab откроет настройки.";
 "Window is fullscreen" = "Окно в полноэкранном режиме";
 "Window is minimized" = "Окно свёрнуто";
 "Window is on every Space" = "Окно на всех Spaces";

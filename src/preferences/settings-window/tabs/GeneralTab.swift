@@ -4,11 +4,17 @@ import Sparkle
 class GeneralTab {
     static var updatesPolicyDropdown: NSPopUpButton?
     static var crashPolicyDropdown: NSPopUpButton?
+    static var menuIconShownToggle: Switch?
     static var policyLock = false
 
     static func initTab() -> NSView {
         let startAtLogin = TableGroupView.Row(leftTitle: NSLocalizedString("Start at login", comment: ""),
             rightViews: [LabelAndControl.makeSwitch("startAtLogin")])
+        let menuIconTitle = NSLocalizedString("Show menu bar icon", comment: "General tab switch title")
+        menuIconShownToggle = LabelAndControl.makeSwitch(MenubarVisibilityPreference.key, accessibilityLabel: menuIconTitle)
+        let menuIcon = TableGroupView.Row(leftTitle: menuIconTitle,
+            subTitle: NSLocalizedString("While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings.", comment: "General tab note explaining how to reach Settings without the menu bar icon"),
+            rightViews: [menuIconShownToggle!])
         let language = TableGroupView.Row(leftTitle: NSLocalizedString("Language", comment: ""),
             rightViews: [LabelAndControl.makeDropdown("language", LanguagePreference.allCases, extraAction: setLanguageCallback)])
         updatesPolicyDropdown = LabelAndControl.makeDropdown("updatePolicy", UpdatePolicyPreference.allCases)
@@ -20,6 +26,7 @@ class GeneralTab {
         let contentWidth = DesignSystemCenteredDetailPage.contentWidth(for: SettingsWindow.contentWidth)
         let table = TableGroupView(width: contentWidth)
         table.addRow(startAtLogin)
+        table.addRow(menuIcon)
         table.addNewTable()
         table.addRow(language)
         table.addNewTable()
@@ -54,11 +61,13 @@ class GeneralTab {
     static func cleanup() {
         updatesPolicyDropdown = nil
         crashPolicyDropdown = nil
+        menuIconShownToggle = nil
     }
 
     static func refreshControlsFromPreferences() {
         updatesPolicyDropdown?.selectItem(at: CachedUserDefaults.intFromMacroPref("updatePolicy", UpdatePolicyPreference.allCases))
         crashPolicyDropdown?.selectItem(at: CachedUserDefaults.intFromMacroPref("crashPolicy", CrashPolicyPreference.allCases))
+        menuIconShownToggle?.setSilently(Preferences.showMenubarIcon ? .on : .off)
     }
 
     @objc static func resetPreferences() {

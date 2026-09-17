@@ -114,6 +114,7 @@
 "Help improve ScryTab" = "协助改进 ScryTab";
 "Help improve ScryTab by automatically sending crash reports. You can change this later in Settings." = "自动发送崩溃报告，协助改进 ScryTab。之后可在“设置”中更改。";
 "Hide" = "隐藏";
+"Hide menu bar icon" = "隐藏菜单栏图标";
 "Hide Space number labels" = "隐藏空间编号标签";
 "Hide status icons" = "隐藏状态图标";
 "Hide windows" = "隐藏窗口";
@@ -212,6 +213,7 @@
 "Show Fewer Options" = "显示较少选项";
 "Show fullscreen windows" = "显示全屏窗口";
 "Show hidden windows" = "显示隐藏窗口";
+"Show menu bar icon" = "显示菜单栏图标";
 "Show minimized windows" = "显示最小化窗口";
 "Show More Options" = "显示更多选项";
 "Show on" = "显示位置";
@@ -264,6 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "你期望怎样？实际如何？复现步骤…";
 "When fullscreen" = "全屏时";
 "When no open window" = "无打开窗口时";
+"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "隐藏后，再次启动 ScryTab，或在 ScryTab 处于活跃状态时按下 ⌘, 键，即可打开设置。";
 "Window is fullscreen" = "窗口处于全屏";
 "Window is minimized" = "窗口已最小化";
 "Window is on every Space" = "窗口位于每个空间";

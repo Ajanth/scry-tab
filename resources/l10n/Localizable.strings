@@ -346,6 +346,9 @@
 /* No comment provided by engineer. */
 "Hide" = "Hide";
 
+/* General tab switch title */
+"Hide menu bar icon" = "Hide menu bar icon";
+
 /* No comment provided by engineer. */
 "Hide Space number labels" = "Hide Space number labels";
 
@@ -640,6 +643,9 @@
 /* No comment provided by engineer. */
 "Show hidden windows" = "Show hidden windows";
 
+/* General tab switch title */
+"Show menu bar icon" = "Show menu bar icon";
+
 /* No comment provided by engineer. */
 "Show minimized windows" = "Show minimized windows";
 
@@ -795,6 +801,9 @@
 
 /* No comment provided by engineer. */
 "When no open window" = "When no open window";
+
+/* General tab note explaining how to reach Settings without the menu bar icon */
+"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings.";
 
 /* No comment provided by engineer. */
 "Window is fullscreen" = "Window is fullscreen";
