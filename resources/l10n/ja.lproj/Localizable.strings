@@ -266,7 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "期待したこと、実際に起きたこと、再現手順…";
 "When fullscreen" = "フルスクリーン時";
 "When no open window" = "開いているウインドウがないとき";
-"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "非表示のときは、ScryTab をもう一度起動するか、ScryTab がアクティブな状態で ⌘, を押すと設定が開きます。";
+"While it is hidden, launch ScryTab again to open Settings." = "非表示のときは、ScryTab をもう一度起動すると設定が開きます。";
 "Window is fullscreen" = "フルスクリーンのウインドウ";
 "Window is minimized" = "最小化されたウインドウ";
 "Window is on every Space" = "すべてのSpaceにあるウインドウ";

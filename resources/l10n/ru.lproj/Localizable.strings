@@ -266,7 +266,7 @@
 "What did you expect? What happened? Steps to reproduce…" = "Что ожидали? Что произошло? Шаги для воспроизведения…";
 "When fullscreen" = "В полноэкранном режиме";
 "When no open window" = "Если нет открытых окон";
-"While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings." = "Если он скрыт, повторный запуск ScryTab или нажатие ⌘, при активном ScryTab откроет настройки.";
+"While it is hidden, launch ScryTab again to open Settings." = "Если он скрыт, запустите ScryTab снова, чтобы открыть настройки.";
 "Window is fullscreen" = "Окно в полноэкранном режиме";
 "Window is minimized" = "Окно свёрнуто";
 "Window is on every Space" = "Окно на всех Spaces";

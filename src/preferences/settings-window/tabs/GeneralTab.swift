@@ -13,7 +13,7 @@ class GeneralTab {
         let menuIconTitle = NSLocalizedString("Show menu bar icon", comment: "General tab switch title")
         menuIconShownToggle = LabelAndControl.makeSwitch(MenubarVisibilityPreference.key, accessibilityLabel: menuIconTitle)
         let menuIcon = TableGroupView.Row(leftTitle: menuIconTitle,
-            subTitle: NSLocalizedString("While it is hidden, launching ScryTab again or pressing ⌘, while ScryTab is active opens Settings.", comment: "General tab note explaining how to reach Settings without the menu bar icon"),
+            subTitle: NSLocalizedString("While it is hidden, launch ScryTab again to open Settings.", comment: "General tab note explaining how to reach Settings without the menu bar icon"),
             rightViews: [menuIconShownToggle!])
         let language = TableGroupView.Row(leftTitle: NSLocalizedString("Language", comment: ""),
             rightViews: [LabelAndControl.makeDropdown("language", LanguagePreference.allCases, extraAction: setLanguageCallback)])

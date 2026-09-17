@@ -23,7 +23,7 @@ class Menubar {
         menu.title = App.name // perf: prevent going through expensive code-path within appkit
         addMenuItem(NSLocalizedString("Show", comment: "Menubar option"), #selector(App.showUiFromShortcut0), "", "eye", nil, App.self)
         menu.addItem(NSMenuItem.separator())
-        addMenuItem(NSLocalizedString("Settings…", comment: "Menubar option"), #selector(App.showSettingsWindow as () -> Void), ",", "gear", nil, App.self)
+        addMenuItem(NSLocalizedString("Settings…", comment: "Menubar option"), #selector(App.showSettingsWindow as () -> Void), "", "gear", nil, App.self)
         addMenuItem(NSLocalizedString("Take ScryTab Tour…", comment: "Menubar option"), #selector(App.showOnboardingTour), "", "sparkles", nil, App.self)
         addMenuItem(NSLocalizedString("Check for updates…", comment: "Menubar option"), #selector(App.checkForUpdatesNow), "", "checkmark.arrow.trianglehead.clockwise", nil, App.self)
         addMenuItem(NSLocalizedString("Check permissions…", comment: "Menubar option"), #selector(App.checkPermissions), "", "hand.raised", nil, App.self)
