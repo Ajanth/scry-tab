@@ -5,23 +5,25 @@
     <language>en</language>
 
     <item>
-      <title>Version 0.3.0</title>
-      <pubDate>Sun, 16 Aug 2026 08:38:04 +0200</pubDate>
+      <title>Version 0.4.0</title>
+      <pubDate>Sun, 20 Sep 2026 15:29:12 +0200</pubDate>
       <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
       <description><![CDATA[
         <ul>
-          <li>Add mergedapplicationoptions to.</li>
-          <li>Improve application fetching and display in focus sets.</li>
+          <li>Make the menu bar icon optional.</li>
+          <li>Reach Settings by relaunching instead of ⌘,.</li>
         </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.3.0">Full release notes</a></p>
+        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.4.0">Full release notes</a></p>
       ]]></description>
       <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.3.0/ScryTab-0.3.0.zip"
-        sparkle:version="0.3.0"
-        sparkle:shortVersionString="0.3.0"
-        sparkle:edSignature="VPSnnKo98rjihnnTTxh9CckdGvvQlN5p4xSfpefWxU6gOGVJR44dlMn5GkbIaCtA5EnUOyTGu4TpycEm29YGDA==" length="6145772"
+        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.4.0/ScryTab-0.4.0.zip"
+        sparkle:version="0.4.0"
+        sparkle:shortVersionString="0.4.0"
+        sparkle:edSignature="HaDpGC90HqNC9a2QwPNoXpBZfpzjF3M2hf7jGMgV+wnv+Po4cVHOQINzxIBhGQaQ6WDY9UMVVjqirit1g8LTBA==" length="6151166"
         type="application/octet-stream"/>
     </item>
+
+
 
 
 

@@ -1,3 +1,15 @@
+# [0.4.0](https://github.com/Ajanth/scry-tab/compare/v0.3.0...v0.4.0) (2026-09-20)
+
+
+### Bug Fixes
+
+* **menubar:** reach Settings by relaunching instead of ⌘, ([2023272](https://github.com/Ajanth/scry-tab/commit/2023272))
+
+
+### Features
+
+* **menubar:** make the menu bar icon optional ([ef9f372](https://github.com/Ajanth/scry-tab/commit/ef9f372))
+
 # [0.3.0](https://github.com/Ajanth/scry-tab/compare/v0.2.1...v0.3.0) (2026-08-16)
 
 
