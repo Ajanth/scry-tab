@@ -13,7 +13,7 @@ set -euo pipefail
 
 repo="Ajanth/scrytab-cms"
 version="$(cat "$VERSION_FILE")"
-releaseRoot="https://github.com/Ajanth/scrytab-public/releases/download/v$version"
+releaseRoot="https://github.com/Ajanth/scry-tab/releases/download/v$version"
 manifest="$(printf '{\n  \"version\": \"%s\",\n  \"downloadUrl\": \"%s/ScryTab-%s.dmg\",\n  \"sourceUrl\": \"%s/ScryTab-%s-source.tar.gz\"\n}' "$version" "$releaseRoot" "$version" "$releaseRoot" "$version")"
 
 publish() {

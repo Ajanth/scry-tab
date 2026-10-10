@@ -3,7 +3,7 @@
 ## Summary
 
 `FeedbackGitHubComposer` builds public GitHub issue-composer URLs for ScryTab feedback.
-The private app repository stays closed; users continue on `scrytab-public` with YAML issue forms.
+Feedback uses the canonical public `scry-tab` repository with YAML issue forms.
 Title and details may be prefilled via query parameters. Diagnostic/debug profiles are never placed in the URL.
 
 ## Test scenarios

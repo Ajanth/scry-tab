@@ -6,6 +6,14 @@ A macOS window switcher.
 
 </div>
 
+[Download ScryTab](https://github.com/Ajanth/scry-tab/releases/latest) ·
+[Website](https://scrytab.pages.dev/) ·
+[Source](https://github.com/Ajanth/scry-tab) ·
+[Issues](https://github.com/Ajanth/scry-tab/issues)
+
+This is the canonical source and release repository. See [contributing](docs/contributing.md)
+for the maintainer-led contribution policy.
+
 ## Licence
 
 ScryTab is free software, released under the [GNU General Public License v3.0](LICENCE.md).
@@ -23,8 +31,9 @@ terms of the GPL-3.0.
 ### Source code
 
 The complete Corresponding Source for every released binary is published alongside that
-release. Development happens in a private repository; that does not restrict any right the
-GPL-3.0 grants you over the binaries and source you receive.
+release at [GitHub Releases](https://github.com/Ajanth/scry-tab/releases). The full development
+history is available in this repository. The GPL-3.0 grants you the right to study, modify,
+and redistribute the binaries and source you receive.
 
 ### Name and logo
 

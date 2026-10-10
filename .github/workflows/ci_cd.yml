@@ -24,6 +24,11 @@ jobs:
     environment: production
     timeout-minutes: 120
     steps:
+      - name: Require public release repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_REPOSITORY: ${{ github.repository }}
+        run: test "$(gh api "repos/$RELEASE_REPOSITORY" --jq '.visibility')" = public
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
@@ -72,13 +77,10 @@ jobs:
       - run: scripts/package_source_tarball.sh
       - id: set_release_info
         run: scripts/extract_latest_changelog.sh
-      # Releases are published to the public repo: this one is private, so its release assets
-      # are unreachable for users, and GPL-3.0 §6(d) requires the source archive to be as
-      # downloadable as the binary it corresponds to.
+      # Publish binaries and their GPL Corresponding Source to this canonical repository.
       - uses: softprops/action-gh-release@v3
         with:
-          repository: Ajanth/scrytab-public
-          token: ${{ secrets.PUBLIC_REPO_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ steps.set_release_info.outputs.tag_name }}
           body: ${{ steps.set_release_info.outputs.body }}
           files: |

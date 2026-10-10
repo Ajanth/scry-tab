@@ -4,17 +4,11 @@ set -euo pipefail
 
 github_api_request() {
   local url="$1"
-  local repo="${2:-Ajanth/scry-tab}"
+  local repo="Ajanth/scry-tab"
   curl -s \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: token $GITHUB_TOKEN" \
     "https://api.github.com/repos/$repo$url"
-}
-
-# Releases live in the public repo, so download counts must be read from there; this repo is
-# private and has no release assets to count.
-public_repo_api_request() {
-  github_api_request "$1" "Ajanth/scrytab-public"
 }
 
 unicode_sort() {
@@ -48,7 +42,7 @@ get_total_downloads() {
   local page=1
   while true; do
     local response
-    response=$(public_repo_api_request "/releases?per_page=100&page=$page")
+    response=$(github_api_request "/releases?per_page=100&page=$page")
     # Safely sum all download counts, even if assets are empty
     local count
     count=$(echo "$response" | jq '[.[]?.assets[]?.download_count // 0] | add // 0')
@@ -63,7 +57,7 @@ get_total_downloads() {
 }
 
 get_stars() {
-  public_repo_api_request "" | jq '.stargazers_count'
+  github_api_request "" | jq '.stargazers_count'
 }
 
 format_number() {

@@ -7,7 +7,7 @@ enum FeedbackKind: Hashable {
 
 /// Builds GitHub issue-composer URLs for the public feedback repository.
 enum FeedbackGitHubComposer {
-    static let repositoryURLString = "https://github.com/Ajanth/scrytab-public"
+    static let repositoryURLString = "https://github.com/Ajanth/scry-tab"
     static let detailsFieldID = "details"
     /// Keep prefills inside common browser URL limits; drop details before failing entirely.
     static let maxURLLength = 2048

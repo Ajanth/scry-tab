@@ -84,6 +84,7 @@ for forbidden in \
   AGENTS.md \
   CLAUDE.md \
   docs/RELEASE_BLOCKERS.md \
+  docs/PUBLIC_REPOSITORY_MIGRATION.md \
   docs/luminare-appkit-ui-migration-plan.md \
   docs/appcenter-to-sentry-migration-plan.md \
   docs/pro-gating-restoration.md \
