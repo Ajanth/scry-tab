@@ -13,10 +13,10 @@
           <li>Make the menu bar icon optional.</li>
           <li>Reach Settings by relaunching instead of ⌘,.</li>
         </ul>
-        <p><a href="https://github.com/Ajanth/scrytab-public/releases/tag/v0.4.0">Full release notes</a></p>
+        <p><a href="https://github.com/Ajanth/scry-tab/releases/tag/v0.4.0">Full release notes</a></p>
       ]]></description>
       <enclosure
-        url="https://github.com/Ajanth/scrytab-public/releases/download/v0.4.0/ScryTab-0.4.0.zip"
+        url="https://github.com/Ajanth/scry-tab/releases/download/v0.4.0/ScryTab-0.4.0.zip"
         sparkle:version="0.4.0"
         sparkle:shortVersionString="0.4.0"
         sparkle:edSignature="HaDpGC90HqNC9a2QwPNoXpBZfpzjF3M2hf7jGMgV+wnv+Po4cVHOQINzxIBhGQaQ6WDY9UMVVjqirit1g8LTBA==" length="6151166"

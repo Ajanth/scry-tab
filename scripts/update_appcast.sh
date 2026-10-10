@@ -34,7 +34,7 @@ zipName="$APP_NAME-$version.zip"
 edSignatureAndLength=$(printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | vendor/Sparkle/bin/sign_update --ed-key-file - "$XCODE_BUILD_PATH/$zipName")
 releaseNotes="$(release_notes_html)"
 
-# Only the current release remains public. Drop stale feed items before inserting the newly
+# Advertise only the latest release. Drop stale feed items before inserting the newly
 # signed enclosure so Sparkle and the website never advertise withdrawn downloads.
 sed -i '' -e '/<item>/,/<\/item>/d' appcast.xml
 
@@ -47,10 +47,10 @@ echo "
         <ul>
 $releaseNotes
         </ul>
-        <p><a href=\"https://github.com/Ajanth/scrytab-public/releases/tag/v$version\">Full release notes</a></p>
+        <p><a href=\"https://github.com/Ajanth/scry-tab/releases/tag/v$version\">Full release notes</a></p>
       ]]></description>
       <enclosure
-        url=\"https://github.com/Ajanth/scrytab-public/releases/download/v$version/$zipName\"
+        url=\"https://github.com/Ajanth/scry-tab/releases/download/v$version/$zipName\"
         sparkle:version=\"$version\"
         sparkle:shortVersionString=\"$version\"
         $edSignatureAndLength

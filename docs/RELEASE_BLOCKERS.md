@@ -316,6 +316,42 @@ xcbeautify notice.
 
 ---
 
+## 🟡 B10 — Canonical public repository cutover is prepared
+
+`Ajanth/scry-tab` is the intended canonical public source, release, and issue repository.
+The website stays in the separate `Ajanth/scrytab-cms` repository at
+<https://scrytab.pages.dev/>. Its Cloudflare deployment and cross-repository publication
+remain in place.
+
+Preparation on 2026-10-10:
+
+- Audited all remote branches, tags, and 34 pull-request heads: 267 reachable commits,
+  4,943 objects, and 2,902 blobs. Gitleaks 8.30.1 reported no credential leaks; a separate
+  full-blob pass found no private-key headers. History retains maintainer email metadata,
+  personal development paths, release operations notes, and retired fixed local-signing
+  passwords (rotation evidence remains in D11). Review this exposure before visibility changes.
+- Set the repository description and homepage. Restricted the `production` environment to
+  the `main` branch using a custom deployment branch policy. Release dispatch remains
+  manual-only on `main`; the prepared workflow also refuses to release while the repo is private.
+- Recreated only `v0.3.0` and `v0.4.0` in `scry-tab`, with identical notes and all six asset
+  SHA-256 digests; `v0.4.0` is latest. Both source archives exactly match the existing
+  canonical tags. The legacy repo's tags point to its placeholder commit instead of source;
+  no existing tag was moved. Withdrawn releases were not recreated.
+- Prepared app automation, feedback forms, documentation, and the separate website's
+  manifest, appcast, source, and issue links for coordinated PRs. New releases use the local
+  `GITHUB_TOKEN`; `WEBSITE_DISPATCH_TOKEN` retains write access to `scrytab-cms`.
+
+The repository remains private during PR review; the live website continues to use the
+working legacy assets. Merge the app PR, make the audited repository public, verify anonymous
+asset access, and then merge the site PR so its deployment cannot advertise private downloads.
+Keep the old assets available throughout; archive `scrytab-public` and retire
+`PUBLIC_REPO_TOKEN` only after the live cutover checks pass. The rollout has a one-hour maximum
+for any download outage and should require none. See
+[the migration record](PUBLIC_REPOSITORY_MIGRATION.md) for evidence, commands, and rollback.
+B5 and B6 remain open until their manual runtime checks are completed.
+
+---
+
 ## First release: dry run
 
 The `v0.0.2` dry run exercised the pipeline with no announcement and no users, then was withdrawn.
@@ -327,8 +363,9 @@ Repeat the publication, clean-install, and update steps with corrected future re
    - `ScryTab-<version>.dmg` — signed, notarized, stapled
    - `ScryTab-<version>.zip` — what Sparkle downloads
    - `ScryTab-<version>-source.tar.gz` — GPL Corresponding Source
-3. ✅ Current `v0.4.0` has all three assets attached to `Ajanth/scrytab-public`; `v0.3.0` remains
-   available as the previous public release, and all withdrawn release asset URLs return 404.
+3. ✅ Current `v0.4.0` and previous `v0.3.0` have all three assets copied into `Ajanth/scry-tab`
+   with verified digests (B10). Legacy public URLs stay available pending cutover; withdrawn
+   releases remain withdrawn.
 4. ✅ `scrytab-cms` serves the `v0.4.0` release manifest and matching single-item Sparkle feed;
    landing and source-page links resolve to public assets.
 5. ⬜ Install the corrected DMG on a clean Mac and work through
@@ -355,9 +392,9 @@ Recorded so it is not re-litigated or accidentally reverted.
   `docs/contributors.md` has a frozen `## Built AltTab` section that
   `scripts/update_readme_and_website.sh` must never overwrite.
 - **D2 — Releases moved to public URLs** (`659f5c7`). Everything pointed at the private repo and
-  would have 404'd. Releases now publish to `Ajanth/scrytab-public`; the appcast enclosure and
-  release notes follow; `update_website.sh` pushes both the signed appcast and website release
-  manifest into `scrytab-cms`.
+  would have 404'd. Releases originally published to `Ajanth/scrytab-public`; B10 moves
+  publication to the canonical `Ajanth/scry-tab` repository. The appcast enclosure and release
+  notes follow; `update_website.sh` pushes the signed feed and manifest into `scrytab-cms`.
 - **D3 — Uninstall** (`98526a3`). Deleting the app orphaned
   `~/Library/LaunchAgents/com.perpro.scry-tab.plist`. `UninstallPlan` resolves the removal set;
   `Uninstaller` clears both defaults suites before trashing their files.
@@ -373,9 +410,10 @@ Recorded so it is not re-litigated or accidentally reverted.
   peer download button.
 - **D7 — `scrytab-public` metadata.** Description, homepage, README rewritten; GPL-3.0 added and
   detected by GitHub.
-- **D8 — CI secrets.** `SPARKLE_ED_PRIVATE_KEY`, `PUBLIC_REPO_TOKEN`, `WEBSITE_DISPATCH_TOKEN`
-  are set. `PUBLIC_REPO_TOKEN` needs `contents: write` on `scrytab-public`;
-  `WEBSITE_DISPATCH_TOKEN` needs `contents: write` on `scrytab-cms`.
+- **D8 — CI secrets.** `SPARKLE_ED_PRIVATE_KEY` and `WEBSITE_DISPATCH_TOKEN` are set.
+  Canonical publication uses `GITHUB_TOKEN` with `contents: write`; the legacy
+  `PUBLIC_REPO_TOKEN` can be retired after B10 cutover. `WEBSITE_DISPATCH_TOKEN` still needs
+  `contents: write` on `scrytab-cms`.
 - **D9 — `AXCallScheduler` data race.** `queueForPid` read `unresponsivePids` without holding
   `lock`, while `attemptBlock` inserts/removes it from the AX worker queues and
   `Applications.removeUnresponsivePid` removes it on app teardown. An unsynchronized `Set` read

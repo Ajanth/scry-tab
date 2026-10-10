@@ -1,0 +1,41 @@
+name: Bug report
+description: Report a problem with the official ScryTab binary
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve ScryTab. Issues here are public.
+        Prefer the in-app **Send feedback** form when possible.
+        Do not paste private keys, passwords, or other secrets.
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: What did you expect? What happened? Include steps to reproduce when you can.
+      placeholder: |
+        What I expected:
+        What happened:
+        Steps to reproduce:
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: input
+    id: scrytab-version
+    attributes:
+      label: ScryTab version
+      placeholder: e.g. 0.0.1
+  - type: input
+    id: macos-version
+    attributes:
+      label: macOS version
+      placeholder: e.g. macOS 15.5
+  - type: textarea
+    id: environment
+    attributes:
+      label: Other environment notes
+      description: Optional. External keyboard, multiple monitors, related apps, etc. Do not paste a full debug profile unless you intend to share it publicly.
+      placeholder: Optional

@@ -5,7 +5,7 @@ set -euo pipefail
 version="${1:-}"
 version="${version#v}"
 tag="v$version"
-releaseRepo="Ajanth/scrytab-public"
+releaseRepo="Ajanth/scry-tab"
 appName="ScryTab"
 bundleID="com.perpro.scry-tab"
 teamID="8M242ZY4BY"

@@ -5,6 +5,7 @@
 /AGENTS.md export-ignore
 /CLAUDE.md export-ignore
 /docs/RELEASE_BLOCKERS.md export-ignore
+/docs/PUBLIC_REPOSITORY_MIGRATION.md export-ignore
 /docs/*-migration-plan.md export-ignore
 /docs/pro-gating-restoration.md export-ignore
 /mac-app-store-publishing.md export-ignore

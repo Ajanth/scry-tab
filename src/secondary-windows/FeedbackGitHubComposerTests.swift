@@ -12,7 +12,7 @@ final class FeedbackGitHubComposerTests: XCTestCase {
     func testIssuesURLPointsAtPublicRepo() {
         XCTAssertEqual(
             FeedbackGitHubComposer.issuesURLString(),
-            "https://github.com/Ajanth/scrytab-public/issues")
+            "https://github.com/Ajanth/scry-tab/issues")
     }
 
     func testComposerURLPrefillsTitleAndDetails() {
@@ -22,7 +22,7 @@ final class FeedbackGitHubComposerTests: XCTestCase {
             details: " Steps:\n1. Open app\n2. Switch ")
         let components = URLComponents(url: url!, resolvingAgainstBaseURL: false)
         let items = Dictionary(uniqueKeysWithValues: (components?.queryItems ?? []).map { ($0.name, $0.value ?? "") })
-        XCTAssertEqual(components?.path, "/Ajanth/scrytab-public/issues/new")
+        XCTAssertEqual(components?.path, "/Ajanth/scry-tab/issues/new")
         XCTAssertEqual(items["template"], "bug-report.yml")
         XCTAssertEqual(items["title"], "Window focus breaks")
         XCTAssertEqual(items["details"], "Steps:\n1. Open app\n2. Switch")

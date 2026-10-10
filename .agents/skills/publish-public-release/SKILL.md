@@ -18,13 +18,13 @@ REQUIRED: Use `wolf-skills/verification-before-completion`.
 ## Recipe
 
 1. Inspect `git status --short --branch`, the complete diff, current branch, remotes, and recent tags. Fetch `origin` and require `main` with no upstream divergence or unrelated changes.
-2. Confirm GitHub authentication, the `scry-tab-release` runner is online and idle, and no release run is active.
+2. Confirm `Ajanth/scry-tab` is public, the `production` environment permits only the `main` branch, GitHub authentication, the `scry-tab-release` runner is online and idle, and no release run is active.
 3. Run every repository check required by the changed files. For Swift/AppKit changes, use the mandatory development/review skills, run focused tests, copy and run `ai/build.sh` commands directly, then run the Release test suite. Run formatting checks, `git diff --check`, and review the final diff.
 4. Stage only intended files, run `scripts/ensure_generated_files_are_up_to_date.sh` against that staged state, inspect the staged diff, then commit with a release-producing conventional subject (`fix:`, `feat:`, or a breaking change). Keep the commit local.
 5. Dry-run semantic-release without writing `VERSION.txt`. Require a non-empty next version, explain the release type from conventional commits, and require that the predicted public tag does not exist.
 6. Push `main` and verify local `HEAD` equals `origin/main`.
 7. Dispatch `gh workflow run ci_cd.yml --ref main`. Capture the new run ID and watch it to completion with `gh run watch <id> --exit-status`. Report meaningful phase changes during the run.
-8. On failure, stop. Inspect the failed step, signing cleanup, tags, private release commit, public release assets, and live website state. Never blindly rerun a partially published workflow.
+8. On failure, stop. Inspect the failed step, signing cleanup, tags, release commit, public release assets, and live website state. Never blindly rerun a partially published workflow.
 9. On success, fetch and fast-forward to semantic-release's `chore(release)` commit. Resolve the published version from `VERSION.txt` and run `scripts/verify_public_release.sh <version>` from this skill directory.
 10. Record new release evidence in `docs/RELEASE_BLOCKERS.md` when the repository uses that record for current-version/run evidence. Commit and push the documentation separately, then verify the release tag still points to the semantic-release commit.
 
@@ -33,7 +33,7 @@ REQUIRED: Use `wolf-skills/verification-before-completion`.
 Require all of these before claiming publication:
 
 - workflow conclusion `success`, including signing-material cleanup;
-- private `v<version>` tag and semantic-release commit;
+- canonical `v<version>` tag and semantic-release commit;
 - public non-draft release with exactly DMG, Sparkle ZIP, and Corresponding Source;
 - asset digests, strict signatures, stable Team/bundle identifiers, Gatekeeper, and staple validation;
 - live manifest/appcast version, URLs, enclosure length, and EdDSA signature;

@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest a change or improvement for ScryTab
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the suggestion. Issues here are public.
+        Prefer the in-app **Send feedback** form when possible.
+        Code contributions are not accepted.
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: What problem are you trying to solve, and what change would help?
+      placeholder: |
+        Problem:
+        Suggested change:
+        Alternatives considered:
+    validations:
+      required: true

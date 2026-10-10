@@ -4,8 +4,9 @@ ScryTab is free software licensed under the GPL-3.0. Corresponding Source for ev
 binary release is available from https://scrytab.pages.dev/source and may be studied, modified,
 and redistributed under the licence.
 
-The development repository is maintained privately and does not accept unsolicited pull requests
-or patches. Feedback is welcome through the in-app feedback form or official channels.
+The public repository is maintainer-led and does not accept unsolicited pull requests or
+patches. Feedback is welcome through the in-app feedback form or the
+[issue tracker](https://github.com/Ajanth/scry-tab/issues).
 
 The notes below document how the project is built and maintained.
 
