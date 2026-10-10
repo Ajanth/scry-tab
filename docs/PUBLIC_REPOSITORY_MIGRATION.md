@@ -3,7 +3,7 @@
 Status on 2026-10-10: cutover complete. `scry-tab` is public, both PRs are merged,
 the existing Cloudflare site uses canonical release/source/issue links, and the legacy
 release mirror is archived with its assets preserved. No downtime was observed.
-Release readiness is tracked in [RELEASE_BLOCKERS.md](RELEASE_BLOCKERS.md), B10.
+Release readiness is tracked in [RELEASE_BLOCKERS.md](RELEASE_BLOCKERS.md), B11.
 
 `Ajanth/scry-tab` is the public source, release, and issue repository.
 `Ajanth/scrytab-cms` continues deploying to <https://scrytab.pages.dev/>. Keep its
@@ -130,7 +130,7 @@ repository, provide a link to its issue tracker, and archive it with
 binary feedback links continue to name the legacy tracker until users install a future
 release; its archived issues are read-only. Retire `PUBLIC_REPO_TOKEN` from its existing
 secret scope only after the app workflow is merged and legacy publication is no longer
-needed. Keep `WEBSITE_DISPATCH_TOKEN`. Update B10 in the same commit that records completion.
+needed. Keep `WEBSITE_DISPATCH_TOKEN`. Update B11 in the same commit that records completion.
 
 ## Verification before PR creation
 

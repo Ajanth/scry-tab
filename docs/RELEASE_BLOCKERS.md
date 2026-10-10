@@ -57,7 +57,7 @@ Alternatives remain available if release frequency grows:
 | Option | Notes |
 | --- | --- |
 | [Tart](https://tart.run) macOS VM + ephemeral runner | Stronger host isolation, but the Mac currently has only about 20 GB free; reserve roughly 100–150 GB before adding macOS, Xcode, a VM clone, and build output. |
-| GitHub-hosted macOS runners | The repository is now public (B10), so hosted runners are available if a runner migration is desired. |
+| GitHub-hosted macOS runners | The repository is now public (B11), so hosted runners are available if a runner migration is desired. |
 
 OrbStack runs Convobee's Linux service containers, while its GitHub runner listeners are native
 macOS processes. A Linux runner container cannot execute Xcode, codesign, or Apple's notarization
@@ -316,7 +316,7 @@ xcbeautify notice.
 
 ---
 
-## ✅ B10 — Canonical public repository cutover is complete
+## ✅ B11 — Canonical public repository cutover is complete
 
 `Ajanth/scry-tab` is the canonical public source, release, and issue repository.
 The website stays in the separate `Ajanth/scrytab-cms` repository at
@@ -372,7 +372,7 @@ Repeat the publication, clean-install, and update steps with corrected future re
    - `ScryTab-<version>.zip` — what Sparkle downloads
    - `ScryTab-<version>-source.tar.gz` — GPL Corresponding Source
 3. ✅ Current `v0.4.0` and previous `v0.3.0` have all three assets publicly available in
-   `Ajanth/scry-tab` with verified digests (B10). Legacy public URLs stay available from the
+   `Ajanth/scry-tab` with verified digests (B11). Legacy public URLs stay available from the
    archived mirror; withdrawn releases remain withdrawn.
 4. ✅ `scrytab-cms` serves the `v0.4.0` release manifest and matching single-item Sparkle feed;
    landing and source-page links resolve to public assets.
@@ -400,7 +400,7 @@ Recorded so it is not re-litigated or accidentally reverted.
   `docs/contributors.md` has a frozen `## Built AltTab` section that
   `scripts/update_readme_and_website.sh` must never overwrite.
 - **D2 — Releases moved to public URLs** (`659f5c7`). Everything pointed at the private repo and
-  would have 404'd. Releases originally published to `Ajanth/scrytab-public`; B10 moves
+  would have 404'd. Releases originally published to `Ajanth/scrytab-public`; B11 moves
   publication to the canonical `Ajanth/scry-tab` repository. The appcast enclosure and release
   notes follow; `update_website.sh` pushes the signed feed and manifest into `scrytab-cms`.
 - **D3 — Uninstall** (`98526a3`). Deleting the app orphaned
@@ -420,7 +420,7 @@ Recorded so it is not re-litigated or accidentally reverted.
   detected by GitHub.
 - **D8 — CI secrets.** `SPARKLE_ED_PRIVATE_KEY` and `WEBSITE_DISPATCH_TOKEN` are set.
   Canonical publication uses `GITHUB_TOKEN` with `contents: write`; the legacy
-  `PUBLIC_REPO_TOKEN` was deleted after B10 cutover. `WEBSITE_DISPATCH_TOKEN` still needs
+  `PUBLIC_REPO_TOKEN` was deleted after B11 cutover. `WEBSITE_DISPATCH_TOKEN` still needs
   `contents: write` on `scrytab-cms`.
 - **D9 — `AXCallScheduler` data race.** `queueForPid` read `unresponsivePids` without holding
   `lock`, while `attemptBlock` inserts/removes it from the AX worker queues and
