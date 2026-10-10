@@ -1,10 +1,11 @@
 # Canonical public repository migration
 
-Status on 2026-10-10: releases copied and coordinated PRs prepared. `scry-tab` is
-still private. Website links, repository visibility, and legacy archival await cutover.
+Status on 2026-10-10: cutover complete. `scry-tab` is public, both PRs are merged,
+the existing Cloudflare site uses canonical release/source/issue links, and the legacy
+release mirror is archived with its assets preserved. No downtime was observed.
 Release readiness is tracked in [RELEASE_BLOCKERS.md](RELEASE_BLOCKERS.md), B10.
 
-`Ajanth/scry-tab` becomes the public source, release, and issue repository.
+`Ajanth/scry-tab` is the public source, release, and issue repository.
 `Ajanth/scrytab-cms` continues deploying to <https://scrytab.pages.dev/>. Keep its
 Cloudflare project, domain, analytics, and cross-repository publication token.
 
@@ -31,8 +32,9 @@ Exposure that remains in history:
   in repository history. Export exclusions do not conceal Git history.
 
 This audit does not establish that every unrecognized credential format is absent.
-Visibility changes require accepting the listed history exposure. Removing a file in a
-PR would leave historical copies reachable; no history or release tags were rewritten.
+The maintainer explicitly accepted the listed history exposure before cutover on
+2026-10-10. Removing a file in a PR would leave historical copies reachable; no history
+or release tags were rewritten.
 
 The current Release and Notarization status workflows use `workflow_dispatch`, a
 `refs/heads/main` job condition, and `environment: production`. Release has
@@ -78,6 +80,27 @@ Every archived source entry, file byte, mode, and symlink target was compared ag
 | ScryTab-0.4.0-source.tar.gz | `7c2de7a06ab016f8111af106652b923814ef6953b9cbc79c34541ed535b84bdf` |
 
 ## Phase 4: cutover, availability, and rollback
+
+Completed execution:
+
+- App PR [#35](https://github.com/Ajanth/scry-tab/pull/35) merged at 16:27 CEST as
+  `b044a48ee389b117f6c99e9e17500f3861ca10cd`. The repository was then made public;
+  all six assets downloaded without authentication and matched the hashes above.
+- Site PR [#3](https://github.com/Ajanth/scrytab-cms/pull/3) merged at 16:28 CEST as
+  `cd8da1b435052a87ea90c1fac094b281e97b489c`. Its Cloudflare deployment
+  `a5482c46-16be-4e91-a7e1-6d3a75b1d698` completed successfully.
+- The live landing page, source page, privacy page, manifest, and appcast returned 200
+  and contained no legacy release-repository links. The manifest names canonical DMG
+  and source assets; the single-item feed names the canonical ZIP and retains its
+  original EdDSA signature and `6151166` byte length.
+- The full `verify_public_release.sh 0.4.0` passed hashes, source contents, strict nested
+  signatures, Gatekeeper, staple tickets, stable Team/bundle identifiers, and live
+  manifest/feed checks. The production branch policy still permits only `main`.
+- The legacy README and description identify the canonical repository. The mirror
+  is archived, its existing tags and assets remain available, and repository-scoped
+  `PUBLIC_REPO_TOKEN` was deleted. `WEBSITE_DISPATCH_TOKEN` remains configured.
+
+The sequence below documents the rollout and rollback procedure used for this cutover.
 
 The old site and all existing assets stay available during preparation and review.
 Target downtime is zero; any outage must be restored within one hour. Do not dispatch
